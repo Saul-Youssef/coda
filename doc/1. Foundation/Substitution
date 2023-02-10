@@ -1,0 +1,16 @@
+
+
+
+ Intuitively...
+
+ pass : B = B
+
+ let B = (pass:B)
+
+ => pass : (pass : B) = (pass : B) = B
+
+ How does this work?
+
+theorem pass : {pass : B = B}
+
+theorem pass2 : {pass : pass : B = B}

@@ -1,0 +1,13 @@
+#
+#    local unix path data
+#
+
+#
+#    demo: path : dir : home :
+#    demo: fn : path : dir : home :
+#    demo: ext : path : dir : home :
+#    flag: path fn ext
+#
+String : path
+String : fn {ap put fn_: ap {last:split </>:B} : get path_ :B}
+String : ext {ap put ext_ : ap {last:split <.>:B} : get fn_ : fn : B}

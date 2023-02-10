@@ -1,0 +1,11 @@
+#
+#   (# A:B) is merely a container created when A is not equal to B.
+#   The use of "#" is meant to be suggestive of "not equal" or
+#   of an "apartness relation."
+#
+#   demo: 1=1
+#   demo: 1=2
+#   demo: 1 2 3 4 = 1 2 3 5
+#   demo: x? = x?
+#
+def # :

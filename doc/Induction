@@ -1,0 +1,9 @@
+
+#
+#  Mathematical Induction with
+#
+
+if P(0) is true and P(n) implies P(n+1), then P(N) is true for all N.
+
+
+ifarg (P:N) : (P:succ:N)

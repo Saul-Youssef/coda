@@ -1,0 +1,389 @@
+
+
+
+Things to do:
+
+#1. modify generic evaluation to return number of iterations.
+#2. Add code infrastructure, list all codes with a given alphabet etc.
+3. Set up to use Jupyter-lab
+4. Search over data with specified parameters.
+5. More work on Number rings.
+6. Learn primitive recursive functions and Turing machines
+7. Do peano natural numbers
+
+(path:a/b/c)
+
+not:self:
+
+{first 2 : a b c} :
+({first 2} ():()) : ({a b c} () : ())
+(({first}:) ({2}:) :) : ({a}:) ({b}:) ({c}:)
+FIRST {2} : {a} {b} {c}
+
+table size owner : a b c
+table size owner : {a} {b} {c}
+
+table -> {tab A : sort A : B}
+path  -> {co A : da A : B} (color:green) (style:bold) : {a/b/c}
+skip 2 : a b c d e
+
+path -> path (coda:{co self:da self:B}) (color:green) ...  ?
+
+Qs:
+   coda vs code?
+   self vs A?
+   extensions test
+
+
+{co self : da self:B} :
+   (color : blue)
+   (style : underline)
+
+s[f g] A : B
+
+(s{f g} A : B) -> (s{f} A : B) (s{g} A : B)
+
+(s{A} A : B) -> A
+
+
+
+
+#
+#
+#
+Undefined terms:
+
+a) Finite or infinite sequences
+b) The existence of one or more distinguished unique *objects*.
+   These objects are the basic objects defining all data.
+   For instance, if there is one object *, then the sequences
+   *
+   **
+   ***
+   are base 1 numbers. If there are two objects, 0 and 1, then
+   words 01010101011111 are general data as represented, for
+   instance in a digital computer.
+
+Definitions:
+
+1. A character is a finite sequence of objects.
+2. A code is a finite sequence of characters.
+
+For each code x, let i(x) be the function defined by
+
+    c --> i(x) if c=x
+    c -->  ()  if c!=x
+
+associate a function i(x) defined by i(x)(c) = i(x) if c is x and
+i(x)(c) is the empty sequence otherwise.
+
+Definition:
+
+1. A coda is a function from codes to finite sequences of codas.
+2. For each code x, i(x) is a coda.
+
+Definition:
+
+1. data is a sequence of codas (empty, finite or infinite).
+
+o Equality is defined on codas recursively via the normal equality of finite sequences being equal term by term.
+o if first n : A = first n : B for all natural numbers n, then A and B are equal as data.
+
+Distinguished codes:  <blank> ( ) { } A B self
+
+If one has data A and data B, there are only two operations available
+
+1. A B
+    Concatenation of A and B as sequences.
+2. A : B
+    The universally defined colon operator, applying data A to data B, resulting in data A : B.
+
+Defining the colon as follows...
+
+1. Assuming that A is not empty, we need to define self A : B, where self is a single coda and A and B are data.
+
+    COLON(self A,B) = CODA(self(code),self,A,B)
+
+da xxx : b1 b2 b3 ...
+    ...get data corresponding to xxx from each input b in B, concatenating results
+co xxx : B
+    ...create coda from inputs
+
+co xxx : a b c d
+da xxx : B
+
+{item A : B}  = {co A : da A : B}
+    ...
+
+def atom : {co self : B}
+def container : {co self : B}
+
+Think of these as "rules of inference"?   Axioms...
+They have the form of theorems
+
+Apply any theorem which reduces the maximum code length.
+
+self{a}{b}{c} A : B = (self{a} A : B) (self{b} A:B) (self{c} A:B)
+self{} A : B = ()
+self{A} A : B = A
+self{B} A : B = B
+self{self} A : B = self
+self{symbol} A : B = SYMBOL(symbol) A : B  for all symbol in SYMBOL
+self{builtin} A : B = builtin(A,B) for all builtins
+self{code} and code is <front> <back> or <front>:<back>
+    self{front back} A : B = (self{front} A : B)   (self{back} A : B)
+    self{front:back} A : B = (self{front} A : B) : (self{back} A : B)
+self{{code}} = i(code)
+self{(code)} A : B = self{code} A : B
+self{code } A : B = self{code} A : B
+self{ code} A : B = self{code} A : B
+
+coda({not:self},(),()} =
+   coda(not,(),()) :
+
+rev : rev : B = B ...What happens if this gets added as an axiom?
+
+rev : rev : finite : B = finite : B ....this, however, should be a theorem
+
+not : self : = none T : {not : self} : = none T : none T : {not : self} ...
+
+first 3 : a b c d = a b c
+
+=======================================
+
+CODA(A,B) =
+    () if A = ()
+    CODA(self,A2,B) otherwise
+
+CODA(self,A,B) ==
+    coda(code1,self,A,B) coda(code2,self,A,B)... coda(coden,self,A,B) for code1,code2,...coden in self if self A
+
+coda(code,self,A,B) =
+    0 if code = {}
+    A if code = A
+    B if code = B
+    self if code = self
+    coda(SYMBOL(code),A,B) if code in SYMBOL
+    EQ(A,B)                                        if code = <front>=<back>
+    coda(front,self,A,B) coda(back,self,A,B)       if code = <front> <back>
+    CODA(coda(front,self,A,B),coda(back,self,A,B)) if code = <front>:<back>
+    error(code) if code is unbalanced w.r.t. {}()
+    i(c)    if code = {c}
+    i(code) otherwise
+
+EQ(A,B) = i(T) if A=B
+          ()   otherwise
+
+def atom : {co self : da self : extend self : B}     :) :) :) :)
+
+def container : {co self : extend self : B}
+
+def extend : {cache B : da A : ap {da extension:A} : notcached A : B}
+
+=======================================
+
+Theorems and Logic
+
+    Code x is a theorem if x A : B for any A and any B.
+
+Definitions:
+    Code x is distributive if x A : B = app x A : B is a theorem.
+    Code t is a type if it is distributive and if t:t:B = t:B is a theorem.
+        Conceptually, this means that t:b is a property of b.  Note that {}
+        is a type because {}:{}:B = {}:({}:B) = {}:B = ()?  ....{}:B = {} or B?
+    Code c is a container if get c : c : B = B is a theorem.
+        Conceptually, c : B puts data B into (c:B) and get c : (c:B) gets it back.
+    Code F is a functor if F:B is a type for any B. ....Is reduce size a type because reduce size : reduce size : B = reduce size : B?
+
+What are the functorial morphism-ish properties of Set and Count?  Are these units/counits of a functor
+    i.e. What is the categorical meaning of Set and Count?  x -> {x}  x -> {x:1}
+
+    For instance, Set is a functor from any type T to (Set:T).
+
+QUESTIONS:
+
+1. Can I make a nice adjoint as in the aldor paper?
+2. What is the analogue of 'category defaults' in Aldor?
+
+QUESTIONS:
+
+0. Add = syntax
+     YES
+     <front> = <back>
+     ==> EQ(CODA(<front>,self,A,B),CODA(<back>,self,A,B)) ... producing Y for equal or 0 for not equal.
+1. Re-define extend? nocode? in : in ? in : sym : in?, what about ambiguity of doc : rev ?  extend from definitions before code?
+     def doc extend : { self : string } or
+     def doc extend : {extend : {self : string}} ?
+     def rev doc    : doc:{Reverse operator}
+     def doc extend : {self : B}
+     Ex doc rev : (doc:agagsagg)
+     Ex extend size :
+     YES... This all fits into def so that
+         def xxx : data sets {xxx: { {code1:...} {code2:...} } }
+         This preserves the content of the input to def for extensions, including extend
+
+2. True, False, Theorem, and, or, not
+     true  : B  == Y if B is non-empty, 0 if empty
+     false : B  == Y if B is empty and finite.
+     Code x is a theorem if x A : B for every A, B.
+3. Godel's theorems 1 & 2
+4. Constraints on extensions to make them stably defined?
+     Try extensions from last added to first, stopping the first time an
+     extension gives a non-empty result and recursively removing each extension as it is tried (to remove "nocode : B" in many places)
+5. Extend to doc, colon, extend, demo
+     See 1.  This means that doc : rev will produce the doc string of rev rather than the doc {rev}
+6. or : a b c d has to be executed in parallel?  Meaning? and : a b c
+     Figure out exact version of this.  Is there a true/false asymmetry?
+7. not, and, or execute codes? true, false ? not : = ?
+8. finite is the same as the halting problem
+9. Is there a nice way to define and ask questions about e.g. categories
+      Try to reproduce my aldor paper?
+      def Group : has inv : Monoid ?
+10. Caley-Dickson construction as an example?
+11. There are an infinite number of primes as an example
+12. Axiom of choice
+13. Descending chain condition for partially ordered sets
+14. Add symbol 0 for empty data? <-- no, I am pretty sure.
+15. What about . and/or @ wierdness? CD
+16. Any way to save space by not saving each code? Introduce destroy operator?
+17. Unicode?  utf-8 ? Use @ for the empty data?
+18. Improved da-out da-in etc?
+19. Call "gadgets" "plugins" instead?
+20. Use ~ as the top of the plugins instead of @?  ~unix for ~.
+21. Make an improved version of sub for "subroutine" argument mapping.
+
+{} empty code
+
+Thm: If a natural number, n, satisfies 2*n = n, then n = 0.
+   (n:0) = if {B = twice:B} : nat : ...computing doesn't work.  How to prove?
+   if {...} : A B = (if {...} : A) (if {...}: B)
+   (n:0) = if {B = twice:B} : n:(0 1 2) (nat 3:)
+         = (if {B = twice:B} : n:(0 1 2)) (if {B = twice:B} : nat 3:)
+         = (n:0) (if {B = twice:B} : nat 3:)
+
+Thm: There are an infinite number of primes.
+    skip B : primes : naturals :
+
+Thm: pass : pass : B = B
+    pass : B = B                ... the pass theorem
+    pass : (pass:B) = (pass:B)  ... substitution
+    pass : pass : B = B         ... definition of
+
+code : pass : a b c
+{pass : a b c} :
+({pass} : ) : ({a b c} : )
+({pass}) : (({a}:) ({b}:) ({c}:))
+{pass} : {a} {b} {c}
+pass((),{a},{b},{c})
+{a} {b} {c}
+
+{pass : pass : B} : A
+
+not : self
+
+
+=== Later stuff ===
+
+A theorem is a rule A : B => rule(A,B).  A special case of this is
+X A : B => Y A : B, which is a theorem iff
+
+X A : B = Y A : B is a theorem.
+
+Voevodsky's example:  Prove that N+1 = 1+N for all N
+    sum n : A B = sum n : B A                  ...abelian theorem for n
+    sum n : (n:1) (n:N) = sum n : (n:N) (n:1)  ...substitute (A-> (n:1), B-> (n:N))
+
+Godel's theorem: "this statement is not a theorem"
+    not : self :
+    Is not : self : a theorem?  No, because not:self: loops.
+
+Godel's second theorem : "Coda is consistent" <--- Use probabilistic sampling to define answer?.
+    or { and (B:) : (not:B:) } : codes :
+    This also loops forever with no output, meaning that coda is "consistent at every point", but
+    consistency is not a full theorem.
+
+Smallest number which cannot be defined in less than 43 characters.
+    A coda expression X defines a natural number N if (n:N) = X:
+    sup n : app {ex n : first: B:} : codes : 43
+    Because this expression has 43 characters it will eventually come out of codes
+    and so it will loop forever => the question has no answer within coda
+
+How to prove mathematical induction?
+
+Axiom of Choice?
+
+def Set :
+    { add category Set : has equiv : B }
+
+def Group :
+    { has Set prod inv unit : B }
+
+def Order :
+    { att {} : has Set sort : B }
+
+def Rig :
+    { att {} : }
+
+Categories:
+    o Do things analogous to the Aldor paper.
+    o Names vs "Set:n"
+    o Products and sums etc.
+    o Morphisms
+
+    sorter     ...partial ordering    ...order
+
+    zero          ... additive identity
+    one           ... multiplicative identity
+    adder         ... abelian addition
+    multiplier    ... product
+
+    getter        ...get contents
+    gettype       ...inside content
+
+    termer        ...terminal output
+    weber         ...web output
+
+    outer         ...code isomorphism
+    inner         ...code isomorphism
+
+    reader
+    writer
+    remover
+    reserver
+    unreserver
+    cloner
+    uncloner
+
+Think about speedups in the extension system.
+
+def Set :
+    set order
+    set term {curly : join , : term (contents:self) : self get : B} :
+    atom
+
+set termer {curly : join , : sort code : termer X : }
+
+set term {term : get self : B}
+
+def F : set domain n : set codomain n : function
+
+Halting problem:
+    Suppose halt : B gives Y if each input code in B is true or false
+    halt : {not : halt : B} ...loops =><=
+
+Finite problem is essentially the same.
+    Suppose finite : B is true iff B is finite data
+    finite : {not : finite : B} ...loops =><=
+
+def  size doc : {agdag}
+def+ size extend : {     }
+
+====================
+
+*** IDEA ***
+
+Represent an unresolved colon (A:B) as a coda
+acc : (coleft:A) (coright:B)
+
+That way data is always a sequence of codas.  Codas and codes are
+always finite, even though they can represent infinite things.

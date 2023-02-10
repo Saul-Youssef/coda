@@ -1,0 +1,74 @@
+
+
+Although we have not yet completed the system by defining the colon, let's presume
+for now that this is done so that A : B is defined for any data A and any data B.
+
+Coda is a system with data and code, and it is best to think of "Logic" as the
+coarsest classification of these two types of things.
+
+In the case of data, the coarsest classification is empty data or non-empty data.
+We refer to empty data as "false" and non-empty data as "true".
+
+not(A,B):
+    i(T) if B is empty
+    ()   if B is non-empty
+
+As explained, each coda is a function from code to data.  For notational purposes,
+let's us denote
+
+s[a,b,c]
+
+to mean that code applied to coda s as a function yields the sequence i(a), i(b), i(c).
+
+def: Code X is a *theorem* if s[X] A : B is always true.
+def: Code X is a *theorem* if s[X] A : B is never false.  <--?
+
+s[x,y,z] A : B = (s[x] A : B) (s[y] A : B) (s[z] A :B)
+s[A] A : B = A
+s[B] A : B = B
+s[self] A : B = s
+s[f g] A : B =     (s[f] A : B)   (s[g] A : B)
+s[f:g] A : B =     (s[f] A : B) : (s[g] A : B)
+s[f=g] A : B = equal( (s[f] A : B) , (s[g] A : B) )
+s[builtin] A : B = builtin(A,B)
+s[symbol] A : B = s[SYMBOL(symbol)] A : B
+s[(f)] A : B = s[f] A : B
+s[{x}] A : B = i(x) A : B
+
+Special words A, B, self, <space>, :, builtin, symbol, (, ), {, }, /.
+
+Theorem (Godel): {not:self:} is not a theorem.
+"This statement is unprovable."
+
+Theorem (Self): {self:} is not a theorem.
+"This statement is true."
+
+s[rev : rev : B] A : B = B
+s[sum n : A B] A : B = s[sum n : B A] A : B
+s[sum n : A B = sum n : B A] A : B = i(T)
+
+def: X is a theorem if (setCode X : self) A : B is true for any self, A, B.
+def: X is a theorem if (setCode X : self) A : B is never false for any self, A, B.
+
+self A : B = distributeCode self A : B
+(setCode {A} : self) A : B = A
+(setCode {B} : self) A : B = B
+(setCode {self} : self) A : B = self
+(self A : B) = ((frontSpace : self) A : B)   ((backSpace : self) A : B)
+(self A : B) = ((frontColon : self) A : B) : ((backColon : self) A : B)
+(self A : B) = slash( ((frontSlash : self) A : B) , ((backSlash : self) A : B) )
+(parenthesisWrap : self) A : B = self A : B
+(self A : B) = (symbol : self) A : B
+(self A : B) = (builtin : self)(A,B)
+(curlyWrap : self) A : B = (code:self) A : B
+equality.... syntactic sugar
+             = equal(((frontEqual : self) A : B),((backEqual:self) A : B))
+#
+#   The compiler is reduced to applying theorems,
+#   so that each computation is a proof.
+#
+coda(A,B):
+   choose a theorem t s.t. t.applies(A,B):
+       for c in t.apply(A,B): yield c
+   else:
+       for b in B: yield b <-- doubtful

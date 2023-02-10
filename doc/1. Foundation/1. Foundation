@@ -1,0 +1,290 @@
+
+
+Any system of reasoning or mathematics must contain undefined terms, which are assumed
+to be understood as a starting point.  Ideally, such terms should be so simple and
+intuitive that they need no explanation.  In our case, we propose the following.
+
+1. Finite sequences.
+2. The existence of one or more distinguished, unique tokens.
+
+For example, we could conveniently choose to base the system on two token, say, "0" and "1".
+Equality of sequences is then defined by equality of the base objects in the usual way.
+
+Definitions:
+
+def: A *character* is a finite sequence of tokens.
+def: A *code* is a finite sequence of characters.
+
+def: For each code c, associate a function i(c) from code to
+sequences, defined by i(c)(x) = i(c) if x=c and i(x)(c) equal
+to the empty sequence otherwise.
+
+def (coda):
+     1. A *coda* is a function from code to *data*.
+		 2. For each code c, i(c) is a coda.
+
+def (data):
+     A *data* is a finite sequence where each element of the sequence is either
+         1. A coda.
+         2. A pair of data a.k.a. a "colon".
+
+Examples of data.  We denote a sequence
+
+   a b c
+   a b (c:d)
+   (a b c:d e (f:g))
+
+Concatenation of data and codas is understood.  Once 2 is defined, the system is complete
+Once 1 and 2 are defined, the system is complete.  Defining 2 also defines a "compiler" where, for each code,
+the i(code): is the corresponding data.
+
+(a : b) : (b : (c : d e f g))
+
+Theorem theorem.  X is a theorem if s[X] A : B is never false.
+
+Suppose X = Y is a theorem.  Then...
+
+.........X..... = ......Y......
+
+If s[X] A : B = T(s,A,B) is a theorem, then....
+
+..........(rev : rev : B).... = ......(B).......
+
+proof...  If (s[X] A : B) loops, then Y must also loop.
+
+s[a,b,c] A : B = (s[a] A : B) (s[b] A:B) (s[c] A:B)
+s[A] A : B = A
+s[B] A : B = B
+s[f g] A : B = (s[f] A : B)   (s[g] A : B)
+s[f:g] A : B = (s[f] A : B) : (s[g] A : B)
+s[f=g] A : B = EQUAL(s[f] A : B, s[g] A:B)
+s[(X)] A : B = s[X] A : B
+s[builtin] A : B = builtin(A,B)
+s[symbol] A : B = s[SYMBOL(symbol)] A : B
+s[ x] A : B = s[x] A : B
+s[x ] A : B = s[x] A : B
+s[word] A : B = i(word)
+
+s[app] A : B => app(A,B)
+
+def colon(A,B):
+    choose any theorem T that applies to A,B
+        T(A,B)
+    else if no theorem applies
+        A
+
+{a b c} :
+({a}:) ({b}:) ({c}:)
+a b c
+
+=========== New thoughts ========
+
+Instead of : being a function, think of it as a potentially data valued expression.  I'll also call
+such expressions "data"... e.g.
+
+a b c
+a (b:c) (d:e:(f:g))
+
+are data.
+
+== LOGIC ==
+
+Conceptually speaking, "logic" is the coarsest summary of data.
+
+Data A is "true" iff A is any non-empty sequence
+Data A is "false" iff A is the empty sequence
+Data A is "undefined" otherwise
+
+For example:
+
+a b c   ... true
+a (b:c) ... true
+()      ... false
+(a:b)   ... undefined
+a (b c:(d:e)) ...true
+(b c:(d:e)) ...undefined
+
+Pause for perspective:  The system so far is "Mathematics without any content", "Math with no
+definitions and no theorems."
+
+== DATA equality ==
+
+Nonempty data a A and b B are *equal* if a=b and A=B.... = is partially defined e.g.
+First define diff
+   diff a A : b B = (diff a.x : b.x) ..for x in dom(a,b)... (diff A:B)
+
+def EQ : {not : diff A : B}
+
+== CONTENT ==
+
+A *rule* is a partial function from data x data to data which preserves data equality.
+
+Lemma: Rules preserve data logic.
+
+== DEFINITIONS ==
+
+If no existing rule applies to A:B, a rule A:B => rule(A,B) is called a *definition*.
+
+== THEOREMS ==
+
+A rule that is not a definition is called a *theorem*.
+
+Introduce a bit of notation for defining some rules:
+
+s[x,y,z] A : B => <some data>
+
+denotes a rule applying to (s A : B) where s is a coda, A is any data, B is any data and where s(code) = i(x) i(y) i(z).
+
+== COMPILER ==
+
+Any set of rules defines a complier which defines data (x:) corresponding to any code x.
+
+Starting with zero rules, we make a convenient collection of definitions for natural combinatorial operations.
+
+These three definitions lets us refer to parts of (s A : B).
+
+s[self] A : B => s
+s[A] A : B => A
+s[B] A : B => B
+
+This definition lets us specify data concatenation.
+
+s[p q] A : B ==> (s[p] A : B) (s[q] A : B)
+
+This definition lets us use the colon operation.
+
+s[p:q] A : B ==> (s[p] A : B) : (s[q] A : B)
+
+This definition lets us specify the order of operations.
+
+s[(p)] A : B ==> s[p] A : B
+
+More example rules:
+
+s[pass] A : B => B
+s[rev] A : B => B in reverse order, for finite B
+
+s[app] A : b1 b2 b3 ... => (A:b1) (A:b2) (A:b3) ...
+
+s[not] A : B ... i(T) if B is empty, () otherwise
+
+da x : b1 b2 b3 ...
+   ...data corresponding to b1(x) followed by b2(x) ...
+
+co x : B
+   ...single coda with the property da x : co x : B = B
+
+acc : accumulate... makes a coda defined by
+    (acc:B)[x] = b1[x] b2[x] ...
+
+def atom : {co A : da self : B}
+def container : {co self : B}
+
+rule atom : {co A : da self : B}
+rule container : {co self : B}
+
+rule {rev : rev : B} : {B}
+
+s[rev] : b1 b2 b3... = (s[rev] : b3 b4 ...) b2 b1   YAY
+
+rev : rev : B => B
+
+0. Rules
+
+A rule is a function rule(A,B) preserving the A:B, meaning A:B = rule(A,B)
+
+1. Definitions
+
+If no rule applies to A:B, a rule A:B --> data is called a *definition*.
+
+=> Definitions automatically "preserve meaning"
+
+Example:  i(rev) A : B -->  B in reverse order
+          s[rev] A : B -->  B in reverse order (slight generalization)
+
+2. Theorem
+
+A *rule* R is a function from A,B to data R(A,B) which preserves equality of
+meaning of A:B.  This means that R(A:B) can be substituted in any expression while
+preserving the meaning of the expression.
+
+Definitions...
+
+s[self] A : B => s
+s[A] A : B => A
+s[B] A : B => B
+s[p q] A : B => (s[p] A : B)   (s[q] A : B)
+s[p,q,r] A:B => (s[p] A : B) (s[q] A:B) (s[r] A : B)
+s[p:q] A : B => (s[p] A : B) : (s[q] A : B)
+s[(p)] A : B =>  s[p] A : B
+s[{x}] A : B =>  i(x)
+
+or  A : B => A B
+and A : B => each A : B
+not   : B =>
+
+each(A,B):
+    for each a in A : B
+not(A,B):
+    if B is empty: (T)
+    otherwise ()
+
+s[p=q] A : B => and (first:A)=(first:B) : (tail:A)=(tail:B)
+s[not] A : B =>
+s[or]  A : B =>
+
+Note that p=q can be true, false or undefined as with any data.
+
+s[rev] A : b1 b2 b3... => (rev : b3 b4...) b2 b1
+
+Note that if b1 b2 b3... is infinite, rev : b1 b2 b3 is undefined, i.e. no matter
+how much you evaluate it, the first data is (rev:<something>).  Now consider
+
+rev : rev : B => B
+
+If B is finite data, this is true in the ordinary sense, but what if
+B if infinite?  This is still a theorem because it preserves meaning.  The
+substitution rev : rev : B => B is "never false".  It preserves meaning
+because it can never turn true data into false data or false data into
+true data.  It can only turn undefined data into true or false data.
+This is like the Axiom of Choice or Zorn's lemma.  It's sort of intuitively
+trying to be true. In the case of Math, such things are considered disturbing.
+Should it be assumed?  How many more of these will there be?  This,
+uncomfortably, makes different incompatible systems of mathematics, depending
+on what you're assuming, and we don't know which system is "really true".
+
+In our case, these are all theorems in the "never false" sense.  The uncomfortable
+ambiguity is removed by accepting them all.
+
+Example:  rev : a b c => c b a is a theorem.
+Example: s[rev] A : B => B in reverse order
+
+3. More about theorems
+
+The foundations of math are usually said to be ZFC where C stands for the axiom of choice.
+An independent axiom which must be added to Math.  This begs the question: If the axiom of
+choice "had to" be added to mathematics, how do you know if others might be needed or not?
+Which math is "more right", with or without axiom of choice?
+
+Answer: Things like the axiom of choice are "never false", and one should include all of them.
+
+Example: rev : rev : B => B
+
+We say X is a theorem if s[X] A : B is never false.
+
+{rev : rev : B} = ({rev : B} A : B)
+
+data are *equal* if they are equal for every rule application.
+
+Rule for substituting one data for another data.
+   o "Definition" when (A:B) is undefined
+   o "Theorem" when (A:B) is defined
+
+i(a) i(b) (i(c) : i(x) i(y) i(z))
+
+4. app
+
+s[app] A : b1 b2 b3... => (A:b1) (A:b2) (A:b3) ...
+
+Code x is *distributive* if x A : B = app x A : B is a theorem.
+If x is distributive and idempotent (x : x : B = B), then x is a *type*.

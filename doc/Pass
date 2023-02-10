@@ -1,0 +1,26 @@
+
+
+Theorem: pass : pass : B = B
+
+Theorem (pass) : pass : B = B
+
+{ { pass : B = B } : (pass : B) } :
+
+f = {pass : B = B}
+g = (pass : B)
+A = ()
+B = ()
+
+Mappings:
+
+cd : maps code to data via the colon
+dc : maps data to code via standard building
+    e.g. a b c => coda : {a b c}
+
+Let X be a code.  X -> X: is a mapping from code to data.
+
+Given any data D.  c(D): = D
+
+Since, in this formulation, data is always finite, c(D) is also finite.
+
+{pass : B = B}

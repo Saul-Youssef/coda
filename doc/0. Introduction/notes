@@ -1,0 +1,13 @@
+
+Hello Robert...
+
+I have something interesting.  It's a possible foundation for math, computing, logic and proof assistance.
+
+Properties:
+
+o Axiomatically it's quite a bit simpler than, say ZF set theory.
+o The axioms define both proof and computation at the same time.
+o Results like Godel's theorem appear easily and non-mysteriously.
+o Types appear naturally rather than being undefined axiomatic terms.
+
+In this setup, compilation, computation and proof are the same thing.

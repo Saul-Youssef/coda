@@ -1,0 +1,27 @@
+
+Plan...
+
+sel back to has?
+re-check has, sel, any all demos 
+
+Questions:
+
+o Is left an allowable definition?
+
+o How am I going to write this up?
+o Github area
+o How to do categorical constructions?
+
+category: sort T
+morphism: M:sort:X = sort:M:X
+
+To do:
+
+o Add with ....
+o Self inspecting software
+o Software for systematic searching over data
+o Statistical summary of given data
+o Better display of defs
+o Help system
+o Terminal display
+o Direct product, sum, adjoints, mono, epi, iso...morphism

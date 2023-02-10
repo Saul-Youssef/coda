@@ -1,0 +1,6 @@
+#
+#    Importing definitions from files
+#
+#    demo: import : .
+#
+def import : {coda : source : readpath : dir co : B}

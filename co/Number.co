@@ -1,0 +1,129 @@
+#
+#   Native numbers: natural numbers, integers, floats and byte strings.
+#
+
+#
+#   Count the number of items in input data.
+#
+#   Note that counting undefined data like (foo:bar) results
+#   in more undefined data.
+#
+#   demo: count : a b c (pass:1 2 3)
+#   demo: count :
+#   demo: count : foo : bar
+#   demo: container : foo
+#   demo: count : foo : bar
+#
+def count : {sum n : ap one : B}
+#
+#   Natural numbers implemented with python int
+#
+#   demo: n : 1 2 3 4
+#   demo: sum n : 1 2 3 4
+#   demo: sum n : n : 1 2 3 4
+#   demo: prod n : 1 2 3 4
+#   flag: n
+#
+Natural : n
+#
+#   Integers
+#
+#   demo: int : 1 2 3 4
+#   demo: sum int : 1 2 3 4
+#   demo: prod int : 1 2 3 4
+#   demo: inv int : 1 2 3 4
+#   flag: int
+#
+Integer : int
+#
+#    Native floating point numbers
+#
+#    demo: float : 1.1 -2.2 3.3 -99.99
+#    demo: sum float : 1.1 -2.2 3.3 -99.99
+#    demo: prod float : 1.1 -2.2 3.3 -99.99
+#    demo: inv float : 1.1 -2.2 3.3 -99.99
+#    flag: float
+#
+Float : float
+#
+#    Native byte strings
+#
+#    demo: string : <xx yy> zz
+#    flag: string
+#
+String : string
+
+
+#=============
+#-- previous versions for possible reference
+
+#def string_ :
+#def string : {(ap put string_ : get : B) (sel string_ : B)}
+#def (Term:string) : {get string_ : string : B }
+
+#def pf_ : {postfix _ : B}
+
+#def Float : {
+#    ( def (pf_:A) : )
+#    ( def A : { (ap put (pf_:A) : ap float1 : B) (sel (pf_:A) : B) } A )
+#    ( def (Sum:A) : {ap put (pf_:xx) : app float_add : get (pf_:xx) : xx : B} )
+#    }
+
+#def Float : {
+#    ( def (pf_:B) : )
+#    ( def B : { (ap put (pf_:A) : ap float1 : B) (sel (pf_:A) : B) } B )
+#    ( def (Sum:B) : {ap put (pf_:A) : app float_add : get (pf_:A) : A : B} B )
+#    ( def (Prod:B) : {ap put (pf_:A) : app float_mult : get (pf_:A) : A : B} B )
+#    ( def (Inv:B) : {put (pf_:A) : float_inv : get (pf_:A) : A : B } B )
+#    ( def (Term:B) : {get (pf_:A) : A : B } B )
+#    }
+
+#def String : {
+#    ( def (pf_:B) : )
+#    ( def B : {(ap put (pf_:A) : get : B) (sel (pf_:A) : B)} B )
+#    ( def (Term:B) : {get (pf_:A) : A : B} B )
+#    }
+
+#def Natural : {
+#    ( def (pf_:B) : )
+#    ( def B : {(ap put (pf_:A) : ap nat1 : B) (sel (pf_:A) : B)} B )
+#    ( def (Sum:B)  : {ap put (pf_:A) : app int_add : get (pf_:A) : A : B} B )
+#    ( def (Prod:B) : {ap put (pf_:A) : app int_mult: get (pf_:A) : A : B} B )
+#    ( def (Term:B) : {get (pf_:A) : A : B } B )
+#    }
+
+#def Integer : {
+#    ( def (pf_:B) : )
+#    ( def B : {(ap put (pf_:A) : ap nat1 : B) (sel (pf_:A) : B)} B )
+#    ( def (Sum:B)  : {ap put (pf_:A) : app int_add : get (pf_:A) : A : B} B )
+#    ( def (Prod:B) : {ap put (pf_:A) : app int_mult: get (pf_:A) : A : B} B )
+#    ( def (Inv:B)  : {put (pf_:A) : int_inv : get (pf_:A) : A : B} B )
+#    ( def (Term:B) : {get (pf_:A) : A : B } B )
+#    }
+
+#def       float_  :
+#def       float   : {(ap put float_ : ap float1 : B) (sel float_ : B)}
+#def (Sum :float)  : {ap put float_ : app float_add : get float_ :  float : B}
+#def (Prod:float)  : {ap put float_ : app float_mult : get float_ : float : B}
+#def (Inv :float)  : {put float_ : float_inv : get float_ : float : B}
+#def (Term:float)  : {get float_ : float : B}
+
+#def       n_ :
+#def       n  : {(ap put n_ : ap nat1 : B) (sel n_ : B)}
+#def ( Sum:n) : {ap put n_ : app int_add : get n_ :  n : B}
+#def (Prod:n) : {ap put n_ : app int_mult : get n_ : n : B}
+#def (Term:n) : {get n_ : n : B}
+
+#def       int_ :
+#def       int  : {(ap put int_ : ap nat1 : B) (sel int_ : B)}
+#def (Sum :int) : {ap put int_ : app int_add : get int_ :  int : B}
+#def (Prod:int) : {ap put int_ : app int_mult : get int_ : int : B}
+#def (Inv :int) : {put int_ : int_inv : get int_ : int : B}
+#def (Term:int) : {get int_ : int : B}
+#   These are implemented with native python int, float, etc.
+#
+#def sum:  {(Sum:A)     : B}
+#def prod: {(Prod:A)    : B}
+#def term: {ap (Term:A) : B}
+#def inv:  {ap (Inv:A)  : B}
+#def type: {(container : postfix _: B) (B:)}

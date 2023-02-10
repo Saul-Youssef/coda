@@ -1,0 +1,32 @@
+#
+#    S1 = "This statement is not provable within coda."
+#
+let S1? : not : S1?
+#
+#    S2 = "This statement is provable within coda."
+#
+let S2? : (S2?=())
+#
+#    S3 = "This statement is either true or false."
+#
+let S3? : ( (S3?) | (not:S3?) )
+#
+#
+#    For each individual data B, B is either equal to () via a finite sequence of
+#    of definitions, or it isn't.  Nevertheless, if we compute the answer to
+#    the question: is any data inconsistent?
+#
+let Consistency : {any {(B:) (not:B:)} : allcodes:}
+#
+#    ...this loops because allcodes contains all strings, including, eventually, "any {(B:) (not:B:)} : allcodes:".
+#
+#    This is essentially the same as the answer to Berry's paradox.  Let's say that code X "defines an integer"
+#    if the leading element of X: is an integer, n.  We can compute these and keep track of the smallest such
+#    integer for codes <= any given length.  Thus, the following computes "the smallest integer which can't
+#    be specified in 40 characters of coda."
+#
+let Berry : {sup n : ap {n:first:B:} : allcodes : 40}
+#
+#    The point, of course, is that the code itself is length 40, so this will also "loop", meaning that Berry:
+#    fails to give an answer.  In Zen terminology, the answer is undecidable.
+#

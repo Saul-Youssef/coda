@@ -1,0 +1,88 @@
+#
+#  Generalized helper functions for term writing, involution
+#  and component-by-component operations on pairs
+#
+def term_pair : {wrap <()> : join , : get n_ : get A : B}
+def inv_pair  : {put A : nth 2 1 : get A : B}
+def by_component : { (first:A) :
+                      ((last:A) n : ap {first : get (first:A):B} A : B)
+                      ((last:A) n : ap {last  : get (first:A):B} A : B)
+                   }
+#
+#  Pairs of natural numbers with component-wise sum and product
+#
+#  pair.n : 1 2 3 4 5 6
+#  demo: term pair.n : sum pair.n : make pair.n : 1 2 3 4
+#  demo: term pair.n : prod pair.n : make pair.n : 1 2 3 4
+#
+def pair.n_ :
+def       pair.n  : {(apby 2 put pair.n_ : n : B) (sel pair.n_:B)}
+def ( Sum:pair.n) : { by_component pair.n_ sum  : B }
+def (Prod:pair.n) : { by_component pair.n_ prod : B }
+def (Term:pair.n) : {term_pair pair.n_ : B}
+#
+#    Pairs of natural numbers with (a,b) ~ (a+x,b+x) makes the integers.
+#
+#    To do this, we have a reduction (a,b) -> (a-min,b-min) where
+#    min is the minimum of a,b.
+#
+#    demo: term pair.int : make pair.int : 1 2 88 99
+#    demo: sum  pair.int : 1 2 88 99
+#
+def reduce_code : {ap int_diff (app int_min : B) : B}
+def reduce_1    : {put A : ap put n : reduce_code : get n : get A : B}
+def reduce      : {ap reduce_1 A : B}
+#
+#  Pairs of natural numbers with (a,x) E (a+x,b+x) equivalence.
+#
+#  A step towards integers.  This is a naive try.  It doesn't
+#  work in the sense that multiplication fails to distribute over
+#  addition anymore.  To fix this, one must define a different
+#  multiplication of pairs.
+#
+#  demo: make pair.int : 1 2 3 4 88 2 1 99
+#  demo: term pair.int : make pair.int : 1 2 3 4 88 2 1 99
+#  demo: term pair.int : sum pair.int : make pair.int : 1 2 3 4 88 2 1 99
+#  demo: term pair.int : prod pair.int : make pair.int : 1 2 3 4
+#  demo: term pair.int : prod pair.int : make pair.int : 2 1 5 3
+#
+def pair.int :
+def (make_:pair.int) : (reduce pair.int) * {ap {put pair.int : get pair.n :B} : make pair.n : B}
+def (sum_:pair.int)  : (reduce pair.int) * { by_component pair.int sum  : B }
+def (prod_:pair.int) : (reduce pair.int) * { by_component pair.int prod : B }
+def (inv_:pair.int)  : {inv_pair pair.int : B}
+def (term_:pair.int) : {join <> : (if (not : is (n:0) : first : get pair.int : B) : - ) (get n : isnt (n:0) : get pair.int:B)}
+#
+#   This fixes the previous attempt with a different function for multiplying pairs
+#   and with a different involution: swapping components 1 and 2.
+#
+#  demo: make pair.int2 : 1 2 3 4 88 2 1 99
+#  demo: term pair.int2 : make pair.int : 1 2 3 4 88 2 1 99
+#  demo: term pair.int2 : sum pair.int : make pair.int : 1 2 3 4 88 2 1 99
+#  demo: term pair.int2 : prod pair.int : make pair.int : 1 2 3 4
+#  demo: term pair.int2 : prod pair.int : make pair.int : 2 1 5 3
+#
+def pair.int2 :
+def (make_:pair.int2) : (reduce pair.int2) * {ap {put pair.int2 : get pair.n :B} : make pair.n : B}
+def (sum_:pair.int2)  : (reduce pair.int2) * { by_component pair.int2 sum  : B }
+def (prod_:pair.int2) : {app newmult : B}
+def (term_:pair.int2) : {join <> : (if (not : is (n:0) : first : get pair.int2 : B) : - ) (get n : isnt (n:0) : get pair.int2:B)}
+
+def pn: {get n : nth A : get pair.int2 : B}
+def newmult : { make pair.int2 :
+      ( app int_add : (int_mult (pn 1:A) : (pn 1:B))
+                      (int_mult (pn 2:A) : (pn 2:B))   )
+      ( app int_add : (int_mult (pn 1:A) : (pn 2:B))
+                      (int_mult (pn 2:A) : (pn 1:B))   )  }
+#
+#def CommutativeMonoid : {B : X? Y? = B : Y? X?}
+#
+#
+#Commutative : sum pair.int
+#Associative : prod pair.int
+#Distributive mult pair.int : sum pair.int
+#
+#mult pair.int X : sum pair.int : Y = sum pair.int : ap mult pair.int X : Y
+#
+#def Distributive : { mult B X? : sum B : Y? = sum B : ap mult B X? : Y? }
+#def AbelianSum : { sum B : (X? Y?) = sum B : (Y? X?)}

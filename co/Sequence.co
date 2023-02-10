@@ -1,0 +1,20 @@
+#
+#    Sequence
+#
+
+#
+#   Select the n'th items from input.
+#
+#   demo: nth 3 : a b c d
+#   demo: nth 3 1 : a b c d
+#   demo: nth : a b c
+#
+def nth : {dis nth1 A : B}
+#
+#   Select inputs with a specified length
+#
+#   demo: iscount 2 : a b
+#   demo: iscount 2 : a
+#   demo: iscount 2 : a b c
+#
+def iscount : {if ((n:A)=(count:B)) : B}

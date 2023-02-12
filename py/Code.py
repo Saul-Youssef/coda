@@ -13,6 +13,9 @@ b1 = z|(z|z)
 CODE[z] = "\u2205"
 CODE[b0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
 CODE[b1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
+
+base.DEF.add(base.PF(b0)) # bit-0 flagged data is atomic 
+base.DEF.add(base.PF(b1)) # bit-1 flagged data is atomic 
 #
 #   Get 8 bits of pure data from ascii characters.
 #

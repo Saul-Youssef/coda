@@ -22,6 +22,6 @@ def first_4(A,B):
         n = ns.pop()
         if n>=1:
             L,R = B.split()
-            if DEF.atom(L): return L + (da('first') & da(str(n-1)) | R
+            if DEF.atom(L): return L + (da('first') & da(str(n-1))) | R
 
 DEF.add(PF(da('first'),first_1,first_2,first_3,first_4))

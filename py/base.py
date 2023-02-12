@@ -22,7 +22,7 @@ class data(object):
         for d in self._data: yield d
     def __getitem__ (self,i): return self._data[i]
 #
-#   The two foundational binary operations.  Note that * is associative, but : and ** are not.
+#   The foundational binary operations.  Note that + is associative, but & and | are not.
 #
     def __add__(self,D): return data(*(self._data+D._data))  # concatenation of sequences - (A B)  in lang, A+B in python 
     def __or__ (self,D): return data(self)+D                 # colon of sequences         - (A:B)  in lang, A|B in python
@@ -30,8 +30,8 @@ class data(object):
 #
 #   Data display
 #
-    def __repr__(self): return '('+''.join([d.__repr__() for d in self])+')'
-    def __str__(self):
+    def pure(self): return '('+''.join([d.pure() for d in self])+')'
+    def __repr__(self):
         from Code import CODE # data->unicode map for display purposes 
         if self in CODE: return CODE[self]
         else           : return '('+''.join([d.__str__() for d in self])+')'
@@ -50,9 +50,7 @@ class data(object):
     def atom(self):
         return len(self)==1 and DEF.atomic(self)
 #
-#   Definitions is the global mapping from flags to a collection of operators 
-#   which implement a partial function from data to data with domain defined 
-#   by data flag. 
+#   Definitions is the global mapping from flags to partial functions.  
 #
 class Definitions(object):
     def __init__(self): self._definitions = {} 
@@ -70,13 +68,10 @@ class Definitions(object):
     def atomic(self,D): return D.flag() in self and self.get(D.flag()).identity()
 #
 #   Partial functions are defined by zero or more operators with 
-#   pf:(flag,A)B -> pf_operator(A,B).  Zero such operators indicates 
-#   the identity partial function.  
+#   pf:(flag,A)B -> pf_operator(A,B).  Zero such operators indicates an identity.
 #
 class PF(object):
-    def __init__(self,flag,*ops):
-        self._flag = flag
-        self._ops  = ops 
+    def __init__(self,flag,*ops): self._flag,self._ops = flag,ops 
     def flag(self): return self._flag
     def domain(self,D): return D.flag()==self.flag() 
     def __len__(self): return len(self._ops)
@@ -96,7 +91,7 @@ class PF(object):
 #   The global collection of definitions
 #
 DEF = Definitions()
-DEF.add(PF(data(),[])) 
+DEF.add(PF(data()))  # empty data flagged data is atomic
 #
 #   System exceptions
 #

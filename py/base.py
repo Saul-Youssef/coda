@@ -1,98 +1,105 @@
 #
 #   A foundational system for math and computing
 #
-#   This is the result of years of gradually simplifying previous personal computing systems, particularly 
-#   "types", "ee", "egg" (with Margo Seltzer and David Parkes), an attempt to use Aldor for Category theory 
+#   This is the result of years of gradually simplifying previous personal computing systems, particularly
+#   "types", "ee", "egg" (with Margo Seltzer and David Parkes), an attempt to use Aldor for Category theory
 #   (Aldor is by Stephen Watt and collaborators), and "coda-classic".  This system and it's internal language
-#   is called "coda". 
+#   is also called "coda".
 #
 #   Saul Youssef, January 2023
 #
-#=========================================================
+#============================================
 #
-#   Pure data 
+#   A coda is a pair of data
+#
+class coda(object):
+    def __init__(self,left,right): self._left,self._right = left,right
+    def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
+    def __hash__(self): return hash((self._left,self._right,))
+    def __str__(self):
+        from Code import CODE
+        if self in CODE: return CODE[self]
+        else           : return str(self.right())
+    def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
+    def    left (self): return self._left
+    def   right (self): return self._right
+    def __iter__(self):
+        for c in self._right: yield c 
+    def   depth (self): return max(self._left.depth(),self._right.depth())
+    def  domain (self): return self.left().split()[0]
+    def __add__ (self,c): return data(self,c)
+#
+#   A data is a finite sequence of codas
 #
 class data(object):
-    def __init__   (self,*D): self._data = D
-    def __hash__      (self): return hash(self._data)
-    def __len__       (self): return len(self._data)
-    def depth(self): 
-        if len(self)==0: return 0
-        else           : return max([d.depth()+1 for d in self]) 
-    def __eq__      (self,d): return self._data==d._data 
-    def empty         (self): return len(self._data)==0
-    def __iter__      (self):
-        for d in self._data: yield d
-    def __getitem__ (self,i): return self._data[i]
+    def __init__(self,*cs): self._coda = cs
+    def __repr__(self): return ''.join([repr(c) for c in self])
+    def __str__ (self): return ''.join([ str(c) for c in self])
+    def __hash__(self): return hash(self._coda)
+    def __eq__  (self,d): return self._coda==d._coda
+    def __add__ (self,d): return data(*(self[:]+d[:]))
+    def __or__  (self,d): return coda(self,d)
+    def __len__ (self): return len(self._coda)
+    def __iter__(self):
+        for c in self._coda: yield c
+    def empty(self): return len(self)==0
+    def __getitem__(self,i): return self._coda[i]
+    def depth(self): return max([0]+[1+c.depth() for c in self])
+    def split(self): return self[:1],self[1:]
 #
-#   The foundational binary operations
+#   A definition is a partial function from coda to data
 #
-    def __add__(self,D): return data(*(self._data+D._data))  # concatenation of sequences - (A B)  in lang, A+B in python 
-    def __or__ (self,D): return data(self)+D                 # colon of sequences         - (A:B)  in lang, A|B in python
+class DEF(object):
+    def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
+    def __contains__(self,c): return c.domain()==self._domain
+    def domain(self): return self._domain
+    def atomic(self): return len(self._pfs)==0
+    def apply(self,c):
+        domain,A,B = c.left().split()
+        for pf in self._pfs:
+            R = pf(domain,A,B)
+            if not R is None: return R
+        return data(c)
+    def __call__(self,D):
+        R = []
+        for c in D:
+            if c in self:
+                for d in self.apply(c): R.append(d)
+            else:
+                R.append(c)
+        return data(*R)
 #
-#   Data display
-#
-    def __repr__(self): return '('+''.join([d.__repr__() for d in self])+')'  # native display 
-    def __str__(self):
-        from Code import CODE # data->unicode map for display purposes 
-        if self in CODE: return CODE[self]
-        else           : return '('+''.join([d.__str__() for d in self])+')'
-#
-#   Split is available if len(data)>0
-#
-    def split_left (self): return data(*self[: 1]),data(*self[ 1:])
-    def split_right(self): return data(*self[:-1]),data(*self[-1:])
-    def split(self): return self.split_left()
-#
-#   Each data has a type which determines an applicable definition  
-#
-    def type(self):
-        if len(self)>0 and len(self[0])>0: return self[0][0]
-        return data()
-    def atom(self): return self in DEF and len(DEF[self])==0
-#
-#   Definitions   
+#   Global definitions
 #
 class Definitions(object):
-    def __init__(self): self._definitions = {} 
-    def __repr__(self): return ','.join([str(type) for type,pf in self])
-    def __len__(self): return len(self._definitions) 
+    def __init__(self): self._definitions = {data():DEF(data())} 
+    def __len__(self): return len(self._definitions)
     def __iter__(self):
-        for type,pf in self._definitions.items(): yield type,pf 
-    def __contains__(self,D): return D.type() in self._definitions 
-    def add(self,pf): self._definitions[pf.type()] = pf; return self 
-    def __getitem__(self,D): return self._definitions[D.type()]
-#
-#   Partial function 
-#
-class PF(object):
-    def __init__(self,type,*ops): self._type,self._ops = type,ops 
-    def type(self): return self._type
-    def domain(self,D): return D.type()==self.type() 
-    def __len__(self): return len(self._ops)
-    def __repr__(self): return str(self.type()) 
-    def __iter__(self):
-        for op in self._ops: yield op 
+        for domain,Def in self.items(): yield domain,Def
+    def __contains__(self,c): return c.domain() in self._definitions 
+    def __getitem__(self,c): return self._definitions[c.domain()]
+    def add(self,Def): 
+        if Def.domain in self._definitions: raise error(str(Def)+' is already defined.')
+        self._definitions[Def.domain()] = Def
     def __call__(self,D):
-        if len(D)>0:
-            type,A = D[0].split()
-            B = data(*D[1:])
-            for op in self:
-                R = op(A,B)
-                if not R is None: return R
-        return D 
+        R = []
+        for c in D:
+            if c in self:
+                for d in self[c](c): R.append(d)
+            else:
+                R.append(c)
+        return data(*R)
 #
-#   The global collection of definitions
+#   Global definitions 
 #
-DEF = Definitions()
-DEF.add(PF(data()))  # empty typed data is atomic 
-#
-#   Translating unicode text into corresponding data
-#
-def co(text): import Code; return Code.data(text) 
+CONTEXT = Definitions()
 #
 #   System exceptions
 #
 class error(Exception):
     def __init__(self,msg): self._msg = msg
     def __str__(self): return self._msg
+#
+#   Text to data 
+#
+def da(text): import Code; return data(*[Code.byte(c) for c in text])

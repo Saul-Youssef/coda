@@ -3,11 +3,6 @@
 #
 from base import *
 
-def coda(A,B):
-    source = source[:-2]
-    print('aaaaa',A,B,source)
-CONTEXT.add(PF(co('{')[0],coda))
-
 def wrap(txt): return b'{'+txt+b'}'
 #
 #   The kernel for the language definition is defined by a sequence of rules
@@ -65,7 +60,19 @@ def co(A0,B):
 #
     if x.endswith(b'?'): return data(colon(data(b'?'),data(x[:-1])))
     return data(x)
-#DEF.add(data(b'co'),co)
+DEF.add(data(b'co'),co)
+
+class language(definition):
+    def __init__(self,kernel): self._kernel = kernel
+    def __str__(self): return '{language}'+'-->'+str(self._kernel)
+    def operator(self,L,R):
+        K = self.kernel(L,R)
+        if K is None: return data(colon(L,R))
+        else        : return K
+    def domain(self,flag):
+        return len(flag)>0 and is_code(flag[0]) and flag[0].startswith(b'{') and flag[0].endswith(b'}')
+
+LANG = language(co) # Natural language for data
 
 class parse(object):
     def __init__(self,sep,code,direction):

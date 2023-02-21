@@ -4,6 +4,7 @@
 #   Basic, low level computing python integers or python floats from code
 #
 from base import *
+import Code 
 
 class BinaryOperation(object):
     def __init__(self,coerce,operation):
@@ -23,14 +24,10 @@ class BinaryOperation(object):
 #   by assuming that it can get translated from the str method.  Note that this relies on the fact 
 #   that str output is wrapped in parenthesis as in (45) rather than 45.
 #
-def unwrap(x):
-    while x.startswith('('): x = x[1:]
-    while x.endswith  (')'): x = x[:-1]
-    return x 
 def tryint(x):
     y = None
     try:
-        y = int(unwrap(str(x)))
+        y = int(Code.coda2str(x))
     except (ValueError,TypeError):
         pass
     return y
@@ -38,7 +35,7 @@ def tryint(x):
 def tryfloat(x):
     y = None
     try:
-        y = float(unwrap(str(x)))
+        y = float(Code.coda2str(x))
     except (ValueError,TypeError):
         pass
     return y

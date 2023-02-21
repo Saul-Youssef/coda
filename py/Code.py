@@ -9,8 +9,7 @@ CODE = {} # Coda to corresponding unicode name
 
 z = base.data()
 b0 = z|z
-b1 = z|(z|z)
-#CODE[z] = "\u2205"
+b1 = z|base.data(z|z)
 CODE[b0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
 CODE[b1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
 #
@@ -23,7 +22,7 @@ def byte(c):
     for x in s:
         if   x=='0': B.append(b0)
         elif x=='1': B.append(b1)
-        else: raise error('Error converting byte')
+        else: raise base.error('Error converting byte')
     while len(B)<8:
         B = [b0]+B
     return base.coda(base.data(),base.data(*B))
@@ -31,3 +30,6 @@ def byte(c):
 for c in string.printable:
     CODE[byte(c)] = c
     CODA[c] = byte(c)
+    
+def coda2str(c): return ''.join([str(cc) for cc in c.right()])
+def code2data(text): return base.data(*[byte(c) for c in text])

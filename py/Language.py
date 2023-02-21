@@ -69,7 +69,8 @@ def language(domain,A0,B):
 #   There are no syntax errors.  All text is valid source code.
 #
     return da(x)
-CONTEXT.add(DEF(da('{'),language))
+CONTEXT.add(DEF(Code.byte('{'),language))....?
+#CONTEXT.add(DEF(da('{'),language))
 #
 #   The kernel for the language definition is defined by a sequence of rules
 #   where the first rule that applies defines the language.

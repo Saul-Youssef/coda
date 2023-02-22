@@ -23,20 +23,29 @@ class coda(object):
     def    left (self): return self._left
     def   right (self): return self._right
     def   depth (self): return max(self._left.depth(),self._right.depth())
-    def  domain (self): return self.left().split()[0]
+    def  domain (self): return self.left().split()[0] # domain is data and may be empty
     def __add__ (self,c): return data(self,c)
     def atom(self): return self in CONTEXT and CONTEXT[self].identity()
+    def eval(self): # self -> data, evaluating recursively
+        c = self.left().eval()|self.right().eval()
+        if c in CONTEXT: return CONTEXT[c](c)
+        return data(c)
+#        if self in CONTEXT: return CONTEXT[self](self)
+#        else              : return data(self.left().eval()|self.right().eval())
 #
 #   ...and data is a finite sequence of codas
 #
 class data(object):
-    def __init__(self,*cs): self._coda = cs
+    def __init__(self,*cs):
+        for c in cs:
+            if not type(c)==TCODA: raise error('data error: '+str(c)+' is not a coda')
+        self._coda = cs
     def __hash__(self): return hash(self._coda)
     def __repr__(self): return ''.join([repr(c) for c in self])
     def __str__ (self): return ''.join([ str(c) for c in self])
     def __eq__  (self,d): return self._coda==d._coda
-    def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language 
-    def __or__  (self,d): return coda(self,d)           # A:B in language 
+    def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language
+    def __or__  (self,d): return coda(self,d)           # A:B in language
     def __len__ (self): return len(self._coda)
     def __iter__(self):
         for c in self._coda: yield c
@@ -45,6 +54,11 @@ class data(object):
     def split(self): return data(*self[:1]),data(*self[1:])
     def empty(self): return len(self)==0
     def atom(self): return len(self)==1 and self[0].atom()
+    def eval(self): # self -> data, evaluating recursively
+        R = []
+        for c in self:
+            for d in c.eval(): R.append(d)
+        return data(*R)
 #
 #   A definition is a partial function from coda to data
 #
@@ -53,36 +67,32 @@ class DEF(object):
     def domain(self): return self._domain
     def __contains__(self,c): return c.domain()==self.domain()
     def identity(self): return len(self._pfs)==0
-    def __call__(self,c):  # apply coda->data operation 
+    def __call__(self,c):  # apply coda->data operation
         domain,A = c.left().split(); B = c.right()
-        for pf in self._pfs:  # may be zero or more pfs 
+        for pf in self._pfs:  # may be zero or more pfs
             R = pf(domain,A,B)
             if not R is None: return R
         return data(c)
 #
-#   Global collection of definitions with disjoint domains 
+#   Global collection of definitions with disjoint domains
 #
 class Definitions(object):
-    def __init__(self): self._definitions = {data():DEF(data())} 
+    def __init__(self): self._definitions = {data():DEF(data())}
     def __repr__(self): return '['+', '.join([str(domain) for domain,definition in self])+']'
     def __len__(self): return len(self._definitions)
     def __iter__(self):
         for domain,definition in self._definitions.items(): yield domain,definition
-    def __contains__(self,c): return c.domain() in self._definitions 
+    def __contains__(self,c): return c.domain() in self._definitions
     def __getitem__(self,c): return self._definitions[c.domain()]
-    def add(self,definition): 
+    def add(self,definition):
         if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
         self._definitions[definition.domain()] = definition
-    def __call__(self,D):
-        R = []
-        for c in D:
-            if c in self:
-                for d in self[c](c): R.append(d)
-            else:
-                R.append(c)
-        return data(*R)
 #
-#   The global context contains all activated definitions  
+#   coda type for a validation check in the data __init__
+#
+TCODA = type(coda(data(),data())) # used only for a validation check in __init__ of data
+#
+#   The global context contains all activated definitions
 #
 CONTEXT = Definitions()
 #
@@ -92,7 +102,11 @@ class error(Exception):
     def __init__(self,msg): self._msg = msg
     def __str__(self): return self._msg
 #
-#   Text to data utilites 
+#   Text to data utilites
 #
 def co(text): import Code; return data()|data(*[Code.byte(c) for c in text])
 def da(text): import Code; return data(co(text))
+#
+#   Import builtin definitions from other source files
+#
+import builtin

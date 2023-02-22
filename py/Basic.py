@@ -22,13 +22,13 @@ def first_4(domain,A,B):
         if n>=1 and len(B)>0 and B[0].atom():
             return B[0] + ((domain+da(str(n-1))) | data(*B[1:]))
 CONTEXT.add(DEF(da('first'),first_1,first_2,first_3,first_4))
-            
+
 def rev(domain,A,B):
     if   B.empty(): return data()
-    elif B.atomic(): return B
-    elif len(B)>0:
+    elif B.atom(): return B
+    elif len(B)>1:
         L,R = B.split()
-        return (domain+A)|R + (domain+A)|L
+        return ((domain+A)|R) + ((domain+A)|L)
 CONTEXT.add(DEF(da('rev'),rev))
 
 def nat(domain,A,B):

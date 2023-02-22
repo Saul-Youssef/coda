@@ -22,3 +22,11 @@ def G(L,width):
     for w in range(1,width+1):
         for p in product(L,repeat=w): L2.append(data(*p))
     return L2
+
+def data_depth(n):  # data with depth <= n
+    if n==0: 
+        return [data()]
+    else:
+        
+        
+    

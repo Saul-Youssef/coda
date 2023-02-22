@@ -15,10 +15,7 @@ class coda(object):
     def __init__(self,left,right): self._left,self._right = left,right
     def __hash__(self): return hash((self._left,self._right,))
     def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
-    def __str__(self):
-        from Code import CODE
-        if self in CODE: return CODE[self]
-        else           : return '('+str(self.left())+':'+str(self.right())+')'
+    def __str__(self): import Code; return Code.codastr(self)
     def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
     def    left (self): return self._left
     def   right (self): return self._right
@@ -39,8 +36,8 @@ class data(object):
             if not type(c)==TCODA: raise error('data error: '+str(c)+' is not a coda')
         self._coda = cs
     def __hash__(self): return hash(self._coda)
-    def __repr__(self): return ''.join([repr(c) for c in self])
-    def __str__ (self): return ''.join([ str(c) for c in self])
+    def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data 
+    def __str__ (self): return ''.join([ str(c) for c in self])     # display using Code mappings 
     def __eq__  (self,d): return self._coda==d._coda
     def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language
     def __or__  (self,d): return coda(self,d)           # A:B in language

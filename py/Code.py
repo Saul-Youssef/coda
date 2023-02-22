@@ -33,3 +33,20 @@ for c in string.printable:
     
 def coda2str(c): return ''.join([str(cc) for cc in c.right()])
 def code2data(text): return base.data(*[byte(c) for c in text])
+#
+#   pretty display 
+#
+def pretty(D):
+    sep = ' '
+    if D.depth()<=3: sep = ''
+    return sep.join([prettycoda(c) for c in D])
+def prettycoda(c):
+    if          c in CODE: return CODE[c]
+    elif c.left().empty(): return pretty(c.right())
+    else: return '('+pretty(c.left())+':'+pretty(c.right())+')'
+
+def codastr(c):
+    if c in CODE: return CODE[c]
+    else        : return '('+str(c.left())+':'+str(c.right())+')' 
+
+                                 

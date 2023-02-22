@@ -12,18 +12,17 @@ readline.parse_and_bind("tab: complete")
 #    System
 #
 from start import *
+import Text,Evaluate,Language,Code
 
-EXIT = [b'exit',b'quit']
+DEPTH = 100 # maximum evaluation depth
+EXIT = ['exit','quit']
 try:
     while True:
         try:
-            line = input(Text.decorate('@','blue','reversevideo')+' ').encode()
+            line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
-            D = data(colon(data(b'{'+line+b'}'),data()))
-#            D = Evaluate.generic(D,N)
-            D,n = Evaluate.depth(D,N)
-            if not D.empty(): sys.stdout.write(str(D)+'\n')
-#            if not D.empty(): sys.stdout.write(str(D)+'............['+str(N-n)+']\n')
+            D,depth = Evaluate.depth(Language.lang(line,data(),data()),DEPTH)
+            if not D.empty(): sys.stdout.write(Code.pretty(D)+'\n')
         except KeyboardInterrupt:
             print('')
 except EOFError:

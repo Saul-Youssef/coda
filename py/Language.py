@@ -44,10 +44,7 @@ def language(domain,A0,B):
 #   Text between angle brackets are byte strings.
 #
     if s.startswith('(') and s.endswith(')'): return lang(s[1:-1],A,B)
-    if s.startswith('{') and s.endswith('}') and balanced(s[1:-1]):
-#        return da(s)
-        print('aaaa HUH?','['+s+']')
-        return lang(s[1:-1],data(),data())
+    if s.startswith('{') and s.endswith('}') and balanced(s[1:-1]): return Code.code2data(s)
     if s.startswith('<') and s.endswith('>'): return da(s[1:-1])
 #
 #   There are no syntax errors.  All text is valid source code.
@@ -123,14 +120,11 @@ def lang(code,A,B): return data((Code.code2data(wrap(code))+A)|B)
 #   C is a coda...including codas starting with language source code.
 #
 def split(A):
-    chars = []
     As = [a for a in A]
-    done = False
-    while len(As)>0:
-        a = As.pop(0)
-        if a==Code.byte('}'):
-            done = True; break
-        else:
-            chars.append(a)
-    code = ''.join([str(a) for a in chars])
-    return code,data(*As)
+    lastcurly = -1
+    for i in range(len(As)):
+        if As[i]==Code.byte('}'): lastcurly = i
+    if lastcurly<0: raise error('Mismatched curly braces {..}')
+    chars = As[:lastcurly]
+    Anew = data(*As[lastcurly+1:])
+    return ''.join([str(a) for a in chars]),Anew

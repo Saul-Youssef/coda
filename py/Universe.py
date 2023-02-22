@@ -1,5 +1,8 @@
 #
-#    Data is either an empty sequence or a finite sequence of data.
+#    o A data is a finite sequence of codas.
+#    o A coda is a pair of data. 
+#
+#    ...fix me for new codas 
 #
 from base import * 
 #

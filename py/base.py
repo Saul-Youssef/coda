@@ -30,8 +30,6 @@ class coda(object):
         c = self.left().eval()|self.right().eval()
         if c in CONTEXT: return CONTEXT[c](c)
         return data(c)
-#        if self in CONTEXT: return CONTEXT[self](self)
-#        else              : return data(self.left().eval()|self.right().eval())
 #
 #   ...and data is a finite sequence of codas
 #

@@ -15,15 +15,9 @@ class BinaryOperation(object):
             Ac = self._coerce(A); Bc = self._coerce(B)
             if len(Ac)==1 and len(Bc)==1:
                 result = self._operation(Ac[0],Bc[0])
-                return data(str(result).encode())
-#def empty(A,B):
-#    if A.empty() or B.empty(): return data()
-#def allcode(D): return all([is_code(d) for d in D])
-#
-#   This is a slightly hacky method of using python to extract list of integers or floats from pure data 
-#   by assuming that it can get translated from the str method.  Note that this relies on the fact 
-#   that str output is wrapped in parenthesis as in (45) rather than 45.
-#
+                return da(str(result))
+#                return data(str(result).encode())
+
 def tryint(x):
     y = None
     try:
@@ -45,6 +39,11 @@ def tryfloat(x):
 def   ints(D): return [tryint  (d) for d in D if not tryint  (d) is None]
 def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #
+#    Used multiple times below.
+#
+def empty(domain,A,B):
+    if A.empty() or B.empty(): return data()            
+#
 #   Code version of the natural numbers 0 1 2 3...
 #
 #   nat : n -> n (nat:n+1)
@@ -54,12 +53,12 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #   demo: nat a b c : x y z
 #   demo: nat : x?
 #
-#def nat(A,B):
-#    ns = ints(B)
-#    if len(ns)==1:
-#        n = ns.pop()
-#        return data(str(n).encode())+one(b'nat',A,data(str(n+1).encode()))
-#DEF.add(data(b'nat'),nat)
+def nat(domain,A,B):
+    ns = ints(B)
+    if len(ns)==1:
+        n = ns.pop()
+        return co(str(n)) + (domain|da(str(n+1)))
+CONTEXT.add(DEF(da('nat'),nat))
 #
 #   Makes a code 1 if the input is a single atom.  Used for counting.
 #
@@ -69,10 +68,10 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #   demo: one : foo : bar
 #   demo: count : a b c d
 #
-#def One(A,B):
-#    if B.atom(): return data(b'1')
-#    if B.empty(): return data()
-#DEF.add(data(b'one'),One)
+def one(domain,A,B):
+    if B.atom(): return da('1')
+    if B.empty(): return data()
+CONTEXT.add(DEF(da('one'),one))
 #
 #   Select atoms consisting of a code that translates to an integer.
 #
@@ -85,21 +84,22 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #   int1 : foo : bar
 #   ap nat1 : a 2 3 -15
 #
-#def Int(A,B):
-#    if B.atom():
-#        if len(ints(B))==1: return B
-#        else              : return data()
-#DEF.add(data(b'int1'),Int)
-#def Nat(A,B):
-#    if B.atom():
-#        if len(ints(B))==1 and ints(B)[0]>=0: return B
-#        else                                : return data()
-#DEF.add(data(b'nat1'),Nat)
-#def Float(A,B):
-#    if B.atom():
-#        if len(floats(B))==1: return B
-#        else                : return data()
-#DEF.add(data(b'float1'),Float)
+def Int(domain,A,B):
+    if B.atom():
+        if len(ints(B))==1: return B
+        else              : return data()
+CONTEXT.add(DEF(da('int1'),Int))
+def Nat(domain,A,B):
+    if B.atom():
+        if len(ints(B))==1 and ints(B)[0]>=0: return B
+        else                                : return data()
+CONTEXT.add(DEF(da('nat1'),Nat))
+
+def Float(domain,A,B):
+    if B.atom():
+        if len(floats(B))==1: return B
+        else                : return data()
+CONTEXT.add(DEF(da('float1'),Float))
 #
 #   Integer binary operations
 #
@@ -110,20 +110,16 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #   demo: int_min 2 : 3
 #   demo: app int_add : 1 2 3 4 5
 #
-#OP1 = BinaryOperation(ints,lambda x,y: x+y)
-#DEF.add(data(b'int_add'),lambda A,B: OP1(A,B),empty)
-#
-#OP2 = BinaryOperation(ints,lambda x,y: x*y)
-#DEF.add(data(b'int_mult'),lambda A,B: OP2(A,B),empty)
-#
-#OP3 = BinaryOperation(ints,lambda x,y: y-x)
-#DEF.add(data(b'int_diff'),lambda A,B: OP3(A,B),empty)
-#
-#OP4 = BinaryOperation(ints,lambda x,y: max(x,y))
-#DEF.add(data(b'int_max'),lambda A,B: OP4(A,B),empty)
-#
-#OP5 = BinaryOperation(ints,lambda x,y: min(x,y))
-#DEF.add(data(b'int_min'),lambda A,B: OP5(A,B),empty)
+OP1 = BinaryOperation(ints,lambda x,y: x+y)
+CONTEXT.add(DEF(da('int_add'),lambda domain,A,B:OP1(A,B),empty))
+OP2 = BinaryOperation(ints,lambda x,y: x*y)
+CONTEXT.add(DEF(da('int_mult'),lambda domain,A,B:OP2(A,B),empty))
+OP3 = BinaryOperation(ints,lambda x,y: y-x)
+CONTEXT.add(DEF(da('int_diff'),lambda domain,A,B:OP3(A,B),empty)) 
+OP4 = BinaryOperation(ints,lambda x,y: max(x,y))
+CONTEXT.add(DEF(da('int_max'),lambda domain,A,B:OP4(A,B),empty))
+OP5 = BinaryOperation(ints,lambda x,y: min(x,y))
+CONTEXT.add(DEF(da('int_min'),lambda domain,A,B:OP5(A,B),empty)) 
 #
 #   Float binary operations and involutions
 #
@@ -137,22 +133,19 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #   demo:int_inv : 1 2 -3 -4
 #   demo:float_inv : 1.1 2.1 -3.1 -4.1
 #
-#OP6 = BinaryOperation(floats,lambda x,y: x+y)
-#DEF.add(data(b'float_add'),lambda A,B: OP6(A,B),empty)
-#
-#OP7 = BinaryOperation(floats,lambda x,y: x*y)
-#DEF.add(data(b'float_mult'),lambda A,B: OP7(A,B),empty)
-#
-#OP8 = BinaryOperation(floats,lambda x,y: y-x)
-#DEF.add(data(b'float_diff'),lambda A,B: OP8(A,B),empty)
-#
-#OP9 = BinaryOperation(floats,lambda x,y: max(x,y))
-#DEF.add(data(b'float_max'),lambda A,B: OP9(A,B),empty)
-#
-#OP10 = BinaryOperation(floats,lambda x,y: min(x,y))
-#DEF.add(data(b'float_min'),lambda A,B: OP10(A,B),empty)
+OP6 = BinaryOperation(floats,lambda x,y: x+y)
+CONTEXT.add(DEF(da('float_add'),lambda domain,A,B: OP6(A,B),empty)) 
+OP7 = BinaryOperation(floats,lambda x,y: x*y)
+CONTEXT.add(DEF(da('float_mult'),lambda domain,A,B: OP7(A,B),empty))
+OP8 = BinaryOperation(floats,lambda x,y: y-x)
+CONTEXT.add(DEF(da('float_diff'),lambda domain,A,B: OP8(A,B),empty))
+OP9 = BinaryOperation(floats,lambda x,y: max(x,y))
+CONTEXT.add(DEF(da('float_max'),lambda domain,A,B: OP9(A,B),empty))
+OP10 = BinaryOperation(floats,lambda x,y: min(x,y))
+CONTEXT.add(DEF(da('float_min'),lambda domain,A,B:OP10(A,B),empty))
 #
 #def codes(D): return [d for d in D if is_code(d)]
+def codes(D): return [Code.coda2str(c) for c in D]
 #
 #   code binary operations
 #
@@ -161,14 +154,12 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #   demo: code_max 1234 : 1235
 #   demo: app code_add : 1 2 3 4 5 6
 #
-#OP11 = BinaryOperation(codes,lambda x,y:x+y)
-#DEF.add(data(b'code_add'),lambda A,B: OP11(A,B),empty)
-#
-#OP12 = BinaryOperation(codes,lambda x,y:min(x,y))
-#DEF.add(data(b'code_min'),lambda A,B: OP12(A,B),empty)
-#
-#OP13 = BinaryOperation(codes,lambda x,y:max(x,y))
-#DEF.add(data(b'code_max'),lambda A,B: OP13(A,B),empty)
+OP11 = BinaryOperation(codes,lambda x,y:x+y)
+CONTEXT.add(DEF(da('code_add'),lambda domain,A,B:OP11(A,B),empty)) 
+OP12 = BinaryOperation(codes,lambda x,y:min(x,y))
+CONTEXT.add(DEF(da('code_min'),lambda domain,A,B:OP12(A,B),empty))
+OP13 = BinaryOperation(codes,lambda x,y:max(x,y))
+CONTEXT.add(DEF(da('code_max'),lambda domain,A,B:OP13(A,B),empty))
 #
 #def int_sort(A,B):
 #    if allcode(B) and all([not tryint(b) is None for b in B]):
@@ -183,31 +174,34 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #        L = [str(l).encode() for l in L]
 #        return data(*L)
 #DEF.add(data(b'float_sort'),float_sort)
+
+
 #
 #   Involutions
 #
 #   demo:int_inv : 1 2 -3 -4
 #   demo:float_inv : 1.1 2.1 -3.1 -4.1
 #
-#def int_inv(A,B):
-#    B0,BR = B.split()
-#    if B0.atom():
-#        bs = ints(B0)
-#        if len(bs)>0:
-#            return data(str(-bs[0]).encode())+one(b'int_inv',A,BR)
-#        else:
-#            return one(b'int_inv',A,BR)
-#def int_inv_0(A,B):
-#    if B.empty(): return data()
-#DEF.add(data(b'int_inv'),int_inv,int_inv_0)
-#def float_inv(A,B):
-#    B0,BR = B.split()
-#    if B0.atom():
-#        bf = floats(B0)
-#        if len(bf)>0:
-#            return data(str(-bf[0]).encode())+one(b'float_inv',A,BR)
-#        else:
-#            return one(b'float_inv',A,BR)
-#def float_inv_0(A,B):
-#    if B.empty(): return data()
-#DEF.add(data(b'float_inv'),float_inv,float_inv_0)
+def int_inv(domain,A,B):
+    B0,BR = B.split()
+    if B0.atom():
+        bs = ints(B0)
+        if len(bs)>0:
+            return da(str(-bs[0])) + data((domain+A)|BR)
+        else:
+            return data((domain+A)|BR)
+def int_inv_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.add(DEF(da('int_inv'),int_inv,int_inv_0))
+
+def float_inv(domain,A,B):
+    B0,BR = B.split()
+    if B0.atom():
+        bf = floats(B0)
+        if len(bf)>0:
+            return da(str(-bf[0])) + data((domain+A)|BR)
+        else:
+            return data((domain+A)|BR)
+def float_inv_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.add(DEF(da('float_inv'),float_inv,float_inv_0))

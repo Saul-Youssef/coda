@@ -22,7 +22,8 @@ class coda(object):
     def   depth (self): return max(self._left.depth(),self._right.depth())
     def  domain (self): return self.left().split()[0] # domain is data and may be empty
     def __add__ (self,c): return data(self,c)
-    def atom(self): return self in CONTEXT and CONTEXT[self].identity()
+#    def atom(self): return self in CONTEXT and CONTEXT[self].identity()
+    def atom(self): return self in CONTEXT and len(CONTEXT[self])==0
     def eval(self): # self -> data, evaluating recursively
         c = self.left().eval()|self.right().eval()
         if c in CONTEXT: return CONTEXT[c](c)
@@ -36,8 +37,8 @@ class data(object):
             if not type(c)==TCODA: raise error('data error: '+str(c)+' is not a coda')
         self._coda = cs
     def __hash__(self): return hash(self._coda)
-    def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data 
-    def __str__ (self): return ''.join([ str(c) for c in self])     # display using Code mappings 
+    def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data
+    def __str__ (self): return ''.join([ str(c) for c in self])     # display using Code mappings
     def __eq__  (self,d): return self._coda==d._coda
     def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language
     def __or__  (self,d): return coda(self,d)           # A:B in language
@@ -60,8 +61,9 @@ class data(object):
 class DEF(object):
     def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
     def domain(self): return self._domain
+    def __len__(self): return len(self._pfs)
     def __contains__(self,c): return c.domain()==self.domain()
-    def identity(self): return len(self._pfs)==0
+#    def identity(self): return len(self._pfs)==0
     def __call__(self,c):  # apply coda->data operation
         domain,A = c.left().split(); B = c.right()
         for pf in self._pfs:  # may be zero or more pfs

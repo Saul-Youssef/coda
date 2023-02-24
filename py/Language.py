@@ -3,7 +3,15 @@
 #
 from base import *
 import Code
-
+#
+#    The coda language compiler
+#
+special_characters = ' :(){}<>*/'
+#
+#   The coda language is part of the system in the sense that it is just one (could be split into 
+#   one for each parse item below...I may do that at some point) particular definition like any 
+#   other.  
+#
 def language(domain,A0,B):
     s,A = split(A0) # extract source code from A0
     if s.startswith(' '): return lang(s[1:  ],A,B)
@@ -47,8 +55,9 @@ def language(domain,A0,B):
     if s.startswith('{') and s.endswith('}') and balanced(s[1:-1]): return Code.code2data(s)
     if s.startswith('<') and s.endswith('>'): return da(s[1:-1])
 #
-#   There are no syntax errors.  All text is valid source code.
+#   There are no syntax errors.  All byte strings are valid source code.
 #
+    if s.endswith('?'): return data(da('?')|da(s[:-1]))
     return da(s)
 CONTEXT.add(DEF(data(Code.byte('{')),language))
 #

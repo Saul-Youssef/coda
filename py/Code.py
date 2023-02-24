@@ -30,11 +30,11 @@ def byte(c):
 for c in string.printable:
     CODE[byte(c)] = c
     CODA[c] = byte(c)
-    
+
 def coda2str(c): return ''.join([str(cc) for cc in c.right()])
 def code2data(text): return base.data(*[byte(c) for c in text])
 #
-#   pretty display 
+#   pretty display
 #
 def pretty(D):
     sep = ' '
@@ -47,6 +47,6 @@ def prettycoda(c):
 
 def codastr(c):
     if c in CODE: return CODE[c]
-    else        : return '('+str(c.left())+':'+str(c.right())+')' 
+    else        : return '('+str(c.left())+':'+str(c.right())+')'
 
-                                 
+def datastr(d): return ' '.join([codastr(c) for c in d])

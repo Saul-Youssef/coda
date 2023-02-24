@@ -125,7 +125,6 @@ def lang(code,A,B): return data((Code.code2data('{'+code+'}')+A)|B)
 #   C is a coda...including codas starting with language source code.
 #
 def split(A):
-    print('aaaaaa',A)
     As = [a for a in A]
     lastcurly = -1
     for i in range(len(As)):

@@ -108,12 +108,7 @@ CONTEXT.add(DEF(da('adis'),adis_1,adis_2))
 #
 def apall(domain,A,B):
     A0,AR = A.split()
-    if A0.atom():
-        print('aaaaa A0',A0)
-        print('aaaaa B',B)
-        print('aaaaa R',((domain+AR)|B) )
-        print('aaaaa ALL',(A0|B) + ((domain+AR)|B) )
-        return (A0|B) + ((domain+AR)|B)
+    if A0.atom(): return (A0|B) + ((domain+AR)|B)
 def apall_0(domain,A,B):
     if A.empty(): return data()
 CONTEXT.add(DEF(da('apall'),apall,apall_0))

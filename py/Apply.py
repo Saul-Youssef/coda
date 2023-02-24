@@ -1,8 +1,8 @@
 #
-#    Applications are foundational combinatorial 
+#    Applications are foundational combinatorial
 #    definitions.  ap, especially, is everywhere.
 #
-from base import * 
+from base import *
 #
 #  Apply A to each b in B.
 #
@@ -108,7 +108,12 @@ CONTEXT.add(DEF(da('adis'),adis_1,adis_2))
 #
 def apall(domain,A,B):
     A0,AR = A.split()
-    if A0.atom(): return (A0|B) + ((domain+AR)|B) 
+    if A0.atom():
+        print('aaaaa A0',A0)
+        print('aaaaa B',B)
+        print('aaaaa R',((domain+AR)|B) )
+        print('aaaaa ALL',(A0|B) + ((domain+AR)|B) )
+        return (A0|B) + ((domain+AR)|B)
 def apall_0(domain,A,B):
     if A.empty(): return data()
 CONTEXT.add(DEF(da('apall'),apall,apall_0))
@@ -138,7 +143,7 @@ def apx_0(domain,A,B):
 CONTEXT.add(DEF(da('apx'),apx_1,apx_0))
 
 #DEF.add(data(b'apx'),apx_1,apx_0)
-#    
+#
 #    if all([data(a).atom() for a in A]) and \
 #       all([data(b).atom() for b in B]):
 #        L = []
@@ -170,7 +175,7 @@ def apif_1(domain,A,B):
     BL,BR = B.split()
     return ((domain+A)|BL) + ((domain+A)|BR)
 def apif_2(domain,A,B):
-    if B.atom(): return data((co('if')+(A|B))|B) 
+    if B.atom(): return data((co('if')+(A|B))|B)
 CONTEXT.add(DEF(da('apif'),apif_1,apif_2,apif_0))
 
 #DEF.add(data(b'apif'),apif_1,apif_2,apif_0)
@@ -187,7 +192,7 @@ CONTEXT.add(DEF(da('apif'),apif_1,apif_2,apif_0))
 #   This is a useful operation in for example, making equivalence classes.
 #
 #def apleft1(domain,A,B):
-#    if B.atom(): return 
+#    if B.atom(): return
 #    if B.atom(): return data(colon(data(colon(A,B)),B))
 #DEF.add(data(b'apleft1'),apleft1)
 #

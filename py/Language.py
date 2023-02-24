@@ -8,9 +8,9 @@ import Code
 #
 special_characters = ' :(){}<>*/'
 #
-#   The coda language is part of the system in the sense that it is just one (could be split into 
-#   one for each parse item below...I may do that at some point) particular definition like any 
-#   other.  
+#   The coda language is part of the system in the sense that it is just one (could be split into
+#   one for each parse item below...I may do that at some point) particular definition like any
+#   other.
 #
 def language(domain,A0,B):
     s,A = split(A0) # extract source code from A0
@@ -113,14 +113,10 @@ def balanced(code):
         elif c=='>': nangle += -1
     return npar==0 and ncurly==0 and nangle==0
 #
-#   Utilities used above
-#
-def wrap(txt): return '{'+txt+'}'  # curly braces indicates language source code
-#
 #   lang takes unicode string code and data A,B and makes it into
 #   the corresponding data for the compiler.
 #
-def lang(code,A,B): return data((Code.code2data(wrap(code))+A)|B)
+def lang(code,A,B): return data((Code.code2data('{'+code+'}')+A)|B)
 #
 #   Extracts source code from byte sequence data.  The point of byte sequence
 #   data rather than typical (:abc) strings so that the domain of the
@@ -129,11 +125,12 @@ def lang(code,A,B): return data((Code.code2data(wrap(code))+A)|B)
 #   C is a coda...including codas starting with language source code.
 #
 def split(A):
+    print('aaaaaa',A)
     As = [a for a in A]
     lastcurly = -1
     for i in range(len(As)):
         if As[i]==Code.byte('}'): lastcurly = i
-    if lastcurly<0: raise error('Mismatched curly braces {..}')
+    if lastcurly<0: raise error('Mismatched curly braces {..} in['+str(As)+']')
     chars = As[:lastcurly]
     Anew = data(*As[lastcurly+1:])
     return ''.join([str(a) for a in chars]),Anew

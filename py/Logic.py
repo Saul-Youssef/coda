@@ -32,7 +32,7 @@ CONTEXT.define('none',none)
 #  demo: 1=1
 #  demo: 1=2
 #  demo: 1=()
-#  demo: {}=()
+#  demo: <>=()
 #  demo: x?=1
 #  demo: x?=x?
 #  demo: x?=y?
@@ -48,7 +48,7 @@ CONTEXT.define('none',none)
 #
 def complement(domain,A,B):
     if B.atomic(): return data()
-    if B.empty (): return da('F')
+    if B.empty (): return da('#')
 CONTEXT.define('^',complement)
 
 def eq_L(domain,A,B):
@@ -60,8 +60,9 @@ def eq_R(domain,A,B):
     BL,BR = data(*B[:-1]),data(*B[-1:])
     if AR.atom() and BR.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR)
 def eq_r(domain,A,B):
-    if A==B: return data()
-    if A.atom() and B.empty(): return data((da('#')+A)|B)
-    if A.empty() and B.atom(): return data((da('#')+A)|B)
-    if A.atom() and B.atom(): return ((domain+A.left())|B.left()) + ((domain+A.right())|B.right()) 
-CONTEXT.define('=',eq_L,eq_R,eq_r)
+    if A.atom () and B.empty(): return da('#')
+    if A.empty() and B.atom (): return da('#')
+    if A.empty() and B.empty(): return data()
+    if A.atom () and B.atom (): return ((domain+(A[0].left ()))|B[0].left ()) + \
+                                       ((domain+(A[0].right()))|B[0].right()) 
+CONTEXT.define('=',eq_r,eq_L,eq_R)

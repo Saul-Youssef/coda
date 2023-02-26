@@ -18,3 +18,5 @@ def nth : {dis nth1 A : B}
 #   demo: iscount 2 : a b c
 #
 def iscount : {if ((n:A)=(count:B)) : B}
+
+def count : {app int_add : ap one : B}

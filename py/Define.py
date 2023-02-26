@@ -33,7 +33,7 @@ def Const(domain,D,V):
     V = Evaluate.resolve(V,100)
     
     if (not D is None) and (not V is None):
-        CONTEXT.add(DEF(D,lambda A,B:V))
+        CONTEXT.add(DEF(D,lambda domain,A,B:V))
         return data()
 CONTEXT.define('const',Const)
 #

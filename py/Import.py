@@ -6,7 +6,7 @@ from base import *
 #   The home directory of the currently running software
 #
 #   demo: home:
-#   demo: dirpath : home :
+#   demo: dir : home :
 #
 def home(domain,A,B):
     import inspect
@@ -21,7 +21,7 @@ CONTEXT.define('home',home)
 #   data for the interpreter
 #
 #   demo: start:
-#   demo: dirpath : start :
+#   demo: dir : start :
 #
 def start(domain,A,B):
     import os
@@ -31,11 +31,14 @@ def start(domain,A,B):
 CONTEXT.define('start',start)
 
 def startcontext(domain,A,B):
+    import Language
     src = 'coda : source : readpath : endswith </coda.co> : dir co : start : '
-    return da(src)
+    return Language.lang(src,data(),data())
+#    return da(src)
 CONTEXT.define('startcontext',startcontext)
 
 def homecontext(domain,A,B):
+    import Language
     src = 'coda : source : readpath : dir co : endswith </co> : dir : home :'
-    return da(src) 
+    return Language.lang(src,data(),data()) 
 CONTEXT.define('homecontext',homecontext)

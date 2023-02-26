@@ -2,7 +2,7 @@
 #   I/O function
 #
 from base import *
-import Help,Code
+import Help
 #
 #   Basic local read of all the bytes from a local files
 #
@@ -14,42 +14,41 @@ def readpath_1(domain,A,B):
     BL,BR = B.split()
     if BL.atom():
         try:
-            path = Code.pretty(BL)
+            path = str(BL)
             Help.SOURCES.append(Help.SourceFile(path))
             bytes = open(path,'r').read()
-            return da(bytes) + data((da('readpath')+A)|R)
+            return da(bytes) + data((domain+A)|BR)
         except IOError:
             raise error('Error reading file ['+path+']')
-CONTEXT.define('readpath',readpath_1,readpath_0) 
+CONTEXT.define('readpath',readpath_1,readpath_0)
 #
 #   dir selects paths from it's input.  The argument
 #   filters for file extensions.
 #
 #   demo: dir : .
-#   demo: dir co da : .
-#   demo: read : dir da : .
+#   demo: dir co da py : .
 #
 def Dir(domain,A,B):
     BL,BR = B.split()
     if BL.atom() and all([a.atom() for a in A]):
-        p = Code.pretty(BL)
+        p = str(BL)
         import os
         try:
             p = os.path.abspath(p)
             paths = [os.path.join(p,f) for f in os.listdir(p)]
-            extensions = [Code.pretty(data(a)) for a in A]
+            extensions = [str(data(a)) for a in A]
             paths2 = []
             if len(extensions)>0:
                 for path in paths:
                     if any([path.endswith('.'+ext) for ext in extensions]): paths2.append(path)
             else:
-                paths2 = paths 
+                paths2 = paths
             return data(*[co(path) for path in paths2]) + data((da('dir')+A)|BR)
         except IOError:
             raise
 def Dir_0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('dir',Dir,Dir_0) 
+CONTEXT.define('dir',Dir,Dir_0)
 #
 #def pickle_out(domain,A,B):
 #    A0,AR = A.split()

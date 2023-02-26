@@ -3,7 +3,7 @@
 #   from python and/or coda source code files.
 #
 from base import *
-import Code 
+#import Code
 
 #
 #   Help system
@@ -19,7 +19,8 @@ def help(domain,A,B):
     if I.atom():
         if I[0] in CONTEXT:
             import Code
-            H = Help(Code.coda2str(I[0]))
+#            H = Help(Code.coda2str(I[0]))
+            H = Help(str(I[0]))
             H.display()
             return data()
     else:
@@ -112,13 +113,9 @@ class Python(Block):
         def flags(self):
             F = []
             for line in self:
-#                if line.startswith('CONTEXT.add') and "da('" in line:
                 if line.startswith('CONTEXT.define') and "define('" in line:
                     flag = line.split("define('")[-1].split("'")[0]
                     F.append(flag)
-#                if line.startswith('DEF.add') and "(b'" in line:
-#                    flag = line.split("(b'")[-1].split("'")[0]
-#                    F.append(flag)
             return F
 
 class SourceFile(object):
@@ -187,36 +184,46 @@ def separate(filetext):
         lines2.append(lastline)
     return ('\n'.join(lines2)).split('$$SEPARATOR$$')
 
-def source(A,B):
-    I,R = B.split()
-    if I.atom():
-        if is_code(I[0]):
-            txt = I[0]
-            return data(*[t for t in blocks(comments(txt))]) + one(b'source',A,R)
-        else:
-            raise error('Unexpected source code input')
-def source_0(A,B):
+def source(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom():
+        txt = str(BL)
+        return data(*([co(t) for t in blocks(comments(txt))] + [(domain+A)|BR]))
+#    I,R = B.split()
+#    if I.atom():
+#        if is_code(I[0]):
+#            txt = I[0]
+#            return data(*[t for t in blocks(comments(txt))]) + one(b'source',A,R)
+#        else:
+#            raise error('Unexpected coda source file input')
+def source_0(domain,A,B):
     if B.empty(): return data()
-#DEF.add(data(b'source'),source,source_0)
+CONTEXT.define('source',source,source_0)
 
 def comments(text):
     # remove comments from coda source code text
-    L = text.split(b'\n')
+    L = text.split('\n')
     lines = []
     for l in L:
-        if not l.startswith(b'#'):
-            lines.append(l.replace(b'\t',b'    '))
+        if not l.startswith('#'):
+            lines.append(l.replace('\t','    '))
     return lines
 
 def blocks(lines):
     block = []
     for line in lines:
-        if line.startswith(b' '):
+        if line.startswith(' '):
             block.append(line.strip())
         else:
-            if len(block)>0: yield b' '.join(block)
+            if len(block)>0: 
+                txt = ' '.join(block)
+                if not txt.strip()=='': yield txt 
+#                yield ' '.join(block)
             block = [line]
-    if len(block)>0: yield b' '.join(block)
+    if len(block)>0: 
+        txt = ' '.join(block)
+        if not txt.strip()=='': yield txt 
+#        yield ' '.join(block)
 
 SOURCES = []
 
@@ -237,8 +244,8 @@ def demo(domain,A,B):
     AL,AR = A.split()
     BL,BR = B.split()
     if (AL.atom() or AL.empty()) and BL.atom():
-#        H = Help(str(BL))
-        H = Help(Code.pretty(BL))
+        H = Help(str(BL))
+#        H = Help(Code.pretty(BL))
         import Number
         if not H is None and not H.comment() is None and not H.comment()=='' and len(Number.ints(AL))>0:
             ns = Number.ints(AL)
@@ -324,7 +331,8 @@ def defs(domain,A,B):
     modules = [Code.coda2str(b) for b in B]
     table = []
     for domain,definition in CONTEXT:
-        dom = Code.pretty(domain)
+#        dom = Code.pretty(domain)
+        dom = str(domain)
         H = Help(dom)
         if not dom.endswith('1') and not dom.endswith('_') and len(H.summary())>2:
             if len(modules)==0 or H.module() in modules:

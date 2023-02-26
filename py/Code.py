@@ -8,12 +8,13 @@ CODA = {} # Unicode to corresponding coda
 CODE = {} # Coda to corresponding unicode name
 
 z = base.data()
-b0 = z|z
-b1 = z|base.data(z|z)
-emptystring = z|b1
+#b0 = z|z
+#b1 = z|base.data(z|z)
+#  data(z|z) is the empty string 
+b0 = z|base.data(z|z)     
+b1 = z|base.data(z|z,z|z)
 CODE[b0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
 CODE[b1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
-CODE[emptystring] = ''
 #
 #   Get 8 bits of pure data from ascii characters.
 #
@@ -53,3 +54,11 @@ def codastr(c):
 
 def datastr(d): return ' '.join([codastr(c) for c in d])
 
+def _str_coda(c):
+    if c in CODE: return CODE[c]
+    elif c.left().empty(): return _str_data(c.right())
+    else: return '('+_str_data(c.left())+':'+_str_data(c.right())+')'
+def _str_data(d):
+    sep = ' '
+    if d.depth()<=3: sep = ''
+    return sep.join([_str_coda(c) for c in d])

@@ -2,7 +2,6 @@
 #    Compiler
 #
 from base import *
-import Code
 #
 #    The coda language compiler
 #
@@ -17,13 +16,14 @@ special_characters = ' :(){}<>*/'
 #   the corresponding data for the compiler.
 #
 def lang(code,A,B): return data((da('{'+code+'}')+A)|B)
-def src(domain): 
-    s = Code.pretty(domain)
+def src(domain):
+#    s = Code.pretty(domain)
+    s = str(domain)
     if s.startswith('{') and s.endswith('}'): return s[1:-1]
-    raise error('Unexpected language input') 
+    raise error('Unexpected language input')
 
 def language(domain,A,B):
-    s = src(domain)    
+    s = src(domain)
     if s.startswith(' '): return lang(s[1:  ],A,B)
     if s.endswith  (' '): return lang(s[ :-1],A,B)
     if s== '': return data()

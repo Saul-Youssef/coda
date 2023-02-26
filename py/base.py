@@ -15,12 +15,13 @@ class coda(object):
     def __init__(self,left,right): self._left,self._right = left,right
     def __hash__(self): return hash((self._left,self._right,))
     def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
-    def __str__(self): import Code; return Code.codastr(self)
+#    def __str__(self): import Code; return Code.codastr(self)
+    def __str__(self): import Code; return Code._str_coda(self)
     def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
     def    left (self): return self._left
     def   right (self): return self._right
     def   depth (self): return max(self._left.depth(),self._right.depth())
-    def  domain (self): # domain determines a possible corresponding definition 
+    def  domain (self): # domain determines a possible corresponding definition
         dom = self.left().split()[0]
         import Code; t = Code.pretty(dom)
         if t.startswith('{') and t.endswith('}'): return da('language')
@@ -41,7 +42,8 @@ class data(object):
         self._coda = cs
     def __hash__(self): return hash(self._coda)
     def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data
-    def __str__ (self): return ''.join([ str(c) for c in self])     # display using Code mappings
+    def __str__ (self): import Code; return Code._str_data(self)     # display using Code mappings
+#    def __str__ (self): return ''.join([ str(c) for c in self])     # display using Code mappings
     def __eq__  (self,d): return self._coda==d._coda
     def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language
     def __or__  (self,d): return coda(self,d)           # A:B in language
@@ -84,7 +86,7 @@ class Definitions(object):
         for domain,definition in self._definitions.items(): yield domain,definition
     def __contains__(self,c): return c.domain() in self._definitions
     def __getitem__(self,c): return self._definitions[c.domain()]
-    def define(self,name,*pfs): self.add(DEF(da(name),*pfs)); return self 
+    def define(self,name,*pfs): self.add(DEF(da(name),*pfs)); return self
     def add(self,definition):
         if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
         self._definitions[definition.domain()] = definition
@@ -105,11 +107,8 @@ class error(Exception):
 #
 #   Text to data utilites
 #
-def co(text): 
-    import Code
-    if text=='': return Code.emptystring
-    else: return data()|data(*[Code.byte(c) for c in text])
-def da(text): import Code; return data(co(text))
+def co(text): import Code; return data()|data(*[Code.byte(c) for c in text])
+def da(text): return data(co(text))
 #
 #   Import builtin definitions from other source files
 #

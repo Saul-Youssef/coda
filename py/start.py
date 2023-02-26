@@ -3,7 +3,7 @@
 #    code in the core of the system.
 #
 from base import * 
-import Code,Language,Universe 
+import Code,Language,Evaluate  
 import sys
 
 #sys.setrecursionlimit(10000)
@@ -11,8 +11,8 @@ import sys
 #
 #    Standard context
 #
-#Evaluate.generic(data(colon(data(b'{coda:homecontext:}'),data())),1000)
-#Evaluate.generic(data(colon(data(b'{coda:startcontext:}'),data())),1000)
+Evaluate.resolve(Language.lang('homecontext:', data(),data()),1000)
+Evaluate.resolve(Language.lang('startcontext:',data(),data()),1000) 
 #
 #    Interpreter loop
 #

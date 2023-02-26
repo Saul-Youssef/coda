@@ -25,7 +25,7 @@ CONTEXT.define('null',lambda domain,A,B:data())
 def if_1(domain,A,B):
     for a in A:
         if a.atom(): return data()
-def if_0(A,B):
+def if_0(domain,A,B):
     if A.empty(): return B
 CONTEXT.define('if',if_1,if_0)
 #

@@ -21,7 +21,7 @@ def Def(domain,D,V):
         else:
             CONTEXT.add(DEF(D,lambda domain,A,B:data((V+A)|B)))
         return data()
-CONTEXT.add(DEF(da('def'),Def))
+CONTEXT.define('def',Def)
 #
 #   Named constant storage 
 #
@@ -35,7 +35,7 @@ def Const(domain,D,V):
     if (not D is None) and (not V is None):
         CONTEXT.add(DEF(D,lambda A,B:V))
         return data()
-CONTEXT.add(DEF(da('const'),Const)) 
+CONTEXT.define('const',Const)
 #
 #   Assign values to "variables"
 #
@@ -50,7 +50,7 @@ def Let(domain,D,V):
         cod = D[0]
         CONTEXT.add(DEF(cod.left(),lambda domain,A,B: assign(A,B,cod.right(),V)))
         return data()
-CONTEXT.add(DEF(da('let'),Let))
+CONTEXT.define('let',Let)
 
 def assign(A,B,N,V):
     if A.empty() and B==N: return V

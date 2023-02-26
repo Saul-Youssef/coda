@@ -10,8 +10,10 @@ CODE = {} # Coda to corresponding unicode name
 z = base.data()
 b0 = z|z
 b1 = z|base.data(z|z)
+emptystring = z|b1
 CODE[b0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
 CODE[b1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
+CODE[emptystring] = ''
 #
 #   Get 8 bits of pure data from ascii characters.
 #
@@ -50,3 +52,4 @@ def codastr(c):
     else        : return '('+str(c.left())+':'+str(c.right())+')'
 
 def datastr(d): return ' '.join([codastr(c) for c in d])
+

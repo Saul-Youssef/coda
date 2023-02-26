@@ -25,7 +25,22 @@ def ap_1(domain,A,B):
 def ap_2(domain,A,B):
     BL,BR = B.split()
     if len(BL)>0: return ((domain+A)|BL) + ((domain+A)|BR)
-CONTEXT.add(DEF(da('ap'),ap_0,ap_1,ap_2))
+CONTEXT.define('ap',ap_0,ap_1,ap_2)
+#
+#   apall applies each argument to the entire input.
+#
+#   demo: apall pass : a b c
+#   demo: apall pass pass : a b c
+#   demo: apall {first:B} {rev:last 3:B} : a b c d e
+#
+def apall(domain,A,B):
+    A0,AR = A.split()
+    if A0.atom(): return (A0|B) + ((domain+AR)|B)
+def apall_0(domain,A,B):
+    if A.empty(): return data()
+def apall_1(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('apall',apall_1,apall_0,apall)
 #
 #   Sequential version of binary operator
 #
@@ -45,10 +60,9 @@ def app_1(domain,A,B):
     if B.atom(): return B
 def app_2(domain,A,B):
     if B.empty(): return data()
-CONTEXT.add(DEF(da('app'),app_0,app_1,app_2))
+CONTEXT.define('app',app_0,app_1,app_2)
 #
-#   dis and disr distributes the first argument over the
-#   rest and applies each combination to B.
+#   Distribute the first argument over the rest and apply each pair to B.
 #
 #   dis  a a1 a2 a3..an : B -> (a a1:B) (a a2:B)... (a an:B)
 #   disr a1 a2 a3..an a : B -> (a1 a:B) (a2 a:B)... (an a:B)
@@ -66,7 +80,7 @@ def dis_0(domain,A,B):
     A0,AR = A.split()
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
-CONTEXT.add(DEF(da('dis'),dis_1,dis_0))
+CONTEXT.define('dis',dis_1,dis_0)
 
 #def disr_1(domain,A,B):
 #    AF,AR = A .split_left()
@@ -95,23 +109,11 @@ def adis_1(domain,A,B):
     if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
 def adis_2(domain,A,B):
     if A.empty(): return data()
-CONTEXT.add(DEF(da('adis'),adis_1,adis_2))
+CONTEXT.define('adis',adis_1,adis_2)
+
 #DEF.add(data(b'adis'),adis_1,adis_2)
 #    if A0.atom(): return one(b'ap',A0,B) + one(b'adis',AR,B)
 
-#
-#   apall applies each argument to the entire input.
-#
-#   demo: apall pass : a b c
-#   demo: apall pass pass : a b c
-#   demo: apall {first:B} {rev:last 3:B} : a b c d e
-#
-def apall(domain,A,B):
-    A0,AR = A.split()
-    if A0.atom(): return (A0|B) + ((domain+AR)|B)
-def apall_0(domain,A,B):
-    if A.empty(): return data()
-CONTEXT.add(DEF(da('apall'),apall,apall_0))
 #    if A0.atom(): return data(colon(A0,B)) + one(b'apall',AR,B)
 #DEF.add(data(b'apall'),apall,apall_0)
 
@@ -135,7 +137,7 @@ def apx_1(domain,A,B):
         return data(*L)
 def apx_0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.add(DEF(da('apx'),apx_1,apx_0))
+CONTEXT.define('apx',apx_1,apx_0)
 
 #DEF.add(data(b'apx'),apx_1,apx_0)
 #
@@ -171,7 +173,7 @@ def apif_1(domain,A,B):
     return ((domain+A)|BL) + ((domain+A)|BR)
 def apif_2(domain,A,B):
     if B.atom(): return data((co('if')+(A|B))|B)
-CONTEXT.add(DEF(da('apif'),apif_1,apif_2,apif_0))
+CONTEXT.define('apif',apif_1,apif_2,apif_0)
 
 #DEF.add(data(b'apif'),apif_1,apif_2,apif_0)
 #return one(b'apif',A,BL) + one(b'apif',A,BR)

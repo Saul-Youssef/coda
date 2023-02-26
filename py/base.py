@@ -20,16 +20,19 @@ class coda(object):
     def    left (self): return self._left
     def   right (self): return self._right
     def   depth (self): return max(self._left.depth(),self._right.depth())
-    def  domain (self): return self.left().split()[0] # domain is data and may be empty
+    def  domain (self): # domain determines a possible corresponding definition 
+        dom = self.left().split()[0]
+        import Code; t = Code.pretty(dom)
+        if t.startswith('{') and t.endswith('}'): return da('language')
+        return dom
     def __add__ (self,c): return data(self,c)
-#    def atom(self): return self in CONTEXT and CONTEXT[self].identity()
     def atom(self): return self in CONTEXT and len(CONTEXT[self])==0
     def eval(self): # self -> data, evaluating recursively
         c = self.left().eval()|self.right().eval()
         if c in CONTEXT: return CONTEXT[c](c)
         return data(c)
 #
-#   ...and data is a finite sequence of codas
+#   Data is a finite sequence of codas
 #
 class data(object):
     def __init__(self,*cs):
@@ -50,6 +53,7 @@ class data(object):
     def split(self): return data(*self[:1]),data(*self[1:])
     def empty(self): return len(self)==0
     def atom(self): return len(self)==1 and self[0].atom()
+    def atomic(self): return len(self)>0 and any([c.atom() for c in self])
     def eval(self): # self -> data, evaluating recursively
         R = []
         for c in self:
@@ -63,7 +67,6 @@ class DEF(object):
     def domain(self): return self._domain
     def __len__(self): return len(self._pfs)
     def __contains__(self,c): return c.domain()==self.domain()
-#    def identity(self): return len(self._pfs)==0
     def __call__(self,c):  # apply coda->data operation
         domain,A = c.left().split(); B = c.right()
         for pf in self._pfs:  # may be zero or more pfs
@@ -81,6 +84,7 @@ class Definitions(object):
         for domain,definition in self._definitions.items(): yield domain,definition
     def __contains__(self,c): return c.domain() in self._definitions
     def __getitem__(self,c): return self._definitions[c.domain()]
+    def define(self,name,*pfs): self.add(DEF(da(name),*pfs)); return self 
     def add(self,definition):
         if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
         self._definitions[definition.domain()] = definition
@@ -101,7 +105,10 @@ class error(Exception):
 #
 #   Text to data utilites
 #
-def co(text): import Code; return data()|data(*[Code.byte(c) for c in text])
+def co(text): 
+    import Code
+    if text=='': return Code.emptystring
+    else: return data()|data(*[Code.byte(c) for c in text])
 def da(text): import Code; return data(co(text))
 #
 #   Import builtin definitions from other source files

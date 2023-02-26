@@ -12,8 +12,18 @@ special_characters = ' :(){}<>*/'
 #   one for each parse item below...I may do that at some point) particular definition like any
 #   other.
 #
-def language(domain,A0,B):
-    s,A = split(A0) # extract source code from A0
+#
+#   lang takes unicode string code and data A,B and makes it into
+#   the corresponding data for the compiler.
+#
+def lang(code,A,B): return data((da('{'+code+'}')+A)|B)
+def src(domain): 
+    s = Code.pretty(domain)
+    if s.startswith('{') and s.endswith('}'): return s[1:-1]
+    raise error('Unexpected language input') 
+
+def language(domain,A,B):
+    s = src(domain)    
     if s.startswith(' '): return lang(s[1:  ],A,B)
     if s.endswith  (' '): return lang(s[ :-1],A,B)
     if s== '': return data()
@@ -25,7 +35,8 @@ def language(domain,A0,B):
     Equal = parse('=',s,'left')
     if Equal():
         front,back = Equal.parts()
-        return lang('=',lang(front,A,B),lang(back,A,B))
+        return data((da('=')+lang(front,A,B))|lang(back,A,B))
+#        return lang('=',lang(front,A,B),lang(back,A,B))
 #
 #   The essential operations are concatenation and colon.  The rest is syntactic sugar.
 #
@@ -52,14 +63,17 @@ def language(domain,A0,B):
 #   Text between angle brackets are byte strings.
 #
     if s.startswith('(') and s.endswith(')'): return lang(s[1:-1],A,B)
-    if s.startswith('{') and s.endswith('}') and balanced(s[1:-1]): return Code.code2data(s)
+    if s.startswith('{') and s.endswith('}') and balanced(s[1:-1]): return da(s)
     if s.startswith('<') and s.endswith('>'): return da(s[1:-1])
+#
+#   A bit of syntactic sugar to make x? -> (?:x) etc.
+#
+    if s.endswith('?'): return data(da('?')|da(s[:-1]))
 #
 #   There are no syntax errors.  All byte strings are valid source code.
 #
-    if s.endswith('?'): return data(da('?')|da(s[:-1]))
     return da(s)
-CONTEXT.add(DEF(data(Code.byte('{')),language))
+CONTEXT.define('language',language)
 #
 #   The kernel for the language definition is defined by a sequence of rules
 #   where the first rule that applies defines the language.
@@ -112,24 +126,3 @@ def balanced(code):
         if   c=='<': nangle +=  1
         elif c=='>': nangle += -1
     return npar==0 and ncurly==0 and nangle==0
-#
-#   lang takes unicode string code and data A,B and makes it into
-#   the corresponding data for the compiler.
-#
-def lang(code,A,B): return data((Code.code2data('{'+code+'}')+A)|B)
-#
-#   Extracts source code from byte sequence data.  The point of byte sequence
-#   data rather than typical (:abc) strings so that the domain of the
-#   language can be the single byte "{".  This means that the domains of
-#   all partial function in the system are determined by C.domain() where
-#   C is a coda...including codas starting with language source code.
-#
-def split(A):
-    As = [a for a in A]
-    lastcurly = -1
-    for i in range(len(As)):
-        if As[i]==Code.byte('}'): lastcurly = i
-    if lastcurly<0: raise error('Mismatched curly braces {..} in['+str(As)+']')
-    chars = As[:lastcurly]
-    Anew = data(*As[lastcurly+1:])
-    return ''.join([str(a) for a in chars]),Anew

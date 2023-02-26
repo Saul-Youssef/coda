@@ -24,7 +24,7 @@ def help(domain,A,B):
             return data()
     else:
         return data(domain|da('help'))
-CONTEXT.add(DEF(da('help'),help))
+CONTEXT.define('help',help)
 
 #
 #
@@ -112,8 +112,9 @@ class Python(Block):
         def flags(self):
             F = []
             for line in self:
-                if line.startswith('CONTEXT.add') and "da('" in line:
-                    flag = line.split("da('")[-1].split("'")[0]
+#                if line.startswith('CONTEXT.add') and "da('" in line:
+                if line.startswith('CONTEXT.define') and "define('" in line:
+                    flag = line.split("define('")[-1].split("'")[0]
                     F.append(flag)
 #                if line.startswith('DEF.add') and "(b'" in line:
 #                    flag = line.split("(b'")[-1].split("'")[0]
@@ -251,8 +252,7 @@ def demo(domain,A,B):
                 return data()
 def demo_0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.add(DEF(da('demo'),demo,demo_0))
-#DEF.add(data(b'demo'),demo,demo_0)
+CONTEXT.define('demo',demo,demo_0)
 #
 #    Help object for a single flag
 #
@@ -331,7 +331,7 @@ def defs(domain,A,B):
                 table.append([H.module(),dom,H.summary(),len(definition)])
     deftable(table)
     return data()
-CONTEXT.add(DEF(da('defs'),defs))
+CONTEXT.define('defs',defs)
 
 def deftable(table):
     max_module,max_flag,max_summary = 0,0,0

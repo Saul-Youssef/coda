@@ -21,7 +21,7 @@ def rev(domain,A,B):
     elif len(B)>1:
         L,R = B.split()
         return ((domain+A)|R) + ((domain+A)|L)
-CONTEXT.add(DEF(da('rev'),rev))
+CONTEXT.define('rev',rev)
 #
 #   Gets the A-specified leading items from input data.
 #
@@ -47,7 +47,7 @@ def first_4(domain,A,B):
         n = ns.pop()
         if n>=1 and len(B)>0 and B[0].atom():
             return B[0] + ((domain+da(str(n-1))) | data(*B[1:]))
-CONTEXT.add(DEF(da('first'),first_1,first_2,first_3,first_4))
+CONTEXT.define('first',first_1,first_2,first_3,first_4)
 #
 #   Get the tail items of a sequence.
 #
@@ -66,7 +66,7 @@ def tail_1(domain,A,B):
     if B.empty(): return data()
 def tail_2(domain,A,B):
     if A.empty(): return data((domain+da('1'))|B)
-CONTEXT.add(DEF(da('tail'),tail_0,tail_1,tail_2)) 
+CONTEXT.define('tail',tail_0,tail_1,tail_2)
 #
 #   Gets the argument-specified last items from input 
 #
@@ -90,7 +90,7 @@ def last_3(domain,A,B):
         if n>=1:
             L,R = data(*B[:-1]),data(*B[-1:])
             if R.atom(): return data((domain+da(str(n-1)))|L) + R 
-CONTEXT.add(DEF(da('last'),last_1,last_2,last_3))
+CONTEXT.define('last',last_1,last_2,last_3)
 #
 #   Repeats the arguments for each input.
 #
@@ -104,7 +104,7 @@ def rep_1(domain,A,B):
     if BL.atom(): return A + data((domain+A)|BR)
 def rep_0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.add(DEF(da('rep'),rep_1,rep_0)) 
+CONTEXT.define('rep',rep_1,rep_0)
 #
 #   Select the n'th item from input.
 #
@@ -121,4 +121,4 @@ def nth1_0(domain,A,B):
             return data()
 def nth1_1(domain,A,B):
     if B.empty(): return data()
-CONTEXT.add(DEF(da('nth1'),nth1_0,nth1_1))
+CONTEXT.define('nth1',nth1_0,nth1_1)

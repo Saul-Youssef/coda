@@ -8,4 +8,4 @@
 #    This is used for example, in making A-specified
 #    equivalence classes.
 #
-def apleft : {ap apleft1 A : B}
+#def apleft : {ap apleft1 A : B}

@@ -1,0 +1,56 @@
+#
+#   Common basic operations
+#
+#   Basic container
+#
+def bin: 
+
+#   select  A : ... gets data of the form (A:<something>)
+#   exclude A : ... gets data that isn't of the form (A:<something>)
+#   get A     : ... gets <something> from data of the form (A:<something>)
+#   is  A     : ... gets data exactly equal to A
+#
+#   demo: has bin : x y z (bin:a b c)
+#   demo: has : x y z (bin:a b c)
+#   demo: get bin : x y z (bin:a b c)
+#   demo: get : x y z (bin: a b c)
+#   demo: count : get : x y z 
+#   demo: count : count : get : x y z 
+#
+def has : {ap has1 A : B} 
+def hasnt : {ap {^:has1 A:B} : B} 
+def get : {ap get1 A : B}
+def is : {apif {A=B} A : B}
+def isnt : {apif {^:(A=B)} A : B} 
+
+#def select  : {ap sel1 A : B}
+#def sel     : {ap sel1 A : B}
+#def exclude : {apif {select A:B} A : B}
+#def get     : {ap get1        A : B}
+#def is      : {apif {A=B}     A : B}
+#def isnt    : {apif {not:(A=B)} A : B}
+#def has     : {not:sel A:B}
+#def hasnt   : {logic:sel A:B}
+#
+#   Low level operations
+#
+#   These are rarely used directly.  Note that (foo:bar) in
+#   the demos is not defined, showing the behavior
+#
+#   demo: left : a b (bin:x) 1 2 (bin:y z)
+#   demo: left : a b (bin:x) 1 2 (bin:y z) (foo:bar)
+#   demo: right : a b (bin:x) 1 2 (bin:y z)
+#   demo: right : a b (bin:x) 1 2 (bin:y z) (foo:bar)
+#   demo: atom : a b (bin:x) 1 2 (bin:y z) (foo:bar)
+#
+#def left  : {ap left1   A : B}
+#def right : {ap right1  A : B}
+#def atom  : {ap atom1   A : B}
+#
+#   Containers
+#
+#def container : {ap {def B:} : B}
+#
+#   Typical generic container for demos or other uses
+#
+#container : bin

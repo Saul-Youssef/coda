@@ -125,19 +125,20 @@ CONTEXT.define('adis',adis_1,adis_2)
 #   demo: apx {put bin : A B} 1 2 3 : a b c
 #   demo: apx int_add 1 2 3 : 1000 2000 3000
 #
-def apx_1(domain,A,B):
-    if all([a.atom() for a in A] and [b.atom() for b in B]):
-        L = []
-        As = [a for a in A]
-        Bs = [b for b in B]
-        if len(As)>0:
-            c = As.pop(0)
-            for a in As:
-                for b in Bs: L.append((c+a)|b)
-        return data(*L)
-def apx_0(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('apx',apx_1,apx_0)
+#def apx_1(domain,A,B):
+#    if all([a.atom() for a in A] and [b.atom() for b in B]):
+#        L = []
+#        As = [a for a in A]
+#        Bs = [b for b in B]
+#        print('aaaa',len(As),len(Bs))
+#        if len(As)>0:
+#            c = As.pop(0)
+#            for a in As:
+#                for b in Bs: L.append((c+a)|b)
+#        return data(*L)
+#def apx_0(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('apx',apx_1,apx_0)
 
 #DEF.add(data(b'apx'),apx_1,apx_0)
 #
@@ -155,7 +156,7 @@ CONTEXT.define('apx',apx_1,apx_0)
 
 
 #
-#   apif A : B gets the elements of b with A:b true.
+#   apif A : B gets the elements b of B with A:b true.
 #
 #   apif A : B C -> (apif A:B) (apif A:C)
 #   apif A : () -> ()
@@ -163,17 +164,16 @@ CONTEXT.define('apx',apx_1,apx_0)
 #
 #   demo: apif pass : a b c
 #   demo: apif null : a b c
-#   demo: apif {not:B} : a b c
-#   demo: apif null : (foo:bar)
+#   demo: apif {^:B} : a b c
 #
 def apif_0(domain,A,B):
     if B.empty(): return data()
 def apif_1(domain,A,B):
     BL,BR = B.split()
-    return ((domain+A)|BL) + ((domain+A)|BR)
+    if BL.atom(): return ((domain+A)|BL) + ((domain+A)|BR)
 def apif_2(domain,A,B):
-    if B.atom(): return data((co('if')+(A|B))|B)
-CONTEXT.define('apif',apif_1,apif_2,apif_0)
+    if B.atom(): return data((da('if')+data(A|B))|B)
+CONTEXT.define('apif',apif_0,apif_2,apif_1)
 
 #DEF.add(data(b'apif'),apif_1,apif_2,apif_0)
 #return one(b'apif',A,BL) + one(b'apif',A,BR)

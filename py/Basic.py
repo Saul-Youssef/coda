@@ -15,6 +15,8 @@ CONTEXT.define('null',lambda domain,A,B:data())
 #   if A : B -> () if A is false
 #   if A : B -> B  if A is true
 #
+#   demo: if 1=1 : 1 2 3 
+#   demo: if 1=2 : 1 2 3 
 #   demo: if x : 1 2 3
 #   demo: if () : 1 2 3
 #   demo: if : 1 2 3
@@ -41,16 +43,13 @@ CONTEXT.define('put',lambda domain,A,B: data(A|B))
 #
 #   Singleton versions of has, get and atom
 #
-#def has1(A,B):
-#    if B.atom():
-#        guard = data((da('=')+A)|B[0].left())
-#        return data((da('if')+guard)|B)
-#def get1(A,B):
-#    if B.atom():
-#        guard = data((da('=')+A)|B[0].left())
-#        return data((da('if')+guard,B[0].right())
-#def atom1(A,B):
-#    if B.atom(): return B
-#DEF.add(data(b'has1'),has1)
-#DEF.add(data(b'atom1'),atom1)
-#DEF.add(data(b'get1'),get1)
+def has1(domain,A,B):
+    if B.atom():
+        guard = data((da('=')+A)|B[0].left())
+        return data((da('if')+guard)|B) 
+def get1(domain,A,B):
+    if B.atom():
+        guard = data((da('=')+A)|B[0].left())
+        return data((da('if')+guard)|B[0].right())
+CONTEXT.define('has1',has1)
+CONTEXT.define('get1',get1)

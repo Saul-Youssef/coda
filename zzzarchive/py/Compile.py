@@ -12,6 +12,9 @@ from base import *
 #
 count = 0
 
+def coda_0(A,B):
+    BL,BR = B.split()
+
 def coda_1(A,B):
     global count
     I,R = B.split()
@@ -22,3 +25,12 @@ def coda_1(A,B):
 def coda_0(A,B):
     if B.empty(): return data()
 DEF.add(data(b'coda'),coda_1,coda_0)
+
+#
+#   compile source code block from a file
+#   after removing comments and using
+#   indentation for continuation.
+#
+def coda(txt):
+    import Help,Language
+    for t in Help.blocks(Help.comments(txt)): yield Language.lang(t,data(),data())

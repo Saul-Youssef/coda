@@ -181,17 +181,19 @@ def separate(filetext):
         lines2.append(lastline)
     return ('\n'.join(lines2)).split('$$SEPARATOR$$')
 
-def source(A,B):
+def source(domain,A,B):
     I,R = B.split()
     if I.atom():
-        if is_code(I[0]):
-            txt = I[0]
-            return data(*[t for t in blocks(comments(txt))]) + one(b'source',A,R)
-        else:
-            raise error('Unexpected source code input')
-def source_0(A,B):
+        txt = str(I)
+        return data(*[t for t in blocks(comments(txt))]) + data((domain+A)|R)
+#        if is_code(I[0]):
+#            txt = I[0]
+#            return data(*[t for t in blocks(comments(txt))]) + one(b'source',A,R)
+#        else:
+#            raise error('Unexpected source code input')
+def source_0(domain,A,B):
     if B.empty(): return data()
-DEF.add(data(b'source'),source,source_0)
+CONTEXT.define('source',source,source_0)
 
 def comments(text):
     # remove comments from coda source code text

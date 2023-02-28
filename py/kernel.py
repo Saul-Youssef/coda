@@ -6,7 +6,7 @@
 #
 from ipykernel.kernelbase import Kernel
 
-import base,Language,Evaluate,IO
+import base,Language,Evaluate,IO,Compile
 IO.OUT.kernel() # set stdout to kernel mode
 Evaluate.resolve(Language.lang('homecontext:', base.data(),base.data()),1000)
 
@@ -27,7 +27,11 @@ class EchoKernel(Kernel):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=True):
         if not silent:
-            D = Language.lang(code,base.data(),base.data())
+            L = []
+            for d in Compile.coda(code):
+                for c in d: L.append(c)
+            D = base.data(*L)
+#            D = Language.lang(code,base.data(),base.data())
             IO.OUT(str(Evaluate.resolve(D,100)))
             out = IO.OUT.flush()
             stream_content = {'name': 'stdout', 'text': out}

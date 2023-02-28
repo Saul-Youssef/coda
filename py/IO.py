@@ -3,6 +3,25 @@
 #
 from base import *
 import Help
+
+class Stdout(object):
+    def __init__(self):
+        self._mode = 'default'
+        self._out = ''
+    def kernel(self):
+        self._mode = 'kernel' # kernel mode accumulates stdout
+        return self 
+    def __call__(self,txt):
+        if self._mode=='default':
+            import sys
+            sys.stdout.write(txt)
+        else:
+            self._out += txt
+    def flush(self):
+        out = self._out[:]
+        self._out = ''
+        return out
+OUT = Stdout()
 #
 #   Basic local read of all the bytes from a local files
 #

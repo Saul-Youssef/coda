@@ -3,7 +3,7 @@
 #   from python and/or coda source code files.
 #
 from base import *
-#import Code
+import IO
 
 #
 #   Help system
@@ -52,15 +52,21 @@ class Block(object):
             if not line=='' and not 'demo:' in line: bdy.append(line)
         return bdy[:]
     def display(self):
-        print('===============================================')
-        print(str(self))
+        IO.OUT('==============================================='+'\n')
+#        print('===============================================')
+#        print(str(self))
+        IO.OUT(str(self)+'\n')
 class Comment(Block):
     def __str__(self): return 'COMMENT:'+'\n'+'\n'.join(self._lines)
     def display(self):
-        print('===============================================')
-        print('COMMENT TITLE:',self.title()); n = 1
+#        print('===============================================')
+#        print('COMMENT TITLE:',self.title()); n = 1
+        IO.OUT('==============================================='+'\n')
+        IO.OUT('COMMENT TITLE:',self.title()+'\n'); n = 1
         for demo in self.demos():
-            print(n,'....',demo); n += 1
+#            print(n,'....',demo)
+            IO.OUT(str(n)+'....'+' '+str(demo)+'\n')
+            n += 1
     def body(self):
         bdy = []
         for line in self:
@@ -88,8 +94,10 @@ class Comment(Block):
 class Coda(Block):
         def __str__(self): return 'CODA:'+'\n'+'\n'.join(self._lines)
         def display(self):
-            print(str(self))
-            print('Flags:',','.join(self.flags()))
+#            print(str(self))
+#            print('Flags:',','.join(self.flags()))
+            IO.OUT(str(self)+'\n')
+            IO.OUT('Flags:'+' '+','.join(self.flags())+'\n')
         def flags(self):
             F = []
             for line in self:
@@ -108,8 +116,10 @@ class Coda(Block):
 class Python(Block):
         def __str__(self): return 'PYTHON:'+'\n'+'\n'.join(self._lines)
         def display(self):
-            print(str(self))
-            print('Flags:',','.join(self.flags()))
+#            print(str(self))
+#            print('Flags:',','.join(self.flags()))
+            IO.OUT(str(self)+'\n')
+            IO.OUT('Flags:'+' '+','.join(self.flags())+'\n')
         def flags(self):
             F = []
             for line in self:
@@ -215,15 +225,13 @@ def blocks(lines):
         if line.startswith(' '):
             block.append(line.strip())
         else:
-            if len(block)>0: 
+            if len(block)>0:
                 txt = ' '.join(block)
-                if not txt.strip()=='': yield txt 
-#                yield ' '.join(block)
+                if not txt.strip()=='': yield txt
             block = [line]
-    if len(block)>0: 
+    if len(block)>0:
         txt = ' '.join(block)
-        if not txt.strip()=='': yield txt 
-#        yield ' '.join(block)
+        if not txt.strip()=='': yield txt
 
 SOURCES = []
 
@@ -312,12 +320,19 @@ class section(object):
     def display(self):
         import Text
         txt = Text.decorate(self.title+':','default','bold')
-        print(txt)
+#        print(txt)
+        IO.OUT(txt+'\n')
         n = 1
         for line in self.lines:
-            if   self.title=='demos': print(self.indent*' '+str(n)+'. '+Text.decorate(line,'magenta','underline'))
-            elif self.title=='code' : print(self.indent*' '+Text.decorate(line,'blue','reversevideo'))
-            else                    : print(self.indent*' '+line)
+            if   self.title=='demos':
+#                print(self.indent*' '+str(n)+'. '+Text.decorate(line,'magenta','underline'))
+                IO.OUT(self.indent*' '+str(n)+'. '+Text.decorate(line,'magenta','underline')+'\n')
+            elif self.title=='code' :
+#                print(self.indent*' '+Text.decorate(line,'blue','reversevideo'))
+                IO.OUT(self.indent*' '+Text.decorate(line,'blue','reversevideo')+'\n')
+            else                    :
+#                print(self.indent*' '+line)
+                IO.OUT(self.indent*' '+line+'\n')
             n += 1
 #
 #   defs makes a table of available definitions.
@@ -357,7 +372,8 @@ def deftable(table):
         while len(flag)  <max_flag  : flag   = flag + '.'
         flag = Text.decorate(flag,'blue','bold')
         summary = Text.decorate(summary,'magenta','underline')
-        print(flag+module+str(n)+'..'+summary)
+#        print(flag+module+str(n)+'..'+summary)
+        IO.OUT(flag+module+str(n)+'..'+summary+'\n')
 
 if __name__=='__main__':
     f = open('/Users/youssef/coda/co/Number.co','r')

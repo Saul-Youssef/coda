@@ -60,5 +60,5 @@ def _str_coda(c):
     else: return '('+_str_data(c.left())+':'+_str_data(c.right())+')'
 def _str_data(d):
     sep = ' '
-    if d.depth()<=3: sep = ''
+    if d.depth()==3: sep = ''
     return sep.join([_str_coda(c) for c in d])

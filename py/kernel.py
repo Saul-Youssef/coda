@@ -2,9 +2,13 @@
 #    Jupyter kernel
 #
 #    jupyter kernelspec install --user coda
-#    jupyter kernelspec list 
+#    jupyter kernelspec list
 #
 from ipykernel.kernelbase import Kernel
+
+import base,Language,Evaluate,IO
+IO.OUT.kernel() # set stdout to kernel mode
+Evaluate.resolve(Language.lang('homecontext:', base.data(),base.data()),1000)
 
 class EchoKernel(Kernel):
     implementation = 'Echo'
@@ -18,10 +22,15 @@ class EchoKernel(Kernel):
     }
     banner = "Echo kernel - as useful as a parrot"
 
+#    def do_execute(self, code, silent, store_history=True, user_expressions=None,
+#                   allow_stdin=False):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
-                   allow_stdin=False):
+                   allow_stdin=True):
         if not silent:
-            stream_content = {'name': 'stdout', 'text': code}
+            D = Language.lang(code,base.data(),base.data())
+            IO.OUT(str(Evaluate.resolve(D,100)))
+            out = IO.OUT.flush()
+            stream_content = {'name': 'stdout', 'text': out}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
         return {'status': 'ok',

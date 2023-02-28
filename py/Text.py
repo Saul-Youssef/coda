@@ -69,6 +69,13 @@ def endswith_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('endswith',endswith,endswith_0)
 
+def pure(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(): return da(repr(BL)) + data((domain+A)|BR) 
+def pure_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('pure',pure,pure_0)
+
 if __name__=='__main__':
     t = '@@@'
     print(t)

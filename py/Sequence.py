@@ -2,7 +2,7 @@
 #    Sequence related definitions
 #
 from base import *
-import Number 
+import Number
 #
 #   Reverse the order of it's input sequence.
 #
@@ -68,7 +68,7 @@ def tail_2(domain,A,B):
     if A.empty(): return data((domain+da('1'))|B)
 CONTEXT.define('tail',tail_0,tail_1,tail_2)
 #
-#   Gets the argument-specified last items from input 
+#   Gets the argument-specified last items from input
 #
 #   last : B -> (last 1 : B)
 #   last 0 : B -> ()
@@ -89,7 +89,7 @@ def last_3(domain,A,B):
         n = ns.pop()
         if n>=1:
             L,R = data(*B[:-1]),data(*B[-1:])
-            if R.atom(): return data((domain+da(str(n-1)))|L) + R 
+            if R.atom(): return data((domain+da(str(n-1)))|L) + R
 CONTEXT.define('last',last_1,last_2,last_3)
 #
 #   Repeats the arguments for each input.

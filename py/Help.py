@@ -343,7 +343,8 @@ class section(object):
 #
 def defs(domain,A,B):
     import Code
-    modules = [Code.coda2str(b) for b in B]
+#    modules = [Code.coda2str(b) for b in B]
+    modules = [str(b) for b in B]
     table = []
     for domain,definition in CONTEXT:
 #        dom = Code.pretty(domain)

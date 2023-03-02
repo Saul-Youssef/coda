@@ -16,15 +16,21 @@ class coda(object):
     def __hash__(self): return hash((self._left,self._right,))
     def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
 #    def __str__(self): import Code; return Code.codastr(self)
-    def __str__(self): import Code; return Code._str_coda(self)
+#    def __str__(self): import Code; return Code._str_coda(self)
+    def __str__(self):
+        import Code; return Code.coda2unicode(self)
+    def str_atom(self,a):
+#        if self.left().empty() and self.right().empty(): return u'\u220E'
+        if self.left().empty() and self.right().empty(): return a
+        else: return '('+self.left().str_atom(a)+':'+self.right().str_atom(a)+')'
     def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
     def    left (self): return self._left
     def   right (self): return self._right
     def   depth (self): return max(self._left.depth(),self._right.depth())
     def  domain (self): # domain determines a possible corresponding definition
         dom = self.left().split()[0]
-        import Code; t = Code.pretty(dom)
-        if t.startswith('{') and t.endswith('}'): return da('language')
+#        import Code; t = Code.pretty(dom)
+        if str(dom).startswith('{') and str(dom).endswith('}'): return da('language')
         return dom
     def __add__ (self,c): return data(self,c)
     def atom(self): return self in CONTEXT and len(CONTEXT[self])==0
@@ -42,7 +48,9 @@ class data(object):
         self._coda = cs
     def __hash__(self): return hash(self._coda)
     def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data
-    def __str__ (self): import Code; return Code._str_data(self)     # display using Code mappings
+    def __str__(self): import Code; return Code.data2unicode(self)
+    def str_atom(self,a): return ''.join([c.str_atom(a) for c in self])
+#    def __str__ (self): import Code; return Code._str_data(self)     # display using Code mappings
 #    def __str__ (self): return ''.join([ str(c) for c in self])     # display using Code mappings
     def __eq__  (self,d): return self._coda==d._coda
     def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language
@@ -79,7 +87,8 @@ class DEF(object):
 #   Global collection of definitions with disjoint domains
 #
 class Definitions(object):
-    def __init__(self): self._definitions = {data():DEF(data())}
+    def __init__(self): self._definitions = {}
+#    def __init__(self): self._definitions = {data():DEF(data())}
     def __repr__(self): return '['+', '.join([str(domain) for domain,definition in self])+']'
     def __len__(self): return len(self._definitions)
     def __iter__(self):
@@ -87,7 +96,11 @@ class Definitions(object):
     def __contains__(self,c): return c.domain() in self._definitions
     def __getitem__(self,c): return self._definitions[c.domain()]
     def define(self,name,*pfs): self.add(DEF(da(name),*pfs)); return self
+#    def set(self,domain,*pfs):
+#        if domain in self._definitions: raise error(str(definition)+' is already defined.')
+#        self._definitions[domain] = DEF(domain,*pfs)
     def add(self,definition):
+#        self.set(definition.domain(),definition)
         if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
         self._definitions[definition.domain()] = definition
 #
@@ -98,6 +111,7 @@ TCODA = type(coda(data(),data())) # used only for a validation check in __init__
 #   The global context contains all activated definitions
 #
 CONTEXT = Definitions()
+#CONTEXT.set(data())  # empty data is the domain
 #
 #   System exceptions
 #
@@ -107,7 +121,8 @@ class error(Exception):
 #
 #   Text to data utilites
 #
-def co(text): import Code; return data()|data(*[Code.byte(c) for c in text])
+#def co(text): import Code; return data()|data(*[Code.byte(c) for c in text])
+def co(text): import Code; return Code.text2coda(text)
 def da(text): return data(co(text))
 #
 #   Import builtin definitions from other source files

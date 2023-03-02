@@ -4,7 +4,7 @@
 #   Basic, low level computing python integers or python floats from code
 #
 from base import *
-import Code 
+import Code
 
 class BinaryOperation(object):
     def __init__(self,coerce,operation):
@@ -21,7 +21,8 @@ class BinaryOperation(object):
 def tryint(x):
     y = None
     try:
-        y = int(Code.coda2str(x))
+#        y = int(Code.coda2str(x))
+        y = int(str(x))
     except (ValueError,TypeError):
         pass
     return y
@@ -29,7 +30,8 @@ def tryint(x):
 def tryfloat(x):
     y = None
     try:
-        y = float(Code.coda2str(x))
+        y = float(str(x))
+#        y = float(Code.coda2str(x))
     except (ValueError,TypeError):
         pass
     return y
@@ -42,7 +44,7 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #    Used multiple times below.
 #
 def empty(domain,A,B):
-    if A.empty() or B.empty(): return data()            
+    if A.empty() or B.empty(): return data()
 #
 #   Code version of the natural numbers 0 1 2 3...
 #
@@ -144,7 +146,8 @@ CONTEXT.define('float_max',lambda domain,A,B: OP9(A,B),empty)
 OP10 = BinaryOperation(floats,lambda x,y: min(x,y))
 CONTEXT.define('float_min',lambda domain,A,B:OP10(A,B),empty)
 #
-def codes(D): return [Code.coda2str(c) for c in D]
+#def codes(D): return [Code.coda2str(c) for c in D]
+def codes(D): return [str(c) for c in D]
 #
 #   code binary operations
 #

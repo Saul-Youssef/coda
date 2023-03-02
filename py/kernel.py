@@ -21,7 +21,7 @@ class EchoKernel(Kernel):
         'file_extension': '.co',
     }
     banner = "Echo kernel - as useful as a parrot"
-
+#
 #    def do_execute(self, code, silent, store_history=True, user_expressions=None,
 #                   allow_stdin=False):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
@@ -31,9 +31,11 @@ class EchoKernel(Kernel):
             for d in Compile.coda(code):
                 for c in d: L.append(c)
             D = base.data(*L)
-#            D = Language.lang(code,base.data(),base.data())
-            IO.OUT(str(Evaluate.resolve(D,100)))
-            out = IO.OUT.flush()
+            try:
+                IO.OUT(str(Evaluate.depth(D,100)[0]))
+                out = IO.OUT.flush()
+            except Exception as e:
+                out = IO.OUT.flush()+'...traceback: '+str(e)
             stream_content = {'name': 'stdout', 'text': out}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 

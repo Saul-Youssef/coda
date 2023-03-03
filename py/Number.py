@@ -16,12 +16,10 @@ class BinaryOperation(object):
             if len(Ac)==1 and len(Bc)==1:
                 result = self._operation(Ac[0],Bc[0])
                 return da(str(result))
-#                return data(str(result).encode())
 
 def tryint(x):
     y = None
     try:
-#        y = int(Code.coda2str(x))
         y = int(str(x))
     except (ValueError,TypeError):
         pass
@@ -31,7 +29,6 @@ def tryfloat(x):
     y = None
     try:
         y = float(str(x))
-#        y = float(Code.coda2str(x))
     except (ValueError,TypeError):
         pass
     return y
@@ -146,7 +143,6 @@ CONTEXT.define('float_max',lambda domain,A,B: OP9(A,B),empty)
 OP10 = BinaryOperation(floats,lambda x,y: min(x,y))
 CONTEXT.define('float_min',lambda domain,A,B:OP10(A,B),empty)
 #
-#def codes(D): return [Code.coda2str(c) for c in D]
 def codes(D): return [str(c) for c in D]
 #
 #   code binary operations
@@ -163,21 +159,23 @@ CONTEXT.define('code_min',lambda domain,A,B:OP12(A,B),empty)
 OP13 = BinaryOperation(codes,lambda x,y:max(x,y))
 CONTEXT.define('code_max',lambda domain,A,B:OP13(A,B),empty)
 #
-#def int_sort(A,B):
-#    if allcode(B) and all([not tryint(b) is None for b in B]):
-#        L = sorted([int(b) for b in B])
-#        L = [str(l).encode() for l in L]
-#        return data(*L)
-#DEF.add(data(b'int_sort'),int_sort)
-#
-#def float_sort(A,B):
-#    if allcode(B) and all([not tryfloat(b) is None for b in B]):
-#        L = sorted([float(b) for b in B])
-#        L = [str(l).encode() for l in L]
-#        return data(*L)
-#DEF.add(data(b'float_sort'),float_sort)
+def int_sort(domain,A,B):
+    if all([b.atom() for b in B]):
+        ns = ints(B)
+        ns.sort()
+        return data(*[co(str(n)) for n in ns])
+def int_sort0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('int_sort',int_sort,int_sort0)
 
-
+def float_sort(domain,A,B):
+    if all([b.atom() for b in B]):
+        flts = floats(B)
+        flts.sort()
+        return data(*[co(str(fl)) for fl in flts])
+def float_sort0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('float_sort',float_sort,float_sort0) 
 #
 #   Involutions
 #

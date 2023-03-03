@@ -36,7 +36,6 @@ def language(domain,A,B):
     if Equal():
         front,back = Equal.parts()
         return data((da('=')+lang(front,A,B))|lang(back,A,B))
-#        return lang('=',lang(front,A,B),lang(back,A,B))
 #
 #   The essential operations are concatenation and colon.  The rest is syntactic sugar.
 #
@@ -45,19 +44,19 @@ def language(domain,A,B):
         front,back = Colon.parts()
         return data(lang(front,A,B)|lang(back,A,B))
 #
-#       A*B : X is defined to be A:B:X
-#
-#    Star  = parse(b'*',x,b'left')
-#    if Star():
-#        front,back = Star.parts()
-#        return data(b'*')+one(b'*',one(wrap(front),A,B),one(wrap(back),A,B))
-#
 #   A*B:X is defined to be A:B:X
 #
     Space = parse(' ',s,'left')
     if Space():
         front,back = Space.parts()
         return lang(front,A,B)+lang(back,A,B)
+#
+#       A*B : X is defined to be A:B:X
+#
+#    Star  = parse(b'*',x,b'left')
+#    if Star():
+#        front,back = Star.parts()
+#        return data(b'*')+one(b'*',one(wrap(front),A,B),one(wrap(back),A,B))
 #
 #   Operations are grouped with parenthesis.  Text within curly brackets is source code.
 #   Text between angle brackets are byte strings.

@@ -15,13 +15,14 @@ import Number
 #   demo: rev : nat : 0
 #   demo: rev : rev : nat : 0
 #
-def rev(domain,A,B):
-    if   B.empty(): return data()
-    elif B.atom(): return B
-    elif len(B)>1:
-        L,R = B.split()
-        return ((domain+A)|R) + ((domain+A)|L)
-CONTEXT.define('rev',rev)
+def rev_1(domain,A,B):
+    BL,BR = B.split()
+    if len(BL)>0 and len(BR)>0: return ((domain+A)|BR) + ((domain+A)|BL) 
+def rev_2(domain,A,B):
+    if B.atom(): return B 
+def rev_3(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #
 #   Gets the A-specified leading items from input data.
 #

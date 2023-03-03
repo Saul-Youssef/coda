@@ -8,12 +8,21 @@ import string
 #    Coda to unicode for display purposes
 #
 Unicode = {}  # coda to unicode
+
+#z = data()
+#bit0 = z|z
+#bit1 = z|data(bit0)
+##Unicode[atom] = "\u220E"
+#Unicode[bit0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
+#Unicode[bit1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
+
 z = data()
-bit0 = z|z
-bit1 = z|data(bit0)
-#Unicode[atom] = "\u220E"
-Unicode[bit0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
-Unicode[bit1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
+bit1 = z|z
+bit0 = z|data(bit1)
+Unicode[bit1] = "|"
+Unicode[bit0] = "0"
+
+
 #
 #   bits, bit strings and code character data are atomic
 #
@@ -36,11 +45,13 @@ def byte2coda(c):
         else: raise error('Error converting byte')
     while len(B)<8:
         B = [bit0]+B
-    return data(bit0)|data(*B)
+#    return data(bit0)|data(*B)
+    return data()|data(*B)
 
 for c in string.printable: Unicode[byte2coda(c)] = c
 
-def text2coda(text): return data(bit1)|data(*[byte2coda(c) for c in text])
+#def text2coda(text): return data(bit1)|data(*[byte2coda(c) for c in text])
+def text2coda(text): return data()|data(*[byte2coda(c) for c in text])
 
 def data2unicode(D,sep=' '): return sep.join([coda2unicode(c) for c in D])
 def coda2unicode(c):

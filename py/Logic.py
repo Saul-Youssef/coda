@@ -10,15 +10,15 @@ from base import *
 #   demo: none : a b c
 #   demo: none :
 #
-#   some A -> 1 if A is atomic, () if A is empty
-#   none A -> 1 if A is empty, () if A is atomic
+#   some : A -> 1 if A is atomic, () if A is empty
+#   none : A -> 1 if A is empty, () if A is atomic
 #
 def some(domain,A,B):
-    if B.atomic(): return da('1')
+    if B.atomic(): return A
     if B.empty (): return data()
 def none(domain,A,B):
     if B.atomic(): return data()
-    if B.empty (): return da('1')
+    if B.empty (): return A 
 CONTEXT.define('some',some)
 CONTEXT.define('none',none)
 #
@@ -48,7 +48,7 @@ CONTEXT.define('none',none)
 #
 def complement(domain,A,B):
     if B.atomic(): return data()
-    if B.empty (): return da('#')
+    if B.empty (): return da('|')
 CONTEXT.define('^',complement)
 
 def eq_L(domain,A,B):
@@ -59,10 +59,10 @@ def eq_R(domain,A,B):
     AL,AR = data(*A[:-1]),data(*A[-1:])
     BL,BR = data(*B[:-1]),data(*B[-1:])
     if AR.atom() and BR.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR)
-def eq_r(domain,A,B):
-    if A.atom () and B.empty(): return da('#')
-    if A.empty() and B.atom (): return da('#')
+def eq_(domain,A,B):
+    if A.atom () and B.empty(): return da('|')
+    if A.empty() and B.atom (): return da('|')
     if A.empty() and B.empty(): return data()
     if A.atom () and B.atom (): return ((domain+(A[0].left ()))|B[0].left ()) + \
                                        ((domain+(A[0].right()))|B[0].right()) 
-CONTEXT.define('=',eq_r,eq_L,eq_R)
+CONTEXT.define('=',eq_,eq_L,eq_R)

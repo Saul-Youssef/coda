@@ -9,4 +9,6 @@
 #   demo: x? = x?
 #
 def # :
+def | : 
 
+def logic : {some (put:) : B} 

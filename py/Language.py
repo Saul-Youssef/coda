@@ -7,17 +7,12 @@ from base import *
 #
 special_characters = ' :(){}<>*/'
 #
-#   The coda language is part of the system in the sense that it is just one (could be split into
-#   one for each parse item below...I may do that at some point) particular definition like any
-#   other.
-#
-#
 #   lang takes unicode string code and data A,B and makes it into
 #   the corresponding data for the compiler.
 #
 def lang(code,A,B): return data((da('{'+code+'}')+A)|B)
+
 def src(domain):
-#    s = Code.pretty(domain)
     s = str(domain)
     if s.startswith('{') and s.endswith('}'): return s[1:-1]
     raise error('Unexpected language input')

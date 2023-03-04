@@ -9,29 +9,16 @@ import string
 #
 Unicode = {}  # coda to unicode
 
-#z = data()
-#bit0 = z|z
-#bit1 = z|data(bit0)
-##Unicode[atom] = "\u220E"
-#Unicode[bit0] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO}"
-#Unicode[bit1] = "\N{MATHEMATICAL SANS-SERIF BOLD DIGIT ONE}"
-
 z = data()
 bit1 = z|z
 bit0 = z|data(bit1)
 Unicode[bit1] = "|"
 Unicode[bit0] = "0"
-
-
 #
-#   bits, bit strings and code character data are atomic
+#   bits, bytes and byte sequences are atomic with
+#   domain z=().
 #
-CONTEXT.add(DEF(z))
-CONTEXT.add(DEF(data(bit0)))
-CONTEXT.add(DEF(data(bit1)))
-#CONTEXT.set(z)     # domain of bits
-#CONTEXT.set(bit0)  # domain of bit sequences and bytes
-#CONTEXT.set(bit1)  # domain of character strings
+CONTEXT.add(Definition(z))
 #
 #   create a coda byte from a single character as an 8 bit bit string with domain bit0
 #
@@ -122,25 +109,25 @@ CONTEXT.define('endswith',endswith,endswith_0)
 #
 #   The argument replaces (:) with a supplied character for readability.
 #
-#   demo: pure : hello 
-#   demo: pure a : hello 
+#   demo: pure : hello
+#   demo: pure a : hello
 #
 def pure(domain,A,B):
     BL,BR = B.split()
-    if BL.atom() and (A.empty() or A.atom()): 
-        if A.empty(): 
+    if BL.atom() and (A.empty() or A.atom()):
+        if A.empty():
             return da(repr(BL)) + data((domain+A)|BR)
         else:
             atom = str(A[0])
-            return da(str_atom_data(BL,atom)) + data((domain+A)|BR) 
+            return da(str_atom_data(BL,atom)) + data((domain+A)|BR)
 def pure_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('pure',pure,pure_0)
-        
+
 def str_atom_coda(c,ch):
-    if c.left().empty() and c.right().empty(): 
+    if c.left().empty() and c.right().empty():
         return ch
-    else: 
+    else:
         return '('+str_atom_data(c.left(),ch)+':'+str_atom_data(c.right(),ch)+')'
-    
+
 def str_atom_data(d,ch): return ''.join([str_atom_coda(c,ch) for c in d])

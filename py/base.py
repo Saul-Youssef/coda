@@ -42,8 +42,8 @@ class data(object):
     def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data
     def __str__(self): import Code; return Code.data2unicode(self)
     def __eq__  (self,d): return self._coda==d._coda
-    def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in language
-    def __or__  (self,d): return coda(self,d)           # A:B in language
+    def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in the coda language
+    def __or__  (self,d): return coda(self,d)           # A:B in the coda language
     def __len__ (self): return len(self._coda)
     def __iter__(self):
         for c in self._coda: yield c
@@ -61,17 +61,39 @@ class data(object):
 #
 #   A definition is a partial function from coda to data
 #
-class DEF(object):
+#class DEF(object):
+#    def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
+#    def __repr__(self): return str(self._domain)
+#    def domain(self): return self._domain
+#    def __len__(self): return len(self._pfs)
+#    def __contains__(self,c): return c.domain()==self.domain()
+#    def __call__(self,c):  # apply coda->data operation
+#        domain,A = c.left().split(); B = c.right()
+#        for pf in self._pfs:    # may be zero or more pfs
+#            R = pf(domain,A,B)  # <- apply definition
+#            if not R is None: return R
+#        return data(c)
+#
+#   A definition is a partial function from coda to data
+#
+class Definition(object):
     def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
+    def __repr__(self): return str(self._domain)
     def domain(self): return self._domain
     def __len__(self): return len(self._pfs)
     def __contains__(self,c): return c.domain()==self.domain()
     def __call__(self,c):  # apply coda->data operation
         domain,A = c.left().split(); B = c.right()
-        for pf in self._pfs:  # may be zero or more pfs
-            R = pf(domain,A,B)
+        for pf in self._pfs:    # may be zero or more pfs
+            R = pf(domain,A,B)  # <- apply definition
             if not R is None: return R
         return data(c)
+
+#class DefineVariable(object):
+#    def __init__(self,C,D):
+#        self._coda = C
+#        self._data = D
+#    def __call__(self,)
 #
 #   Global collection of definitions with disjoint domains
 #
@@ -83,7 +105,7 @@ class Definitions(object):
         for domain,definition in self._definitions.items(): yield domain,definition
     def __contains__(self,c): return c.domain() in self._definitions
     def __getitem__(self,c): return self._definitions[c.domain()]
-    def define(self,name,*pfs): self.add(DEF(da(name),*pfs)); return self
+    def define(self,name,*pfs): self.add(Definition(da(name),*pfs)); return self
     def add(self,definition):
         if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
         self._definitions[definition.domain()] = definition
@@ -95,7 +117,6 @@ TCODA = type(coda(data(),data())) # used only for a validation check in __init__
 #   The global context contains all activated definitions
 #
 CONTEXT = Definitions()
-#CONTEXT.set(data())  # empty data is the domain
 #
 #   System exceptions
 #

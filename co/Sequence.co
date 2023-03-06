@@ -17,6 +17,12 @@ def nth : {dis nth1 A : B}
 #   demo: iscount 2 : a
 #   demo: iscount 2 : a b c
 #
-def iscount : {if ((n:A)=(count:B)) : B}
+#def iscount : {if ((n:A)=(count:B)) : B}
 
+#
+#   Count number of inputs 
+#
+#   demo: count : get : x y z 
+#   demo: count : count : get : x y z
+#
 def count : {app int_add : ap one : B}

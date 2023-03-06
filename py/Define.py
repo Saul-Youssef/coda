@@ -48,9 +48,6 @@ def Let(domain,D,V):
 
     if (not D is None) and (not V is None) and len(D)>0:
         cod = D[0]
-        CONTEXT.add(Definition(cod.left(),lambda domain,A,B: assign(A,B,cod.right(),V)))
+        CONTEXT.val(cod,V)
         return data()
 CONTEXT.define('let',Let)
-
-def assign(A,B,N,V):
-    if A.empty() and B==N: return V

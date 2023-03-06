@@ -20,7 +20,7 @@ class coda(object):
     def    left (self): return self._left
     def   right (self): return self._right
     def   depth (self): return max(self._left.depth(),self._right.depth())
-    def  domain (self): # domain determines a possible corresponding definition
+    def  domain (self): # domain determines the corresponding definition
         dom = self.left().split()[0]
         if str(dom).startswith('{') and str(dom).endswith('}'): return da('language')
         return dom
@@ -61,21 +61,6 @@ class data(object):
 #
 #   A definition is a partial function from coda to data
 #
-#class DEF(object):
-#    def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
-#    def __repr__(self): return str(self._domain)
-#    def domain(self): return self._domain
-#    def __len__(self): return len(self._pfs)
-#    def __contains__(self,c): return c.domain()==self.domain()
-#    def __call__(self,c):  # apply coda->data operation
-#        domain,A = c.left().split(); B = c.right()
-#        for pf in self._pfs:    # may be zero or more pfs
-#            R = pf(domain,A,B)  # <- apply definition
-#            if not R is None: return R
-#        return data(c)
-#
-#   A definition is a partial function from coda to data
-#
 class Definition(object):
     def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
     def __repr__(self): return str(self._domain)
@@ -88,27 +73,44 @@ class Definition(object):
             R = pf(domain,A,B)  # <- apply definition
             if not R is None: return R
         return data(c)
-
-#class DefineVariable(object):
-#    def __init__(self,C,D):
-#        self._coda = C
-#        self._data = D
-#    def __call__(self,)
 #
 #   Global collection of definitions with disjoint domains
 #
 class Definitions(object):
-    def __init__(self): self._definitions = {}
-    def __repr__(self): return '['+', '.join([str(domain) for domain,definition in self])+']'
-    def __len__(self): return len(self._definitions)
-    def __iter__(self):
-        for domain,definition in self._definitions.items(): yield domain,definition
-    def __contains__(self,c): return c.domain() in self._definitions
-    def __getitem__(self,c): return self._definitions[c.domain()]
-    def define(self,name,*pfs): self.add(Definition(da(name),*pfs)); return self
+    def __init__(self):
+        self._domain = {}      # definitions with an invariant domain
+        self._value  = {}      # definitions with invariant value
+        self._used   = set([]) # domains used by value definitions
+    def dom(self,domain,pf):
+        if domain in self._domain or domain in self._used: raise error(str(domain)+' is already defined.')
+        self._domain[domain] = pf
+    def val(self,co,da):
+        if co.domain() in self._domain or co in self._domain: raise error(str(domain)+' is already defined')
+        self._value[co] = da
+    def __contains__(self,co): return co in self._value or co.domain() in self._domain
+    def __getitem__(self,co):
+        if co in self._value: return lambda c : self._value[c]
+        if co.domain() in self._domain: return self._domain[co.domain()]
+
+    def define(self,name,*pfs): return self.add(Definition(da(name),*pfs)); return self
     def add(self,definition):
-        if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
-        self._definitions[definition.domain()] = definition
+        if definition.domain() in self._domain: raise error('error')
+        return self.dom(definition.domain(),definition)
+    def __iter__(self):
+        for domain,definition in self._domain.items(): yield domain,definition
+
+#class Definitions(object):
+#    def __init__(self): self._definitions = {}
+#    def __repr__(self): return '['+', '.join([str(domain) for domain,definition in self])+']'
+#    def __len__(self): return len(self._definitions)
+#    def __iter__(self):
+#        for domain,definition in self._definitions.items(): yield domain,definition
+#    def __contains__(self,c): return c.domain() in self._definitions
+#    def __getitem__(self,c): return self._definitions[c.domain()]
+#    def define(self,name,*pfs): self.add(Definition(da(name),*pfs)); return self
+#    def add(self,definition):
+#        if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
+#        self._definitions[definition.domain()] = definition
 #
 #   coda type for a validation check in the data __init__
 #

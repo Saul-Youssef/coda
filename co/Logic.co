@@ -5,10 +5,8 @@
 #
 #   demo: 1=1
 #   demo: 1=2
-#   demo: 1 2 3 4 = 1 2 3 5
-#   demo: x? = x?
+#   demo: logic : (1=2)
+#   demo: logic : (^:(x?=x?))
+#   demo: logic : (x?=y?)
 #
-def # :
-def | : 
-
 def logic : {some (put:) : B} 

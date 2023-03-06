@@ -34,7 +34,6 @@ def startcontext(domain,A,B):
     import Language
     src = 'coda : source : readpath : endswith </coda.co> : dir co : start : '
     return Language.lang(src,data(),data())
-#    return da(src)
 CONTEXT.define('startcontext',startcontext)
 
 def homecontext(domain,A,B):

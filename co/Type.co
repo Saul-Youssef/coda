@@ -1,0 +1,9 @@
+#
+#   Common properties of multiple types
+#
+def make : {(Make:A):B} 
+def sum  : {(Sum:A):B}
+def prod : {(Prod:A):B}
+def term : {(Term:A):B}
+def sort : {(Sort:A):B}
+def inv  : {(Inv:A):B} 

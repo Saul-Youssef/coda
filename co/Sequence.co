@@ -11,18 +11,13 @@
 #
 def nth : {dis nth1 A : B}
 #
-#   Select inputs with a specified length
-#
-#   demo: iscount 2 : a b
-#   demo: iscount 2 : a
-#   demo: iscount 2 : a b c
-#
-#def iscount : {if ((n:A)=(count:B)) : B}
-
-#
 #   Count number of inputs 
 #
 #   demo: count : get : x y z 
 #   demo: count : count : get : x y z
+#   demo: count : 
 #
-def count : {app int_add : ap one : B}
+def count : {sum n : ap one : B} 
+#
+#def count : {app int_add : ap one : B}
+#

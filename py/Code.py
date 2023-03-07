@@ -18,7 +18,8 @@ Unicode[bit0] = "0"
 #   bits, bytes and byte sequences are atomic with
 #   domain z=().
 #
-CONTEXT.add(Definition(z))
+CONTEXT.dom(data(),Definition(data())) 
+#CONTEXT.add(Definition(z))
 #
 #   create a coda byte from a single character as an 8 bit bit string with domain bit0
 #

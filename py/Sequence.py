@@ -17,9 +17,9 @@ import Number
 #
 def rev_1(domain,A,B):
     BL,BR = B.split()
-    if len(BL)>0 and len(BR)>0: return ((domain+A)|BR) + ((domain+A)|BL) 
+    if len(BL)>0 and len(BR)>0: return ((domain+A)|BR) + ((domain+A)|BL)
 def rev_2(domain,A,B):
-    if B.atom(): return B 
+    if B.atom(): return B
 def rev_3(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('rev',rev_3,rev_2,rev_1)
@@ -107,7 +107,7 @@ def rep_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('rep',rep_1,rep_0)
 #
-#   Select the n'th item from input.
+#   Select the n'th item(s) from input.
 #
 def nth1_0(domain,A,B):
     A0,AR = A.split()
@@ -123,3 +123,11 @@ def nth1_0(domain,A,B):
 def nth1_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('nth1',nth1_0,nth1_1)
+#
+#   Pre and post avoids parentheses
+#
+#   demo: pre 0 : 1 2 3
+#   demo: post 99 : 1 2 3
+#
+CONTEXT.define('pre', lambda domain,A,B : A+B)
+CONTEXT.define('post',lambda domain,A,B : B+A)

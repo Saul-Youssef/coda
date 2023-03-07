@@ -42,6 +42,10 @@ def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 #
 def empty(domain,A,B):
     if A.empty() or B.empty(): return data()
+def default_zero(domain,A,B):
+    if A.empty() or B.empty(): return da('0')
+def default_one(domain,A,B):
+    if A.empty() or B.empty(): return da('1')
 #
 #   Code version of the natural numbers 0 1 2 3...
 #
@@ -82,6 +86,7 @@ CONTEXT.define('one',one)
 #   int1 :
 #   int1 : foo : bar
 #   ap nat1 : a 2 3 -15
+#   ap float1 : a 2 3 -15 
 #
 def Int(domain,A,B):
     if B.atom():
@@ -159,6 +164,12 @@ CONTEXT.define('code_min',lambda domain,A,B:OP12(A,B),empty)
 OP13 = BinaryOperation(codes,lambda x,y:max(x,y))
 CONTEXT.define('code_max',lambda domain,A,B:OP13(A,B),empty)
 #
+#   sorting integers or floats
+#
+#   demo: int_sort : 5 4 3 2 1
+#   demo: int_sort : int_sort : 5 4 3 2 1
+#   demo: float_sort : 5.1 4.1 3.1 2.1 1.1 -99.0
+#
 def int_sort(domain,A,B):
     if all([b.atom() for b in B]):
         ns = ints(B)
@@ -175,7 +186,7 @@ def float_sort(domain,A,B):
         return data(*[co(str(fl)) for fl in flts])
 def float_sort0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('float_sort',float_sort,float_sort0) 
+CONTEXT.define('float_sort',float_sort,float_sort0)
 #
 #   Involutions
 #

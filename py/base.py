@@ -85,32 +85,19 @@ class Definitions(object):
         if domain in self._domain or domain in self._used: raise error(str(domain)+' is already defined.')
         self._domain[domain] = pf
     def val(self,co,da):
-        if co.domain() in self._domain or co in self._domain: raise error(str(domain)+' is already defined')
+        if co.domain() in self._domain or co in self._domain: raise error(str(co)+' is already defined')
         self._value[co] = da
     def __contains__(self,co): return co in self._value or co.domain() in self._domain
     def __getitem__(self,co):
         if co in self._value: return lambda c : self._value[c]
         if co.domain() in self._domain: return self._domain[co.domain()]
 
-    def define(self,name,*pfs): return self.add(Definition(da(name),*pfs)); return self
-    def add(self,definition):
-        if definition.domain() in self._domain: raise error('error')
-        return self.dom(definition.domain(),definition)
+    def define(self,name,*pfs):
+        defin = Definition(da(name),*pfs)
+        if defin.domain() in self._domain: raise error(str(defin.domain())+' is already defined.')
+        return self.dom(defin.domain(),defin)
     def __iter__(self):
         for domain,definition in self._domain.items(): yield domain,definition
-
-#class Definitions(object):
-#    def __init__(self): self._definitions = {}
-#    def __repr__(self): return '['+', '.join([str(domain) for domain,definition in self])+']'
-#    def __len__(self): return len(self._definitions)
-#    def __iter__(self):
-#        for domain,definition in self._definitions.items(): yield domain,definition
-#    def __contains__(self,c): return c.domain() in self._definitions
-#    def __getitem__(self,c): return self._definitions[c.domain()]
-#    def define(self,name,*pfs): self.add(Definition(da(name),*pfs)); return self
-#    def add(self,definition):
-#        if definition.domain() in self._definitions: raise error(str(definition)+' is already defined.')
-#        self._definitions[definition.domain()] = definition
 #
 #   coda type for a validation check in the data __init__
 #

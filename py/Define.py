@@ -17,9 +17,10 @@ def Def(domain,D,V):
 
     if (not D is None) and (not V is None):
         if V.empty():
-            CONTEXT.add(Definition(D)) # domain D -> identity
+            CONTEXT.dom(D,Definition(D))
         else:
-            CONTEXT.add(Definition(D,lambda domain,A,B:data((V+A)|B)))
+            defin = Definition(D,lambda domain,A,B:data((V+A)|B))
+            CONTEXT.dom(defin.domain(),defin)
         return data()
 CONTEXT.define('def',Def)
 #

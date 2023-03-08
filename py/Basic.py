@@ -23,8 +23,8 @@ CONTEXT.define('dom',domain_0,domain_1)
 #   if A : B -> () if A is false
 #   if A : B -> B  if A is true
 #
-#   demo: if 1=1 : 1 2 3
-#   demo: if 1=2 : 1 2 3
+#   demo: if (1=1) : 1 2 3
+#   demo: if (1=2) : 1 2 3
 #   demo: if x : 1 2 3
 #   demo: if () : 1 2 3
 #   demo: if : 1 2 3
@@ -46,6 +46,8 @@ CONTEXT.define('if',if_1,if_0)
 #   demo: put x : 1 2 3
 #   demo: put x y : 1 2 3
 #   demo: ap put x : 1 2 3
+#   demo: (put:)
+#   demo: pure : put :
 #
 CONTEXT.define('put',lambda domain,A,B: data(A|B))
 #

@@ -1,12 +1,15 @@
 #
-#   (# A:B) is merely a container created when A is not equal to B.
-#   The use of "#" is meant to be suggestive of "not equal" or
-#   of an "apartness relation."
+#   Logic summarizes the logic of it's input.
+#
+#   If the input is equivalent to empty data, the result is empty data.
+#   If the input is atomic, the result is a single (:) (this is the atom,
+#   displayed as "|").  
 #
 #   demo: 1=1
 #   demo: 1=2
+#   demo: (put:)
 #   demo: logic : (1=2)
 #   demo: logic : (^:(x?=x?))
 #   demo: logic : (x?=y?)
 #
-def logic : {some (put:) : B} 
+def logic : {some (put:) : B}

@@ -10,7 +10,7 @@ class Stdout(object):
         self._out = ''
     def kernel(self):
         self._mode = 'kernel' # kernel mode accumulates stdout
-        return self 
+        return self
     def __call__(self,txt):
         if self._mode=='default':
             import sys
@@ -53,7 +53,7 @@ def Dir(domain,A,B):
         p = str(BL)
         import os
         try:
-            p = os.path.abspath(p)
+            p = os.path.abspath(os.path.expanduser(p))
             paths = [os.path.join(p,f) for f in os.listdir(p)]
             extensions = [str(data(a)) for a in A]
             paths2 = []
@@ -69,33 +69,40 @@ def Dir_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('dir',Dir,Dir_0)
 #
-#def pickle_out(domain,A,B):
-#    A0,AR = A.split()
-#    A1,AR = AR.split()
-#    if A0.atom() and A1.atom():
-#        import Number
-#        if len(Number.ints(A0))>0:
-#            n = Number.ints(A0)[0]
-#            if is_code(A1[0]):
-#                path = A1[0]
-#                import pickle
-#                import Evaluate
-#                with open(path,'wb') as f:
-#                    D = Evaluate.generic(B,n)
-#                    f.write(pickle.dumps(D))
-#                    return data()
-#def pickle_out_0(domain,A,B):
-#    if B.empty(): return data()
-#DEF.add(data(b'pickle_out'),pickle_out,pickle_out_0)
-#def pickle_in(domain,A,B):
-#    B0,BR = B.split()
-#    if B0.atom():
-#        if is_code(B0[0]):
-#            path = B0[0]
-#            with open(path,'rb') as f:
-#                import pickle
-#                D = pickle.loads(f.read())
-#                return D + one(b'pickle_in',A,BR)
-#def pickle_in_0(domain,A,B):
-#    if B.empty(): return data()
-#DEF.add(data(b'pickle_in'),pickle_in,pickle_in_0)
+#   Serialize input after evaluating to argument specified depth
+#
+#   demo: dir : .
+#
+def out(domain,A,B):
+    if len(A)>0 and all([a.atom() for a in A]):
+        path = str(A[0])
+        import Number,Evaluate
+        ns = Number.ints(A)
+        depth = Evaluate.DEPTH
+        if len(ns)==1 and ns[0]>0: depth = ns[0]
+        try:
+            import os
+            dir = os.path.dirname(path)
+            if os.path.exists(dir):
+                with open(path,'wb') as f:
+                    import pickle
+                    f.write(pickle.dumps(Evaluate.depth(B,depth)[0]))
+                    return data()
+        except Exception as e:
+            raise error("Error writing to ["+path+"]: ["+str(e)+"]")
+CONTEXT.define('out',out)
+
+def In_1(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(): return ((domain+A)|BL) + ((domain+A)|BR)
+def In_2(domain,A,B):
+    if B.atom():
+        path = str(B[0])
+        import os
+        if os.path.exists(path):
+            with open(path,'rb') as f:
+                import pickle
+                return pickle.loads(f.read())
+def In_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('in',In_2,In_0,In_1)

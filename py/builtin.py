@@ -1,4 +1,5 @@
 #
-#   Import built in definitions 
+#   Import built in definitions
 #
-import Code,Basic,Language,Apply,Help,Sequence,Define,Logic,Compile,IO,Import,Text 
+import Code,Basic,Language,Apply,Help,Sequence,\
+       Define,Logic,Compile,IO,Import,Text,Path

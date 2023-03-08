@@ -86,7 +86,7 @@ CONTEXT.define('one',one)
 #   int1 :
 #   int1 : foo : bar
 #   ap nat1 : a 2 3 -15
-#   ap float1 : a 2 3 -15 
+#   ap float1 : a 2 3 -15
 #
 def Int(domain,A,B):
     if B.atom():

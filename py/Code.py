@@ -18,13 +18,15 @@ Unicode[bit0] = "0"
 #   bits, bytes and byte sequences are atomic with
 #   domain z=().
 #
-CONTEXT.dom(data(),Definition(data())) 
+CONTEXT.dom(data(),Definition(data()))
 #CONTEXT.add(Definition(z))
 #
 #   create a coda byte from a single character as an 8 bit bit string with domain bit0
 #
 def byte2coda(c):
-    s = str(bin(ord(c)))
+    if type(c)==type(1): s = str(bin(c))      # to handle both single chars
+    else               : s = str(bin(ord(c))) # ...and single integer bytes
+#    s = str(bin(ord(c)))
     s = s.split('0b')[-1]
     B = []
     for x in s:
@@ -33,7 +35,6 @@ def byte2coda(c):
         else: raise error('Error converting byte')
     while len(B)<8:
         B = [bit0]+B
-#    return data(bit0)|data(*B)
     return data()|data(*B)
 
 for c in string.printable: Unicode[byte2coda(c)] = c
@@ -105,6 +106,43 @@ def endswith(domain,A,B):
 def endswith_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('endswith',endswith,endswith_0)
+#
+#   Join codes with argument provided separator.
+#
+#   demo: join , : a b c
+#   demo: join <-> : a b c
+#   demo: count : join < > : a b c
+#   demo: join <> : a b c
+#   demo: join : a b c
+#
+def join(domain,A,B):
+    if all([a.atom() for a in A]+[b.atom() for b in B]):
+        sep = ''.join([str(a) for a in A])
+        return da(sep.join([str(b) for b in B]))
+CONTEXT.define('join',join)
+#
+#   Get all codes up to argument specified length
+#   with input alphabet.
+#
+#   demo: codes 3 : a b c
+#
+def codes(domain,A,B):
+    if all([a.atom() for a in A]+[b.atom() for b in B]):
+        import Number
+        maxs = Number.ints(A)
+        if len(maxs)==1:
+            alpha = [str(b) for b in B]
+            txts = [w for w in _alphawords(maxs[0],'',alpha)]
+            return data(*[co(txt) for txt in txts])
+def codes_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('codes',codes,codes_0)
+
+def _alphawords(max,base,alphabet):
+    if len(base)<max:
+        for c in alphabet:
+            yield base+c
+            for w in _alphawords(max,base+c,alphabet): yield w
 #
 #   Display input in native "pure" form.
 #

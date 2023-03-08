@@ -14,15 +14,13 @@ readline.parse_and_bind("tab: complete")
 from start import *
 import Text,Evaluate,Language
 
-DEPTH = 100 # maximum evaluation depth
 EXIT = ['exit','quit']
 try:
     while True:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
-            D,depth = Evaluate.depth(Language.lang(line,data(),data()),DEPTH)
-#            if not D.empty(): sys.stdout.write(Code.pretty(D)+'\n')
+            D = Evaluate.default(Language.lang(line,data(),data()))
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
             print('')

@@ -20,7 +20,7 @@ class EchoKernel(Kernel):
         'mimetype': 'text/plain',
         'file_extension': '.co',
     }
-    banner = "Echo kernel - as useful as a parrot"
+    banner = "Coda"
 #
 #    def do_execute(self, code, silent, store_history=True, user_expressions=None,
 #                   allow_stdin=False):
@@ -32,7 +32,8 @@ class EchoKernel(Kernel):
                 for c in d: L.append(c)
             D = base.data(*L)
             try:
-                IO.OUT(str(Evaluate.depth(D,100)[0]))
+#                IO.OUT(str(Evaluate.depth(D,100)[0]))
+                IO.OUT(str(Evaluate.default(D)))
                 out = IO.OUT.flush()
             except Exception as e:
                 out = IO.OUT.flush()+'...traceback: '+str(e)

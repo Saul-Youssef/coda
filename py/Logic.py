@@ -1,7 +1,7 @@
 #
 #   Logic in coda is "zen logic" (truth is emptiness).
 #
-from base import * 
+from base import *
 #
 #   some/none define the coarsest data classification
 #
@@ -18,7 +18,7 @@ def some(domain,A,B):
     if B.empty (): return data()
 def none(domain,A,B):
     if B.atomic(): return data()
-    if B.empty (): return A 
+    if B.empty (): return A
 CONTEXT.define('some',some)
 CONTEXT.define('none',none)
 #
@@ -51,21 +51,21 @@ def complement(domain,A,B):
     if B.empty (): return da('|')
 CONTEXT.define('^',complement)
 
-ATOM = data(coda(data(),data())) 
+ATOM = data(coda(data(),data()))
 
 def eq_L(domain,A,B):
     AL,AR = data(*A[:1]),data(*A[1:])
     BL,BR = data(*B[:1]),data(*B[1:])
-    if AL.atom() and BL.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR) 
+    if AL.atom() and BL.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR)
 def eq_R(domain,A,B):
     AL,AR = data(*A[:-1]),data(*A[-1:])
     BL,BR = data(*B[:-1]),data(*B[-1:])
     if AR.atom() and BR.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR)
 def eq_(domain,A,B):
     if A==B: return data()
-    if A.atom () and B.empty(): return ATOM
-    if A.empty() and B.atom (): return ATOM
+    if A.atomic () and B.empty(): return ATOM
+    if A.empty() and B.atomic (): return ATOM
     if A.empty() and B.empty(): return data()
     if A.atom () and B.atom (): return ((domain+(A[0].left ()))|B[0].left ()) + \
-                                       ((domain+(A[0].right()))|B[0].right()) 
+                                       ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)

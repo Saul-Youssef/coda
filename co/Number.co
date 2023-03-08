@@ -1,65 +1,63 @@
 #
-#    Natural number types 
-#    
+#    Natural number types
+#
 
 #
-#    Natural is a functor that creates natural number types 
+#    Natural is a functor that creates natural number types
 #
-#    demo: Natural : mynumber 
-#    demo: sum mynumber : 1 2 3 4 
-#    demo: prod mynumber : 1 2 3 4 
+#    demo: Natural : mynumber
+#    demo: sum mynumber : 1 2 3 4
+#    demo: prod mynumber : 1 2 3 4
 #
 def Natural : {
-    (def B:) 
+    (def B:)
     (let (Extra:B):A )
     (let (Make:B) : {(ap put A: ap nat1 : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} B ) 
-    (let (Prod:B) : {ap put A : app int_mult: pre 1 : get A : make A : B} B ) 
-    (let (Sort:B) : {ap put A : int_sort : get A : make A : B} B) 
-    (let (Term:B) : {get A : make A : B} B) 
-    } 
-    
+    (let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} B )
+    (let (Prod:B) : {ap put A : app int_mult: pre 1 : get A : make A : B} B )
+    (let (Sort:B) : {ap put A : int_sort : get A : make A : B} B)
+    (let (Term:B) : {get A : make A : B} B)
+    }
 #
-#    Integer is a functor that creates integer types 
+#    Integer is a functor that creates integer types
 #
-#    demo: Integer : myint 
-#    demo: sum myint : 1 2 3 4 
-#    demo: prod myint : 1 2 3 4 
-#    demo: inv myint : 1 2 3 4 
-#    demo: sort myint : 4 3 1 2 -99 
-#    
+#    demo: Integer : myint
+#    demo: sum myint : 1 2 3 4
+#    demo: prod myint : 1 2 3 4
+#    demo: inv myint : 1 2 3 4
+#    demo: sort myint : 4 3 1 2 -99
+#
 def Integer : {
-    (def B:) 
+    (def B:)
     (let (Extra:B):A )
     (let (Make:B) : {(ap put A: ap int1 : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} B ) 
-    (let (Prod:B) : {ap put A : app int_mult: pre 1 : get A : make A : B} B ) 
-    (let (Sort:B) : {ap put A : int_sort : get A : make A : B} B) 
-    (let (Inv:B)  : {ap put A : int_inv : get A : make A : B} B ) 
-    (let (Term:B) : {get A : make A : B} B) 
+    (let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} B )
+    (let (Prod:B) : {ap put A : app int_mult: pre 1 : get A : make A : B} B )
+    (let (Sort:B) : {ap put A : int_sort : get A : make A : B} B)
+    (let (Inv:B)  : {ap put A : int_inv : get A : make A : B} B )
+    (let (Term:B) : {get A : make A : B} B)
     } 
-    
 #
-#    Float is a functor that creates float types 
+#    Float is a functor that creates float types
 #
-#    demo: Float : myfloat 
-#    demo: sum myfloat : 1.1 2.1 3.1 4.1 
-#    demo: prod myfloat : 1.1 2.1 3.1 4.1 
-#    demo: inv myfloat : 1.1 2.1 3.1 4.1 
-#    
+#    demo: Float : myfloat
+#    demo: sum myfloat : 1.1 2.1 3.1 4.1
+#    demo: prod myfloat : 1.1 2.1 3.1 4.1
+#    demo: inv myfloat : 1.1 2.1 3.1 4.1
+#
 def Float : {
-    (def B:) 
+    (def B:)
     (let (Extra:B):A )
     (let (Make:B) : {(ap put A: ap float1 : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : app float_add : pre 0 : get A : make A : B} B ) 
-    (let (Prod:B) : {ap put A : app float_mult: pre 1 : get A : make A : B} B ) 
+    (let (Sum:B)  : {ap put A : app float_add : pre 0 : get A : make A : B} B )
+    (let (Prod:B) : {ap put A : app float_mult: pre 1 : get A : make A : B} B )
     (let (Sort:B) : {ap put A : float_sort : get A : make A : B} B)
-    (let (Inv:B)  : {ap put A : float_inv : get A : make A : B} B) 
-    (let (Term:B) : {get A : make A : B} B) 
-    } 
+    (let (Inv:B)  : {ap put A : float_inv : get A : make A : B} B)
+    (let (Term:B) : {get A : make A : B} B)
+    }
 #
-#   Three basic number types for convenience. 
+#   Three basic number types for convenience.
 #
-Natural : n 
-Integer : int 
-Float   : float 
+Natural : n
+Integer : int
+Float   : float

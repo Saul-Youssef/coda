@@ -55,18 +55,24 @@ def Float : {
     (let (Inv:B)  : {ap put A : float_inv : get A : make A : B} B)
     (let (Term:B) : {get A : make A : B} B)
     }
-
-#....write me
-#def String : {
-#    (def B:)
-#    (let (Extra:B):A)
-#    (let (Make:B)) :
-#    }
-
-
 #
-#   Three basic number types for convenience.
+#   Turn each input into a character sequence
+#
+#   demo: str : 1 2 (put:)
+#
+def str : {ap join : B}
+
+def String : {
+    (def B:)
+    (let (Extra:B):A)
+    (let (Make:B) : {(ap put A : str : B) (has A:B) (apall (Extra:A):B)} B )
+    (let (Sum:B)  : {ap put A : join : get A : make A : B} B )
+    (let (Term:B) : {get A: make A : B} B )
+    }
+#
+#   A few basic types for convenience
 #
 Natural : n
 Integer : int
 Float   : float
+String  : string

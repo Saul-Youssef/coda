@@ -1,9 +1,32 @@
 #
 #   Common properties of multiple types
 #
-def make : {(Make:A):B} 
-def sum  : {(Sum:A):B}
-def prod : {(Prod:A):B}
-def term : {(Term:A):B}
-def sort : {(Sort:A):B}
-def inv  : {(Inv:A):B} 
+#  make/Make - type creation from input - a "type" in the coda sense
+#  sum/Sum - Abelian sum
+#  prod/Prod - Associative multiplication
+#  sort/Sort - Sort compatible with a partial order
+#  equiv/Equiv - Equivalence classes of an equivalence relation
+#  inv/Inv - Involution (inv T:inv T:X)
+#
+#
+def make  : {(Make:A) A : B}
+def sum   : {(Sum:A)  A : B}
+def prod  : {(Prod:A) A : B}
+def term  : {(Term:A) A : B}
+def sort  : {(Sort:A) A : B}
+def inv   : {(Inv:A)  A : B}
+def equiv : {(Equiv:A)A : B}
+
+#
+#   demo: Copy n : n_copy
+#   demo: sum n_copy : 1 2 3
+#
+def Copy : {
+   ( def B: )
+   (let (Extra:B) : (Extra:A))
+   (let (Make:B)  : (Make:A))
+   (let (Sum:B)   : (Sum:A))
+   (let (Prod:B)  : (Prod:A))
+   (let (Sort:B)  : (Sort:A))
+   (let (Term:B)  : (Term:A))
+   }

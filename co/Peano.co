@@ -1,0 +1,20 @@
+#
+#   As an exercise, let's make a native implementation 
+#   of the natural numbers without using Python underneath.
+#   This is partly as an exercise in making types, partly 
+#   as a starting point for demonstrations of proofs and 
+#   math searching.  
+#
+#   In order to be used like other types, we follow the 
+#   convention in Type.co 
+#
+
+#
+#   We'll represent natural numbers with a container of 
+#   "atoms" (:).  First, the container...
+#
+#def peano : 
+#
+#   There are a number of conventional names for 
+
+#let (Make:peano) : 

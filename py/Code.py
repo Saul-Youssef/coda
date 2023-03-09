@@ -168,5 +168,21 @@ def str_atom_coda(c,ch):
         return ch
     else:
         return '('+str_atom_data(c.left(),ch)+':'+str_atom_data(c.right(),ch)+')'
-
 def str_atom_data(d,ch): return ''.join([str_atom_coda(c,ch) for c in d])
+
+
+def data_display(D,margin):
+    for c in D: 
+        for line in coda_display(c,margin): yield line 
+    
+def coda_display(c,margin):
+    if c in Unicode: 
+        yield margin+Unicode[c]
+    elif len(margin)+len(str(c))<80 and len(str(c))<20:
+        yield margin+str(c)
+    else:
+        yield margin+'('
+        for line in data_display(c.left(),margin+margin): yield line 
+        yield margin+':'
+        for line in data_display(c.right(),margin+margin): yield line 
+        yield margin+')'

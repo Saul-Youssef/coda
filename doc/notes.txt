@@ -1,0 +1,6 @@
+
+
+Replace tracebacks with (error:...) in definitions?
+
+Make definitions lazy like everything else. 
+

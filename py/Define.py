@@ -52,5 +52,5 @@ def Let(domain,D,V):
     if (not D is None) and (not V is None) and len(D)>0:
         cod = D[0]
         CONTEXT.val(cod,V)
-        return data()
+    return data()
 CONTEXT.define('let',Let)

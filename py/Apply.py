@@ -81,18 +81,6 @@ def dis_0(domain,A,B):
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
 CONTEXT.define('dis',dis_1,dis_0)
-
-#def disr_1(domain,A,B):
-#    AF,AR = A .split_left()
-#    AR,AL = AR.split_right()
-#    if AF.atom() and AL.atom():
-#        return data(colon(AF+AL,B)) + one(b'disr',AR+AL,B)
-#def disr_0(domain,A,B):
-#    AF,AR = A.split_left()
-#    AR,AL = AR.split_right()
-#    if AF.empty() or AL.empty(): return data()
-#DEF.add(data(b'disr'),disr_1,disr_0)
-
 #
 #   adis A : B applies each a in A to each b in B.
 #
@@ -110,51 +98,28 @@ def adis_1(domain,A,B):
 def adis_2(domain,A,B):
     if A.empty(): return data()
 CONTEXT.define('adis',adis_1,adis_2)
-
-#DEF.add(data(b'adis'),adis_1,adis_2)
-#    if A0.atom(): return one(b'ap',A0,B) + one(b'adis',AR,B)
-
-#    if A0.atom(): return data(colon(A0,B)) + one(b'apall',AR,B)
-#DEF.add(data(b'apall'),apall,apall_0)
-
 #
 #   apx X A : B gives (X a1:b1) (X a1:b2)... for all ai in A and bi in B.
 #
 #   This is useful, for instance for making pairs.
 #
+#   demo: apx put a b c : 1 2 3
 #   demo: apx {put bin : A B} 1 2 3 : a b c
 #   demo: apx int_add 1 2 3 : 1000 2000 3000
 #
-#def apx_1(domain,A,B):
-#    if all([a.atom() for a in A] and [b.atom() for b in B]):
-#        L = []
-#        As = [a for a in A]
-#        Bs = [b for b in B]
-#        print('aaaa',len(As),len(Bs))
-#        if len(As)>0:
-#            c = As.pop(0)
-#            for a in As:
-#                for b in Bs: L.append((c+a)|b)
-#        return data(*L)
-#def apx_0(domain,A,B):
-#    if B.empty(): return data()
-#CONTEXT.define('apx',apx_1,apx_0)
-
-#DEF.add(data(b'apx'),apx_1,apx_0)
-#
-#    if all([data(a).atom() for a in A]) and \
-#       all([data(b).atom() for b in B]):
-#        L = []
-#        As = [a for a in A]
-#        Bs = [b for b in B]
-#        if len(As)>0:
-#            X = As.pop(0)
-#            for a in As:
-#                for b in Bs:
-#                    L.append(colon(data(X,a),data(b)))
-#        return data(*L)
-
-
+def apx_1(domain,A,B):
+    if all([a.atom() for a in A]+[b.atom() for b in B]):
+        L = []
+        As = [a for a in A]
+        Bs = [b for b in B]
+        if len(As)>0:
+            c = As.pop(0)
+            for a in As:
+                for b in Bs: L.append((c+a)|data(b))
+        return data(*L)
+def apx_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('apx',apx_1,apx_0)
 #
 #   apif A : B gets the elements b of B with A:b true.
 #
@@ -174,49 +139,3 @@ def apif_1(domain,A,B):
 def apif_2(domain,A,B):
     if B.atom(): return data((da('if')+data(A|B))|B)
 CONTEXT.define('apif',apif_0,apif_2,apif_1)
-
-#DEF.add(data(b'apif'),apif_1,apif_2,apif_0)
-#return one(b'apif',A,BL) + one(b'apif',A,BR)
-#    if B.atom(): return one(b'if',data(colon(A,B)),B)
-
-
-#
-#   apleft1 A : b B -> ((A:b) : B) (apleft A : B)
-#
-#   demo: apleft1 count : a
-#   demo: ap aleft1 count : a b c
-#
-#   This is a useful operation in for example, making equivalence classes.
-#
-#def apleft1(domain,A,B):
-#    if B.atom(): return
-#    if B.atom(): return data(colon(data(colon(A,B)),B))
-#DEF.add(data(b'apleft1'),apleft1)
-#
-#   apby processes it's input by an A-specified number of items at a time.
-#
-#   For instance, the first demo processes it's input two at a time.
-#
-#   demo: apby 2 count : a b c d e f g
-#
-#def apby(A,B):
-#    A0,AR = A.split()
-#    import Number
-#    if A0.atom() and len(Number.ints(A0))==1:
-#        n = Number.ints(A0)[0]
-#        B2 = []; BR = B
-#        while not BR.empty() and len(B2)<n:
-#            B0,BR = BR.split()
-#            if B0.atom(): B2.append(B0[0])
-#        if len(B2)==n:
-#            return data(colon(AR,data(*B2))) + one(b'apby',A,BR)
-#def apby_0(A,B):
-#    if B.empty(): return data()
-#def apby_1(A,B):
-#    A0,AR = A.split()
-#    import Number
-#    if A0.atom() and len(Number.ints(A0))==1:
-#        n = Number.ints(A0)[0]
-#        if all([data(b).atom() for b in B]) and len(B)<n:
-#            return data()
-#DEF.add(data(b'apby'),apby,apby_0,apby_1)

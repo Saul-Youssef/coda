@@ -1,8 +1,0 @@
-#
-#    Functors create types
-#
-#    The Copy functor copies existing types.
-#
-#    The Copy functor takes the name of a type as an argument
-#    and copies that type with an argument specified name.
-#

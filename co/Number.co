@@ -2,75 +2,48 @@
 #    Natural number types and string
 #
 
-#
-#    Natural is a functor that creates natural number types
-#
-#    demo: Natural : mynumber
-#    demo: sum mynumber : 1 2 3 4
-#    demo: prod mynumber : 1 2 3 4
-#
 def Natural : {
-    (def B:)
-    (let (Extra:B):A )
-    (let (Make:B) : {(ap put A: ap nat1 : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} B )
-    (let (Prod:B) : {ap put A : app int_mult: pre 1 : get A : make A : B} B )
-    (let (Sort:B) : {ap put A : int_sort : get A : make A : B} B)
-    (let (Term:B) : {get A : make A : B} B)
-    }
-#
-#    Integer is a functor that creates integer types
-#
-#    demo: Integer : myint
-#    demo: sum myint : 1 2 3 4
-#    demo: prod myint : 1 2 3 4
-#    demo: inv myint : 1 2 3 4
-#    demo: sort myint : 4 3 1 2 -99
-#
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : { (ap put A: ap nat1 : B) (has A:B) (apall (Extra:A):B) } )
+   ( let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : app int_mult : pre 1 : get A : make A : B} )
+   ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
+   ( let (Term:B) : {get A : make A : B} )
+   }
+
 def Integer : {
-    (def B:)
-    (let (Extra:B):A )
-    (let (Make:B) : {(ap put A: ap int1 : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} B )
-    (let (Prod:B) : {ap put A : app int_mult: pre 1 : get A : make A : B} B )
-    (let (Sort:B) : {ap put A : int_sort : get A : make A : B} B)
-    (let (Inv:B)  : {ap put A : int_inv : get A : make A : B} B )
-    (let (Term:B) : {get A : make A : B} B)
-    }
-#
-#    Float is a functor that creates float types
-#
-#    demo: Float : myfloat
-#    demo: sum myfloat : 1.1 2.1 3.1 4.1
-#    demo: prod myfloat : 1.1 2.1 3.1 4.1
-#    demo: inv myfloat : 1.1 2.1 3.1 4.1
-#
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : { (ap put A: ap int1 : B) (has A:B) (apall (Extra:A):B) } )
+   ( let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : app int_mult : pre 1 : get A : make A : B} )
+   ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
+   ( let (Term:B) : {get A : make A : B} )
+   }
+
 def Float : {
-    (def B:)
-    (let (Extra:B):A )
-    (let (Make:B) : {(ap put A: ap float1 : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : app float_add : pre 0 : get A : make A : B} B )
-    (let (Prod:B) : {ap put A : app float_mult: pre 1 : get A : make A : B} B )
-    (let (Sort:B) : {ap put A : float_sort : get A : make A : B} B)
-    (let (Inv:B)  : {ap put A : float_inv : get A : make A : B} B)
-    (let (Term:B) : {get A : make A : B} B)
-    }
-#
-#   Turn each input into a character sequence
-#
-#   demo: str : 1 2 (put:)
-#
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : { (ap put A: ap float1 : B) (has A:B) (apall (Extra:A):B) } )
+   ( let (Sum:B)  : {ap put A : app float_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : app float_mult : pre 1 : get A : make A : B} )
+   ( let (Sort:B) : {ap put A : float_sort : get A : make A : B} )
+   ( let (Term:B) : {get A : make A : B} )
+   }
+
 def str : {ap join : B}
 
 def String : {
-    (def B:)
-    (let (Extra:B):A)
-    (let (Make:B) : {(ap put A : str : B) (has A:B) (apall (Extra:A):B)} B )
-    (let (Sum:B)  : {ap put A : join : get A : make A : B} B )
-    (let (Term:B) : {get A: make A : B} B )
-    }
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : {(ap put A : str : B) (has A:B) (apall (Extra:A):B)} )
+   ( let (Sum:B)  : {ap put A : join : get A : make A : B} )
+   ( let (Term:B) : {get A : make A : B} )
+   }
+
 #
-#   A few basic types for convenience
+#   A few basic types for convenience and demos
 #
 Natural : n
 Integer : int

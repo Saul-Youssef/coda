@@ -27,11 +27,13 @@ def ap_2(domain,A,B):
     if len(BL)>0: return ((domain+A)|BL) + ((domain+A)|BR)
 CONTEXT.define('ap',ap_0,ap_1,ap_2)
 #
-#   apall applies each argument to the entire input.
+#   apall/apeach each argument to all/each input respectively.
 #
 #   demo: apall pass : a b c
 #   demo: apall pass pass : a b c
 #   demo: apall {first:B} {rev:last 3:B} : a b c d e
+#   demo: apall  {put 1:B} {put 2:B} {put 3:B} : a b c
+#   demo: apeach {put 1:B} {put 2:B} {put 3:B} : a b c
 #
 def apall(domain,A,B):
     A0,AR = A.split()
@@ -41,6 +43,12 @@ def apall_0(domain,A,B):
 def apall_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('apall',apall_1,apall_0,apall)
+def apeach(domain,A,B):
+    A0,AR = A.split()
+    if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
+def apeach_0(domain,A,B):
+    if A.empty() or B.empty(): return data()
+CONTEXT.define('apeach',apeach,apeach_0)
 #
 #   Sequential version of binary operator
 #

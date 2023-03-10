@@ -19,5 +19,5 @@ def nth : {dis nth1 A : B}
 #
 #def count : {sum n : ap one : B}
 #
-def count : {app int_add : ap one : B}
+#def count : {app int_add : ap one : B}
 #

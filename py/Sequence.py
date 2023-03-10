@@ -79,6 +79,8 @@ CONTEXT.define('tail',tail_0,tail_1,tail_2)
 #   demo: last 1 : a b c
 #   demo: last 2 : a b c
 #
+def last_0(domain,A,B):
+    if B.empty(): return data()
 def last_1(domain,A,B):
     if A.empty(): return data((domain+da('1'))|B)
 def last_2(domain,A,B):
@@ -91,7 +93,7 @@ def last_3(domain,A,B):
         if n>=1:
             L,R = data(*B[:-1]),data(*B[-1:])
             if R.atom(): return data((domain+da(str(n-1)))|L) + R
-CONTEXT.define('last',last_1,last_2,last_3)
+CONTEXT.define('last',last_0,last_1,last_2,last_3)
 #
 #   Repeats the arguments for each input.
 #

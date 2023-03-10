@@ -2,5 +2,10 @@
 
 Replace tracebacks with (error:...) in definitions?
 
-Make definitions lazy like everything else. 
+Make definitions lazy like everything else.
 
+Make
+
+let x? : stuff
+
+ok if it's a repeat of the same definition.

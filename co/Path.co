@@ -4,3 +4,6 @@
 #     It is an example of using "Extras" to create data.  This was
 #     called "extensions" in coda-classic.
 #
+String : path
+String {fn : last : split </> : get path: B} : fn
+String {ext : last : split <.> : get fn : make fn : B} : ext

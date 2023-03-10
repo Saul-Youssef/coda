@@ -26,9 +26,6 @@ class coda(object):
         return dom
     def __add__ (self,c): return data(self,c)
     def atom(self): return CONTEXT.identity(self)
-#        print('aaaaa',self)
-#        print('aaaaa',self in CONTEXT,type(CONTEXT[self]))
-#        return self in CONTEXT and len(CONTEXT[self])==0
     def eval(self): # self -> data, evaluating recursively
         c = self.left().eval()|self.right().eval()
         if c in CONTEXT: return CONTEXT[c](c)

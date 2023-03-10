@@ -75,6 +75,11 @@ def one(domain,A,B):
     if B.atom(): return da('1')
     if B.empty(): return data()
 CONTEXT.define('one',one)
+def count(domain,A,B):
+    if all([b.atom() for b in B]): return da(str(len(B)))
+def count_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('count',count,count_0)
 #
 #   Select atoms consisting of a code that translates to an integer.
 #

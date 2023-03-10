@@ -25,7 +25,10 @@ class coda(object):
         if str(dom).startswith('{') and str(dom).endswith('}'): return da('language')
         return dom
     def __add__ (self,c): return data(self,c)
-    def atom(self): return self in CONTEXT and len(CONTEXT[self])==0
+    def atom(self): return CONTEXT.identity(self)
+#        print('aaaaa',self)
+#        print('aaaaa',self in CONTEXT,type(CONTEXT[self]))
+#        return self in CONTEXT and len(CONTEXT[self])==0
     def eval(self): # self -> data, evaluating recursively
         c = self.left().eval()|self.right().eval()
         if c in CONTEXT: return CONTEXT[c](c)
@@ -88,6 +91,7 @@ class Definitions(object):
         if co.domain() in self._domain or co in self._domain: raise error(str(co)+' is already defined')
         self._value[co] = da
     def __contains__(self,co): return co in self._value or co.domain() in self._domain
+    def identity(self,co): return co.domain() in self._domain and len(self._domain[co.domain()])==0
     def __getitem__(self,co):
         if co in self._value: return lambda c : self._value[c]
         if co.domain() in self._domain: return self._domain[co.domain()]

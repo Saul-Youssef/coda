@@ -71,7 +71,9 @@ class Definition(object):
         domain,A = c.left().split(); B = c.right()
         for pf in self._pfs:    # may be zero or more pfs
             R = pf(domain,A,B)  # <- apply definition
-            if not R is None: return R
+            if not R is None:
+                import Stat; Stat.STAT(domain,A,B,R)
+                return R
         return data(c)
 #
 #   Global collection of definitions with disjoint domains

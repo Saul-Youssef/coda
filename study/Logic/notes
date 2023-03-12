@@ -1,0 +1,12 @@
+
+
+1. Prepare talk
+2. Category theory theory
+3. Functors, Set, Count, Equiv ?
+4. Caching, speedups, parallelism
+5. Doing group theory as an example
+6. Tables
+7. Terminal output using Term instead of str
+8. Search, Classification, Machine learning
+9. Capture Keyboardinterrupts
+10. Make re-defining the same thing OK

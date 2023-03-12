@@ -1,0 +1,73 @@
+#
+#    Algebraic properties
+#
+#
+#   Idempotent
+#
+#   demo: Idempotent : pass
+#   demo: Idempotent : first 2
+#
+def Idempotent : { B : B : X? = B : X? }
+def Involution : { B : B : X? = X? }
+#
+#   Distributive
+#
+#   demo: Distributive : Z?
+#   demo: Identitive : Z?
+#   demo: Identitive : pass
+#   demo: Identitive : null
+#
+def Distributive : { B : X? Y? = (B:X?) (B:Y?) }
+def Identitive : {
+      (X? Y? = (B:X?) Y?   )
+      (X? Y? = X? (B:Y?)   )
+      ((X?:Y?) = ((B:X?):Y?) )
+      ((X?:Y?) = (X?:(B:Y?)) )
+    }
+#
+#   A type is distributive, idempotent data
+#
+def Type : { (Idempotent : make B) (Distributive : make B) }
+#
+#   Commutative
+#
+#   demo: Commutative : pass
+#   demo: Commutative : sum n
+#   demo: Commutative : prod n
+#
+def Commutative : { B : X? Y? = B : Y? X? }
+#
+#   Associative
+#
+#   demo: Associative : pass
+#   demo: Associative : prod n
+#   demo: Associative : sum n
+#
+def Associative : { B : X? ( B : Y? Z? ) = B : ( B : X? Y? ) Z? }
+#
+#   Category
+#
+def Category : { B : X? Y? = B : (B:X?) (B:Y?) }
+def Morphism : { A*B = B*A }
+#
+#   Distributes Over, as when product distributes over sum in
+#   a ring or vector space.
+#
+#   demo: DistributesOver prod n : sum n
+#
+def DistributesOver : { A : (B : X? Y?) = ( A : B : X?) (A : B : Y?) }
+#
+#   Identity
+#
+#   demo: Identity prod n : n : 1
+#   demo: Identity sum n : n : 0
+#
+def LeftIdentity : { A : B X? = X? }
+def RightIdentity : { A : X? B = X? }
+def Identity : { (LeftIdentity A:B) (RightIdentity A:B) }
+#
+#   collect A : B collects data with the same (A:b) value with b in B.
+#
+#   demo: collect {count:get bin:B} : (bin:1 2 3) (bin:a b c) (bin:x) (bin:x y) (bin:1 2)
+#
+def collect : {collect_left : apleft A : B}

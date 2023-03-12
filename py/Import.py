@@ -12,7 +12,7 @@ def home(domain,A,B):
     import inspect
     path = inspect.getabsfile(home)
     path = '/'.join(path.split('/')[:-2])
-    return da(path) 
+    return da(path)
 CONTEXT.define('home',home)
 #
 #   The startup directory of the currently running software
@@ -32,12 +32,13 @@ CONTEXT.define('start',start)
 
 def startcontext(domain,A,B):
     import Language
-    src = 'coda : source : readpath : endswith </coda.co> : dir co : start : '
+    src = 'codx : source : readpath : endswith </coda.co> : dir co : start : '
     return Language.lang(src,data(),data())
 CONTEXT.define('startcontext',startcontext)
 
 def homecontext(domain,A,B):
     import Language
-    src = 'coda : source : readpath : dir co : endswith </co> : dir : home :'
-    return Language.lang(src,data(),data()) 
+#    src = 'coda : source : readpath : dir co : endswith </co> : dir : home :'
+    src = 'codx : source : readpath : dir co : endswith </co> : dir : home :'
+    return Language.lang(src,data(),data())
 CONTEXT.define('homecontext',homecontext)

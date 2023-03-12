@@ -43,12 +43,16 @@ def apall_0(domain,A,B):
 def apall_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('apall',apall_1,apall_0,apall)
-def apeach(domain,A,B):
-    A0,AR = A.split()
-    if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
-def apeach_0(domain,A,B):
-    if A.empty() or B.empty(): return data()
-CONTEXT.define('apeach',apeach,apeach_0)
+#
+#    apeach is only a special case of apx
+#def apeach(domain,A,B):
+#    A0,AR = A.split()
+#    if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
+#def apeach_0(domain,A,B):
+#    if A.empty() or B.empty(): return data()
+#CONTEXT.define('apeach',apeach,apeach_0)
+#
+
 #
 #   Sequential version of binary operator
 #

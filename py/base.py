@@ -71,9 +71,7 @@ class Definition(object):
         domain,A = c.left().split(); B = c.right()
         for pf in self._pfs:    # may be zero or more pfs
             R = pf(domain,A,B)  # <- apply definition
-            if not R is None:
-                import Stat; Stat.STAT(domain,A,B,R)
-                return R
+            if not R is None: return R
         return data(c)
 #
 #   Global collection of definitions with disjoint domains
@@ -84,11 +82,14 @@ class Definitions(object):
         self._value  = {}      # definitions with invariant value
         self._used   = set([]) # domains used by value definitions
     def dom(self,domain,pf):
-        if domain in self._domain or domain in self._used: raise error(str(domain)+' is already defined.')
+        if domain in self._used: raise error(str(domain)+' is already in use.')
+        if domain in self._domain and not self._domain[domain]==pf: raise error(str(domain)+' is already defined.')
         self._domain[domain] = pf
     def val(self,co,da):
-        if co.domain() in self._domain or co in self._domain: raise error(str(co)+' is already defined')
+        if co.domain() in self._domain: raise error('The domain of ['+str(co)+'] is already in use.')
+        if co in self._domain and not co[self._domain] == da: raise error(str(co)+' is already defined')
         self._value[co] = da
+        self._used.add(co.domain())
     def __contains__(self,co): return co in self._value or co.domain() in self._domain
     def identity(self,co): return co.domain() in self._domain and len(self._domain[co.domain()])==0
     def __getitem__(self,co):

@@ -82,6 +82,5 @@ def eval(domain,A,B):
         ns = Number.ints(A)
         n = 1
         if len(ns)==1: n = ns[0]
-        print('aaaaaaa EVAL',n)
         return depth(B,n)[0]
 CONTEXT.define('eval',eval)

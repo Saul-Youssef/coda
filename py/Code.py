@@ -10,19 +10,42 @@ import string
 Unicode = {}  # coda to unicode
 
 z = data()
-bit0 = z|z
-bit1 = z|data(bit0)
-Unicode[bit1] = "1"
-Unicode[bit0] = "0"
+atom = z|z
+bit0 = data(atom)|data()
+bit1 = data(atom)|data(atom)
+Unicode[atom] = "\u220E"
+Unicode[atom] = "\u229B"
+Unicode[atom] = "\u23FA"
+Unicode[atom] = "\u25C9"
+Unicode[atom] = "\u25CE"
+#Unicode[atom] = "\u25D1"
+#Unicode[atom] = "\u2B24"
+#Unicode[bit0] = "0"
+#Unicode[bit1] = "1"
+
+#bit0 = z|z
+#bit1 = z|data(bit0)
+#Unicode[bit1] = "1"
+#Unicode[bit0] = "0"
+#Unicode[bit0] = "\u2299"
 #Unicode[bit1] = '\u25A1'
 #Unicode[bit0] = '\u25A0'
 #Unicode[bit1] = u"\U0001D7D9"
 #Unicode[bit0] = u"\U0001D7D8"
+Unicode[bit1] = u"\U0001D75E"
+Unicode[bit0] = u"\U0001D7EC"
+
+#  Display atom, 0-bit and 1-bit in ascii instead of fancy unicode characters
+def ascii_bits():
+    Unicode[atom] = '*'
+    Unicode[bit0] = '0'
+    Unicode[bit1] = '1'
 #
 #   bits, bytes and byte sequences are atomic with
 #   domain z=().
 #
 CONTEXT.dom(data(),Definition(data()))
+CONTEXT.dom(data(atom),Definition(data(atom)))
 CONTEXT.dom(data(bit1),Definition(data(bit1)))
 CONTEXT.dom(data(bit0),Definition(data(bit0)))
 #CONTEXT.add(Definition(z))
@@ -51,8 +74,7 @@ def text2coda(text): return data(bit1)|data(*[byte2coda(c) for c in text])
 def data2unicode(D,sep=' '): return sep.join([coda2unicode(c) for c in D])
 def coda2unicode(c):
     if c in Unicode: return Unicode[c]
-    if c.domain() in [data(),data(bit1),data(bit0)]:
-        return data2unicode(c.right(),'')
+    if c.domain() in [data(atom),data(bit1),data(bit0)]: return data2unicode(c.right(),'')
     return '('+data2unicode(c.left(),' ')+':'+data2unicode(c.right(),' ')+')'
 #
 #   Wrap code with a one character prefix and postfix.

@@ -5,7 +5,7 @@ from base import *
 #
 #    The coda language compiler
 #
-special_characters = ' :(){}<>*/'
+special_characters = ' :(){}<>*|/'
 #
 #   lang takes unicode string code and data A,B and makes it into
 #   the corresponding data for the compiler.
@@ -31,6 +31,13 @@ def language(domain,A,B):
     if Equal():
         front,back = Equal.parts()
         return data((da('=')+lang(front,A,B))|lang(back,A,B))
+#
+#   A|B -> (| A:B)
+#
+    Or = parse('|',s,'left')
+    if Or():
+        front,back = Or.parts()
+        return data((da('|')+lang(front,A,B))|lang(back,A,B))
 #
 #   The essential operations are concatenation and colon.  The rest is syntactic sugar.
 #

@@ -31,6 +31,8 @@ CONTEXT.define('none',none)
 #
 #  demo: 1=1
 #  demo: 1=2
+#  demo: (1=2)|(2=3)
+#  demo: (1=2)|(1=1)
 #  demo: 1=()
 #  demo: <>=()
 #  demo: x?=1
@@ -46,12 +48,13 @@ CONTEXT.define('none',none)
 #  demo: ^: 1 2 3 4
 #  demo: ^: (foo:bar)
 #
-def complement(domain,A,B):
-    if B.atomic(): return data()
-    if B.empty (): return da('|')
-CONTEXT.define('^',complement)
 
 ATOM = data(coda(data(),data()))
+
+def complement(domain,A,B):
+    if B.atomic(): return data()
+    if B.empty (): return ATOM
+CONTEXT.define('^',complement)
 
 def eq_L(domain,A,B):
     AL,AR = data(*A[:1]),data(*A[1:])
@@ -69,3 +72,10 @@ def eq_(domain,A,B):
     if A.atom () and B.atom (): return ((domain+(A[0].left ()))|B[0].left ()) + \
                                        ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)
+
+
+def or_(domain,A,B):
+    if A.empty() or B.empty(): return data()
+def or_1(domain,A,B):
+    if A.atomic() and B.atomic(): return ATOM
+CONTEXT.define('|',or_,or_1)

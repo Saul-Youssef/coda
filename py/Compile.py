@@ -30,3 +30,16 @@ CONTEXT.define('coda',coda_1,coda_0)
 def coda(txt):
     import Help,Language
     for t in Help.blocks(Help.comments(txt)): yield Language.lang(t,data(),data())
+
+def codx(domain,A,B):
+    if all([b.atom() for b in B]):
+        for b in B:
+            txt = str(b)
+            for d in coda(txt):
+                import Evaluate
+                r = Evaluate.resolve(d,100)
+                if r is None: raise error("Did not fully resolve ["+txt+"]")
+        return data()
+def codx_0(domain,A,B):
+    if B.empty(): return ()
+CONTEXT.define('codx',codx,codx_0)

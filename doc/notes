@@ -5,12 +5,10 @@ o Make definitions evaluate like everything else
 o Do group theory as an example
 o Classification, Search, Machine learning
      Classify even and odd peano integers
-o Add peano
 o Use Term:T in terminal output
 o Theoretical results re: Category theory.  Analogue of n-Categories, ?
 o Adjoint functor theorem, re-produce Aldor paper
 o Functors
-o Write up Godel tutorial
 o Finish the rest of the tutorials
 o Speed up with caching
 o Speed up with parallelism
@@ -19,8 +17,14 @@ o Write talk
 o Write paper
 o Video?
 o Collect and equivalence relations
-o Fix up help system 
+o Fix up help system
 
-=======================================================
+========== Working ===========================
 
 o Polish up tutorials
+o Add peano
+o Write up Godel tutorial
+
+========= Done ===========================
+
+o Add collect, equivalence classes/relations

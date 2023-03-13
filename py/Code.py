@@ -187,6 +187,31 @@ def _alphawords(max,base,alphabet):
             yield base+c
             for w in _alphawords(max,base+c,alphabet): yield w
 #
+#   A standard alphabet
+#
+#   demo: alphabet:
+#
+def alphabet(domain,A,B):
+    import string
+    return data(*[co(s) for s in string.printable.split('\t')[0]])
+CONTEXT.define('alphabet',alphabet)
+#
+#   A very non-practical data consisting of all codes with input alphabet
+#
+#   demo: step 5 : allcodes :
+#
+def allcodes(domain,A,B):
+    import Number
+    if (A.empty() or A.atom()) and len(Number.ints(A))<=1:
+        n = 0
+        if len(Number.ints(A))>0: n = Number.ints(A)[0]
+
+        codes = da('codes'); N = da(str(n)); Np = da(str(n+1))
+        return ((codes+N)|B) + ((domain+Np)|B)
+def allcodes_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('allcodes',allcodes,allcodes_0)
+#
 #   Display input in native "pure" form.
 #
 #   The argument replaces (:) with a supplied character for readability.

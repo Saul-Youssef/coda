@@ -44,15 +44,62 @@ def apall_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('apall',apall_1,apall_0,apall)
 #
-#    apeach is only a special case of apx
-#def apeach(domain,A,B):
-#    A0,AR = A.split()
-#    if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
-#def apeach_0(domain,A,B):
-#    if A.empty() or B.empty(): return data()
-#CONTEXT.define('apeach',apeach,apeach_0)
+#   Collect inputs b with the same value of (A:b).
 #
-
+#   demo: collect pass : a b aa bb aaa cccc zz xxx xxx
+#   demo: get ((:):(:)) : a b aa bb aaa cccc zz xxx xxx
+#   demo: collect {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
+#   demo: equiv {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
+#
+def collect(domain,A,B):
+    if all([b.atom() for b in B]):
+        classes = {}
+        for b in B:
+            equiv = data(A|data(b))
+            import Evaluate
+            equiv = Evaluate.resolve(equiv,500)
+            if not equiv in classes: classes[equiv] = []
+            classes[equiv] = classes[equiv] + [b]
+        if not None in classes:
+            L = []
+            for equiv,cls in classes.items(): L.append(da('bin')|data(*cls))
+            return data(*L)
+def collect_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('collect',collect,collect_0)
+def equiv(domain,A,B):
+    if all([b.atom() for b in B]):
+        classes = {}
+        for b in B:
+            equiv = data(A|data(b))
+            import Evaluate
+            equiv = Evaluate.resolve(equiv,500)
+            if not equiv in classes: classes[equiv] = []
+            classes[equiv] = classes[equiv] + [b]
+        if not None in classes:
+            L = []
+            for equiv,cls in classes.items(): L.append((da('bin')+equiv)|data(*cls))
+            return data(*L)
+def equiv_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('equiv',equiv,equiv_0)
+#
+#   apby applies it's argument to inputs n items at a time.
+#
+#   demo: apby 2 count : a b c d e f g
+#   demo: apby 3 {put bin:B} : a b c d e f g
+#
+def apby(domain,A,B):
+    AL,AR = A.split()
+    import Number
+    if AL.atom() and len(Number.ints(AL))==1:
+        n = Number.ints(AL)[0]
+        if n>0:
+            if all([b.atom() for b in B[:n]]):
+                return (AR|data(*B[:n])) + ((domain+A)|data(*B[n:]))
+def apby_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('apby',apby_0,apby)
 #
 #   Sequential version of binary operator
 #
@@ -80,8 +127,6 @@ CONTEXT.define('app',app_0,app_1,app_2)
 #   disr a1 a2 a3..an a : B -> (a1 a:B) (a2 a:B)... (an a:B)
 #
 #   demo: dis first 1 2 3 : a b c d e f g
-#   demo: disr first last first last 1 : a b c d
-#   demo: disr first last first last 2 : a b c d
 #
 def dis_1(domain,A,B):
     A0,AR =  A.split()

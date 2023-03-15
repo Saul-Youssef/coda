@@ -6,8 +6,8 @@ def Natural : {
    ( def B: )
    ( let (Extra:B) : A )
    ( let (Make:B) : { (ap put A: ap nat1 : B) (has A:B) (apeach (Extra:A):B) } )
-   ( let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} )
-   ( let (Prod:B) : {ap put A : app int_mult : pre 1 : get A : make A : B} )
+   ( let (Sum:B)  : {ap put A : apbin int_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : apbin int_mult : pre 1 : get A : make A : B} )
    ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
    }
@@ -16,9 +16,10 @@ def Integer : {
    ( def B: )
    ( let (Extra:B) : A )
    ( let (Make:B) : { (ap put A: ap int1 : B) (has A:B) (apeach (Extra:A):B) } )
-   ( let (Sum:B)  : {ap put A : app int_add : pre 0 : get A : make A : B} )
-   ( let (Prod:B) : {ap put A : app int_mult : pre 1 : get A : make A : B} )
+   ( let (Sum:B)  : {ap put A : apbin int_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : apbin int_mult : pre 1 : get A : make A : B} )
    ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
+   ( let (Inv:B)  : {ap put A : int_inv : get A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
    }
 
@@ -26,9 +27,10 @@ def Float : {
    ( def B: )
    ( let (Extra:B) : A )
    ( let (Make:B) : { (ap put A: ap float1 : B) (has A:B) (apeach (Extra:A):B) } )
-   ( let (Sum:B)  : {ap put A : app float_add : pre 0 : get A : make A : B} )
-   ( let (Prod:B) : {ap put A : app float_mult : pre 1 : get A : make A : B} )
+   ( let (Sum:B)  : {ap put A : apbin float_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : apbin float_mult : pre 1 : get A : make A : B} )
    ( let (Sort:B) : {ap put A : float_sort : get A : make A : B} )
+   ( let (Inv:B)  : {ap put A : float_inv : get A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
    }
 
@@ -37,7 +39,7 @@ def str : {ap join : B}
 def String : {
    ( def B: )
    ( let (Extra:B) : A )
-   ( let (Make:B) : {(ap put A : str : has (:(:)) : B) (has A:B) (apeach (Extra:A):B)} )
+   ( let (Make:B) : {(ap put A : str : has (:(:)) : B) (has A:B) (apeach (Extra:A):B)} ) 
    ( let (Sum:B)  : {ap put A : join : get A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
    }

@@ -10,9 +10,9 @@ import string
 Unicode = {}  # coda to unicode
 
 z = data()
-atom = z|z
-bit0 = data(atom)|data()
-bit1 = data(atom)|data(atom)
+atom = (z|z)._inv()
+bit0 = (data(atom)|data())._inv()
+bit1 = (data(atom)|data(atom))._inv()
 Unicode[atom] = "\u220E"
 Unicode[atom] = "\u229B"
 Unicode[atom] = "\u23FA"
@@ -64,12 +64,12 @@ def byte2coda(c):
         else: raise error('Error converting byte')
     while len(B)<8:
         B = [bit0]+B
-    return data(bit0)|data(*B)
+    return (data(bit0)|data(*B))._inv()
 
 for c in string.printable: Unicode[byte2coda(c)] = c
 
 #def text2coda(text): return data(bit1)|data(*[byte2coda(c) for c in text])
-def text2coda(text): return data(bit1)|data(*[byte2coda(c) for c in text])
+def text2coda(text): return (data(bit1)|data(*[byte2coda(c) for c in text]))._inv()
 
 def data2unicode(D,sep=' '): return sep.join([coda2unicode(c) for c in D])
 def coda2unicode(c):

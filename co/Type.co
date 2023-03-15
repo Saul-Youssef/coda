@@ -15,18 +15,19 @@ def prod  : {(Prod:A) A : B}
 def term  : {(Term:A) A : B}
 def sort  : {(Sort:A) A : B}
 def inv   : {(Inv:A)  A : B}
-def equiv : {(Equiv:A)A : B}
+def extra : {(Extra:A) A : B}
+#def equiv : {(Equiv:A)A : B}
 
 #
 #   demo: Copy n : n_copy
 #   demo: sum n_copy : 1 2 3
 #
-def Copy : {
-   ( def B: )
-   (let (Extra:B) : (Extra:A))
-   (let (Make:B)  : (Make:A))
-   (let (Sum:B)   : (Sum:A))
-   (let (Prod:B)  : (Prod:A))
-   (let (Sort:B)  : (Sort:A))
-   (let (Term:B)  : (Term:A))
-   }
+#def Copy : {
+#   ( def B: )
+#   (let (Extra:B) : (Extra:A))
+#   (let (Make:B)  : (Make:A))
+#   (let (Sum:B)   : (Sum:A))
+#   (let (Prod:B)  : (Prod:A))
+#   (let (Sort:B)  : (Sort:A))
+#   (let (Term:B)  : (Term:A))
+#   }

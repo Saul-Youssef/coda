@@ -5,5 +5,5 @@
 #     called "extensions" in coda-classic.
 #
 String : path
-String {fn : last : split </> : get path: B} : fn
-String {ext : last : split <.> : get fn : make fn : B} : ext
+String {put fn : last : split </> : get path: B} : fn
+String {put ext : last : split <.> : get fn : make fn : B} : ext

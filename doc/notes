@@ -9,7 +9,6 @@ o Use Term:T in terminal output
 o Theoretical results re: Category theory.  Analogue of n-Categories, ?
 o Adjoint functor theorem, re-produce Aldor paper
 o Functors
-o Finish the rest of the tutorials
 o Speed up with caching
 o Speed up with parallelism
 o Speed up with execution "harness" to avoid dumb re-evaluation
@@ -21,10 +20,11 @@ o Fix up help system
 
 ========== Working ===========================
 
-o Polish up tutorials
 o Add peano
 o Write up Godel tutorial
 
 ========= Done ===========================
 
+o Polish up tutorials
 o Add collect, equivalence classes/relations
+o Finish the rest of the tutorials

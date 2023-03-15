@@ -12,8 +12,15 @@
 #   A coda is a pair of data
 #
 class coda(object):
-    def __init__(self,left,right): self._left,self._right = left,right
+    def __init__(self,left,right):
+        self._left,self._right = left,right; self._invariant = False
     def __hash__(self): return hash((self._left,self._right,))
+    def invariant(self):
+        if self._invariant: return True
+        self._invariant = self.atom() and self.left().invariant() and self.right().invariant()
+        return self._invariant
+#        return self.atom() and self.left().invariant() and self.right().invariant()
+    def _inv(self): self._invariant = True; return self
     def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
     def __str__(self): import Code; return Code.coda2unicode(self)
     def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
@@ -27,6 +34,9 @@ class coda(object):
     def __add__ (self,c): return data(self,c)
     def atom(self): return CONTEXT.identity(self)
     def eval(self): # self -> data, evaluating recursively
+        if self.invariant(): return data(self)
+#        if self._invariant : return self
+#        print('aaaa eval',self.invariant(),self)
         c = self.left().eval()|self.right().eval()
         if c in CONTEXT: return CONTEXT[c](c)
         return data(c)
@@ -39,6 +49,7 @@ class data(object):
             if not type(c)==TCODA: raise error('data error: '+str(c)+' is not a coda')
         self._coda = cs
     def __hash__(self): return hash(self._coda)
+    def invariant(self): return all([c.invariant() for c in self])
     def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data
     def __str__(self): import Code; return Code.data2unicode(self)
     def __eq__  (self,d): return self._coda==d._coda

@@ -70,4 +70,4 @@ def Identity : { (LeftIdentity A:B) (RightIdentity A:B) }
 #
 #   demo: collect {count:get bin:B} : (bin:1 2 3) (bin:a b c) (bin:x) (bin:x y) (bin:1 2)
 #
-def collect : {collect_left : apleft A : B}
+#def collect : {collect_left : apleft A : B}

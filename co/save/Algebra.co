@@ -48,7 +48,7 @@ def Associative : { B : X? ( B : Y? Z? ) = B : ( B : X? Y? ) Z? }
 #   Category
 #
 def Category : { B : X? Y? = B : (B:X?) (B:Y?) }
-def Morphism : { A*B = B*A }
+def Morphism : { A:B:X? = B:A:X? }
 #
 #   Distributes Over, as when product distributes over sum in
 #   a ring or vector space.

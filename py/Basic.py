@@ -63,3 +63,21 @@ def get1(domain,A,B):
         return data((da('if')+guard)|B[0].right())
 CONTEXT.define('has1',has1)
 CONTEXT.define('get1',get1)
+#
+#    Star is syntactic sugar with A*B:X defined to be A:B:X
+#
+#    If you think of A and B as functions, with action X -> A:X,
+#    this is function composition.
+#
+#   demo: count*first:a b c
+#   demo: first*count:a b c
+#   demo: {first 2:B} * {first 3:B} : 1 2 3 4 5
+#   demo: {first 2:B} * {rev:B} : 1 2 3 4 5
+#
+def star(domain,A,B):
+    if A.atom():
+        L,R = A[0].left(),A[0].right()
+        LL,LR = L.split()
+        if LL==da('bin'):
+            return data(LR|data(R|B))
+CONTEXT.define('star',star)

@@ -238,14 +238,14 @@ def str_atom_coda(c,ch):
         return '('+str_atom_data(c.left(),ch)+':'+str_atom_data(c.right(),ch)+')'
 def str_atom_data(d,ch): return ''.join([str_atom_coda(c,ch) for c in d])
 
-def dis_1(domain,A,B):
-    if all([b.atom() for b in B]):
-        lines = []
-        for line in data_display(B,'__'): lines.append(line[2:])
-        return da('\n'.join(lines))
-def dis_0(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('purev',dis_1,dis_0)
+#def dis_1(domain,A,B):
+#    if all([b.atom() for b in B]):
+#        lines = []
+#        for line in data_display(B,'__'): lines.append(line[2:])
+#        return da('\n'.join(lines))
+#def dis_0(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('purev',dis_1,dis_0)
 #
 def data_display(D,margin):
     for c in D:

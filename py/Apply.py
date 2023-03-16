@@ -17,13 +17,14 @@ from base import *
 #  demo: foo : 1 2 3
 #  demo: ap foo : 1 2 3
 #  demo: ap {foo : B} : 1 2 3
-#  demo: apall a b c : 1 2 3
-#  demo: apeach a b c : 1 2 3
-#  demo: apall  {put 1:B} {put 2:B} {put 3:B} : a b c
-#  demo: apeach {put 1:B} {put 2:B} {put 3:B} : a b c
+#  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
+#  demo: app a b c : 1 2 3
+#  demo: ap app a b c : 1 2 3
 #  demo: aparg a b c : 1 2 3
-#  demo: aparg first 2 3 : a b c d e f g
+#  demo: aparg first 2 3 : a b c d e  g
+#  demo: ap aparg a b c : 1 2 3
 #  demo: apbin foo : a b c d
+#  demo : int_add 3 : 5
 #  demo: apbin int_add : 1 2 3 4 5
 #  demo: apby 2 foo : a b c d e f g
 #  demo: apif {(count:get bin:B)=2} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
@@ -36,32 +37,23 @@ def ap_2(domain,A,B):
     BL,BR = B.split()
     if len(BL)>0: return ((domain+A)|BL) + ((domain+A)|BR)
 CONTEXT.define('ap',ap_0,ap_1,ap_2)
-def apall(domain,A,B):
+def app(domain,A,B):
     A0,AR = A.split()
     if A0.atom(): return (A0|B) + ((domain+AR)|B)
-def apall_0(domain,A,B):
+def app_0(domain,A,B):
     if A.empty(): return data()
-def apall_1(domain,A,B):
+def app_1(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('apall',apall_1,apall_0,apall)
-def apeach_1(domain,A,B):
-    A0,AR = A.split()
-    if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
-def apeach_2(domain,A,B):
-    if A.empty(): return data()
-CONTEXT.define('apeach',apeach_1,apeach_2)
+CONTEXT.define('app',app_1,app_0,app)
 def aparg_1(domain,A,B):
-    if all([a.atom() for a in A]+[b.atom() for b in B]):
-        L = []
-        As = [a for a in A]
-        Bs = [b for b in B]
-        if len(As)>0:
-            c = As.pop(0)
-            for a in As:
-                for b in Bs: L.append((c+a)|data(b))
-        return data(*L)
+    A0,AR =  A.split()
+    A1,AR = AR.split()
+    if A0.atom() and A1.atom():
+        return ((A0+A1)|B) + ((domain+A0+AR)|B)
 def aparg_0(domain,A,B):
-    if B.empty(): return data()
+    A0,AR = A.split()
+    A1,AR = AR.split()
+    if A0.empty() or A1.empty(): return data()
 CONTEXT.define('aparg',aparg_1,aparg_0)
 def apbin_0(domain,A,B):
     B0,BR = B.split()
@@ -91,6 +83,46 @@ def apif_1(domain,A,B):
 def apif_2(domain,A,B):
     if B.atom(): return data((da('if')+data(A|B))|B)
 CONTEXT.define('apif',apif_0,apif_2,apif_1)
+#def apeach_1(domain,A,B):
+#    A0,AR = A.split()
+#    if A0.atom(): return ((da('ap')+A0)|B) + ((domain+AR)|B)
+#def apeach_2(domain,A,B):
+#    if A.empty(): return data()
+#CONTEXT.define('apeach',apeach_1,apeach_2)
+#def aparg_1(domain,A,B):
+#    if all([a.atom() for a in A]+[b.atom() for b in B]):
+#        L = []
+#        As = [a for a in A]
+#        Bs = [b for b in B]
+#        if len(As)>0:
+#            c = As.pop(0)
+#            for a in As:
+#                for b in Bs: L.append((c+a)|data(b))
+#        return data(*L)
+#def aparg_0(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('aparg',aparg_1,aparg_0)
+#def apall(domain,A,B):
+#    A0,AR = A.split()
+#    if A0.atom(): return (A0|B) + ((domain+AR)|B)
+#def apall_0(domain,A,B):
+#    if A.empty(): return data()
+#def apall_1(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('apall',apall_1,apall_0,apall)
+
+#  demo: apall a b c : 1 2 3
+#  demo: apeach a b c : 1 2 3
+#  demo: apall  {put 1:B} {put 2:B} {put 3:B} : a b c
+#  demo: apeach {put 1:B} {put 2:B} {put 3:B} : a b c
+#  demo: aparg a b c : 1 2 3
+#  demo: aparg first 2 3 : a b c d e f g
+#  demo: apbin foo : a b c d
+#  demo: apbin int_add : 1 2 3 4 5
+#  demo: apby 2 foo : a b c d e f g
+#  demo: apif {(count:get bin:B)=2} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
+#
+
 #
 #   Collect inputs b with the same value of (A:b).
 #
@@ -184,16 +216,6 @@ CONTEXT.define('equiv',equiv,equiv_0)
 #
 #   demo: dis first 1 2 3 : a b c d e f g
 #
-#def dis_1(domain,A,B):
-#    A0,AR =  A.split()
-#    A1,AR = AR.split()
-#    if A0.atom() and A1.atom():
-#        return ((A0+A1)|B) + ((domain+A0+AR)|B)
-#def dis_0(domain,A,B):
-#    A0,AR = A.split()
-#    A1,AR = AR.split()
-#    if A0.empty() or A1.empty(): return data()
-#CONTEXT.define('dis',dis_1,dis_0)
 #
 #   adis A : B applies each a in A to each b in B.
 #

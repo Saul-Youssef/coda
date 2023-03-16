@@ -10,14 +10,3 @@
 #   demo: nth : a b c
 #
 def nth : {dis nth1 A : B}
-#
-#   Count number of inputs
-#
-#   demo: count : get : x y z
-#   demo: count : count : get : x y z
-#   demo: count :
-#
-#def count : {sum n : ap one : B}
-#
-#def count : {app int_add : ap one : B}
-#

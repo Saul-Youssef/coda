@@ -10,7 +10,10 @@
 #
 
 #def peano:
-#
+#let (Make:peano): {(has A:B) (put A : rep (put:) : hasnt A:B) }
+#let (Sum:peano) : {put A : get A : make peano : B}
+#let (Term:peano) : {ap {count : get A : B} A : B}
+
 #let (Make:peano): {(has A:B) (put A : rep (put:) : hasnt A:B) }
 
 #

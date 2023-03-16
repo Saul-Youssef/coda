@@ -25,20 +25,6 @@ def language(domain,A,B):
     if s=='A': return A
     if s=='B': return B
 #
-#   A=B -> (= A:B)
-#
-    Equal = parse('=',s,'left')
-    if Equal():
-        front,back = Equal.parts()
-        return data((da('=')+lang(front,A,B))|lang(back,A,B))
-#
-#   A|B -> (| A:B)
-#
-    Or = parse('|',s,'left')
-    if Or():
-        front,back = Or.parts()
-        return data((da('|')+lang(front,A,B))|lang(back,A,B))
-#
 #   The essential operations are concatenation and colon.  The rest is syntactic sugar.
 #
     Colon = parse(':',s,'left')
@@ -46,19 +32,19 @@ def language(domain,A,B):
         front,back = Colon.parts()
         return data(lang(front,A,B)|lang(back,A,B))
 #
-#   A*B:X is defined to be A:B:X
+#   A=B -> (= A:B)
+#
+    Equal = parse('=',s,'left')
+    if Equal():
+        front,back = Equal.parts()
+        return data((da('=')+lang(front,A,B))|lang(back,A,B))
+#
+#   A B -> A B
 #
     Space = parse(' ',s,'left')
     if Space():
         front,back = Space.parts()
         return lang(front,A,B)+lang(back,A,B)
-#
-#       A*B : X is defined to be A:B:X
-#
-#    Star  = parse(b'*',x,b'left')
-#    if Star():
-#        front,back = Star.parts()
-#        return data(b'*')+one(b'*',one(wrap(front),A,B),one(wrap(back),A,B))
 #
 #   Operations are grouped with parenthesis.  Text within curly brackets is source code.
 #   Text between angle brackets are byte strings.

@@ -12,11 +12,13 @@
 def make  : {(Make:A) A : B}
 def sum   : {(Sum:A)  A : B}
 def prod  : {(Prod:A) A : B}
-def term  : {(Term:A) A : B}
+def term  : {ap (Term:A) A : B}
 def sort  : {(Sort:A) A : B}
-def inv   : {(Inv:A)  A : B}
+def inv   : {ap (Inv:A)  A : B}
 def extra : {(Extra:A) A : B}
 #def equiv : {(Equiv:A)A : B}
+
+
 
 #
 #   demo: Copy n : n_copy

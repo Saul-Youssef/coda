@@ -68,7 +68,6 @@ def stepEval(domain,A,B):
             num = str(n)
             while len(num)<width: num = ' '+num
             outs.append('['+num+']'+' '+str(s)); n += 1
-#            outs.append('['+str(n)+']'+' '+str(s)); n += 1
         return da('\n'.join(outs))
 def stepEval_0(domain,A,B):
     if B.empty(): return data()

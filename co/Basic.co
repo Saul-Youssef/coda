@@ -9,7 +9,7 @@
 #   demo: get bin : (bin : 1 2 3)
 #
 def bin:
-
+#
 #   select  A : ... gets data of the form (A:<something>)
 #   exclude A : ... gets data that isn't of the form (A:<something>)
 #   get A     : ... gets <something> from data of the form (A:<something>)

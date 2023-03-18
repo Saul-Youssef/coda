@@ -11,6 +11,7 @@ import Number
 #
 CONTEXT.define('pass',lambda domain,A,B:B)
 CONTEXT.define('null',lambda domain,A,B:data())
+CONTEXT.define('bin') # generic built-in container 
 #
 #
 def domain_0(domain,A,B):
@@ -80,4 +81,4 @@ def star(domain,A,B):
         LL,LR = L.split()
         if LL==da('bin'):
             return data(LR|data(R|B))
-CONTEXT.define('star',star)
+CONTEXT.define('*',star)

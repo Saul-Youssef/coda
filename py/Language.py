@@ -32,6 +32,13 @@ def language(domain,A,B):
         front,back = Colon.parts()
         return data(lang(front,A,B)|lang(back,A,B))
 #
+#   Star is syntactic sugar for A*B, composition of data as functions
+#
+    Star = parse('*',s,'left')
+    if Star():
+        front,back = Star.parts()
+        return co('*') + ((da('bin')+lang(front,A,B))|lang(back,A,B))
+#
 #   A=B -> (= A:B)
 #
     Equal = parse('=',s,'left')

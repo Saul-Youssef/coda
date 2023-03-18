@@ -5,20 +5,18 @@
 #  sum/Sum - Abelian sum
 #  prod/Prod - Associative multiplication
 #  sort/Sort - Sort compatible with a partial order
-#  equiv/Equiv - Equivalence classes of an equivalence relation
-#  inv/Inv - Involution (inv T:inv T:X)
+#  class/Class - Equivalence classes of an equivalence relation
+#  inv/Inv - Involution
 #
 #
-def make  : {(Make:A) A : B}
-def sum   : {(Sum:A)  A : B}
-def prod  : {(Prod:A) A : B}
+def make  :    {(Make:A) A : B}
+def sum   :     {(Sum:A) A : B}
+def prod  :    {(Prod:A) A : B}
 def term  : {ap (Term:A) A : B}
-def sort  : {(Sort:A) A : B}
-def inv   : {ap (Inv:A)  A : B}
-def extra : {(Extra:A) A : B}
-#def equiv : {(Equiv:A)A : B}
-
-
+def sort  :    {(Sort:A) A : B}
+def inv   :  {ap (Inv:A) A : B}
+def extra :   {(Extra:A) A : B}
+def class :   {(Class:A) A : B} 
 
 #
 #   demo: Copy n : n_copy
@@ -33,3 +31,4 @@ def extra : {(Extra:A) A : B}
 #   (let (Sort:B)  : (Sort:A))
 #   (let (Term:B)  : (Term:A))
 #   }
+#

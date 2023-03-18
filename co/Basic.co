@@ -3,12 +3,12 @@
 #
 
 #
-#   Basic container
+#   Built-in container
 #
 #   demo: bin : 1 2 3
 #   demo: get bin : (bin : 1 2 3)
 #
-def bin:
+#def bin:
 #
 #   select  A : ... gets data of the form (A:<something>)
 #   exclude A : ... gets data that isn't of the form (A:<something>)

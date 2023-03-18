@@ -1,0 +1,14 @@
+#
+#   Functors 
+#
+
+#
+#   Set n : S ...makes a set of n's S 
+#
+def Set : { 
+    ( def B: )
+    ( let (Sub:B) : A ) 
+    ( let (Make:B) : {(put A : sort (Sub:A) : ap {first:get bin:B} : class (Sub:A) : make (Sub:A) : B) (get A:B)} )
+    ( let (Sum:B) : {put A : sort (Sub:A) : ap {first:get bin:B} : class (Sub:A) : ap {get A:B} A : B} )
+    ( let (Term:B) : {wrap <{}> : join <,> : ap {str:B} : get A:B} ) 
+    }

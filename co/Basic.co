@@ -3,17 +3,13 @@
 #
 
 #
-#   Built-in container
+#   has/hasnt selects, get gets, is/isnt tests 
 #
-#   demo: bin : 1 2 3
-#   demo: get bin : (bin : 1 2 3)
-#
-#def bin:
-#
-#   select  A : ... gets data of the form (A:<something>)
-#   exclude A : ... gets data that isn't of the form (A:<something>)
-#   get A     : ... gets <something> from data of the form (A:<something>)
-#   is  A     : ... gets data exactly equal to A
+#   has  A  : ... gets data of the form (A:<something>)
+#   hasnt A : ... gets data that isn't of the form (A:<something>)
+#   get A   : ... gets <something> from data of the form (A:<something>)
+#   is  A   : ... gets data exactly equal to A
+#   isnt A  : ...everything except what's equal to A 
 #
 #   demo: has bin : x y z (bin:a b c)
 #   demo: hasnt bin : x y z (bin:a b c)

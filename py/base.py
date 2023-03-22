@@ -92,13 +92,15 @@ class Definitions(object):
         self._domain = {}      # definitions with an invariant domain
         self._value  = {}      # definitions with invariant value
         self._used   = set([]) # domains used by value definitions
+    def __repr__(self):
+        return '/'.join([str(len(self._domain)),str(len(self._value))]) 
     def dom(self,domain,pf):
-        if domain in self._used: raise error(str(domain)+' is already in use.')
-        if domain in self._domain and not self._domain[domain]==pf: raise error(str(domain)+' is already defined.')
+#        if domain in self._used: raise error(str(domain)+' is already in use.')
+#        if domain in self._domain and not self._domain[domain]==pf: raise error(str(domain)+' is already defined.')
         self._domain[domain] = pf
     def val(self,co,da):
-        if co.domain() in self._domain: raise error('The domain of ['+str(co)+'] is already in use.')
-        if co in self._domain and not co[self._domain] == da: raise error(str(co)+' is already defined')
+#        if co.domain() in self._domain: raise error('The domain of ['+str(co)+'] is already in use.')
+#       if co in self._domain and not co[self._domain] == da: raise error(str(co)+' is already defined')
         self._value[co] = da
         self._used.add(co.domain())
     def __contains__(self,co): return co in self._value or co.domain() in self._domain
@@ -113,6 +115,11 @@ class Definitions(object):
         return self.dom(defin.domain(),defin)
     def __iter__(self):
         for domain,definition in self._domain.items(): yield domain,definition
+    def clear(self):
+        self._domain = {}
+        self._value = {}
+        self._used = set([])
+        return self
 #
 #   coda type for a validation check in the data __init__
 #

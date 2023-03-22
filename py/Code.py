@@ -41,8 +41,7 @@ def ascii_bits():
     Unicode[bit0] = '0'
     Unicode[bit1] = '1'
 #
-#   bits, bytes and byte sequences are atomic with
-#   domain z=().
+#   bits, bytes and byte sequences are atomic
 #
 CONTEXT.dom(data(),Definition(data()))
 CONTEXT.dom(data(atom),Definition(data(atom)))

@@ -31,13 +31,23 @@ class Classifier(object):
             da = self._sample.data_sample(1)[0]
             newcontext.add(co,da)
         return newcontext
-    def iterate(self):
+    def add_to_context(self):
         attempts = []
         for w in range(self._width):
             newcontext = self.choose_new_context()
-            distance,best_classifier = self.attempt(newcontext+self._context)
-            attempts.append((distance,best_classifier,newcontext,))
-#        attempts.sort()
+            context = self._context+newcontext
+#            distance,best_classifier = self.attempt(self._context+newcontext)
+            distance,best_classifier = self.attempt(context)
+            attempts.append((distance,best_classifier,context,))
+        attempts = sorted(attempts,key=lambda t:t[0])
+        return attempts[-1]
+    def rem_from_context(self):
+        attempts = []
+        defs = [(co,da) for co,da in self._context]
+        for co,da in defs:
+            context = Context(*[(co_,da_) for co_,da_ in defs if not co==co_])
+            distance,best_classifier = self.attempt(context)
+            attempts.append((distance,best_classifier,context,))
         attempts = sorted(attempts,key=lambda t:t[0])
         return attempts[-1]
     def attempt(self,context):
@@ -48,30 +58,34 @@ class Classifier(object):
             sB = self._B.leftap(s).eval(100,self._nthread)
             distance = sA.distance(sB)
             tries.append([distance,s,])
-        nc = 0
-        for t in tries:
-            print('aaaaa',t); nc+= 1
-            if nc>10: break
-#        tries.sort()
         tries = sorted(tries,key=lambda p:p[0])
         return tries[-1]
     def search(self):
         iter = 0
         while iter<self._maxiter and self._distance<1.0:
             iter += 1
-            distance,best_classifier,newcontext = self.iterate()
-            if distance>self._distance:
+            distance,best_classifier,context = self.add_to_context()
+            print('+++',distance,best_classifier,len(context))
+            if distance>=self._distance:
                 self._distance = distance
                 self._classifier = best_classifier
-                self._context.update(newcontext)
+                self._context = context
+            distance,best_classifier,context = self.rem_from_context()
+            print('---',distance,best_classifier,len(context))
+            if distance>=self._distance:
+                self._distance = distance
+                self._classifier = best_classifier
+                self._context = context
+            print(iter,self._distance,self._classifier,len(self._context))
         return self._distance,self._classifier
     def distance(self): return self._distance
     def classifier(self): return self._classifier
     def context(self): return self._context
 
 class Context(object):
-    def __init__(self):
+    def __init__(self,*pairs):
         self._context = {}
+        for co,da in pairs: self._context[co] = da
     def __len__(self): return len(self._context)
     def __repr__(self):
         return ', '.join(['->'.join([str(co),str(da)]) for co,da in self])
@@ -84,6 +98,13 @@ class Context(object):
         return S
     def add(self,co,da):
         self._context[co] = da
+        return self
+    def remove(self,co,da):
+        S = Context()
+        for _co,_da in self:
+            S.add(_co,_da)
+        if not co in S._context: raise error('Attempt to remove missing definition')
+        del self._context[co]
         return self
     def update(self,C):
         for co,da in C: self._context[co] = da

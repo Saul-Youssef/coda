@@ -3,6 +3,7 @@
 #    This has various operations related to search and classification.
 #
 from base import *
+import Evaluate
 
 def logic(D):
     if D.empty(): return 'true'
@@ -12,6 +13,9 @@ def equal(A,B): return data((da('=')+A)|B)
 
 def Window(width,depth):
     return Space(*[d for d in alldata(width,depth)])
+
+def F(D):
+    return Evaluate.depth(D,100)[0]
 
 def EvenAtoms(n):
     at = data()|data()
@@ -54,10 +58,20 @@ class Space(object):
     def eval(self,depth,nthread):
         import Evaluate
         self._logic,self._evals = {},{}
+
         for D in self:  # do this in parallel!
             D2,n = Evaluate.depth(D,depth)
             self._evals[D] = D2
             self._logic[D] = logic(D2)
+
+#        from multiprocessing import Pool
+#        with Pool(8) as P:
+#            Inputs  = [D for D in self]
+#            Results = P.map(F,Inputs)
+#        for i in range(len(Inputs)):
+#            self._evals[Inputs[i]] = Results[i]
+#            self._logic[Inputs[i]] = logic(Results[i])
+
         self._depth = depth
         self._evaluated = True
         return self

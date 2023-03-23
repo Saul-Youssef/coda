@@ -93,7 +93,7 @@ class Definitions(object):
         self._value  = {}      # definitions with invariant value
         self._used   = set([]) # domains used by value definitions
     def __repr__(self):
-        return '/'.join([str(len(self._domain)),str(len(self._value))]) 
+        return '/'.join([str(len(self._domain)),str(len(self._value))])
     def dom(self,domain,pf):
 #        if domain in self._used: raise error(str(domain)+' is already in use.')
 #        if domain in self._domain and not self._domain[domain]==pf: raise error(str(domain)+' is already defined.')

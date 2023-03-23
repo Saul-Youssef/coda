@@ -1,0 +1,173 @@
+#
+#    A "Space" is a collection of data.
+#    This has various operations related to search and classification.
+#
+from base import *
+
+def logic(D):
+    if D.empty(): return 'true'
+    if D.atomic(): return 'false'
+    return 'undecided'
+def equal(A,B): return data((da('=')+A)|B)
+
+def Window(width,depth):
+    return Space(*[d for d in alldata(width,depth)])
+
+def EvenAtoms(n):
+    at = data()|data()
+    atoms = [data()]
+    while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
+    return Space(*atoms)
+def OddAtoms(n):
+    at = data()|data()
+    atoms = [data(at)]
+    while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
+    return Space(*atoms)
+
+class Space(object):
+    def __init__(self,*Ds):
+        self._datas = Ds
+        T = set([])
+        for d in Ds:
+            for c in d: T.add(c)
+        self._codas = [c for c in T]
+        self._evals = {}
+        self._logic = {}
+        for d in Ds: self._logic[d] = logic(d)
+        self._depth = 0
+        self._evaluated = len(Ds)==0
+    def __repr__(self):
+        nt,nf,nu = self.lstat()
+        return 'eval: '+str(self._evaluated)+', true: '+str(nt)+', false:'+str(nf)+', undecided:'+str(nu)+', codas:'+str(len(self._codas))+', datas:'+str(len(self._datas))
+    def __iter__(self):
+        for D in self._datas: yield D
+    def codas(self):
+        for co in self._codas: yield co
+    def __getitem__(self,i): return self._datas[i]
+    def __len__(self): return len(self._datas)
+    def evaluated(self): return self._evaluated
+#
+#   Eval is the main computation, attempting to evaluate
+#   each data in the space, in parallel on nthread threads
+#   at most depth recursive attempts
+#
+    def eval(self,depth,nthread):
+        import Evaluate
+        self._logic,self._evals = {},{}
+        for D in self:  # do this in parallel!
+            D2,n = Evaluate.depth(D,depth)
+            self._evals[D] = D2
+            self._logic[D] = logic(D2)
+        self._depth = depth
+        self._evaluated = True
+        return self
+#
+#   Logical statistics of the space.  This may change on
+#   evaluation.
+#
+    def lstat(self):
+        ntrue,nfalse,nundecided = 0,0,0
+        for D,result in self._logic.items():
+            if   result=='false': nfalse     += 1
+            elif result=='true' : ntrue      += 1
+            else                : nundecided += 1
+        return ntrue,nfalse,nundecided
+
+    def logic(self):
+        t,f,u = self.lstat()
+        if t>0 and f>0:
+            return 'mixed'
+        elif t==0:
+            if u==0: return 'false'
+            else   : return 'nevertrue'
+        elif f==0:
+            if u==0: return 'true'
+            else   : return 'neverfalse'
+        else:
+            return 'undecided'
+#
+#   Logical distance measure from self to space S.
+#   If you think of a (t,f,u) x (t,f,u) matrix, the distance
+#   between self and S is the volume of the off diagonal elements
+#   divided by the total volume.
+#
+    def distance(self,S):
+        if len(self)==0 or len(S)==0: raise error('Distance from empty Space is undefined')
+        t1,f1,u1 = self.lstat()
+        t2,f2,u2 =    S.lstat()
+        offdiagonal = (t1*f2) + (t1*u2) + (f1*t2) + (f1*u2) + (u1*t2) + (u1*f2)
+        return float(offdiagonal)/float((t1+f1+u1)*(t2+f2+u2))
+#
+#   left ap is d:D for D in self
+#
+    def leftap(self,d): return Space(*[data(d|D) for D in self])
+#
+#   Data I is idempotent if I:I:X = I:X for all X
+#
+    def idempotent(self,d):
+        L = []
+        for D in self:
+            i1 = data(d|D)
+            i2 = data(d|i1)
+            L.append(equal(i1,i2))
+        return Space(*L)
+#
+#   Data D is distributive if D : X Y = (D:X) (D:Y) for all X,Y
+#
+    def distributive(self,d):
+        L = []
+        for A in self:
+            for B in self:
+                l = data(d|(A+B))
+                r = data(d|A) + data(d|B)
+                L.append(equal(l,r))
+        return Space(*L)
+#
+#   Data C is a category if C : X Y = C : (C:X) (C:Y)
+#
+    def category(self,d):
+        L = []
+        for A in self:
+            for B in self:
+                l = data(d|(A+B))
+                r = data(d|A) + data(d|B)
+                rr = data(d|r)
+                L.append(equal(l,rr))
+        return Space(*L)
+
+    def __or__(self,Bs):
+        L = []
+        for A in self:
+            for B in Bs: L.append(data(A|B))
+        return Space(*L)
+    def __add__(self,Bs): return Space(*([A for A in self]+[B for B in Bs]))
+#
+#     Generate one definition at random
+#
+    def data_sample(self,k):
+        import random
+        return random.sample(self._datas,k)
+    def coda_sample(self,k):
+        import random
+        return random.sample(self._codas,k)
+
+import itertools
+
+def alldata(width,depth):  # all data leq specified width and depth
+    datas = []
+    if depth==0:
+        datas.append(data())
+    else:
+        codas = [c for c in allcoda(width,depth)]
+        for w in range(0,width+1):
+            for T in itertools.product(codas,repeat=w): datas.append(data(*T))
+    return datas
+
+def allcoda(width,depth):
+    codas = []
+    if depth==0:
+        return (coda(data(),data()),)
+    else:
+        datas = [d for d in alldata(width,depth-1)]
+        for T in itertools.product(datas,repeat=2): codas.append(coda(T[0],T[1]))
+    return codas

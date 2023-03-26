@@ -11,23 +11,6 @@ def logic(D):
     return 'undecided'
 def equal(A,B): return data((da('=')+A)|B)
 
-def Window(width,depth):
-    return Space(*[d for d in alldata(width,depth)])
-
-def F(D):
-    return Evaluate.depth(D,100)[0]
-
-def EvenAtoms(n):
-    at = data()|data()
-    atoms = [data()]
-    while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return Space(*atoms)
-def OddAtoms(n):
-    at = data()|data()
-    atoms = [data(at)]
-    while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return Space(*atoms)
-
 class Space(object):
     def __init__(self,*Ds):
         self._datas = Ds
@@ -37,7 +20,6 @@ class Space(object):
         self._codas = [c for c in T]
         self._evals = {}
         self._logic = {}
-        for d in Ds: self._logic[d] = logic(d)
         self._depth = 0
         self._evaluated = len(Ds)==0
     def __repr__(self):
@@ -55,7 +37,7 @@ class Space(object):
 #   each data in the space, in parallel on nthread threads
 #   at most depth recursive attempts
 #
-    def eval(self,depth,nthread):
+    def eval(self,depth):
         import Evaluate
         self._logic,self._evals = {},{}
 
@@ -63,14 +45,6 @@ class Space(object):
             D2,n = Evaluate.depth(D,depth)
             self._evals[D] = D2
             self._logic[D] = logic(D2)
-
-#        from multiprocessing import Pool
-#        with Pool(8) as P:
-#            Inputs  = [D for D in self]
-#            Results = P.map(F,Inputs)
-#        for i in range(len(Inputs)):
-#            self._evals[Inputs[i]] = Results[i]
-#            self._logic[Inputs[i]] = logic(Results[i])
 
         self._depth = depth
         self._evaluated = True
@@ -112,48 +86,14 @@ class Space(object):
         offdiagonal = (t1*f2) + (t1*u2) + (f1*t2) + (f1*u2) + (u1*t2) + (u1*f2)
         return float(offdiagonal)/float((t1+f1+u1)*(t2+f2+u2))
 #
-#   left ap is d:D for D in self
+#   These methods select a sub-space of self with specified properties.
 #
-    def leftap(self,d): return Space(*[data(d|D) for D in self])
+#       the subspace satisfying d:s = () for all s in S
 #
-#   Data I is idempotent if I:I:X = I:X for all X
-#
-    def idempotent(self,d):
-        L = []
-        for D in self:
-            i1 = data(d|D)
-            i2 = data(d|i1)
-            L.append(equal(i1,i2))
-        return Space(*L)
-#
-#   Data D is distributive if D : X Y = (D:X) (D:Y) for all X,Y
-#
-    def distributive(self,d):
-        L = []
-        for A in self:
-            for B in self:
-                l = data(d|(A+B))
-                r = data(d|A) + data(d|B)
-                L.append(equal(l,r))
-        return Space(*L)
-#
-#   Data C is a category if C : X Y = C : (C:X) (C:Y)
-#
-    def category(self,d):
-        L = []
-        for A in self:
-            for B in self:
-                l = data(d|(A+B))
-                r = data(d|A) + data(d|B)
-                rr = data(d|r)
-                L.append(equal(l,rr))
-        return Space(*L)
-
-    def __or__(self,Bs):
-        L = []
-        for A in self:
-            for B in Bs: L.append(data(A|B))
-        return Space(*L)
+    def subspace(self,sub): return Space(*[s for s in self if sub(s)])
+    def subop(self,op,T):
+        def F(s): return all([op(s,t) for t in T])
+        return self.subspace(F)
     def __add__(self,Bs): return Space(*([A for A in self]+[B for B in Bs]))
 #
 #     Generate one definition at random
@@ -164,24 +104,3 @@ class Space(object):
     def coda_sample(self,k):
         import random
         return random.sample(self._codas,k)
-
-import itertools
-
-def alldata(width,depth):  # all data leq specified width and depth
-    datas = []
-    if depth==0:
-        datas.append(data())
-    else:
-        codas = [c for c in allcoda(width,depth)]
-        for w in range(0,width+1):
-            for T in itertools.product(codas,repeat=w): datas.append(data(*T))
-    return datas
-
-def allcoda(width,depth):
-    codas = []
-    if depth==0:
-        return (coda(data(),data()),)
-    else:
-        datas = [d for d in alldata(width,depth-1)]
-        for T in itertools.product(datas,repeat=2): codas.append(coda(T[0],T[1]))
-    return codas

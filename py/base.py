@@ -19,7 +19,6 @@ class coda(object):
         if self._invariant: return True
         self._invariant = self.atom() and self.left().invariant() and self.right().invariant()
         return self._invariant
-#        return self.atom() and self.left().invariant() and self.right().invariant()
     def _inv(self): self._invariant = True; return self
     def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
     def __str__(self): import Code; return Code.coda2unicode(self)
@@ -35,11 +34,13 @@ class coda(object):
     def atom(self): return CONTEXT.identity(self)
     def eval(self): # self -> data, evaluating recursively
         if self.invariant(): return data(self)
-#        if self._invariant : return self
-#        print('aaaa eval',self.invariant(),self)
         c = self.left().eval()|self.right().eval()
-        if c in CONTEXT: return CONTEXT[c](c)
-        return data(c)
+        if c in CONTEXT: ev = CONTEXT[c](c)
+        else           : ev = data(c)
+        CONTEXT.val(self,ev)
+        return ev
+#        if c in CONTEXT: return CONTEXT[c](c)
+#        return data(c)
 #
 #   Data is a finite sequence of codas
 #
@@ -92,8 +93,7 @@ class Definitions(object):
         self._domain = {}      # definitions with an invariant domain
         self._value  = {}      # definitions with invariant value
         self._used   = set([]) # domains used by value definitions
-    def __repr__(self):
-        return '/'.join([str(len(self._domain)),str(len(self._value))])
+    def __repr__(self): return 'definitions: '+str(len(self._domain))+', values: '+str(len(self._value))
     def dom(self,domain,pf):
 #        if domain in self._used: raise error(str(domain)+' is already in use.')
 #        if domain in self._domain and not self._domain[domain]==pf: raise error(str(domain)+' is already defined.')

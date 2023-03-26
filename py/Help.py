@@ -375,6 +375,7 @@ def deftable(table):
         summary = Text.decorate(summary,'magenta','underline')
 #        print(flag+module+str(n)+'..'+summary)
         IO.OUT(flag+module+str(n)+'..'+summary+'\n')
+    IO.OUT(str(CONTEXT))
 
 if __name__=='__main__':
     f = open('/Users/youssef/coda/co/Number.co','r')

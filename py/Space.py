@@ -90,7 +90,15 @@ class Space(object):
 #
 #       the subspace satisfying d:s = () for all s in S
 #
-    def subspace(self,sub): return Space(*[s for s in self if sub(s)])
+    def subspace(self,sub): 
+        L = []
+        n = 0
+        for s in self:
+            n += 1
+            if 100*(n//100)==n: print(n,'...','aaaa')
+            if sub(s): L.append(s)
+        return Space(*L)
+#        return Space(*[s for s in self if sub(s)])
     def subop(self,op,T):
         def F(s): return all([op(s,t) for t in T])
         return self.subspace(F)

@@ -90,18 +90,30 @@ class Space(object):
 #
 #       the subspace satisfying d:s = () for all s in S
 #
-    def subspace(self,sub): 
-        L = []
-        n = 0
-        for s in self:
-            n += 1
-            if 100*(n//100)==n: print(n,'...','aaaa')
-            if sub(s): L.append(s)
-        return Space(*L)
-#        return Space(*[s for s in self if sub(s)])
+    def subspace(self,sub):
+#        L = []
+#        n = 0
+#        for s in self:
+#            n += 1
+#            if 100*(n//100)==n: print(n,'...','aaaa')
+#            if sub(s): L.append(s)
+#        return Space(*L)
+        return Space(*[s for s in self if sub(s)])
     def subop(self,op,T):
         def F(s): return all([op(s,t) for t in T])
         return self.subspace(F)
+    def subspace_two(self,two,T):
+        def F(s): return all([two(s,t) for t in T])
+        return self.subspace(F)
+    def subspace_three(self,three,T):
+        def F(s):
+            b = True
+            for t in T:
+                for u in T:
+                    b = three(s,t,u)
+                    if not b: return b
+        return self.subspace(F)
+
     def __add__(self,Bs): return Space(*([A for A in self]+[B for B in Bs]))
 #
 #     Generate one definition at random

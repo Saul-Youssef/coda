@@ -102,7 +102,6 @@ class Space(object):
 #       the subspace satisfying d:s = () for all s in S
 #
     def subspace(self,sub):
-
         def SUB(s):
             if sub(s): return (s)
             else     : return ()

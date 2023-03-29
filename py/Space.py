@@ -90,12 +90,12 @@ class Space(object):
 #   between self and S is the volume of the off diagonal elements
 #   divided by the total volume.
 #
-    def distance(self,S):
-        if len(self)==0 or len(S)==0: raise error('Distance from empty Space is undefined')
-        t1,f1,u1 = self.lstat()
-        t2,f2,u2 =    S.lstat()
-        offdiagonal = (t1*f2) + (t1*u2) + (f1*t2) + (f1*u2) + (u1*t2) + (u1*f2)
-        return float(offdiagonal)/float((t1+f1+u1)*(t2+f2+u2))
+#    def distance(self,S):
+#        if len(self)==0 or len(S)==0: raise error('Distance from empty Space is undefined')
+#        t1,f1,u1 = self.lstat()
+#        t2,f2,u2 =    S.lstat()
+#        offdiagonal = (t1*f2) + (t1*u2) + (f1*t2) + (f1*u2) + (u1*t2) + (u1*f2)
+#        return float(offdiagonal)/float((t1+f1+u1)*(t2+f2+u2))
 #
 #   These methods select a sub-space of self with specified properties.
 #
@@ -138,9 +138,59 @@ class Space(object):
 #
 #     Generate one definition at random
 #
+    def sample(self):
+        import random
+        return random.sample(self._datas,1)
     def data_sample(self,k):
         import random
         return random.sample(self._datas,k)
     def coda_sample(self,k):
         import random
         return random.sample(self._codas,k)
+    def split(self,ndata):
+        L = []
+        for s in self:
+            L.append(s)
+            if len(L)>=ndata:
+                yield Space(*L)
+                L = []
+        if len(L)>0: yield Space(*L)
+#
+#     Subspaces
+#
+    def     evals(self): return Space(*[e for s,e in self._evals.ttems()]) 
+    def      true(self): return Space(*[s for s,e in self._evals.items() if e.empty()]) 
+    def     false(self): return Space(*[s for s,e in self._evals.items() if e.atomic()]) 
+    def undecided(self): return Space(*[s for s,e in self._evals.items() if not e.empty() and not e.atomic()]) 
+    def apply(self,X):
+        L = []
+        for s in self:
+            for x in X: L.append(data(s|x))
+        return Space(*L)
+    def idempotent(self,X):
+        L = []
+        for s in self:
+            for x in X:
+                L.append( equal( data(s|data(s|x)) , data(s|x) ) )
+        return Space(*L)
+    def distributive(self,X,Y):
+        L = []
+        for s in self:
+            for x in X:
+                for y in Y:
+                    L.append( equal( data(s|(x+y)) , (s|x) + (s|y) ) )
+        return Space(*L)
+    def category(self,X,Y):
+        L = []
+        for s in self:
+            for x in X:
+                for y in Y:
+                    L.append( equal( data(s|(x+y)) , data(s|((s|x)+(s|y))) ) )
+        return Space(*L)
+    def morphism(self,C,X):
+        L = []
+        for m in self:
+            for c in C:
+                for x in X:
+                    L.append( equal ( data(c|data(m|x)), data(m|data(c|x)) ) )
+        return Space(*L)

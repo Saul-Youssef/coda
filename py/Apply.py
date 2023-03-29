@@ -55,15 +55,24 @@ def ap2_0(domain,A,B):
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
 CONTEXT.define('ap2',ap2_1,ap2_0)
-def apbin_0(domain,A,B):
+#def apbin_0(domain,A,B):
+#    B0,BR = B.split()
+#    B1,BX = BR.split()
+#    if B0.atom() and B1.atom(): return data((A+B0)|data((domain+A)|BR))
+#def apbin_1(domain,A,B):
+#    if B.atom(): return B
+#def apbin_2(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('apbin',apbin_0,apbin_1,apbin_2)
+def aps_0(domain,A,B):
     B0,BR = B.split()
     B1,BX = BR.split()
     if B0.atom() and B1.atom(): return data((A+B0)|data((domain+A)|BR))
-def apbin_1(domain,A,B):
+def aps_1(domain,A,B):
     if B.atom(): return B
-def apbin_2(domain,A,B):
+def aps_2(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('apbin',apbin_0,apbin_1,apbin_2)
+CONTEXT.define('aps',aps_0,aps_1,aps_2)
 def apby(domain,A,B):
     AL,AR = A.split()
     import Number

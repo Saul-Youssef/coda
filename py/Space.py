@@ -40,11 +40,22 @@ class Space(object):
     def eval(self,depth):
         import Evaluate
         self._logic,self._evals = {},{}
-
-        for D in self:  # do this in parallel!
+#
+#       map version
+#
+        def EVAL(D):
             D2,n = Evaluate.depth(D,depth)
+            return D,D2
+
+        m = map(EVAL,self)
+        for D,D2 in m:
             self._evals[D] = D2
             self._logic[D] = logic(D2)
+
+#        for D in self:  # do this in parallel!
+#            D2,n = Evaluate.depth(D,depth)
+#            self._evals[D] = D2
+#            self._logic[D] = logic(D2)
 
         self._depth = depth
         self._evaluated = True
@@ -91,6 +102,16 @@ class Space(object):
 #       the subspace satisfying d:s = () for all s in S
 #
     def subspace(self,sub):
+
+        def SUB(s):
+            if sub(s): return (s)
+            else     : return ()
+
+        m = map(SUB,self); L = []
+        for t in m:
+            for s in t: L.append(s)
+        return Space(*L)
+
         L = []
         n = 0
         for s in self:
@@ -99,9 +120,9 @@ class Space(object):
             if sub(s): L.append(s)
         return Space(*L)
 #        return Space(*[s for s in self if sub(s)])
-    def subop(self,op,T):
-        def F(s): return all([op(s,t) for t in T])
-        return self.subspace(F)
+#    def subop(self,op,T):
+#        def F(s): return all([op(s,t) for t in T])
+#        return self.subspace(F)
     def subspace_two(self,two,T):
         def F(s): return all([two(s,t) for t in T])
         return self.subspace(F)

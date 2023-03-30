@@ -4,12 +4,32 @@
 #
 from base import *
 import Evaluate
+#
+#    Multiprocessing Space list evaluation 
+#
+#def multiEval(SL,nprocs=8):
+#    from multiprocessing.pool import Pool 
+#    pool = Pool(nprocs)
+#    results = []
+#    for result in pool.imap_unordered(Eval,SL): results.append(result)
+#    return results 
+
+def multiEval(S,nproc=8):
+    n = len(S)//nproc
+    S_split = [T for T in S.split(n)]
+    from multiprocessing.pool import Pool
+    pool = Pool(nproc)
+    results = []
+    for result in pool.imap(Eval,S_split): results.append(result)
+    return Space.sum(*results)
 
 def logic(D):
     if D.empty(): return 'true'
     if D.atomic(): return 'false'
     return 'undecided'
 def equal(A,B): return data((da('=')+A)|B)
+
+def Eval(S): return S.eval(100) 
 
 class Space(object):
     def __init__(self,*Ds):
@@ -20,13 +40,41 @@ class Space(object):
         self._codas = [c for c in T]
         self._evals = {}
         self._logic = {}
-        self._depth = 0
+#        self._depth = 0
         self._evaluated = len(Ds)==0
     def __repr__(self):
         nt,nf,nu = self.lstat()
         return 'eval: '+str(self._evaluated)+', true: '+str(nt)+', false:'+str(nf)+', undecided:'+str(nu)+', codas:'+str(len(self._codas))+', datas:'+str(len(self._datas))
     def __iter__(self):
         for D in self._datas: yield D
+    def sum(*Spaces):
+#        Sum = Space(*Spaces)
+        L = []
+        for Sp in Spaces:
+            for d in Sp: L.append(d)
+        Sum = Space(*L)
+        for S in Spaces:
+            for d in S:
+                Sum._evals[d] = S._evals[d]
+                Sum._logic[d] = S._logic[d]
+        Sum._evaluated = all([S.evaluated() for S in Spaces])
+        T = set([])
+        for d in Sum:
+            for c in d: T.add(c)
+        Sum._codas = [c for c in T]
+        return Sum 
+    def __add__(self,B): 
+        return Space.sum(*[self,B]) 
+#        T = Space(*([a for a in self]+[b for b in B]))
+#        for t in T:
+#            if   t in self._evals: 
+#                T._evals[t] = self._evals[t]
+#                T._logic[t] = self._logic[t]
+#            elif t in    B._evals: 
+#                T._evals[t] = B._evals[t]
+#                T._logic[t] = B._logic[t]
+#        if self.evaluated() and B.evaluated(): T._evaluated = True
+#        return T 
     def codas(self):
         for co in self._codas: yield co
     def __getitem__(self,i): return self._datas[i]
@@ -57,7 +105,7 @@ class Space(object):
 #            self._evals[D] = D2
 #            self._logic[D] = logic(D2)
 
-        self._depth = depth
+#        self._depth = depth
         self._evaluated = True
         return self
 #
@@ -133,14 +181,12 @@ class Space(object):
                     b = three(s,t,u)
                     if not b: return b
         return self.subspace(F)
-
-    def __add__(self,Bs): return Space(*([A for A in self]+[B for B in Bs]))
 #
 #     Generate one definition at random
 #
     def sample(self):
         import random
-        return random.sample(self._datas,1)
+        return random.sample(self._datas,1)[0]
     def data_sample(self,k):
         import random
         return random.sample(self._datas,k)
@@ -158,7 +204,7 @@ class Space(object):
 #
 #     Subspaces
 #
-    def     evals(self): return Space(*[e for s,e in self._evals.ttems()]) 
+    def     evals(self): return Space(*[e for s,e in self._evals.items()]) 
     def      true(self): return Space(*[s for s,e in self._evals.items() if e.empty()]) 
     def     false(self): return Space(*[s for s,e in self._evals.items() if e.atomic()]) 
     def undecided(self): return Space(*[s for s,e in self._evals.items() if not e.empty() and not e.atomic()]) 

@@ -8,19 +8,3 @@
 #   In order to be used like other types, we follow the
 #   convention in Type.co
 #
-
-#def peano:
-#let (Make:peano): {(has A:B) (put A : rep (put:) : hasnt A:B) }
-#let (Sum:peano) : {put A : get A : make peano : B}
-#let (Term:peano) : {ap {count : get A : B} A : B}
-
-#let (Make:peano): {(has A:B) (put A : rep (put:) : hasnt A:B) }
-
-#
-#    Let's make a few peano numbers for convenience... 1?, 3? and 5?
-#
-#let 1? : make peano : first 1 : nat : 0
-#let 3? : make peano : first 3 : nat : 0
-#let 5? : make peano : first 5 : nat : 0
-
-#let (Sum:peano) : {put A : get A : B}

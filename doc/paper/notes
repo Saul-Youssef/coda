@@ -1,0 +1,36 @@
+
+
+
+Origin
+   Black hole sequence
+Foundation
+   data, coda, definition, equality, axiom of definition,
+   comparison with: predicate logic, ZFC, HOTT, inf Categories
+Internal Algebra
+   A B, A:B
+   Functions, Types, Functors, Categories, Morphisms,
+   variables, theorems
+Internal Logic
+   Bits, bytes, Hello World, the meaning of logic, (:)->(:)
+Internal Language
+   {  } A : B
+   language is merely one definition
+   all byte sequences
+Proof and Computation
+   All proofs are computations.  All computations are proofs.
+Global issues
+   Is mathematics consistent?
+   What are the right axioms for mathematics?
+   Resolving paradoxes
+Applications
+   Math exploration and proof-assistance
+   Supermodel Applications
+   Universal data storage
+   Mathematical Machine Learning
+
+Examples:
+   definition examples: natural numbers, rev, ap, aps, ... 
+   classifying odd vs even atoms
+   paradoxes
+     Liar; truth-teller; Berry; Yablo
+   group theory

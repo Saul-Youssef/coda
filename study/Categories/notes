@@ -1,4 +1,146 @@
 
 
+Dayum...  Let's try being more radical.
+
+1. A type is T:T:X = T:X and T : X Y = (T:X) (T:Y)
+2. A category C is C : X Y = C : (C:X) (C:Y)
+3. A morphism of category C is data M s.t. C*M ~ M*C.
+
+Types:
+=====
+
+() : bit
+0  : bit sequence
+1  : byte sequence
+n  : natural number
+
+Categories
+
+=> Every type is a category
+
+Suppose M is a morphism of type T.  M:T:X = T:M:X for all X.
+=> M:T:T:X = T:M:T:X = M:T:X
+
+M*T = T*M
+
+=> Types can have types
+
+Example:
+
+def abelian : apif {some:Sum:B} ...a type of types
+
+
+
+A morphism e is an identity if e is a morphism and
+e*M ~ M*e ~ M for all morphisms M.
+
+Suppose e and e' are identities.  Then e*e' ~ e'*e ~ e ~ e'.
+
+* Every type is a category.
+
+A category is data C together with a collection of morphisms M... which
+commute with C??
+
+Morphism E in category C is an identity if E*M = M = M*E for all, i.e. E is an identity
+if it is "like C".
+
+T:(X Y) = (T:X) (T:Y) = (T:T:X) (T:T:Y) = T: (T:X) (T:Y)
+
+There is a relationship between types and categories:
+
+Every type is a category.
+
+Example:
+
+category     morphisms                 products
+-------------------------------------------------------
+sum n        sum preserving (sum:n)    no product
+abelian      preserves abelian type    has product
+
+has n
+sum n   Double:n:5 = n:10
+        Double*Sum n = Sum n*Double
+
+sum m   mDouble:m:5 = m:10
+        mDouble:Sum m = Sum m*mDouble
+
+commutes with sum X?
+
+
+Dependent type examples...
+
+e.g. VectorSpace F is a vector space over a field F?
+
+Suppose that M is a sequence of morphisms of category C and
+
+P:M is a morphism of C
+nth A : P:M = nth A : M
+
+What is the universal property?
+
+If Q:M is a product, then P:M and Q:M are equivalent (in what sense?)
+
+def abelian : {apif {not:Sum:B} : B}
+
+abelian : T = T if T is an abelian type, i.e. a type with Sum:T
+
+Example.
+
+C = has n
+F:n = 2n
+G:n = 3n
+H:n = 1n
+E = pass
+
+C = sum n
+F:n = 2n
+G:n = 3n
+H:n = 1n
+E:n = n
+
+Data A and B are *equivalent* if A:X and B:X are equal for all X.
+
+first 2
+(first 2) * (first 3)
+
+Monomorphism: M*F = M*G => F=G
+Epimorphism:  F*M = G*M => F=G
+Isomorphism:
+
+
 Categories, Morphisms, Mono, Epi, Iso-morphisms, limits, co-limits,
 Adjoints, examples...
+
+The category of data...
+
+
+Data C is a category if C : X Y = C : (C:X) (C:Y) for all X,Y.
+Data M is a morphism in category C if C:M:X = M:C:X for all X.
+
+Examples:
+
+    sum (abelian:T?)  Abelian groups
+
+Peano naturals as a type
+
+make peano1 ... is a type
+make peano2 ... is a type
+
+P12 : (peano1:1 1 1) = (peano2:2 2 2)
+P21 : (peano2:2 2 2) = (peano1:1 1 1)
+
+M*sum p1 = sum p1*M   for example M:peano1:1 1 = peano1:1 1 1 1
+
+P12*M*P21 is a morphism of peano2
+
+a:b:c = a:(b:c)
+
+Category C
+Morphism M   M*C:X = C*M:X
+Morphism N   N*C:X = C*N:X
+lem: M*N is a morphism
+proof: For any X,
+(M*N)*C:X = (M*N):C:X = M:N:C:X = M:(N:C:X) = M:(C:N:X) = M:C:(N:X) = C:M:N:X = C*(M*N):X => M*N
+is also a morphism of C.
+
+Then  (M*N)*C:X = M:N:C:X = M:(N:C:X) = M:(C:N:X) = M:C:(N:X) = C:M:N:X = C*(M*N):X => M*N is a morphism of C

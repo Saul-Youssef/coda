@@ -4,36 +4,39 @@
 def Natural : {
    ( def B: )
    ( let (Extra:B) : A )
-   ( let (Make:B) : { (ap put A: ap nat1 : B) (has A:B) (ap app (Extra:A):B) } )
-   ( let (Sum:B)  : {ap put A : apbin int_add : pre 0 : get A : make A : B} )
-   ( let (Prod:B) : {ap put A : apbin int_mult : pre 1 : get A : make A : B} )
-   ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
-   ( let (Class:B): {equiv {get A:B} A : make A : B} )
-   ( let (Term:B) : {get A : make A : B} )
+   ( let (Make:B) : { (ap put A: ap nat1 : B) (has A:B) } )
+   ( let (Sum:B)  : {ap put A : aps int_add : pre 0 : get A : B} )
+   ( let (Prod:B) : {ap put A : aps int_mult : pre 1 : get A : B} )
+   ( let (Sort:B) : {ap put A : int_sort : get A : B} )
+   ( let (Set:B)  : {equiv {get A:B} A : B} )
+   ( let (Term:B) : {get A : B} )
+   ( let (?:B) : make B )
    }
 
 def Integer : {
    ( def B: )
    ( let (Extra:B) : A )
    ( let (Make:B) : { (ap put A: ap int1 : B) (has A:B) (ap app (Extra:A):B) } )
-   ( let (Sum:B)  : {ap put A : apbin int_add : pre 0 : get A : make A : B} )
-   ( let (Prod:B) : {ap put A : apbin int_mult : pre 1 : get A : make A : B} )
+   ( let (Sum:B)  : {ap put A : aps int_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : aps int_mult : pre 1 : get A : make A : B} )
    ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
    ( let (Inv:B)  : {ap put A : int_inv : get A : make A : B} )
-   ( let (Class:B): {equiv {get A:B} A : make A : B} )
+   ( let (Set:B)  : {equiv {get A:B} A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
+   ( let (?:B) : make B )
    }
 
 def Float : {
    ( def B: )
    ( let (Extra:B) : A )
    ( let (Make:B) : { (ap put A: ap float1 : B) (has A:B) (ap app (Extra:A):B) } )
-   ( let (Sum:B)  : {ap put A : apbin float_add : pre 0 : get A : make A : B} )
-   ( let (Prod:B) : {ap put A : apbin float_mult : pre 1 : get A : make A : B} )
+   ( let (Sum:B)  : {ap put A : aps float_add : pre 0 : get A : make A : B} )
+   ( let (Prod:B) : {ap put A : aps float_mult : pre 1 : get A : make A : B} )
    ( let (Sort:B) : {ap put A : float_sort : get A : make A : B} )
    ( let (Inv:B)  : {ap put A : float_inv : get A : make A : B} )
    ( let (Class:B): {equiv {get A:B} A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
+   ( let (?:B) : make B)
    }
 
 def str : {ap join : B}
@@ -45,6 +48,7 @@ def String : {
    ( let (Sum:B)  : {ap put A : join : get A : make A : B} )
    ( let (Class:B): {equiv {get A:B} A : make A : B} )
    ( let (Term:B) : {get A : make A : B} )
+   ( let (?:B) : make B )
    }
 
 #

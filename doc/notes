@@ -1,5 +1,7 @@
 
 
+o Fix the stupid newline input() issue 
+o Help seems to be semi-broken ATM
 o Handle exceptions and keyboardinterrupts
 o Make definitions evaluate like everything else
 o Do group theory as an example

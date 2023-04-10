@@ -23,9 +23,9 @@ from base import *
 #  demo: ap2 a b c : 1 2 3
 #  demo: ap2 first 2 3 : a b c d e  g
 #  demo: ap ap2 a b c : 1 2 3
-#  demo: apbin foo : a b c d
+#  demo: aps foo : a b c d
 #  demo: int_add 3 : 5
-#  demo: apbin int_add : 1 2 3 4 5
+#  demo: aps int_add : 1 2 3 4 5
 #  demo: apby 2 foo : a b c d e f g
 #  demo: apif {(count:get bin:B)=2} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #

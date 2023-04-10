@@ -13,14 +13,19 @@ from base import *
 #   some : A -> 1 if A is atomic, () if A is empty
 #   none : A -> 1 if A is empty, () if A is atomic
 #
-def some(domain,A,B):
-    if B.atomic(): return A
-    if B.empty (): return data()
-def none(domain,A,B):
-    if B.atomic(): return data()
-    if B.empty (): return A
-CONTEXT.define('some',some)
-CONTEXT.define('none',none)
+def default(domain,A,B):
+    if B.atomic(): return B
+    if B.empty(): return A
+CONTEXT.define('default',default)
+
+#def some(domain,A,B):
+#    if B.atomic(): return A
+#    if B.empty (): return data()
+#def none(domain,A,B):
+#    if B.atomic(): return data()
+#    if B.empty (): return A
+#CONTEXT.define('some',some)
+#CONTEXT.define('none',none)
 #
 #   Context equality (=) and logical complement (^) in "Zen logic".
 #
@@ -48,8 +53,12 @@ CONTEXT.define('none',none)
 #  demo: ^: 1 2 3 4
 #  demo: ^: (foo:bar)
 #
-
 ATOM = data(coda(data(),data()))
+
+def logic(domain,A,B):
+    if B.atomic(): return ATOM
+    if B.empty(): return data()
+CONTEXT.define('logic',logic)
 
 def complement(domain,A,B):
     if B.atomic(): return data()

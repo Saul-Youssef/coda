@@ -3,13 +3,12 @@
 #
 #   If the input is equivalent to empty data, the result is empty data.
 #   If the input is atomic, the result is a single (:) (this is the atom,
-#   displayed as "|").  
+#   displayed as "|").
 #
 #   demo: 1=1
 #   demo: 1=2
-#   demo: (put:)
 #   demo: logic : (1=2)
-#   demo: logic : (^:(x?=x?))
+#   demo: logic : (not:(x?=x?))
 #   demo: logic : (x?=y?)
 #
-def logic : {some (put:) : B}
+#def logic : {some (put:) : B}

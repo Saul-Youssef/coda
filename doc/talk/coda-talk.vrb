@@ -1,0 +1,13 @@
+\frametitle{Commands for brackets in equations}
+\begin{itemize}
+            \item \verb|\nbracket|: \verb|\left( ... \right)|
+                \begin{align*}
+                    \lim_{x \to \infty} \nbracket{1 + \frac{1}{x}}^x = e
+                \end{align*}
+            \item \verb|\cbracket|: \verb|\left\{ ... \right\}|
+                \begin{align*}
+                    \frac{\beta}{2}\sum_{n=1}^N \cbracket{t_n - \mathbf w^\top\boldsymbol\phi(\mathbf x_n)}^2
+                \end{align*}
+            \item \verb|\rbracket|: \verb|\left[ ... \right]|
+            \item \verb|\abracket|: \verb|\left\langle ... \right\rangle|
+        \end{itemize}

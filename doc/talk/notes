@@ -4,20 +4,20 @@
 Origin
    Black hole sequence
 Foundation
-   data, coda, definition, equality, axiom of definition,
-   comparison with: predicate logic, ZFC, HOTT, inf Categories
-Internal Algebra
-   A B, A:B
-   Functions, Types, Functors, Categories, Morphisms,
-   variables, theorems
-Internal Logic
-   Bits, bytes, Hello World, the meaning of logic, (:)->(:)
-Internal Language
+   For comparison: predicate logic, ZFC, dependent type theory HOTT
+Coda
+   data, coda, algebra, definition, equality, axiom of definition
+   examples: bits and bytes, functions, types, categories, morphisms, theorems...
+   pure data
+Logic
+   (:)->(:)
+Language
    {  } A : B
    language is merely one definition
-   all byte sequences
+   all byte sequences are valid language expressions
 Proof and Computation
    All proofs are computations.  All computations are proofs.
+   i.e. not the Curry-Howard correspondence 
 Global issues
    Is mathematics consistent?
    What are the right axioms for mathematics?
@@ -29,7 +29,7 @@ Applications
    Mathematical Machine Learning
 
 Examples:
-   definition examples: natural numbers, rev, ap, aps, ... 
+   definition examples: natural numbers, rev, ap, aps, ...
    classifying odd vs even atoms
    paradoxes
      Liar; truth-teller; Berry; Yablo

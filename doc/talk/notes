@@ -10,18 +10,21 @@ Coda
    examples: bits and bytes, functions, types, categories, morphisms, theorems...
    pure data
 Logic
-   (:)->(:)
+   (:)->(:); atomic data
+   data is true(empty), false(atomic) or undecided(neither)
 Language
    {  } A : B
    language is merely one definition
    all byte sequences are valid language expressions
 Proof and Computation
    All proofs are computations.  All computations are proofs.
-   i.e. not the Curry-Howard correspondence 
+   i.e. not the Curry-Howard correspondence
+Category Theory
+
 Global issues
    Is mathematics consistent?
    What are the right axioms for mathematics?
-   Resolving paradoxes
+   Computing paradoxes
 Applications
    Math exploration and proof-assistance
    Supermodel Applications

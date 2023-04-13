@@ -6,6 +6,9 @@
 #  sort/Sort   - A partial ordering
 #  set/Set     - Equivalence classes of an equivalence relation
 #  inv/Inv     - Involution
+#  term/Term   - Terminal output
+#  extra/Extra - Extra creation methods on input
+#  make/Make   - Creation
 #
 def dom1: {first:dom:B}
 #

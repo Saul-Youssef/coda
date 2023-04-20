@@ -31,69 +31,77 @@ This is an abstract.
 \section{Introduction}
 \section{Foundation} 
 
-     Any system of reasoning must necessarily have at least one foundational concept which is understood even before a first definition.  In our case, the one foundational concept is the {\bf finite sequence}.  We assume that finite sequences and obvious operations on finite sequences are understood.  On the other hand, logic, logical values and predicates (foundational in ZFC) and types (foundational in dependent type theory) are not assumed.  These will be defined in terms of finite sequences as we proceed.   
-Given finite sequences, we can define {\it data} as follows:
-\begin{itemize}
-\item[--] {\bf data} is a finite sequence of {\bf codas}, and 
-\item[--] a {\bf coda} is a pair of {\bf data}.
-\end{itemize}
-The pairing of data in the definition of a coda is indicated by a colon, so $()$, $(:)$ and $((:):(:)(:)(:(:)))$ are examples of valid data.  We refer to this a ``pure data" since it is ``data made of nothing."  As we shall see, variables, functions, definitions, language expressions, logical values, morphisms, categories, types, propositions, theorems and other mathematical objects all appear as pure data of different varieties.  Data in general has a small natural algebra with two binary operations:
+     Any system of reasoning must necessarily have at least one foundational concept which is understood before a first definition.  In our case, the foundational concept is the {\bf finite sequence}.  We assume that finite sequences and obvious operations on finite sequences are understood.  On the other hand, logic, logical values and predicates (foundational in ZFC) and types (foundational in type theories) are not assumed to be understood.  These will be defined in terms of finite sequences as we proceed.   
+Taking finite sequences as understood, we can define ``data'' and ``coda'' by the following. 
 \begin{enumerate}
-\item[] $A\ B$ is the concatenation of data $A$ and data $B$ as finite sequences, and 
-\item[] $A:B$ is the pairing of data $A$ and data $B$ into a single coda. 
+\item[] A {\bf data} is a finite sequence of {\bf codas}.
+\item[] A {\bf coda} is a pair of {\bf data}.
 \end{enumerate}
- Without parenthesis, the colon binds right-first and is weaker than concatenation, so for instance, $A:B:C$ means $(A:(B:C))$ and 
-$A : B\ C$ means $(A:(B\  C))$.
+Notationally speaking, if $A$ and $B$ are data, $A\ B$ denotes the concatenation of $A$ and $B$ as finite sequences and $A:B$ denotes the data 
+consisting of the single coda formed by pairing $A$ and $B$.  For examples, the empty sequence of codas () is data, the pairing 
+of two empty sequences $(:)$ is data and this sequence of three 
+codas  (:)(:)((:):(:)(:)) is data consisting of a sequence of three codas.  This it ``pure data, made of nothing."  It is the central concept of coda.  
+We shall see that both data in the ordinary sense (bits, bytes, language expressions) and mathematical concepts such as variables, functions, definitions, logical values, categories, morphisms, types and theorems appear as varieties of pure data with simple definitions in terms of the small algebra of data $A\ B$ and $A:B$.   In this algebra, we conventionally hold that colons bind from the right first and less strongly than concatenation, so $A:B:C$ means $(A:(B:C))$ and $A:B\ C$ means $(A:(B\ C))$.
 
-A {\it context} in coda is a partial function from coda to data.  A context which is deemed to be {\it valid} defines an equivalence relation ``='' on data, via assuming relations 
+     The mathematical content of coda is embodied in a partial function from coda to data called a {\bf context}.  Given a context $\delta$ data equality is defined by the relations 
 \begin{enumerate}
 \item[] $A\ B = \delta(A)\ B = A\ \delta(B)$
 \item[] $A:B = \delta(A):B = A:\delta(B)$
 \end{enumerate}
-for any data $A$ and $B$.  Here $\delta$ is the valid context in question, extended from a partial function from coda to data into to a total function from data to data by adding identities.  In other words, relations are assumed, so as to force $\delta$ to be the same as the identity function on data.  This equality, in turn, defines the answers to mathematical questions, as we will see.  The issue of which contexts are valid is fixed by the following.
-
-\newtheorem{axiom}{Axiom}
-\newtheorem{theorem}{Theorem}
+for data $A$ and all data $B$.  Here the partial function $\delta$ is extended to a function from data to data with identities.  Conceptually, relations are assumed until ``$=$" has the same 
+properties as the identity. 
+      
+    The important concept of ``atoms" and ``atomic data'' provides both stability, and a mechanism for adding new definitions to a valid context.   
+Given a context $\delta$, an {\it atom} is a coda $c$ where $(c,c)\in \delta$.  Data with atoms in it's sequence are called {\it atomic} data.  In a context $\delta$ with corresponding equality, 
+a {\it definition on atom $a$} is a partial function from coda to data where the domain of the partial function is contained within the codas $(a\ A:B)$ for the atom $a$ and for any data $A$ and $B$.  
+The axiom below defines how definitions may be added to a {\it valid} context without clashes.  
 
 \newtheorem*{remark}{AXIOM OF DEFINITION} 
 
-\begin{remark}  The empty context is a valid context.  If $\delta$ is a valid context with corresponding equality $=$, and if $d$ is a partial function from coda to data with $d(c)=d(c')$ if $c=c'$ in $\delta$, then $\delta\cup d$ is also a valid context.  
-\end{remark}
+\begin{remark}  The context $(:)\rightarrow(:)$ is valid.  If $a$ is an atom in context $\delta$, if $\delta_a$ is a definition on $a$, and if $\delta$ and $\delta_a$ have disjoint domains, then 
+the union of $\delta$ and $\delta_a$ is a valid context. 
+\end{remark} 
+\noindent The point of the initial context $(:)\rightarrow(:)$ is to establish $(:)$ as an initial atom.  
+In a typical case, a definition $\delta_a$ will be added to a context when $a$ has not been used by some other definition, thus 
+avoiding a clash.  The disjoint requirement also insures the stability of atoms.  Once a coda is an atom in some context, it remains an atom independent of future added definitions.   
+We say that atomic data is ``always atomic" and, similarly empty data is ``always empty".  This stability is the basis for an internal logic and it also makes 
+it convenient to define a stable 0-bit, 1-bit, stable bit sequences, stable byte sequences in addition to definitions as shown in figure 1.  
 
-A partial function from coda to data, such as $d$ in the axiom above, is called a {\it definition}.  The axiom of definition 
-defines what constitutes a valid definition.   The axiom of definition is the one and only axiom of coda. 
+As a formal axiomatic system, coda has only one axiom: The Axiom of Definition.  We shall see in the following sections that coda has an internal logic making logic-related 
+axioms unnecessary.  Also, coda has an internal language, making axioms related to language and syntax unnecessary.  Unlike type systems with the Curry-Howard 
+correspondence, proof and computation in coda are the same thing.  Each is merely a data sequence $A_0=A_1=A_2=\dots=A_n$ either computing $A_n$ from $A_0$ or establishing 
+that $A_0=A_n$ depending on one's point of view. 
 
-If data $A$ is in the domain of context $\delta$ and if $\delta(A)=A$ and if $|A|=|B|=1$ for any $A=B$, then data $A$ is 
-said to be an {\bf atom}.  Note that if $A$ is an atom, $A$ remains an atom independent of any new definitions added to $\delta$ via the Axiom of definition.  If data has one or more atoms in it's sequence, it is said to be {\bf atomic} data.  In this sense, atoms cannot be destroyed by future definitions.  This makes it possible to define, for instance, a stable 0-bit, 1-bit, stable bit sequences and stable byte sequences and many other types of storage as indicated in figure 1. 
+Unless otherwise indicated, ``data'' refers to pure data and ``sequence'' refers to a finite sequence.  If data $A=()$, we say that $A$ is {\it empty}.  
 
 \section{Logic}
 
-Within coda, items with mathematical meaning are merely pure data of different kinds.  This means, roughly speaking, that the answer to mathematical questions will be of the form 
+Within coda, items with mathematical meaning are merely pure data of different kinds.  This means, roughly speaking, that mathematical questions will appear in the form 
 \begin{itemize}
 \item[] Is data $A$ equal to data $B$?
 \end{itemize}
-Since equality is also a definition in context, the answer to the question $A=B$ is also data.  But if everything about $A=B$ is encoded in the concrete data $(= A:B)$, this specific data should include any logical interpretation of $A=B$.  This suggests that ``logic'' in should be identified as the coarsest non-trivial classification of data in general.  A glance at any pure data suggests that there is 
-such a classification since pure data is ``made from $()$ and $(:)$."  It is clear that if there was a definition
+Since equality itself will also be definition in context, the answer to the question $A=B$ is also data.  But if everything about $A=B$ is encoded in the concrete data $(= A:B)$, then 
+this specific data should contain any ``logical" interpretation of $A=B$.  This suggests that ``logic'' in should be identified as a suitable coarsest non-trivial classification of data which is stable under 
+added definitions.  This motivates the following definitions.
 \begin{itemize}
-\item[] $(:)\rightarrow ()$
+\item data is {\bf true} if it is empty.
+\item data is {\bf false} if it is atomic. 
+\item data is {\bf undecided} otherwise. 
 \end{itemize}
-then all data collapse and be equal to the empty data.  On the other hand, the alternative 
+Examples illustrate the flavor of this classification.  
 \begin{itemize}
-\item[] $(:)\rightarrow (:)$
+\item[] {\bf True:} (), (pass:), (null:a b c), (null: (foo:bar)).
+\item[] {\bf False:} (:), a b c, pass : a b c, a b c (foo:bar).
+\item[] {\bf Undefined:}  (foo:bar), (pass:foo:bar), (foo:1 2 3).
 \end{itemize}
-makes $(:)$ into an atom which cannot be modified by other definitions.  This suggests that logic should have at least two values and $()$ and $(:)$ should have different logical values.  This motivates the definitions
-\begin{itemize}
-\item[--] data $A$ is {\bf true} if $A$ is equal to the empty data. 
-\item[--] data $A$ is {\bf false} if $A$ contains an atom in it's sequence of codas.
-\item[--] data $A$ is {\bf undecided} otherwise. 
-\end{itemize}
-This logic could be thought of as ``not quite two valued'' where undefined data like $({\rm foo}:{\rm bar})$ represents data which is currently undefined, but which may receive a value if more definitions are added to the current context.  The stability of true or false data under new definitions makes these useful concepts.  We use ``always'' to refer to future definitions as in
+This logic can be thought of as ``not quite two valued'' where undefined data like (foo:bar) represents data which is currently undefined, but which may receive a value if more definitions are added to the current context.  The stability of true or false data under new definitions makes these useful concepts.  We use ``always'' to refer to future definitions as in
 \begin{itemize}
 \item[--] True data is ``always true.''
 \item[--] False data is ``always false.''
 \end{itemize}
 Undecided data, on the other hand, may become true or false, depending upon future definitions.  Also, as we will see, there is 
-some undecided data which can never become true or false with any choice of future definitions.  Such data is called {\bf undecidable}.  This will be discussed further in section X.    
+also undecided data which can never become true or false with any choice of future definitions.  Such data is called {\bf undecidable}.  
+This will be discussed further in section X. 
 
     Although the logic of coda is not the same as classical logic, we will argue that this is the ``correct'' logic for reasoning in general.  It is also quite close to classical logic in the sense that there is a definition that corresponds to each of the familiar 16 binary operations of classical propositional logic.  For instance, when data $A$ and $B$ are either true or false, the data $({\rm XOR}\ A:B)$ has the value $()$ for {\it true} and $(:)$ for {\it false} depending on the classical truth table of values for XOR.  If either $A$ or $B$ are undecided, on the other hand, no definition applies to $({\rm XOR}\ A:B)$ and it ``waits for $A$ and $B$ to be resolved in future definitions."
     
@@ -113,52 +121,6 @@ some undecided data which can never become true or false with any choice of futu
 \bibitem{cox} R.T.Cox, Am.J.Phys. 14, 1 (1946).
 \bibitem{mpl2} S.Youssef, Mod.Phys.Lett A9, 2571 (1994).
 \bibitem{pl} S.Youssef, Phys.Lett. A204, 181(1995).
-\bibitem{mpl1} S.Youssef, Mod.Phys.Lett A6, 225-236 (1991).
-\bibitem{santafe} S.Youssef in: proceedings of the Fifteenth International Workshop 
-on Maximum Entropy and Bayesian Methods, ed. K.M.Hanson and R.N.Silver, Santa Fe, 
-August(1995).
-\bibitem{srinivasan1} S.K.Srinivasan and E.C.G.Sudarshan, J.Phys.A. Math Gen.27(1994).
-\bibitem{srinivasan2} S.K.Srinivasan, J.Phys.A (23) 8297 (1997).
-\bibitem{srinivasan3} S.K.Srinivasan, J.Phys.A Math.Gen. 31(1998).
-\bibitem{dirac} P.A.M. Dirac, Proc.Roy.Soc.Lond. A 180(1942).
-\bibitem{muckenheimetal} W.Muckenheim et al., Phys.Rep. 133, 339(1983).
-\bibitem{gudder} S.Gudder, J.Math.Phys.29, 9(1988); Found.Phys.19, 949(1989); 
-Int.Journ.Theor.Phys.,31(1992)15.
-\bibitem{feynman} R.P.Feynman in: {\it Quantum Implications}, eds. B.J.Hiley and
-F.David Peat(Routledge and Kegan Paul, 1987).
-\bibitem{tikochinsky} Y.Tikochinsky, Int.J.Theor.Phys. 27, 543(1988); J.Math.Phys. 29 (1988).
-\bibitem{frohner} F.H.Frohner, in: Maximum Entropy and Bayesian Methods, ed:
-A.Mohammad-Djafari and G.Demoments, Kluwer Academic Publishers, (1993).
-\bibitem{caticha} A.Caticha, Phys.Rev.A57, 1572 (1998).
-\bibitem{steinberg} A.Steinberg, Phys.Rev.Lett 13, 2405 (1995); Phys.Rev. A52, 32 (1996).
-\bibitem{belinskii} A.V.Belinskii, JETP letters, 69, 301(1994).
-\bibitem{miller} D.J.Miller, Phys.Lett. A (1996).
-\bibitem{muckenheim} W.Muckenheim, Phys. Lett. A 175 (1993).
-\bibitem{khrennikov} A.Krennikov, Phys.Lett. A 200(1995).
-\bibitem{pitowsky} I.Pitowsky, Phys.Rev.Lett. 48, 1299 (1982); Phys.Rev.D27, 2316(1983).
-\bibitem{jaynes1} E.T.Jaynes, ``Bayesian Methods: General Background,'' in 
-{\it The Fourth Annual Workshop on Bayesian/Maximum Entropy Methods in Geophysical
-Inverse Problems}, ed: J.H.Justice, Cambridge University Press (1985).
-\bibitem{jaynes2} E.T.Jaynes, ``Clearing up Mysteries--The Original Goal,'' in
-{\it Maximum--Entropy and Bayesian Methods}, ed: J.Skilling, Kluwer, (1989).
-\bibitem{jaynes3} E.T.Jaynes, ``Probability Theory as Logic,'' in: 
-{\it Maximum--Entropy and Bayesian Methods}, ed: P.F.Fougere, Kluwer, (1990).
-\bibitem{ejaynes} E.T.Jaynes, {\it Probability Theory: The Logic of Science}, 
-{\tt http:\\bayes.wustl.edu/etj/etj.html}.
-\bibitem{nonmeasurablesets} Assuming that $X\times T$ is a sublattice of $L$ implies 
-that probabilities such as $(a\rightarrow N_t)$ can occur where $N$ is a non--measurable
-set.  This does not cause problems because we only assume that 
-$(a\rightarrow b\vee c)=(a\rightarrow b)+(a\rightarrow c)$ for pairs $(b,c)$ and not
-for countable subsets $b_1,b_2,\dots$ with $b_i\wedge b_j=0$ for all $i\neq j$.  ``Measure
-space" in this paper refers to a measure space with a finite measure.
-\bibitem{harvey} Hurwitz theorem, see {\it Spinors and Calibrations} by F.Reese Harvey, Academic Press, 
-(1990).
-\bibitem{bell} J.S.Bell, Physics, 1(1964) 195; J.S.Bell, Rev.Mod.Phys. 38 (1966) 447.  See
-N.D.Mermin, Rev.Mod.Phys. 65(1993) 803 for a review.
-\bibitem{sakurai} J.J.Sakurai, {\it Modern Quantum Mechanics}, Addison--Wesley (1994).
-\bibitem{Wilkinson} S.R.Wilkinson et al., Nature, 387 (1997) 575.
-\bibitem{risken} H.Risken, {\it The Fokker--Planck equation}, Springer-Verlag (1984).
-\bibitem{lang} S.Lang, {\it Real and Functional Analysis}, Springer (1993).
 
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

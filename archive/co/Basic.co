@@ -1,0 +1,28 @@
+#
+#   Basics
+#
+
+#
+#   has/hasnt selects, get gets, is/isnt tests
+#
+#   has  A  : ... gets data of the form (A:<something>)
+#   hasnt A : ... gets data that isn't of the form (A:<something>)
+#   get A   : ... gets <something> from data of the form (A:<something>)
+#   is  A   : ... gets data exactly equal to A
+#   isnt A  : ...everything except what's equal to A
+#
+#   demo: has bin : x y z (bin:a b c)
+#   demo: hasnt bin : x y z (bin:a b c)
+#   demo: has : x y z (bin:a b c)
+#   demo: has ((:):(:)) : x y z (bin:a b c)
+#   demo: get bin : x y z (bin:a b c)
+#   demo: get ((:):(:)) : x y z (bin: a b c)
+#   demo: is y : x y z
+#   demo: is (pass:bin:a b) : x y (bin:a b) z
+#   demo: isnt y : x y z
+#
+def has : {ap has1 A : B}
+def hasnt : {apif {has1 A:B} A : B}
+def get : {ap get1 A : B}
+def is : {apif {A=B} A : B}
+def isnt : {apif {not:(A=B)} A : B}

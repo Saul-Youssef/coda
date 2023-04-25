@@ -1,0 +1,17 @@
+
+Univalent Foundations Seminar - Steve Awodey
+https://www.youtube.com/watch?v=ogoWR-LPgl8&t=588s
+
+Vladimir Voevodsky
+What if current foundations of mathematics are inconsistent?
+https://www.ias.edu/ideas/2012/voevodsky-foundations-of-mathematics
+
+Godel's incompletness result
+Paradox: arithmetic is "known" to be consistent, but Godel
+proved that there can be no proof of that!? 
+
+New Foundations of Mathematics
+https://www.youtube.com/watch?v=E9RiR9AcXeE
+
+A skeptical history of numbers, public talk by Curt McMullen
+https://www.youtube.com/watch?v=dU3MTnhCtyA

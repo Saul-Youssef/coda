@@ -32,7 +32,6 @@ CONTEXT.define('start',start)
 
 def startcontext(domain,A,B):
     import Language
-#    src = 'codx : source : readpath : endswith </coda.co> : dir co : start : '
     src = 'coda : source : readpath : endswith </coda.co> : dir co : start : '
     return Language.lang(src,data(),data())
 CONTEXT.define('startcontext',startcontext)
@@ -40,6 +39,5 @@ CONTEXT.define('startcontext',startcontext)
 def homecontext(domain,A,B):
     import Language
     src = 'coda : source : readpath : dir co : endswith </co> : dir : home :'
-#    src = 'codx : source : readpath : dir co : endswith </co> : dir : home :'
     return Language.lang(src,data(),data())
 CONTEXT.define('homecontext',homecontext)

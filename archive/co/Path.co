@@ -1,0 +1,9 @@
+#
+#     Path extracts information from a local file system
+#
+#     It is an example of using "Extras" to create data.  This was
+#     called "extensions" in coda-classic.
+#
+String : path
+String {put fn : last : split </> : get path: B} : fn
+String {put ext : last : split <.> : get fn : make fn : B} : ext

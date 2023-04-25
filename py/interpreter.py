@@ -12,7 +12,7 @@ readline.parse_and_bind("tab: complete")
 #    System
 #
 from start import *
-import Text,Evaluate,Language,Code
+import Text,Evaluate,Language
 
 EXIT = ['exit','quit']
 try:

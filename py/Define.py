@@ -17,10 +17,12 @@ def Def(domain,D,V):
 
     if (not D is None) and (not V is None):
         if V.empty():
-            CONTEXT.dom(D,Definition(D))
+#            CONTEXT.dom(D,Definition(D))
+            CONTEXT.add(Definition(D))
         else:
             defin = Definition(D,lambda domain,A,B:data((V+A)|B))
-            CONTEXT.dom(defin.domain(),defin)
+#            CONTEXT.dom(defin.domain(),defin)
+            CONTEXT.add(defin)
         return data()
 CONTEXT.define('def',Def)
 #
@@ -29,28 +31,28 @@ CONTEXT.define('def',Def)
 #   demo: const stuff : 1 2 3
 #   demo: stuff:
 #
-def Const(domain,D,V):
-    D = Evaluate.resolve(D,100)
-    V = Evaluate.resolve(V,100)
-
-    if (not D is None) and (not V is None):
-        defin = Definition(D,lambda domain,A,B:V)
-        CONTEXT.dom(defin.domain(),defin)
-#        CONTEXT.add(Definition(D,lambda domain,A,B:V))
-        return data()
-CONTEXT.define('const',Const)
+#def Const(domain,D,V):
+#    D = Evaluate.resolve(D,100)
+#    V = Evaluate.resolve(V,100)
+#
+#    if (not D is None) and (not V is None):
+#        defin = Definition(D,lambda domain,A,B:V)
+#        CONTEXT.dom(defin.domain(),defin)
+##        CONTEXT.add(Definition(D,lambda domain,A,B:V))
+#        return data()
+#CONTEXT.define('const',Const)
 #
 #   Assign values to "variables"
 #
 #   demo: let x? : 1 2 3 4
 #   demo: x?
 #
-def Let(domain,D,V):
-    D = Evaluate.resolve(D,100)
-    V = Evaluate.resolve(V,100)
-
-    if (not D is None) and (not V is None) and len(D)>0:
-        cod = D[0]
-        CONTEXT.val(cod,V)
-    return data()
-CONTEXT.define('let',Let)
+#def Let(domain,D,V):
+#    D = Evaluate.resolve(D,100)
+#    V = Evaluate.resolve(V,100)
+#
+#    if (not D is None) and (not V is None) and len(D)>0:
+#        cod = D[0]
+#        CONTEXT.val(cod,V)
+#    return data()
+#CONTEXT.define('let',Let)

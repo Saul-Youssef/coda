@@ -4,7 +4,7 @@
 #   Basic, low level computing python integers or python floats from code
 #
 from base import *
-import Code
+#import Code
 
 class BinaryOperation(object):
     def __init__(self,coerce,operation):

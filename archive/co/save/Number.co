@@ -1,0 +1,60 @@
+#
+#    Natural number types and string
+#
+def Natural : {
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : { (ap put A: ap nat1 : B) (has A:B) } )
+   ( let (Sum:B)  : {ap put A : aps int_add : pre 0 : get A : B} )
+   ( let (Prod:B) : {ap put A : aps int_mult : pre 1 : get A : B} )
+   ( let (Sort:B) : {ap put A : int_sort : get A : B} )
+   ( let (Set:B)  : {equiv {get A:B} A : B} )
+   ( let (Term:B) : {get A : B} )
+   ( let (?:B) : make B )
+   }
+
+def Integer : {
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : { (ap put A: ap int1 : B) (has A:B) (ap app (Extra:A):B) } )
+   ( let (Sum:B)  : {ap put A : aps int_add : pre 0 : get A : B} )
+   ( let (Prod:B) : {ap put A : aps int_mult : pre 1 : get A : B} )
+   ( let (Sort:B) : {ap put A : int_sort : get A : B} )
+   ( let (Inv:B)  : {ap put A : int_inv : get A : B} )
+   ( let (Set:B)  : {equiv {get A:B} A : B} )
+   ( let (Term:B) : {get A : B} )
+   ( let (?:B) : make B )
+   }
+
+def Float : {
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : { (ap put A: ap float1 : B) (has A:B) (ap app (Extra:A):B) } )
+   ( let (Sum:B)  : {ap put A : aps float_add : pre 0 : get A : B} )
+   ( let (Prod:B) : {ap put A : aps float_mult : pre 1 : get A : B} )
+   ( let (Sort:B) : {ap put A : float_sort : get A : B} )
+   ( let (Inv:B)  : {ap put A : float_inv : get A : B} )
+   ( let (Class:B): {equiv {get A:B} A : B} )
+   ( let (Term:B) : {get A : B} )
+   ( let (?:B) : make B)
+   }
+
+def str : {ap join : B}
+
+def String : {
+   ( def B: )
+   ( let (Extra:B) : A )
+   ( let (Make:B) : {(ap put A : str : has ((:):(:)) : B) (has A:B) (ap app (Extra:A):B)} )
+   ( let (Sum:B)  : {ap put A : join : get A : B} )
+   ( let (Class:B): {equiv {get A:B} A : B} )
+   ( let (Term:B) : {get A : B} )
+   ( let (?:B) : make B )
+   }
+
+#
+#   A few basic types for convenience and demos
+#
+Natural : n
+Integer : int
+Float   : float
+String  : string

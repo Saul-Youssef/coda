@@ -4,7 +4,6 @@
 #
 from base import *
 import IO
-
 #
 #   Help system
 #
@@ -18,7 +17,7 @@ def help(domain,A,B):
     I,R = B.split()
     if I.atom():
         if I[0] in CONTEXT:
-            import Code
+#            import Code
 #            H = Help(Code.coda2str(I[0]))
             H = Help(str(I[0]))
             H.display()
@@ -342,7 +341,7 @@ class section(object):
 #   demo: defs : Basic Number
 #
 def defs(domain,A,B):
-    import Code
+#    import Code
 #    modules = [Code.coda2str(b) for b in B]
     modules = [str(b) for b in B]
     table = []

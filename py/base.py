@@ -3,133 +3,182 @@
 #
 #   This is the result of years of gradually simplifying previous personal computing systems, particularly
 #   "types", "ee", "egg" (with Margo Seltzer and David Parkes), an attempt to use Aldor for Category theory
-#   (Aldor is by Stephen Watt and collaborators), and "coda-classic".  This system and it's internal language
-#   is also called "coda".
+#   (Aldor is by Stephen Watt and collaborators), and "coda-classic".  This system, and it's
+#   internal language are also called "coda"
 #
 #   Saul Youssef, January 2023
 #====================================================================================
 #
-#   A coda is a pair of data
-#
-class coda(object):
-    def __init__(self,left,right):
-        self._left,self._right = left,right; self._invariant = False
-    def __hash__(self): return hash((self._left,self._right,))
-    def invariant(self):
-        if self._invariant: return True
-        self._invariant = self.atom() and self.left().invariant() and self.right().invariant()
-        return self._invariant
-    def _inv(self): self._invariant = True; return self
-    def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
-    def __str__(self): import Code; return Code.coda2unicode(self)
-    def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
-    def    left (self): return self._left
-    def   right (self): return self._right
-    def   depth (self): return max(self._left.depth(),self._right.depth())
-    def  domain (self): # domain determines the corresponding definition
-        dom = self.left().split()[0]
-        if str(dom).startswith('{') and str(dom).endswith('}'): return da('language')
-        return dom
-    def __add__ (self,c): return data(self,c)
-    def atom(self): return CONTEXT.identity(self)
-    def eval(self): # self -> data, evaluating recursively
-        if self.invariant(): return data(self)
-        c = self.left().eval()|self.right().eval()
-        if c in CONTEXT: ev = CONTEXT[c](c)
-        else           : ev = data(c)
-        CONTEXT.val(self,ev)
-        return ev
-#        if c in CONTEXT: return CONTEXT[c](c)
-#        return data(c)
-#
-#   Data is a finite sequence of codas
+#   == A data is a finite sequence of codas ==
 #
 class data(object):
-    def __init__(self,*cs):
-        for c in cs:
-            if not type(c)==TCODA: raise error('data error: '+str(c)+' is not a coda')
-        self._coda = cs
-    def __hash__(self): return hash(self._coda)
-    def invariant(self): return all([c.invariant() for c in self])
-    def __repr__(self): return ''.join([repr(c) for c in self])     # display as pure data
-    def __str__(self): import Code; return Code.data2unicode(self)
-    def __eq__  (self,d): return self._coda==d._coda
-    def __add__ (self,d): return data(*(self[:]+d[:]))  # A B in the coda language
-    def __or__  (self,d): return coda(self,d)           # A:B in the coda language
-    def __len__ (self): return len(self._coda)
-    def __iter__(self):
-        for c in self._coda: yield c
-    def __getitem__(self,i): return self._coda[i]
-    def depth(self): return max([0]+[1+c.depth() for c in self])
-    def split(self): return data(*self[:1]),data(*self[1:])
-    def empty(self): return len(self)==0
-    def atom(self): return len(self)==1 and self[0].atom()
-    def atomic(self): return len(self)>0 and any([c.atom() for c in self])
-    def eval(self): # self -> data, evaluating recursively
-        R = []
-        for c in self:
-            for d in c.eval(): R.append(d)
-        return data(*R)
+    def __init__(self,*codas): self._sequence = codas
+    def __repr__(self): return ''.join([repr(c) for c in self])
+    def __hash__(self): return hash(tuple(self._sequence))
+    def __str__(self): return UNICODE.data(self)
+    def __eq__(self,A): return self._sequence==A._sequence
 #
-#   A definition is a partial function from coda to data
+#   Basic sequence operations
+#
+    def __iter__(self):
+        for c in self._sequence: yield c
+    def __getitem__(self,i): return self._sequence[i]
+    def __len__(self): return len(self._sequence)
+    def split(self): return data(*self[:1]),data(*self[1:])
+#
+#   Algebra
+#
+    def __add__(self,A): return data(*(self[:]+A[:]))  # A B in the coda language
+    def __or__ (self,A): return coda(self,A)           # A:B in the coda language
+#
+#   Logic
+#
+    def empty    (self): return len(self)==0
+    def atomic   (self): return any([c.atom() for c in self])
+    def invariant(self): return all([c.atom() for c in self])
+    def atom     (self): return len(self)==1 and self.atomic()
+#
+#   Evaluation
+#
+    def eval(self):
+        result = []
+        for c in self:
+            for d in c.eval(): result.append(d)
+        return data(*result)
+#
+#   == A coda is a pair of data ==
+#
+class coda(object):
+    def __init__(self,left,right): self._left,self._right = left,right
+    def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
+    def __hash__(self): return hash((self._left,self._right,))
+    def __str__(self): return UNICODE.coda(self)
+    def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
+#
+#   Components
+#
+    def left (self): return self._left
+    def right(self): return self._right
+    def domain(self): return self.left().split()[0]
+#
+#   Data creation from a pair of codas
+#
+    def __add__(self,c): return data(self,c)
+#
+#   Logic
+#
+    def atom(self): return CONTEXT.invariant(self)
+#
+#   Evaluation
+#
+    def eval(self):
+        c = self.left().eval() | self.right().eval()
+        if c in CONTEXT: return CONTEXT[c](c)
+        else           : return data(c)
+#
+#   == A definition is a partial function from codas with
+#   a specified domain to data ==
 #
 class Definition(object):
     def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
     def __repr__(self): return str(self._domain)
+    def __contains__(self,c): return c.domain()==self._domain
     def domain(self): return self._domain
     def __len__(self): return len(self._pfs)
-    def __contains__(self,c): return c.domain()==self.domain()
-    def __call__(self,c):  # apply coda->data operation
+#
+#   Partial function extended to coda -> data with identity
+#
+    def __call__(self,c):
         domain,A = c.left().split(); B = c.right()
-        for pf in self._pfs:    # may be zero or more pfs
-            R = pf(domain,A,B)  # <- apply definition
+        for pf in self._pfs:
+            R = pf(domain,A,B)
             if not R is None: return R
         return data(c)
 #
-#   Global collection of definitions with disjoint domains
+#   == A Context is a collection of definitions with disjoint domains ==
 #
-class Definitions(object):
-    def __init__(self):
-        self._domain = {}      # definitions with an invariant domain
-        self._value  = {}      # definitions with invariant value
-        self._used   = set([]) # domains used by value definitions
-    def __repr__(self): return 'definitions: '+str(len(self._domain))+', values: '+str(len(self._value))
-    def dom(self,domain,pf):
-#        if domain in self._used: raise error(str(domain)+' is already in use.')
-#        if domain in self._domain and not self._domain[domain]==pf: raise error(str(domain)+' is already defined.')
-        self._domain[domain] = pf
-    def val(self,co,da):
-#        if co.domain() in self._domain: raise error('The domain of ['+str(co)+'] is already in use.')
-#       if co in self._domain and not co[self._domain] == da: raise error(str(co)+' is already defined')
-        self._value[co] = da
-        self._used.add(co.domain())
-    def __contains__(self,co): return co in self._value or co.domain() in self._domain
-    def identity(self,co): return co.domain() in self._domain and len(self._domain[co.domain()])==0
-    def __getitem__(self,co):
-        if co in self._value: return lambda c : self._value[c]
-        if co.domain() in self._domain: return self._domain[co.domain()]
-
-    def define(self,name,*pfs):
-        defin = Definition(da(name),*pfs)
-        if defin.domain() in self._domain: raise error(str(defin.domain())+' is already defined.')
-        return self.dom(defin.domain(),defin)
+class Context(object):
+    def __init__(self): self._definitions = {} # domain -> definition
+    def __repr__(self): return ','.join([str(domain) for domain,definition in self._definitions.items()])
+    def domain(self,c): # handles the {...} -> language convention
+        d = c.domain(); s = str(d)
+        if s.startswith('{') and s.endswith('}'): d = da('language')
+        return d
+    def __contains__(self,c): return self.domain(c) in self._definitions
+    def __getitem__(self,c): return self._definitions[self.domain(c)]
     def __iter__(self):
-        for domain,definition in self._domain.items(): yield domain,definition
-    def clear(self):
-        self._domain = {}
-        self._value = {}
-        self._used = set([])
+        for domain,definition in self._definitions.items(): yield domain,definition
+    def invariant(self,c): return c in self and len(self[c])==0
+#
+#   Partial function, extended to coda -> data with identity
+#
+    def __call__(self,c):
+        if c in self: return self[c](c)
+        return data(c)
+#
+#   Adding a definition to this context
+#
+    def define(self,name,*pfs): return self.add(Definition(da(name),*pfs))
+    def add(self,definition):
+        if definition.domain() in self._definitions: raise error('['+str(definition.domain())+']'+' is already defined')
+        self._definitions[definition.domain()] = definition
         return self
 #
-#   coda type for a validation check in the data __init__
+#   Global context
 #
-TCODA = type(coda(data(),data())) # used only for a validation check in __init__ of data
+CONTEXT = Context()
 #
-#   The global context contains all activated definitions
+#   Three standard atoms for the domain of bits, bit sequences and byte sequences
 #
-CONTEXT = Definitions()
+class Atoms(object):
+    def __init__(self):
+        self.atom = data()|data()
+        self.bit0 = data(self.atom)|data()
+        self.bit1 = data(self.atom)|data(self.atom)
+    def domains(self):
+        for domain in [data(),data(self.atom),data(self.bit0),data(self.bit1)]: yield domain
 #
-#   System exceptions
+#   Standard atoms
+#
+ATOMS = Atoms()
+for domain in ATOMS.domains(): CONTEXT.add(Definition(domain))
+#
+#   Unicode <-> data
+#
+class Unicode(object):
+    def __init__(self):
+        import string
+        self._map = {}
+        self._map[ATOMS.atom] = '*'
+        self._map[ATOMS.bit0] = '0'
+        self._map[ATOMS.bit1] = '1'
+        for c in string.printable: self._map[self.byte(c)] = c
+    def __repr__(self): return ','.join([value for key,value in self._map.items()])
+    def __add__(self,coda,s):
+        self._map[coda] = s
+        return self
+    def __contains__(self,c): return c in self._map
+    def __getitem__(self,c): return self._map[c]
+    def byte(self,c):
+        if type(c)==type(1): s = str(bin(c))
+        else               : s = str(bin(ord(c)))
+        s = s.split('0b')[-1]
+        B = []
+        for x in s:
+            if   x=='0': B.append(ATOMS.bit0)
+            elif x=='1': B.append(ATOMS.bit1)
+        while len(B)<8: B = [ATOMS.bit0] + B
+        return data(ATOMS.bit0)|data(*B)
+    def co(self,text): return data(ATOMS.bit1)|data(*[self.byte(c) for c in text])
+    def da(self,text): return data(self.co(text))
+    def data(self,D,sep=' '): return sep.join([self.coda(c) for c in D])
+    def coda(self,c):
+        if c in self: return self[c]
+        if c.domain() in [data(ATOMS.atom),data(ATOMS.bit0),data(ATOMS.bit1)]: return self.data(c.right(),'')
+        return '('+self.data(c.left())+':'+self.data(c.right())+')'
+UNICODE = Unicode()
+#
+#   Coda error class
 #
 class error(Exception):
     def __init__(self,msg): self._msg = msg
@@ -137,9 +186,15 @@ class error(Exception):
 #
 #   Text to data utilites
 #
-def co(text): import Code; return Code.text2coda(text)
-def da(text): return data(co(text))
+def co(text): return UNICODE.co(text)
+def da(text): return UNICODE.da(text)
 #
 #   Import builtin definitions from other source files
 #
 import builtin
+
+if __name__=='__main__':
+    print(UNICODE)
+    print(CONTEXT)
+    print(da('hello'))
+    print(repr(da('hello')))

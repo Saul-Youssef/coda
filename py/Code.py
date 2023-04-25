@@ -7,17 +7,18 @@ import string
 #
 #    Coda to unicode for display purposes
 #
-Unicode = {}  # coda to unicode
-
-z = data()
-atom = (z|z)._inv()
-bit0 = (data(atom)|data())._inv()
-bit1 = (data(atom)|data(atom))._inv()
-Unicode[atom] = "\u220E"
-Unicode[atom] = "\u229B"
-Unicode[atom] = "\u23FA"
-Unicode[atom] = "\u25C9"
-Unicode[atom] = "\u25CE"
+#Unicode = {}  # coda to unicode
+#
+#z = data()
+#atom = (z|z)
+#bit0 = (data(atom)|data())
+#bit1 = (data(atom)|data(atom))
+#Unicode[atom] = "\u220E"
+#Unicode[atom] = "\u229B"
+#Unicode[atom] = "\u23FA"
+#Unicode[atom] = "\u25C9"
+#Unicode[atom] = "\u25CE"
+#Unicode[atom] = '*'
 #Unicode[atom] = "\u25D1"
 #Unicode[atom] = "\u2B24"
 #Unicode[bit0] = "0"
@@ -32,49 +33,51 @@ Unicode[atom] = "\u25CE"
 #Unicode[bit0] = '\u25A0'
 #Unicode[bit1] = u"\U0001D7D9"
 #Unicode[bit0] = u"\U0001D7D8"
-Unicode[bit1] = u"\U0001D75E"
-Unicode[bit0] = u"\U0001D7EC"
+#Unicode[bit1] = u"\U0001D75E"
+#Unicode[bit0] = u"\U0001D7EC"
+#Unicode[bit1] = '1'
+#Unicode[bit0] = '0'
 
 #  Display atom, 0-bit and 1-bit in ascii instead of fancy unicode characters
-def ascii_bits():
-    Unicode[atom] = '*'
-    Unicode[bit0] = '0'
-    Unicode[bit1] = '1'
+#def ascii_bits():
+#    Unicode[atom] = '*'
+#    Unicode[bit0] = '0'
+#    Unicode[bit1] = '1'
 #
 #   bits, bytes and byte sequences are atomic
 #
-CONTEXT.dom(data(),Definition(data()))
-CONTEXT.dom(data(atom),Definition(data(atom)))
-CONTEXT.dom(data(bit1),Definition(data(bit1)))
-CONTEXT.dom(data(bit0),Definition(data(bit0)))
-#CONTEXT.add(Definition(z))
+#CONTEXT.add(Definition(data(    ))) # the domain of the "Hydrogen atom"
+#CONTEXT.add(Definition(data(atom))) # the domain of 0-bit, 1-bit, other bits if hypothetically added
+#CONTEXT.add(Definition(data(bit0))) # the domain of bit sequences
+#CONTEXT.add(Definition(data(bit1))) # the domain of sequences of bit sequences, e.g. byte sequences
 #
 #   create a coda byte from a single character as an 8 bit bit string with domain bit0
 #
-def byte2coda(c):
-    if type(c)==type(1): s = str(bin(c))      # to handle both single chars
-    else               : s = str(bin(ord(c))) # ...and single integer bytes
-#    s = str(bin(ord(c)))
-    s = s.split('0b')[-1]
-    B = []
-    for x in s:
-        if   x=='0': B.append(bit0)
-        elif x=='1': B.append(bit1)
-        else: raise error('Error converting byte')
-    while len(B)<8:
-        B = [bit0]+B
-    return (data(bit0)|data(*B))._inv()
+#def byte2coda(c):
+#    if type(c)==type(1): s = str(bin(c))      # ...integers
+#    else               : s = str(bin(ord(c))) # ...single character strings
+##    s = str(bin(ord(c)))
+#    s = s.split('0b')[-1]
+#    B = []
+#    for x in s:
+#        if   x=='0': B.append(bit0)
+#        elif x=='1': B.append(bit1)
+#        else: raise error('Error converting byte')
+#    while len(B)<8:
+#        B = [bit0]+B
+#    return (data(bit0)|data(*B))
+#
+#def text2coda(text): return (data(bit1)|data(*[byte2coda(c) for c in text]))
+#
+#for c in string.printable: Unicode[byte2coda(c)] = c
+#
+#def data2unicode(D,sep=' '):
+#    return sep.join([coda2unicode(c) for c in D])
+#def coda2unicode(c):
+#    if c in Unicode: return Unicode[c]
+#    if c.domain() in [data(atom),data(bit1),data(bit0)]: return data2unicode(c.right(),'')
+#    return '('+data2unicode(c.left(),' ')+':'+data2unicode(c.right(),' ')+')'
 
-for c in string.printable: Unicode[byte2coda(c)] = c
-
-#def text2coda(text): return data(bit1)|data(*[byte2coda(c) for c in text])
-def text2coda(text): return (data(bit1)|data(*[byte2coda(c) for c in text]))._inv()
-
-def data2unicode(D,sep=' '): return sep.join([coda2unicode(c) for c in D])
-def coda2unicode(c):
-    if c in Unicode: return Unicode[c]
-    if c.domain() in [data(atom),data(bit1),data(bit0)]: return data2unicode(c.right(),'')
-    return '('+data2unicode(c.left(),' ')+':'+data2unicode(c.right(),' ')+')'
 #
 #   Wrap code with a one character prefix and postfix.
 #

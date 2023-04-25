@@ -1,24 +1,18 @@
 #
-#   Common categories
+#   Common properties of multiple types
 #
-#  sum/Sum     - Abelian sum
-#  prod/Prod   - Associative multiplication
-#  sort/Sort   - A partial ordering
-#  set/Set     - Equivalence classes of an equivalence relation
-#  inv/Inv     - Involution
-#  term/Term   - Terminal output
-#  extra/Extra - Extra creation methods on input
-#  make/Make   - Creation
+#  make/Make - type creation from input - a "type" in the coda sense
+#  sum/Sum - Abelian sum
+#  prod/Prod - Associative multiplication
+#  sort/Sort - Sort compatible with a partial order
+#  class/Class - Equivalence classes of an equivalence relation
+#  inv/Inv - Involution
 #
-def dom1: {first:dom:B}
 #
-#   Categories
-#
-def make : {  (Make:A) A : B }
-def sum  : {   (Sum:dom1:B) (dom1:B) : B}
-def prod : {  (Prod:dom1:B) (dom1:B) : B}
-def sort : {  (Sort:dom1:B) (dom1:B) : B}
-def inv  : {   (Inv:dom1:B) (dom1:B) : B}
-def set  : {   (Set:dom1:B) (dom1:B) : B}
-def extra: { (Extra:dom1:B) (dom1:B) : B}
-def term : {  (Term:dom1:B) (dom1:B) : B}
+def make  :    {(Make:A) A : B}
+def sum   :     {(Sum:A) A : B}
+def prod  :    {(Prod:A) A : B}
+def term  :    {(Term:A) A : B}
+def sort  :    {(Sort:A) A : B}
+def inv   :     {(Inv:A) A : B}
+def set   :     {(Set:A) A : B}

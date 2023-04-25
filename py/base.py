@@ -149,10 +149,19 @@ class Unicode(object):
     def __init__(self):
         import string
         self._map = {}
-        self._map[ATOMS.atom] = '*'
-        self._map[ATOMS.bit0] = '0'
-        self._map[ATOMS.bit1] = '1'
+#        self._map[ATOMS.atom] = '*'
+#        self._map[ATOMS.bit0] = '0'
+#        self._map[ATOMS.bit1] = '1'
+#        self._map[ATOMS.atom] = "\u25CE"
+#        self._map[ATOMS.bit0] = u"\U0001D7EC"
+#        self._map[ATOMS.bit1] = u"\U0001D75E"
+        self.setatoms("\u25CE",u"\U0001D7EC",u"\U0001D75E")
         for c in string.printable: self._map[self.byte(c)] = c
+    def setatoms(self,atom,bit0,bit1):
+        self._map[ATOMS.atom] = atom
+        self._map[ATOMS.bit0] = bit0
+        self._map[ATOMS.bit1] = bit1
+        return self
     def __repr__(self): return ','.join([value for key,value in self._map.items()])
     def __add__(self,coda,s):
         self._map[coda] = s

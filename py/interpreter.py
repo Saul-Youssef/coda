@@ -2,7 +2,6 @@
 #
 #   Coda Interpreter
 #
-#
 #   Command line setup
 #
 import rlcompleter
@@ -15,6 +14,8 @@ from start import *
 import Text,Evaluate,Language
 
 EXIT = ['exit','quit']
+# non-unicode for CLI
+UNICODE.setatoms('*','0','1')
 try:
     while True:
         try:

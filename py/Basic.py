@@ -11,7 +11,7 @@ import Number
 #
 CONTEXT.define('pass',lambda domain,A,B:B)
 CONTEXT.define('null',lambda domain,A,B:data())
-CONTEXT.define('bin') # generic built-in container 
+CONTEXT.define('bin') # generic built-in container
 #
 #
 def domain_0(domain,A,B):
@@ -19,7 +19,7 @@ def domain_0(domain,A,B):
     if BL.atom(): return BL[0].domain() + data((domain+A)|BR)
 def domain_1(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('dom',domain_0,domain_1)
+CONTEXT.define('domain',domain_0,domain_1)
 #
 #   if A : B -> () if A is false
 #   if A : B -> B  if A is true

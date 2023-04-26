@@ -1,14 +1,14 @@
 
-## Studies 
+## Studies
 
 -----
 - **Is Mathematics Consistent?**
     > Is mathematics consistent?
-- **Computational Paradoxing** 
+- **Computational Paradoxing**
     > What is the status of known paradoxes in Coda?
 - **Is Mathematics Complete?**
     > Is mathematics complete? What are the right axioms?  What about the Axiom of Choice?
-- **Category Theory**
-    > Categories, morphisms and functors appear naturally in Coda. 
+- **Spaces**
+    > Spaces, Categories, morphisms, types, functors...
 - **Search and Machine Learning**
-    > Machine learning 
+    > Machine learning

@@ -13,7 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeindex
 \begin{document}
-\title{Pure Data Foundations of Mathematics}
+\title{\bf {PURE DATA FOUNDATIONS OF MATHEMATICS}}
 \author{%
   Saul Youssef%
   \hfil \\
@@ -34,10 +34,9 @@ This is an abstract.
 
      Any system of reasoning must necessarily have at least one foundational concept which is understood before a first definition.  In our case, the foundational concept is the {\it finite sequence}.  We assume that finite sequences and obvious operations on finite sequences are understood.  On the other hand, logic, logical values and predicates (foundational in ZFC) and types (foundational in type theories) will be defined in terms of finite sequences.
 Taking finite sequences as understood, define `data' and `coda' by the following.
-\begin{enumerate}
-\item[] A {\it data} is a finite sequence of {\it codas}.
-\item[] A {\it coda} is a pair of {\it data}.
-\end{enumerate}
+\begin{itemize}
+\item {\it Data} is a finite sequence of {\it codas}, and a {\it coda} is a pair of {\it data}. 
+\end{itemize}
 Notationally speaking, if $A$ and $B$ are data, $A\ B$ denotes the concatenation of $A$ and $B$ as finite sequences and $A:B$ denotes the data
 consisting of the single coda formed by pairing $A$ and $B$.  By the definition, for example, the empty sequence of codas $()$ is data, and, therefore,
 so is the pairing of two empty sequences `$(:)$' and so is this sequence of three codas $(:) (:) ((:):(:))$.  This sort of `pure data made of nothing' is
@@ -72,7 +71,7 @@ Adding this definition to the empty context makes $(:)$ invariant in the new con
 representing a 0-bit, a 1-bit, finite bit sequences, finite byte sequences representing character strings, as well as convenient combinatoric operations as
 illustrated in figure 1.
 
-    Since coda has only one axiom, we will refer to the Axiom of Definition as just `the axiom.'  In the following sections, we will see why there is only
+    Since coda has only one axiom, we refer to the Axiom of Definition as just `the axiom.'  In the following sections, we will see why there is only
 one axiom.  Coda already contains an internal logic which will make logic-related axioms unnecessary.  Coda also contains an internal language, making
 language and syntax-related axioms unnecessary.  Deduction rules are also not needed because deduction, proof and computation in coda is all determined
 by data equality.  Each of these is a merely a data sequence $A_0=A_1=A_2=\dots=A_n$, deducing $A_n$ from $A_0$, computing
@@ -81,54 +80,101 @@ a `sequence` will always mean a finite sequence.
 
 \section{Logic}
 
-Within coda, mathematical objects are pure data.  This means, roughly speaking, that mathematical questions will be appearing in the form:
+The previous sections can be simply summarized.  We have recursively defined ``pure data'' to be finite sequences of pairs of pure data called codas.  Given such 
+data,  any partial function from coda to data qualifies as a ``definition.''  Under the conditions of the Axiom of Definition, definitions can be added to 
+a ``context'' which defines an equality on data and meaning within the system.  
+These simple definitions and, for instance, the combinatorial examples in figure 1 are meant to be sufficiently understood based on the foundational concept 
+of the {\bf finite sequence} without the need for logical axioms or logical values.   We presume, for instance, that reversing the order of a finite 
+sequence is understood without making a choice between, say, classical and intuitionistic logic.  
+
+     Classical logic can be thought of as establishing at least two things: 1) defining how to reason correctly and 2) assigning meaning to ``propositions.''   
+In this section, we will propose a natural pure data oriented alternative.  
+
+    In the framework of coda, all mathematical objects (values, functions, variables, morphisms, theorems,\dots) are meant to be merely pure data.  This means 
+that ``propositions" will appear in the form: 
 \begin{itemize}
 \item[] Is data $A$ equal to data $B$?
 \end{itemize}
-Since context equality will also be a definition available in context, the answers to the such questions will also be data.
-But if a question like $A=B$ is data, it is natural to expect that everything about the answer should be encoded in the
-specific data $(= A:B)$ including the logical meaning of $A=B$.
-This suggests that `logic' in should be defined as a coarse classification
-of data in general in which is stable under adding definitions to a context.  A suitable classification of data is indeed available.
+Since equality itself is available as a definition, then this question is also the specific data $A=B$ or $(=A:B)$.  But if a question like ``Is data $A$ equal to data $B$?" is data, 
+it is natural to expect that the answer to the question should be encoded in the specific data $(=A:B)$.  This suggests that ``logic'' in coda should appear as 
+a natural coarse classification of data in general.  The classification should match our intuition and ordinary reasoning and should be stable under 
+adding new definitions to a given context.  A suitable classification is indeed available.  
 
-     Given a particular context, data $A$ is {\it atomic} if it contains
-one or more invariant codas (called {\it atoms}).   It is easy to see that the property of being empty or atomic is not lost when
-new definitions are added to a context.  We say that atomic data is `always atomic' and empty data is `always empty.'
-This motivates the following definitions of logic within coda.
+     Given a particular context, data $A$ is said to be {\it atomic} if one or more of the codas in it's sequence is invariant.  Note that since being empty and being atomic 
+are disjoint categories which are preserved when adding new definitions to a context, this classification is an interesting candidate: 
 \begin{itemize}
-\item data is {\bf true} if it is empty.
-\item data is {\bf false} if it is atomic.
-\item data is {\bf undecided} otherwise.
+\item data is {\it true} if it is empty.
+\item data is {\it false} if it is atomic.
+\item data is {\it undecided} otherwise.
 \end{itemize}
-Examples illustrate the flavor of this definition in a context where `foo' has not been defined.
+although true data is ``always true" and false data is ``always false," [always], undecided data may become true or false with added 
+definitions.  In this sense, undecided data are like ``variables'' which may receive a true or false value depending on future choices.  
+This is not quite the correct picture, however, because some undecided data actually remain undecided independent of any future added definitions.  
+Such {\it undecidable} data occurs, for example, with the Godel phenomenon as we shall see in section Y.  
+The fact that coda logic is "almost" two-valued logic is from the duality between {\it true} data $()$  and {\it false} data $(:)$ visible in any display of pure data.  
+Although proposing to change something as fundamental as logic can be disorienting, one soon realizes that the situation is still quite familiar and that the 
+seemingly odd ``undecided'' category works perfectly.  
+Examples illustrate the flavor of these definitions assuming a context where ``foo'' has not been defined: 
 \begin{itemize}
-\item[] {\bf true data:} (), (pass:), null:a b c, null:foo:bar.
-\item[] {\bf false data:} (:), a b c, pass : a b c, a b c (foo:bar).
-\item[] {\bf undecided data:}  foo:bar, pass:foo:bar, foo:1 2 3.
+\item[] {\bf true data:} (), (pass:), null : a b c, null:foo:bar, (and:), (or a:), (xor :a),
+\item[] {\bf false data:} $(:)$, a b c, first 3 : a b (foo:bar), (and a:b), (or a:b),
+\item[] {\bf undecided data:}  foo:bar, pass:foo:bar, last : a b (foo:bar).
 \end{itemize}
-Coda logic can be thought of as ``not quite two valued'' because undecided data like (foo:bar) may receive a value if more definitions are added to the current context.
-We clearly have
-\begin{itemize}
-\item[--] True data is `always true.'
-\item[--] False data is `always false.'
-\end{itemize}
-Undecided data, however, may change from undecided to true or false depending upon added definitions.  In that sense, undecided data are ``variables."
-This suggests that coda logic is classical except that
-the undecided data are, effectively, logic valued variables.  This is, however, not always true because some undecided data remains
-undecided no matter what definitions are added.  Such {\bf undecidable}
-data are the source of a Godel-related phenomena as demonstrated in Section X.
-Although the logic of coda is not the same as classical logic, we will argue that this is the ``correct'' logic for reasoning in general.
-It is also quite close to classical logic in the
-sense that there is a definition that corresponds to each of the familiar 16 binary operations of classical propositional logic which behave as expected classically.  For instance, when data $A$ and $B$ are either true or false,
-the data $({\rm XOR}\ A:B)$ has the value $()$ for {\it true} and $(:)$ for {\it false} depending on the classical truth table of values for XOR.  If either $A$ or $B$ are undecided, on the other hand,
-no definition applies to $({\rm XOR}\ A:B)$ and it ``waits for $A$ and $B$ to be resolved in future definitions."
+In the above , ``and'', ``or'', and ``xor'' are familiar binary operations from classical logic in the cases where their arguments are true or false in the coda sense. 
+For instance, if data $A$ and $B$ are both either true or false then $({\rm xor}\ A:B)$ is $()$ for {\it true} and $(:)$ for {\it false} according to the standard truth
+ table for the {\bf xor} operation.  On the other hand, if either $A$ or $B$ are 
+undecided, the data $({\rm xor}\ A:B)$ has no definitions that apply.  In effect, $({\rm xor}\ A:B)$ ``waits" until both $A$ and $B$ are defined enough to have logical values.   
+This is an example where $({\rm xor}\ A:B)$ acts as a logical expression with ``variables'' $A$ and $B$. 
+
+Undefined data may occur even when data does not explicitly contain an undefined coda such as (foo:bar) above. For example 
+the natural numbers in coda is the data (nat:0) because a definition $({\rm nat}:n)\rightarrow n\ ({\rm nat}:n+1)$ means that (nat:0) = 0 1 2 3 4 5 (nat:6), etc.  
+The sum of the first 1000 natural numbers is perfectly well defined and is computed by ``sum n : first 1000 : nat : 0''.  What happens, however, 
+if we decided to sum all natural numbers via ``sum n : nat : 0"?  The answer is that this data remains undecided no matter how much the 
+expression is evaluated.  Here, the undecided logical category is, quite nicely and naturally, the logical value of data that is not defined.  
+
+Classical logic can be thought of as establishing at least two things: 1) defining how to reason correctly and 2) assigning logical meaning to ``propositions.''  
+Within coda, 1) reasoning is correct if and only if it is application of a definition in context and 2) logical meaning is defined by data being either empty, atomic or neither.  
+Rather than propositions being foundational undefined entities, propositions in coda are just data and their logical values are also just data.  
+There is an understandable and perhaps even unpleasant disorientation caused by attempting to re-defining something 
+as fundamental as classical logic.  We have found that this disorientation is only temporary once one realizes that the familiar binary logical operations remain,
+ and the seemingly odd class of ``undecided'' data fits in perfectly as ``logic valued variables" and as ``the answers to questions that have no answers."  Confidence may 
+ be gained in section X where we examine Godel phenomena and directly compute some paradoxes. 
 
 \section{Language}
 
+Both predicate logic with ZFC or with dependent type theory are formal languages.  They have alphabets with special symbols 
+and axiomatic syntax rules which 
+distinguish meaningful sentences from nonsense sentences such as ``$xyxy\forall\exists\exists x x\forall$''.  The situation with coda is 
+much simpler because we can define the language itself as an ordinary definition, added to a context via the Axiom of Definition just 
+like all other definitions.  The basic idea behind the language definition is to give textual control over the concatenation and colon operations.
+Thus, if $x$ and $y$ are language expressions, partial functions 
+\begin{itemize}
+\item $( \{x\ \ y\} \ A : B ) \rightarrow (\{x\}\ A : B)\ (\{y\}\ A : B)$ 
+\item $( \{x : y\} \ A : B ) \rightarrow (\{x\}\ A : B):(\{y\}\ A : B)$ 
+\end{itemize} 
+allow specification of the two operations.  The language literals ``A'' and ``B'' allow specification of left and right 
+components of a generic coda $(A:B)$ via 
+\begin{itemize}
+\item $(\{A\}\ A : B)\rightarrow A$
+\item $(\{B\}\ A : B)\rightarrow B$
+\end{itemize}
+These are partial functions fused into one language partial function by enforcing an order which also defines the precedence of operations.  
+In the actual language, there are just  a few more partial functions defining grouping with parenthesis, string literals with angle brackets, 
+removing extraneous spaces and adding a bit of syntactic sugar so that $A=B$ in the language is interpreted 
+as $(= A:B)$ and $A*B:X$ in the language is interpreted as $A:B:X$ for any data $X$ and $X?$ is interpreted as $(?:X)$.   Some features of the language 
+are unusual.
+\begin{itemize}
+\item Because the language is a definition like any other, language expressions in curly braces freely mix with all other data during evaluation. 
+\item The language has the property that {\it any} sequence of bytes is a valid language expression.  
+\item The mapping from finite byte sequence $s$ to the data $(\{s\}:)$ is onto. 
+\end{itemize}
+The language is intentionally minimalist and tiny enough for the compiler and parser to be easily read and understood by 
+humans [github]. 
+
 \section{Proof and Computation}
 \section{Spaces}
-\section{Is Mathematics consistent?}
 \section{Mathematical Machine Learning}
+\section{Is Mathematics Consistent?}
 \section{Summary}
 
 

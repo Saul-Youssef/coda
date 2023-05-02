@@ -5,7 +5,7 @@ from base import *
 #
 #    The coda language compiler
 #
-special_characters = ' :(){}<>*|/'
+special_characters = ' :(){}<>=*/'
 #
 #   lang takes unicode string code and data A,B and makes it into
 #   the corresponding data for the compiler.

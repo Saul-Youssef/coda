@@ -26,9 +26,9 @@
 We propose an axiomatic foundation of mathematics based on the {\it finite sequence} as the foundational concept, rather than based 
 on {\it logic} and {\it set}, as in set theory, or based on {\it type} as in dependent type theories.  Finite sequences lead to a concept of {\it pure data} which is
 used to represent all mathematical objects.  As an axiomatic system, the foundation has only one axiom which
-defines what constitutes a valid definition.  An internal {\it true/false/undecided} valued logic and an internal language are defined from the single axiom
-making logic and syntax related axioms unnecessary.  Valid proof and valid computation are defined in terms of equality of pure data.  An algebra of pure data
-leads to a rich theory of {\it spaces} and {\it morphisms} which play a similar role as does Category theory in classical Mathematics.  As examples and
+defines what constitutes a valid definition.  Using the axiom, an internal {\it true/false/undecided} valued logic and an internal language are defined, making 
+logic and language-related axioms unnecessary.  Valid proof and valid computation are defined in terms of equality of pure data.  An algebra of pure data
+leads to a rich theory of {\it spaces} and {\it morphisms} which play a similar role as does Category Theory in classical Mathematics.  As examples and
 exercise of the proposed logical structure, we address the consistency of Mathematics, and paradoxes due to G\"odel, Berry, Curry and Yablo.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,7 +37,7 @@ exercise of the proposed logical structure, we address the consistency of Mathem
 \section{Foundation}
 
      Any system of reasoning must necessarily have foundational concepts which are intrinsically understood, even before a first definition.
-In the case of type theories\cite{Type,Type2,HOTT,aldor}, for example, there is no definition of `type' and in Zermelo-Fraenkel Set Theory(ZFC\cite{ZFC}), there is no definition of `true', `false' or `set.'
+In the case of type theories\cite{Type,Type2,HOTT,aldor}, for example, there is no definition of `type' and in Zermelo-Fraenkel Set Theory\cite{ZFC} (ZFC), there is no definition of `true', `false' or `set.'
 In our case, we have one foundational undefined concept:
 the {\it finite sequence}.  We assume that finite sequences and obvious statements about finite sequences are understood.  
 Logic, logical values and the analogue of propositions, on the other hand, will appear as varieties of `data.'  Data is defined in terms of finite sequences as follows:
@@ -61,7 +61,7 @@ called a `context.'  Given a context $\delta$, equality is defined by
 \begin{equation}
 	A:B = \delta(A):B = A:\delta(B)
 \end{equation}
-for data $A$ and $B$ where the partial function $\delta$ has been extended to a function from data to data with identities.
+for data $A$ and $B$, where the partial function $\delta$ has been extended to a function from data to data with identities.
 Conceptually, $\delta$ is forced to have the same properties as the identity function on data.  Within a given context,
 data $A$ is {\it empty} if $A=()$ and is {\it invariant} if $\delta(A)=A$.
 
@@ -74,11 +74,11 @@ can be added to a `valid' context if they do not clash, as guaranteed by the fol
 the domain of both $\delta$ and $d$, then the union of $\delta$ and $d$ is a valid context.
 \end{remark}
 \noindent As an axiomatic system, coda is complete at this point.  This is quite a contrast from, for instance, ZFC which has ten axioms
-even assuming predicate logic.  The reason for the simplification will become clear in the sections which follow.  In Section 3, we show
+even assuming predicate logic\cite{ZFC}.  The reason for the simplification will become clear in the sections which follow.  In Section 3, we show
 that coda contains an internal logic implicit in the structure as defined.  We adopt this logic for reasoning within coda, so we do not
-need axioms related to propositional or predicate logic.  In Section 4, we show that coda also contains an internal language which can
-also be defined just as with any other definition.  The language has the unusual property that all byte sequences are valid syntax,
-so language and language syntax axioms are also not needed.  Axioms specifying valid ``rules of deduction'' are also not needed
+need axioms related to propositional or predicate logic.  In Section 4, we show that coda also contains an internal language which is introduced 
+as a definition like any other.  The language has the unusual property that all byte sequences are valid syntax,
+so additional language and language syntax axioms are also not necessary.  Axioms specifying valid ``rules of deduction'' are also not needed
 because deduction, proof, and computation in coda are all determined by the above data equality.  Each of these is a merely a data sequence $A_0=A_1=A_2=\dots=A_n$,
 deducing $A_n$ from $A_0$, computing $A_n$ starting with $A_0$ or proving that $A_0=A_n$, depending on one's point of view.
 Unlike type systems with a Curry-Howard correspondence, proof and computation are the same thing in coda.
@@ -90,7 +90,7 @@ only has one axiom, we can refer to the Axiom of Definition as just `the axiom.'
 \section{Atoms}
 
       If we have invariant data $D$ with length less than or equal to 1, we may, by the axiom,
-add a definition $(D A:B)\mapsto(D A:B)$ to context provided
+add a definition $(D A:B)\mapsto(D A:B)$ to context, provided
 that $D$ has not already been used.  In this case, a coda $(D A:B)$ is called an {\it atom} for any $A$ and $B$.
 Data with at least one atom in it's sequence is called {\it atomic} data, and data which is equal to $()$ is called {\it empty} data.
 Equations (1) and (2) imply that empty data can not be equal to atomic data and the axiom implies that this fact remains
@@ -104,7 +104,7 @@ appears to be `made of $()$ and $(:)$.'
 It is clear that if we were to define $(:)\mapsto()$ all pure data would collapse to $()$.  This suggests that $(:)$ should be
 mapped to $(:)$.  Since $(:)$ has domain $()$ and since $()$ is invariant, we define $(:B)\mapsto(:B)$ for any coda with
 domain $()$.  This makes $(:)$ invariant as well, making it available as a domain for new definitions.
-Continuing in this fashion, we define an invariant {\it 0-bit} to be $((:):)$, and an invariant {\it 1-bit} to be $((:):(:))$.
+Continuing in this fashion, we define an invariant `0-bit' to be $((:):)$, and an invariant `1-bit' to be $((:):(:))$.
 Atoms with a 0-bit domain are conventionally bit sequences and atoms with 1-bit domains are conventionally byte sequences.
 This makes ordinary byte sequences available as invariant names for new definitions.  For example, the definition `pass' maps
 all domains $({\rm pass}\ A:B)$ to $B$.  Depending on the situation,
@@ -239,7 +239,7 @@ a `variable.'  All of these partial functions are fused into a single partial fu
 the fusing determines the precedence of the operations.  Figure 1 shows an example of the language in use in a coda notebook\cite{github}.
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{fig1.png}
+\includegraphics[width=0.6\textwidth]{fig1.png}
 \caption{{\it Excerpt from a coda notebook session.  The top cell shows the `first' command selecting the first two items from the `input'
 sequence of four codas.  The middle cell shows the same operation using `step' to  show the individual steps evaluating the
 data `\{first 2 : a b c d\}:' which is the coda definition of the language expression `first 2 : a b c d'.  Since the language is a definition
@@ -248,7 +248,8 @@ in context like any other, language operations mix with other definitions as eva
 
      The language is an intentionally minimalist wrapping of the algebra of data.
 Only the characters `{\bf():\{\}=*/\ }' have language significance.  There are no reserved keywords or
-special syntax for variables, functions, classes or exceptions.  The language is unusual in that any byte sequence is a valid language expression.
+special syntax for variables, functions, classes or exceptions.  Any finite byte sequence $s$ can be `compiled' into pure data via $s\mapsto (s:)$.  
+The language is unusual in that any such byte sequence is a valid language expression.
 This means that we do not have to specify an alphabet or even define valid and invalid syntax.  There is no such thing
 as invalid syntax.  The source code for the compiler and parser is small enough to be easily read and understood by
 humans \cite{github}.
@@ -271,7 +272,7 @@ essential role of being the `answer to questions that have no answer.'
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.4\textwidth]{nat.png}
+\includegraphics[width=0.5\textwidth]{nat.png}
 \caption{{\it A excerpt from a coda notebook session\cite{github}.  Each cell is evaluated with the simple strategy explained in the text for up to ten
 steps.  The top cell uses `step :' so each step in the strategy is displayed, showing how (nat:0) is lazily representing the natural numbers.  Note the language
 elements mixing with other data in the early steps. The lower two cells show that if one computes something that has no answer, like the last natural number (last:nat:0), coda reacts by providing undecidable data as an answer.}}
@@ -282,8 +283,7 @@ We expect that there is much to be gained from a much more sophisticated approac
 where one optimizes and where and when $\delta$ is applied and where the equally valid $\delta(A)\mapsto A$ moves are included as well
 as $A\mapsto\delta(A)$.  This is mostly unexplored territory as of this writing.  Coda has a couple of unusual and attractive computational properties.
 Since $\delta$ is a partial function, it cannot `loop', by definition.  This means that an evaluation sequence $A_0,A_1,\dots$ may continue forever,
-but each step in the sequence is guaranteed to terminate.  Also, pure data becomes like an executable in the sequence so computations or
-proofs can always be saved at any point and resumed later.
+but each step in the sequence is guaranteed to terminate.  
 
 \section{Spaces}
 
@@ -347,13 +347,12 @@ Mor & $F_1\ F_2\dots F_n\mapsto F_1*\dots *F_n$ & Morphisms & Functorial \\
 \caption{{\it Examples of spaces and their morphisms.  Of the spaces listed, only pass, null, type n and Space are types.
 the neutral elements are (n:0) for sum n, (n:1) for prod n, the empty equivalence class for set n and pass for Sum n, Sum and Mor.  All others have neutral element ().}}
 \end{table}
-In general, one can think of a space as doing two things:  a) selecting data of interest and b) defining how
+It is helpful to think of a space as doing two things:  1) selecting or constructing data of interest and 2) defining how
 a finite sequence of selected data are combined to make new data in the space.
 The situation with (type n) is typical.  The space (type n) constructs natural numbers from it's `input' if possible,
-discarding anything that can't be converted to natural numbers represented as codas like (n:5).  (type n) is
-distributive and, therefore, idempotent so natural numbers in it's input are preserved.
-Since (type n) is distributive, the morphisms
-of (type n) are sequence preserving arbitrary functions from naturals to naturals.
+discarding anything that can't be converted to natural numbers represented as codas like (n:5).  The space (type n) is
+distributive and, therefore, idempotent, so natural numbers in it's input are preserved.
+Since (type n) is distributive, the morphisms of (type n) are just sequence preserving arbitrary functions from naturals to naturals.
 The data (sum n) is also a space, selecting the same sequences of  natural numbers as (type n), but combining
 sequences with addition so that sum n : (n:3) (n:5) is equal to (n:8).  Note that a space determines it's morphisms.
 A morphism of (sum n) must satisfy $({\rm sum\ n}):F:X = F:({\rm sum\ n}):X$ meaning that $F$ must be linear.
@@ -375,14 +374,15 @@ collections of mathematical objects each just consisting of finite sequences of 
 \begin{figure}[h]
 \centering
 \includegraphics[width=1.0\textwidth]{machine_learning.png}
-\caption{{\it Excerpt from a coda notebook session searching for a space S that distinguishes a sample of
-odd numbers of (:) atoms from a sample of even numbers of (:) atoms.  Searching in a space of 18,000 data,
-three candidates succeed in classifying the two samples including `aps not'.}}
+\caption{{\it Excerpt from a coda notebook session showing a first demonstration of a situation where one is 
+attempting to classify some mathematical objects of interest.  In this case, searching for a data S that distinguishes a sample of
+data with odd numbers of (:) atoms (displayed as circles with a small circle inside) from a sample of data with even numbers of (:) atoms.  
+A search of 14,098 arbitrarily generated data (some shown), yields three successes including `aps not' as discussed in the text.}}
 \end{figure}
 The difference between the two collections is that one has an odd number of atoms in each sequence and
 the other has an even number.  We proceed by searching for data $A$ that succeeds in classifying
 the two samples in the sense that $A:X$ have different logical values for the two collections.   A first search attempt
-finds three solutions out of approximately 18,000 data, including the data  `aps not' which turns out to be true for
+finds three solutions out of approximately 14,098 data, including the data  `aps not' which turns out to be true for
 even numbers of (:) and false for odd numbers of (:).
 Some features of the solution are interesting.
 \begin{itemize}
@@ -390,13 +390,13 @@ Some features of the solution are interesting.
 in a way that the author did not think of before doing the search.
 \item The solution generalizes, since `aps not' selects data with an even number of atoms in all cases,
 not just when applied to sequences of (:) atoms.
-\item Although `aps not' is not quite a space, the minor modification `bool*(aps not)' is a space
+\item Although `aps not' is not quite a space, the minor modification `bool$*$(aps not)' is a space
 in the above sense.
-\item The morphisms of the space `bool*(aps not)' are interesting.  They are the functions
+\item The morphisms of the space `bool$*$(aps not)' are interesting.  They are the functions
 which preserve atomic parity of data.
 \end{itemize}
 Thus, just by picking out some mathematical items of interest, we have found both a way to
-select similar items and have found an associated new mathematical structure.
+select similar items and an associated new mathematical structure.
 Although this is merely a first toy example, this appears to be a strategy of general interest.
 
     Although the theory of spaces and morphisms clearly has something of the flavor of category theory, there are
@@ -421,7 +421,7 @@ express the consistency of coda directly in coda.  The following data
 {\rm ap\ \{xor\ (coda:B) : (not:coda:B) \} : allByteSequences :}
 \end{equation}
 logically expresses the consistency of coda in the coda language.  Here the `coda' operation maps
-byte sequences to data via the onto mapping $s\mapsto (s:)$.  This means that $({\rm coda}:s)$ and
+finite byte sequences to data via the onto mapping $s\mapsto (s:)$.  This means that $({\rm coda}:s)$ and
 $({\rm not}:{\rm coda}:s)$ will be evaluated for each byte sequence $s$ and if they ever have the same logical
 value, the overall value of (11) is false.   Although each application of `${\rm xor}\ ({\rm coda}:B) : ({\rm not}:{\rm coda}:B)$'
 is true in (11), we cannot quite conclude that (11) is true because (allByteSequences:) will
@@ -493,11 +493,11 @@ computes the maximum integer definable in coda in less than or equal to 32 chara
 if (14) evaluates to an integer, then any integer less than that is a Berry number.
 Thus, we consider the following
 \begin{equation}
-{\rm max : ap\ \{coda:B\} : codes : 30}
+{\rm max : ap\ \{coda:B\} : bytes : 32}
 \end{equation}
-where `codes : 30' produces all character strings with length 30 or less and `max' computes the maximum integer in it's input.
-The problem is that (14) is 30 characters long, so `codes : 30' will eventually produce the string `{\rm max : ap\ \{coda:B\} : codes : 30}' and 
-(14) is, thus, guaranteed to remain logically undecided not matter how much it is evaluated.   
+where `bytes : 32' produces all byte strings with length 32 or less and `max' computes the maximum integer from it's input.
+The problem is that (14) is 32 characters long, so `bytes : 32' will eventually produce the entire string `{\rm max : ap\ \{coda:B\} : bytes : 32}' and 
+(14) is, thus, guaranteed to remain logically undecided no matter how much it is evaluated.   
 In coda, Berry's integer is undecidable. 
 
 \subsection{Curry}
@@ -514,8 +514,7 @@ In coda, we can define
 \item let Curry's\_sentence : imply Curry's\_sentence? : Germany\_borders\_China?
 \end{itemize}
 Here (imply A:B) has the standard truth table for implication when A and B are true and false and
-is undecided otherwise.  This is the same as (and A:B) or (xor A:B) or any of the 16 binary logical operators.
-When evaluated in coda, `Curry's\_sentence?', as expected, is forever undecided data.  It is undecidable.
+is undecided otherwise.  When evaluated in coda, `Curry's\_sentence?', as expected, is forever undecided data.  It is undecidable.
 
 \subsection{Yablo}
 
@@ -548,22 +547,26 @@ Figure 4 shows the evaluation of $Y_1$ in coda to depth 15.  In the G\"odel case
 the output that evaluating to greater depth will change nothing.  We have not attempted to actually
 prove it, but $Y_1$ empirically remains undecided to a large depth and we fully expect that
 $Y_1$ is, in fact undecidable.
-
-It seems that in coda, paradoxes can confidently be examined as mathematical objects which
-happen to have the logical value {\it undecidable}.  This makes the issue of deducing whether something
-is a paradox into a concrete computational problem.  As a stress test of the coda concept
-of logic, the answers to the paradoxes considered here do appear to be intuitively satisfying.
+\subsection {Questions that have no answers} 
+    It is certainly true that many questions in Mathematics seem syntactically reasonable, but 
+actually have no answer.  For example, `Is $x=y$?' where $x$ and $y$ are undefined, or 
+`What is the last natural number?' or `What is the sum of all the natural numbers?' or 
+any of the paradoxes examined in this section.  In coda, it appears that all of these 
+are can be confidently translated into pure data, where their logical status becomes 
+a concrete computational problem and where situations with no answer result in data 
+in the logical category {\it undecidable}.  As a stress test of the coda concept of logic, 
+the answers to the paradoxes in this section do appear to be intuitively satisfying. 
 
 \section{Summary}
 
-We have defined {\it coda} as an axiomatic foundation for Mathematics taking finite sequence as the starting point, rather than starting with logic, sets or types.  
-In this framework, all mathematical quantities are `pure data.'  Coda has only one axiom, the `Axiom of Definition,' which defines 
+An axiomatic foundation for Mathematics is proposed, taking finite sequence as the starting point, rather than starting with logic, sets or types.  
+In this framework, called `coda,' all mathematical quantities are `pure data.'  Coda has only one axiom, the `Axiom of Definition,' which defines 
 what constitutes a valid definition.  The axiom induces a stable classification of pure data which we interpret as a logical system with 
-empty/atomic/neither data interpreted as true/false/undecided logical values respectively.  A language is introduced via the axiom which 
+$empty/atomic/neither$ data interpreted as $true/false/undecided$ logical values respectively.  A language is introduced via the axiom which 
 gives programmatic control over pure data operations.  All byte sequences are valid language expressions so language axioms and 
 axioms defining valid and invalid syntax are not needed.  Proof and computation are defined in terms of a data equality.  Unlike 
 dependent type systems with a Curry-Howard correspondence, proof and computation are the same thing in coda.  A theory of {\it spaces} and 
-{\it morphisms} was introduced and apparently plays a role analogous to Category Theory in classical 
+{\it morphisms} is introduced and apparently plays a role analogous to Category Theory in classical 
 Mathematics.  As an exercise of the proposed logic, we computationally address the issue of the consistency of Mathematics and paradoxes 
 due to G\"odel, Berry, Curry and Yablo.  We reach a positive conclusion about the consistency of Mathematics and reach seemingly 
 satisfying conclusions about the paradoxes where each paradox results in data in the undecidable category.  
@@ -571,7 +574,7 @@ satisfying conclusions about the paradoxes where each paradox results in data in
     A great deal of further work seems warranted.  Only crude evaluation strategies have been attempted so far and this is an area 
 where large gains are likely.  These gains are likely important for developing tools for Mathematical exploration and proof assistance.  
 The example of Mathematical Machine learning in Section 6 is, at most, a hint at what's possible.  The apparently rich theory 
-of spaces seems quite promising and only just barely started.  
+of spaces seems promising and has only just barely started.   
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% \bibliography{jpsi}
@@ -579,10 +582,10 @@ of spaces seems quite promising and only just barely started.
 \bibitem{Type} Dybjer, Peter and Erik Palmgren, {\it Intuitionistic Type Theory}, The Stanford Encyclopedia of Philosophy (Spring 2023 Edition), Edward N. Zalta \& Uri Nodelman (eds.)
 \bibitem{Type2} Steve Awodey and Thierry Coquand, {\it Univalent Foundations and the Large-Scale Formalization of Mathematics}, Institute for Advanced Study, 2013.
 \bibitem{HOTT} {\it Homotopy Type Theory: Univalent Foundations of Mathematics}, Institute for Advanced Study, 2013.
-\bibitem{aldor} S.Watt, {\it Dependent Types and Categorical Programming}, TRICS, University of Western Ontario, 2012, available as {\rm https://cs.uwaterloo.ca/\~smwatt/talks/2012-trics-categorical.pdf}; pp. 265-270, in Handbook of Computer Algebra J. Grabmeier, E. Kaltofen, V. Weispfenning (editors) , Springer Verlag, Heidelberg 2003 , ISBN 3-540-65466-6; S.Youssef, {\it Prospects for Category Theory in Aldor}, 2008, {\rm https://physics.bu.edu/~youssef/aldor.pdf}.
+\bibitem{aldor} S.Watt, {\it Dependent Types and Categorical Programming}, TRICS, University of Western Ontario, 2012, available as {\rm https://cs.uwaterloo.ca/}$\sim${\rm smwatt/talks/2012-trics-categorical.pdf}; pp. 265-270, in Handbook of Computer Algebra J. Grabmeier, E. Kaltofen, V. Weispfenning (editors) , Springer Verlag, Heidelberg 2003 , ISBN 3-540-65466-6; S.Youssef, {\it Prospects for Category Theory in Aldor}, 2008, {\rm https://physics.bu.edu/}$\sim${\rm youssef/aldor.pdf}.
 \bibitem{ZFC} Bagaria, Joan, {\it Set Theory}, The Stanford Encyclopedia of Philosophy (Spring 2023 Edition), Edward N. Zalta \& Uri Nodelman (eds.)
-\bibitem{github} An implementation of coda in Python is available at github.com/Saul-Youssef.  The software include Python access, a command line 
-interface and a Jupyter notebook kernel plug-in.  
+\bibitem{github} An implementation of coda in Python is available at {\rm https://github.com/Saul-Youssef}.  The software includes Python API, a command line 
+interface and a Jupyter notebook plug-in.  
 \bibitem{egg} The coda language is a descendent of {\it egg}.  See Saul Youssef, John Brunelle, John Huth, David C. Parkes and Margo Seltzer {\it Minimal Economic Distributed Computing}, arXiv:0902.4730.  J. Brunelle et al., In GECON 2006: Proceedings of the 3rd International Workshop on Grid Economics and Business Models, Singapore, 16 May 2006, ed. H. Lee, and S. Miller. Singapore; Hackensack, NJ: World Scientific.
 \bibitem{Curry} Shapiro, Lionel and Jc Beall, {\it Curry’s Paradox}, The Stanford Encyclopedia of Philosophy (Winter 2021 Edition), Edward N. Zalta (ed.)
 \bibitem{Godel} Raatikainen, Panu, {\it Gödel’s Incompleteness Theorems}, The Stanford Encyclopedia of Philosophy (Spring 2022 Edition), Edward N. Zalta (ed.)

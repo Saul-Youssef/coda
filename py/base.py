@@ -35,6 +35,7 @@ class data(object):
 #
     def empty    (self): return len(self)==0
     def atomic   (self): return any([c.atom() for c in self])
+    def undecided(self): return not self.empty() and not self.atomic() 
     def invariant(self): return all([c.atom() for c in self])
     def atom     (self): return len(self)==1 and self.atomic()
 #
@@ -73,8 +74,9 @@ class coda(object):
 #
     def eval(self):
         c = self.left().eval() | self.right().eval()
-        if c in CONTEXT: return CONTEXT[c](c)
-        else           : return data(c)
+        return CONTEXT(c)
+#        if c in CONTEXT: return CONTEXT[c](c)
+#        else           : return data(c)
 #
 #   == A definition is a partial function from codas with
 #   a specified domain to data ==
@@ -98,8 +100,10 @@ class Definition(object):
 #   == A Context is a collection of definitions with disjoint domains ==
 #
 class Context(object):
-    def __init__(self): self._definitions = {} # domain -> definition
-    def __repr__(self): return ','.join([str(domain) for domain,definition in self._definitions.items()])
+    def __init__(self):
+        self._definitions = {} # domain -> definition
+        self._cache       = {} # coda -> data cache
+    def __repr__(self): return  str(len(self._definitions))+'/'+str(len(self._cache))+' '+','.join([str(domain) for domain,definition in self._definitions.items()])
     def domain(self,c): # handles the {...} -> language convention
         d = c.domain(); s = str(d)
         if s.startswith('{') and s.endswith('}'): d = da('language')
@@ -113,7 +117,9 @@ class Context(object):
 #   Partial function, extended to coda -> data with identity
 #
     def __call__(self,c):
-        if c in self: return self[c](c)
+        if c in self:
+            if not c in self._cache: self._cache[c] = self[c](c)
+            return self._cache[c]
         return data(c)
 #
 #   Adding a definition to this context
@@ -149,12 +155,6 @@ class Unicode(object):
     def __init__(self):
         import string
         self._map = {}
-#        self._map[ATOMS.atom] = '*'
-#        self._map[ATOMS.bit0] = '0'
-#        self._map[ATOMS.bit1] = '1'
-#        self._map[ATOMS.atom] = "\u25CE"
-#        self._map[ATOMS.bit0] = u"\U0001D7EC"
-#        self._map[ATOMS.bit1] = u"\U0001D75E"
         self.setatoms("\u25CE",u"\U0001D7EC",u"\U0001D75E")
         for c in string.printable: self._map[self.byte(c)] = c
     def setatoms(self,atom,bit0,bit1):

@@ -2,7 +2,8 @@
 #    Generate spaces in various ways
 #
 from base import *
-from Space import Space
+#from Space import Space
+from Set import Set
 import Help
 
 LANGFRAC = 0.01
@@ -11,7 +12,7 @@ numbers = [co(str(i)) for i in range(4)]
 letters = [co('a'),co('b'),co('A'),co('B')]
 
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import',
-                    'IO','Language','Path','Space','Number']
+                    'IO','Language','Path','Space','Set','Number']
 
 defines = []
 for dom,de in CONTEXT:
@@ -34,7 +35,7 @@ class Gen(object):
                 if any([pp==co('B') for pp in p]) and not any([pp==co('{$}') for pp in p]): self._space0.append(data(*p))
     def __len__(self):
         return len(self._space0)
-    def space(self):
+    def set(self):
         ps = []
         for i in range(self._width):
             for p in itertools.product(self._codas,repeat=i):
@@ -49,7 +50,7 @@ class Gen(object):
                     p2 = self.replace(p,co('{'+str(d)+'}'))
                     pout.append(p2)
         random.shuffle(pout)
-        return Space(*[data(*p) for p in pout])
+        return Set(*[data(*p) for p in pout])
     def nlang(self,p):
         n = 0
         for pp in p:
@@ -81,16 +82,15 @@ def allcoda(width,depth):
         for T in itertools.product(datas,repeat=2): codas.append(coda(T[0],T[1]))
     return codas
 
-def Window(width,depth):
-    return Space(*[d for d in alldata(width,depth)])
+def Window(width,depth): return Set(*[d for d in alldata(width,depth)])
 
 def EvenAtoms(n):
     at = data()|data()
     atoms = [data()]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return Space(*atoms)
+    return Set(*atoms)
 def OddAtoms(n):
     at = data()|data()
     atoms = [data(at)]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return Space(*atoms)
+    return Set(*atoms)

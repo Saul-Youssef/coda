@@ -2,8 +2,12 @@
 #    A data "Set" is an undordered collection of datas
 #
 from base import *
+import multiprocessing
 
 def Eval(S): return S.eval(100)
+def eval100(S): return S.eval(100)
+def eval10(S): return S.eval(10)
+def eval1000(S): return S.eval(1000)
 
 def multiEval(S,nproc=8):
     n = len(S)//nproc
@@ -16,13 +20,34 @@ def multiEval(S,nproc=8):
 
 class Subset(object):
     def __init__(self): self._map = {}
-    def __repr__(self): return str(len(self._map))
+    def __len__(self): return len(self._map)
+    def __repr__(self): return str(len(self))
     def __iter__(self):
         for key,value in self._map.items(): yield key
     def set(self,d,D):
         self._map[d] = D
         return self
     def __getitem__(self,D): return self._map[D]
+    def __add__(self,S):
+        R = Subset()
+        for D in self: R.set(D,self[D])
+        for D in S   : R.set(D,   S[D])
+        return R
+#    def multieval(self,maxiter,nproc=8):
+#    def multieval(self,eval,nproc=8):
+    def multieval(self,eval,nproc=None):
+        if nproc is None:
+            nproc = multiprocessing.cpu_count()-4
+        n = len(self)//nproc
+        S_split = [T for T in self.split(n)]
+        from multiprocessing.pool import Pool
+        pool = Pool(nproc)
+        results = []
+        for result in pool.imap_unordered(eval,S_split): results.append(result)
+#        for result in pool.imap_unordered(Eval,S_split): results.append(result)
+        def f(s,t): return s+t
+        from functools import reduce
+        return reduce(f,results)
     def eval(self,maxiter):
         for d,D in self._map.items():
             i = 0

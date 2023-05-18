@@ -33,8 +33,6 @@ class Subset(object):
         for D in self: R.set(D,self[D])
         for D in S   : R.set(D,   S[D])
         return R
-#    def multieval(self,maxiter,nproc=8):
-#    def multieval(self,eval,nproc=8):
     def multieval(self,eval,nproc=None):
         if nproc is None:
             nproc = multiprocessing.cpu_count()-4
@@ -44,7 +42,6 @@ class Subset(object):
         pool = Pool(nproc)
         results = []
         for result in pool.imap_unordered(eval,S_split): results.append(result)
-#        for result in pool.imap_unordered(Eval,S_split): results.append(result)
         def f(s,t): return s+t
         from functools import reduce
         return reduce(f,results)
@@ -114,6 +111,10 @@ class Set(object):
         sub = Subset()
         for s in self: sub.set(s,data(*[s|x for x in X]))
         return sub
+    def notkernel(self,X):
+        sub = Subset()
+        for s in self: sub.set(s,data(*[da('not')|data(s|x) for x in X]))
+        return sub 
 #
 #    def apply(self,X):
 #        L = []

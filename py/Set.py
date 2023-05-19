@@ -18,6 +18,10 @@ def multiEval(S,nproc=8):
     for result in pool.imap_unordered(Eval,S_split): results.append(result)
     return Space.sum(*results)
 
+def pow(n,s,x):
+    if n==1: return s|x
+    else   : return s|data(pow(n-1,s))
+
 class Subset(object):
     def __init__(self): self._map = {}
     def __len__(self): return len(self._map)
@@ -107,19 +111,16 @@ class Set(object):
                 yield Set(*L); L = []
         if len(L)>0: yield Set(*L)
 
-    def kernel(self,X):
+    def nilpotent(self,n,X):
         sub = Subset()
-        for s in self: sub.set(s,data(*[s|x for x in X]))
+#        for s in self: sub.set(s,data(*[s|x for x in X]))
+        for s in self: sub.set(s,data(*[pow(n,s,x) for x in X]))
         return sub
-    def notkernel(self,X):
+    def involution(self,n,X):
         sub = Subset()
-        for s in self: sub.set(s,data(*[da('not')|data(s|x) for x in X]))
-        return sub 
-#
-#    def apply(self,X):
-#        L = []
-#        for s in self:
-#            for x in X: L.append(data(s|x))
+#        for s in self: sub.set(s,data(*[self.eqco(data(s|data(s|x)), x) for x in X]))
+        for s in self: sub.set(s,data(*[self.eqco(data(pow(n,s,x)),x) for x in X]))
+        return sub
     def eqco(self,A,B): return (da('=')+A)|B
     def idempotent(self,X):
         sub = Subset()

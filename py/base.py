@@ -35,7 +35,7 @@ class data(object):
 #
     def empty    (self): return len(self)==0
     def atomic   (self): return any([c.atom() for c in self])
-    def undecided(self): return not self.empty() and not self.atomic() 
+    def undecided(self): return not self.empty() and not self.atomic()
     def invariant(self): return all([c.atom() for c in self])
     def atom     (self): return len(self)==1 and self.atomic()
 #

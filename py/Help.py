@@ -93,8 +93,6 @@ class Comment(Block):
 class Coda(Block):
         def __str__(self): return 'CODA:'+'\n'+'\n'.join(self._lines)
         def display(self):
-#            print(str(self))
-#            print('Flags:',','.join(self.flags()))
             IO.OUT(str(self)+'\n')
             IO.OUT('Flags:'+' '+','.join(self.flags())+'\n')
         def flags(self):
@@ -115,8 +113,6 @@ class Coda(Block):
 class Python(Block):
         def __str__(self): return 'PYTHON:'+'\n'+'\n'.join(self._lines)
         def display(self):
-#            print(str(self))
-#            print('Flags:',','.join(self.flags()))
             IO.OUT(str(self)+'\n')
             IO.OUT('Flags:'+' '+','.join(self.flags())+'\n')
         def flags(self):
@@ -324,13 +320,10 @@ class section(object):
         n = 1
         for line in self.lines:
             if   self.title=='demos':
-#                print(self.indent*' '+str(n)+'. '+Text.decorate(line,'magenta','underline'))
                 IO.OUT(self.indent*' '+str(n)+'. '+Text.decorate(line,'magenta','underline')+'\n')
             elif self.title=='code' :
-#                print(self.indent*' '+Text.decorate(line,'blue','reversevideo'))
                 IO.OUT(self.indent*' '+Text.decorate(line,'blue','reversevideo')+'\n')
-            else                    :
-#                print(self.indent*' '+line)
+            elif type(line)==type(''):
                 IO.OUT(self.indent*' '+line+'\n')
             n += 1
 #

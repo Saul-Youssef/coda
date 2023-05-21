@@ -19,8 +19,9 @@ def multiEval(S,nproc=8):
     return Space.sum(*results)
 
 def pow(n,s,x):
-    if n==1: return s|x
-    else   : return s|data(pow(n-1,s))
+    if    n==0: raise error('s^0 is not defined')
+    elif  n==1: return s|x
+    else      : return s|data(pow(n-1,s,x))
 
 class Subset(object):
     def __init__(self): self._map = {}

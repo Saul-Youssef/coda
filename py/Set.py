@@ -114,12 +114,10 @@ class Set(object):
 
     def nilpotent(self,n,X):
         sub = Subset()
-#        for s in self: sub.set(s,data(*[s|x for x in X]))
         for s in self: sub.set(s,data(*[pow(n,s,x) for x in X]))
         return sub
     def involution(self,n,X):
         sub = Subset()
-#        for s in self: sub.set(s,data(*[self.eqco(data(s|data(s|x)), x) for x in X]))
         for s in self: sub.set(s,data(*[self.eqco(data(pow(n,s,x)),x) for x in X]))
         return sub
     def eqco(self,A,B): return (da('=')+A)|B
@@ -141,9 +139,28 @@ class Set(object):
             L = []
             for x in X:
                 for y in Y: L.append( self.eqco( data(s|(x+y)) , data(s|((s|x)+(s|y))) ) )
+            sub.set(s,data(*L))
+        return sub
+#
+#     in this context, a "pure ring" is data ring such that
+#     ring A B : C = ring : (ring A : C ) (ring B : C) and
+#     ring A : B C = ring : (ring A : B ) (ring A : C)
+#
+    def ring(self,A,B,C):
+        sub = Subset()
+        for ring in self:
+            L = []
+            for a in A:
+                for b in B:
+                    for c in C:
+                        e1l = data((ring+a+b)|c    ); e1r = data( ring | ( ((ring+a)|c) + ((ring+b)|c) ) )
+                        e2l = data((ring+a  )|(b+c)); e2r = data( ring | ( ((ring+a)|b) + ((ring+a)|c) ) )
+                        L.append(self.eqco(e1l,e1r))
+                        L.append(self.eqco(e2l,e2r))
+            sub.set(ring,data(*L))
         return sub
     def morphism(self,A,B,X):  # morphism from space A to space B
         sub = Subset()
         for F in self:
-            for x in X: self.eqco( self.eqco( data(F|data(A|x)) , data(B|data(F|x)) ) )
+            for x in X: sub.set(F,self.eqco( self.eqco( data(F|data(A|x)) , data(B|data(F|x)) ) ))
         return sub

@@ -1,0 +1,26 @@
+#
+#    Natural number types and string
+#
+
+def n :
+def type : {ap put n : ap nat1 : B}
+def sum  : {ap put n : aps int_add : pre 0 : get n : type : B}
+def prod : {ap put n : aps int_mult: pre 1 : get n : type : B}
+
+def ring : {prod : get n : (prod : A) (sum : B)}
+
+
+#def Natural : {
+#   ( def B: )
+#   ( let (Extra:B) : A )
+#   ( let (Make:B) : { (ap put A: ap nat1 : B) (has A:B) (ap app (Extra:A):B) } )
+#   ( let (Sum:B)  : {ap put A : aps int_add : pre 0 : get A : make A : B} )
+#   ( let (Prod:B) : {ap put A : aps int_mult : pre 1 : get A : make A : B} )
+#   ( let (Sort:B) : {ap put A : int_sort : get A : make A : B} )
+#   ( let (Class:B): {equiv {get A:B} A : make A : B} )
+#   ( let (Term:B) : {get A : make A : B} )
+#   }
+#
+#
+#def str : {ap join : B}
+#

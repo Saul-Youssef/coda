@@ -48,8 +48,7 @@ CONTEXT.define('app',app_1,app_0,app)
 def ap2_1(domain,A,B):
     A0,AR =  A.split()
     A1,AR = AR.split()
-    if A0.atom() and A1.atom():
-        return ((A0+A1)|B) + ((domain+A0+AR)|B)
+    if A0.atom() and A1.atom(): return ((A0+A1)|B) + ((domain+A0+AR)|B)
 def ap2_0(domain,A,B):
     A0,AR = A.split()
     A1,AR = AR.split()

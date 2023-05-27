@@ -1,0 +1,30 @@
+#
+#    Natural number types and string
+#
+#   Spaces 
+#
+def n :
+def type : {some (has n:B) : ap put n : ap nat1 : B }
+def sum  : {ap put n : aps int_add : pre 0 : get n : B}
+def prod : {ap put n : aps int_mult: pre 1 : get n : B}
+def term : {get n:B}
+#
+#   Antimorphism 
+#
+def inv : {ap put n : ap {int_diff B:0} : get n : rev : B}
+
+def ring : {prod : (prod : A) (sum : B)}
+
+def Space : {B : (B:X?) (B:Y?) = B : X? Y?}
+def Distributive : {B : X? Y? = (B:X?) (B:Y?)} 
+def Involution : {B:B:X?=X?}
+
+def pair:
+def type2 : {some (has pair : B) : apby 2 {put pair:(sum:nth 1:B) (sum:nth 2:B)} : B }
+def sum2  : {type2 : (sum  : first : get pair : type2 : B) (sum  : last : get pair : B)} 
+def prod2 : {type2 : (prod : first : get pair : type2 : B) (prod : last : get pair : B)}
+def ring2 : {prod2 : (prod2 : A) (sum2 : B)} 
+
+
+
+

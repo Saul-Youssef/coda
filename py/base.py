@@ -41,7 +41,8 @@ class data(object):
 #
 #   Evaluation
 #
-    def eval(self):
+    def eval(self): return CACHE.data(self,lambda self: self._eval())
+    def _eval(self):
         result = []
         for c in self:
             for d in c.eval(): result.append(d)
@@ -75,8 +76,6 @@ class coda(object):
     def eval(self):
         c = self.left().eval() | self.right().eval()
         return CONTEXT(c)
-#        if c in CONTEXT: return CONTEXT[c](c)
-#        else           : return data(c)
 #
 #   == A definition is a partial function from codas with
 #   a specified domain to data ==
@@ -100,10 +99,8 @@ class Definition(object):
 #   == A Context is a collection of definitions with disjoint domains ==
 #
 class Context(object):
-    def __init__(self):
-        self._definitions = {} # domain -> definition
-        self._cache       = {} # coda -> data cache
-    def __repr__(self): return  str(len(self._definitions))+'/'+str(len(self._cache))+' '+','.join([str(domain) for domain,definition in self._definitions.items()])
+    def __init__(self): self._definitions = {} # domain -> definition
+    def __repr__(self): return  str(len(self._definitions))+' '+','.join([str(domain) for domain,definition in self._definitions.items()])
     def domain(self,c): # handles the {...} -> language convention
         d = c.domain(); s = str(d)
         if s.startswith('{') and s.endswith('}'): d = da('language')
@@ -117,9 +114,7 @@ class Context(object):
 #   Partial function, extended to coda -> data with identity
 #
     def __call__(self,c):
-        if c in self:
-            if not c in self._cache: self._cache[c] = self[c](c)
-            return self._cache[c]
+        if c in self: return CACHE.coda(c,lambda c:self[c](c))
         return data(c)
 #
 #   Adding a definition to this context
@@ -133,6 +128,28 @@ class Context(object):
 #   Global context
 #
 CONTEXT = Context()
+#
+#   Cache of coda->data and data->data results for speed
+#
+class Cache(object):
+    def __init__(self):
+        self._coda = {}
+        self._data = {}
+    def __repr__(self): return '/'.join([str(len(self._coda)),str(len(self._data))])
+    def coda(self,c,F):
+#        if not c in self._coda: self._coda[c] = F(c)
+        if not c in self._coda: self._coda[c] = data(*[c for c in self.expand(F(c))])
+        return self._coda[c]
+    def data(self,d,F):
+        if not d in self._data: self._data[d] = data(*[c for c in self.expand(F(d))])
+        return self._data[d]
+    def expand(self,D):
+        for c in D:
+            if c in self._coda:
+                for cc in self._coda[c]: yield cc
+            else:
+                yield c
+CACHE = Cache()
 #
 #   Three standard atoms for the domain of bits, bit sequences and byte sequences
 #

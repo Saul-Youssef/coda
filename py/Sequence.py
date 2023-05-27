@@ -4,6 +4,18 @@
 from base import *
 import Number
 #
+#   some/none define the coarsest data classification
+#
+#   demo: some : a b c
+#   demo: some :
+#   demo: none : a b c
+#   demo: none :
+#
+def some(domain,A,B):
+    if A.atomic(): return A
+    if A.empty (): return B
+CONTEXT.define('some',some)
+#
 #   Reverse the order of it's input sequence.
 #
 #   rev : () -> ()

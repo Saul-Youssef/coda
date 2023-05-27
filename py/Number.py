@@ -117,7 +117,7 @@ CONTEXT.define('float1',Float)
 #   demo: int_max 2 : 3
 #   demo: int_diff 2 : 3
 #   demo: int_min 2 : 3
-#   demo: app int_add : 1 2 3 4 5
+#   demo: aps int_add : 1 2 3 4 5
 #
 OP1 = BinaryOperation(ints,lambda x,y: x+y)
 CONTEXT.define('int_add',lambda domain,A,B:OP1(A,B),empty)
@@ -137,8 +137,8 @@ CONTEXT.define('int_min',lambda domain,A,B:OP5(A,B),empty)
 #   demo: float_max 2.1 : 3.1
 #   demo: float_diff 2.1 : 3.1
 #   demo: float_min 2 : 3
-#   demo: app float_add : 1.1 2.1 3.1 4.1 5.1
-#   demo: app float_mult : 1.1 2.1 3.1 4.1 5.1
+#   demo: aps float_add : 1.1 2.1 3.1 4.1 5.1
+#   demo: aps float_mult : 1.1 2.1 3.1 4.1 5.1
 #   demo:int_inv : 1 2 -3 -4
 #   demo:float_inv : 1.1 2.1 -3.1 -4.1
 #
@@ -160,7 +160,7 @@ def codes(D): return [str(c) for c in D]
 #   demo: code_add <xx yy> : <11 22>
 #   demo: code_min 1234 : 1235
 #   demo: code_max 1234 : 1235
-#   demo: app code_add : 1 2 3 4 5 6
+#   demo: aps code_add : 1 2 3 4 5 6
 #
 OP11 = BinaryOperation(codes,lambda x,y:x+y)
 CONTEXT.define('code_add',lambda domain,A,B:OP11(A,B),empty)

@@ -3,31 +3,6 @@
 #
 from base import *
 #
-#   some/none define the coarsest data classification
-#
-#   demo: some : a b c
-#   demo: some :
-#   demo: none : a b c
-#   demo: none :
-#
-#   some : A -> 1 if A is atomic, () if A is empty
-#   none : A -> 1 if A is empty, () if A is atomic
-#
-#def default(domain,A,B):
-#    if B.atomic(): return B
-#    if B.empty(): return A
-#CONTEXT.define('default',default)
-
-#def some(domain,A,B):
-#    if B.atomic(): return A
-#    if B.empty (): return data()
-#def none(domain,A,B):
-#    if B.atomic(): return data()
-#    if B.empty (): return A
-#CONTEXT.define('some',some)
-#CONTEXT.define('none',none)
-
-#
 #   Context equality (=) and logical complement (not).
 #
 #  demo: 1=1

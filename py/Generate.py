@@ -47,8 +47,12 @@ class Gen(object):
                 pout.append(p)
             elif self.nlang(p)==1:
                 for d in self._space0:
-                    p2 = self.replace(p,co('{'+str(d)+'}'))
+                    t = '{'+str(d)+'}'
+                    p2 = self.replace(p,co(t))
                     pout.append(p2)
+                    if ' ' in t:
+                        p2 = self.replace(p,co(t.replace(' ',' : ')))
+                        pout.append(p2)
         random.shuffle(pout)
         return Set(*[data(*p) for p in pout])
     def nlang(self,p):

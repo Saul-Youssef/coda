@@ -3,4 +3,4 @@
 #
 #    demo: apd a b c : 1 2 3 
 #
-def apd : {ap ap2 A:B}
+#def apd : {ap ap2 A:B}

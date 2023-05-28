@@ -1,0 +1,6 @@
+#
+#    Conventional bit symbols 
+#
+let a : (:)
+let 0 : ((:):)
+let 1 : ((:):(:))

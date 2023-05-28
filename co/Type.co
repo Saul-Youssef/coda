@@ -10,11 +10,19 @@
 #  invol/Invol - Involution 
 #  term/Term   - Terminal output 
 #
-def type  :    {(Type:A) A : B}
-def sum   :     {(Sum:A) A : B}
-def prod  :    {(Prod:A) A : B}
-def term  :    {(Term:A) A : B}
-def sort  :    {(Sort:A) A : B}
-def inv   :     {(Inv:A) A : B}
-def class :   {(Class:A) A : B}
-def invol :   {(Invol:A) A : B}
+def type : {(?:type A):B} 
+def sum  : {(?:sum  A):B}
+def prod : {(?:prod A):B}
+def sort : {(?:sort A):B}
+def inv  : {(?:inv  A):B}
+def class: {(?:class A):B}
+def invol: {(?:invol A):B} 
+#
+#def type  :    {(Type:A) A : B}
+#def sum   :     {(Sum:A) A : B}
+#def prod  :    {(Prod:A) A : B}
+#def term  :    {(Term:A) A : B}
+#def sort  :    {(Sort:A) A : B}
+#def inv   :     {(Inv:A) A : B}
+#def class :   {(Class:A) A : B}
+#def invol :   {(Invol:A) A : B}

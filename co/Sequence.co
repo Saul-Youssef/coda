@@ -1,8 +1,4 @@
 #
-#    Sequence
-#
-
-#
 #   Select the n'th items from input.
 #
 #   demo: nth 3 : a b c d

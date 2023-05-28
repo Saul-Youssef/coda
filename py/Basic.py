@@ -56,11 +56,13 @@ CONTEXT.define('put',lambda domain,A,B: data(A|B))
 #
 def has1(domain,A,B):
     if B.atom():
-        guard = data((da('=')+A)|B[0].left())
+#        guard = data((da('=')+A)|B[0].left())
+        guard = data((da('=')+A)|B[0].domain())
         return data((da('if')+guard)|B)
 def get1(domain,A,B):
     if B.atom():
-        guard = data((da('=')+A)|B[0].left())
+#        guard = data((da('=')+A)|B[0].left())
+        guard = data((da('=')+A)|B[0].domain())
         return data((da('if')+guard)|B[0].right())
 CONTEXT.define('has1',has1)
 CONTEXT.define('get1',get1)

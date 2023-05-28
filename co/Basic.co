@@ -1,8 +1,4 @@
 #
-#   Basics
-#
-
-#
 #   has/hasnt selects, get gets, is/isnt tests
 #
 #   has  A  : ... gets data of the form (A:<something>)
@@ -26,3 +22,4 @@ def hasnt : {apif {has1 A:B} A : B}
 def get : {ap get1 A : B}
 def is : {apif {A=B} A : B}
 def isnt : {apif {not:(A=B)} A : B}
+

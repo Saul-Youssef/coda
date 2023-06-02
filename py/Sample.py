@@ -12,8 +12,8 @@ numbers = [co(str(i)) for i in range(4)]
 letters = [co('a'),co('b'),co('A'),co('B'),co('?')]
 
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import',
-                    'IO','Language','Path','Space','Set','Code']
-excluded_strings = ['float','int1','int_','code_']
+                    'IO','Language','Path','Sample','Set','Code']
+excluded_strings = ['float','code_']
 
 defines = []
 for dom,de in CONTEXT:
@@ -26,7 +26,7 @@ langs = [co('{$}')]
 #while len(langs)/len(defines) < LANGFRAC: langs.append(co('{$}'))
 
 import random,itertools
-codas = defines+numbers+letters+langs
+codas = defines+numbers+letters
 
 class Gen(object):
     def __init__(self,codas,width):

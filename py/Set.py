@@ -146,6 +146,19 @@ class Set(object):
         for F in self:
             for x in X: sub.set(F,self.eqco( self.eqco( data(F|data(A|x)) , data(B|data(F|x)) ) ))
         return sub
+    def equivalence(self,X,Y,Z):
+        sub = Subset()
+        def f(s,x,y): return data((s+x)|y)
+        def e(x,y): return self.eqco(x,y)
+        for s in self:
+            L = []
+            for x in X:
+                for y in Y:
+                    L.append((s+x)|x)
+                    L.append(e(f(s,x,y),f(s,y,x)))
+                    for z in Z: L.append(e(f(s,x,y)+f(s,y,z),f(s,x,z)))
+            sub.set(s,data(*L))
+        return sub 
 #
 #     in this context, a "pure ring" is data ring such that
 #     ring A B : C = ring : (ring A : C ) (ring B : C) and

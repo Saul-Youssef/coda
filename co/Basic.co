@@ -25,4 +25,6 @@ def get : {ap get1 A : B}
 def is : {apif {A=B} A : B}
 def isnt : {apif {not:(A=B)} A : B}
 def sel : {ap sel1 A : B}
+def left : {ap left1 A : B}
+def right: {ap righ1 A : B}
 def id : pass

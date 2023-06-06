@@ -1,0 +1,12 @@
+#
+#    Natural numbers 
+#
+def n: 
+let type  n : {some (has n:B) : ap put n : ap nat1 : B }
+let sum   n : {ap put n : aps int_add : pre 0 : get n : B}
+let prod  n : {ap put n : aps int_mult: pre 1 : get n : B}
+let term  n : {get n:B}
+let inv   n : {ap put n : ap {int_diff B:0} : get n : rev : B}
+let invol n : {ap put n : ap {int_diff B:0} : get n : rev : B}
+let equiv n : {reduce id:B} 
+

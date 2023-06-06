@@ -19,6 +19,16 @@ def quo  : {(?:quo   A):B}
 def invol: {(?:invol A):B} 
 def term : {(?:term  A):B} 
 def equiv: {(?:equiv A):B} 
+
+def pro: 
+def Product : {ap {put pro (first:A): app (tail:A):B} A : has (first:A) : B}
+def product : {ap {nth (tail:A) : sel pro (first:A) : B} A : B}
+
+def cop:
+def coproduct: {ap {put cop (first:A) : pre (tail:A) : has (first:A) : B} A : B} 
+def _Co1 : {(nth (first : sel cop (first:A) : B) : (tail:A)) : last : sel cop (first:A) : B} 
+def Coproduct: {ap _Co1 A : B} 
+
 #
 #def type  :    {(Type:A) A : B}
 #def sum   :     {(Sum:A) A : B}

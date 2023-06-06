@@ -69,6 +69,13 @@ def get1(domain,A,B):
 CONTEXT.define('has1',has1)
 CONTEXT.define('get1',get1)
 
+def left1(domain,A,B):
+    if B.atom(): return B[0].left()
+def right1(domain,A,B):
+    if B.atom(): return B[0].right()
+CONTEXT.define('left1',left1)
+CONTEXT.define('right1',right1)
+
 def select1(domain,A,B):
     BL,BR = B.split()
     if BL.atom():

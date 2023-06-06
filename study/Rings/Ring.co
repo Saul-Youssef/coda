@@ -18,9 +18,9 @@
 #
 #def ring : {prod : (prod : A) (sum : B)}
 
-def Space : {B : (B:X?) (B:Y?) = B : X? Y?}
-def Distributive : {B : X? Y? = (B:X?) (B:Y?)} 
-def Involution : {B:B:X?=X?}
+#def Space : {B : (B:X?) (B:Y?) = B : X? Y?}
+#def Distributive : {B : X? Y? = (B:X?) (B:Y?)} 
+#def Involution : {B:B:X?=X?}
 
 #def pair:
 #def type2 : {some (has pair : B) : apby 2 {put pair:(sum:nth 1:B) (sum:nth 2:B)} : B }

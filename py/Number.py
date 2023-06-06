@@ -14,9 +14,11 @@ class BinaryOperation(object):
         if A.atom() and B.atom():
             Ac = self._coerce(A); Bc = self._coerce(B)
             if len(Ac)==1 and len(Bc)==1:
-                result = self._operation(Ac[0],Bc[0])
-                return da(str(result))
-
+                try:
+                    result = self._operation(Ac[0],Bc[0])
+                    return da(str(result))
+                except Exception as e:
+                    pass
 def tryint(x):
     y = None
     try:
@@ -117,7 +119,10 @@ CONTEXT.define('float1',Float)
 #   demo: int_max 2 : 3
 #   demo: int_diff 2 : 3
 #   demo: int_min 2 : 3
+#   demo: int_div 2 : 64
+#   demo: int_div 0 : 64
 #   demo: aps int_add : 1 2 3 4 5
+#   demo: ap int_div 2 : 1 2 3 4 5 6 7 8
 #
 OP1 = BinaryOperation(ints,lambda x,y: x+y)
 CONTEXT.define('int_add',lambda domain,A,B:OP1(A,B),empty)
@@ -129,6 +134,8 @@ OP4 = BinaryOperation(ints,lambda x,y: max(x,y))
 CONTEXT.define('int_max',lambda domain,A,B:OP4(A,B),empty)
 OP5 = BinaryOperation(ints,lambda x,y: min(x,y))
 CONTEXT.define('int_min',lambda domain,A,B:OP5(A,B),empty)
+OP14 = BinaryOperation(ints,lambda x,y: y//x)
+CONTEXT.define('int_div',lambda domain,A,B:OP14(A,B),empty)
 #
 #   Float binary operations and involutions
 #
@@ -139,8 +146,11 @@ CONTEXT.define('int_min',lambda domain,A,B:OP5(A,B),empty)
 #   demo: float_min 2 : 3
 #   demo: aps float_add : 1.1 2.1 3.1 4.1 5.1
 #   demo: aps float_mult : 1.1 2.1 3.1 4.1 5.1
-#   demo:int_inv : 1 2 -3 -4
-#   demo:float_inv : 1.1 2.1 -3.1 -4.1
+#   demo: int_inv : 1 2 -3 -4
+#   demo: float_inv : 1.1 2.1 -3.1 -4.1
+#   demo: float_div 1.1 : 3.3
+#   demo: ap float_div 1.1 : 3.3 4.4 -5.5
+#   demo: float_div 0.0 : 1.1
 #
 OP6 = BinaryOperation(floats,lambda x,y: x+y)
 CONTEXT.define('float_add',lambda domain,A,B: OP6(A,B),empty)
@@ -152,6 +162,8 @@ OP9 = BinaryOperation(floats,lambda x,y: max(x,y))
 CONTEXT.define('float_max',lambda domain,A,B: OP9(A,B),empty)
 OP10 = BinaryOperation(floats,lambda x,y: min(x,y))
 CONTEXT.define('float_min',lambda domain,A,B:OP10(A,B),empty)
+OP15 = BinaryOperation(floats,lambda x,y: y/x)
+CONTEXT.define('float_div',lambda domain,A,B:OP15(A,B),empty)
 #
 def codes(D): return [str(c) for c in D]
 #

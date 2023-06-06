@@ -3,6 +3,7 @@
 #    definitions.  ap, especially, is everywhere.
 #
 from base import *
+
 #
 #  Apply A to each b in B.
 #
@@ -54,15 +55,6 @@ def ap2_0(domain,A,B):
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
 CONTEXT.define('ap2',ap2_1,ap2_0)
-#def apbin_0(domain,A,B):
-#    B0,BR = B.split()
-#    B1,BX = BR.split()
-#    if B0.atom() and B1.atom(): return data((A+B0)|data((domain+A)|BR))
-#def apbin_1(domain,A,B):
-#    if B.atom(): return B
-#def apbin_2(domain,A,B):
-#    if B.empty(): return data()
-#CONTEXT.define('apbin',apbin_0,apbin_1,apbin_2)
 def aps_0(domain,A,B):
     B0,BR = B.split()
     B1,BX = BR.split()
@@ -91,3 +83,37 @@ def apif_1(domain,A,B):
 def apif_2(domain,A,B):
     if B.atom(): return data((da('if')+data(A|B))|B)
 CONTEXT.define('apif',apif_0,apif_2,apif_1)
+#
+#   Reduce
+#
+#   demo:reduce pass : a a b b c c a
+#   demo:reduce {count:get 1?:B} : a b cc ddd eee eeee
+#
+def reduce_1(domain,A,B):
+    B1,BR = B.split()
+    if A.atomic() and B1.atom():
+        B2,BR2 = BR.split()
+        def eqco(A,B1,B2): return (co('=')+(A|B1))|data(A|B2)
+        if B2.atom():
+            return ((co('nif')+eqco(A,B1,B2))|B1) + ((domain+A)|BR)
+        elif B2.empty():
+            return B1
+def reduce_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('reduce',reduce_0,reduce_1)
+
+#def apeq_1(domain,A,B):
+#    B1,BR = B.split()
+#    if B1.atom():
+#        B2,BR = BR.split()
+#        if B2.atom():
+#                (A+B1)|B2
+
+def apr_0(domain,A,B):
+    AL,AR = A.split()
+    BL,BR = B.split()
+    if AL.atom() and BL.atom():
+        return ((co('if')+(A|BL))|BL) + ((domain+AL+BL)|B)
+def apr_1(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('apr',apr_1,apr_0)

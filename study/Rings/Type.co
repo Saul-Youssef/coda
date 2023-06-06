@@ -15,8 +15,10 @@ def sum  : {(?:sum  A):B}
 def prod : {(?:prod A):B}
 def sort : {(?:sort A):B}
 def inv  : {(?:inv  A):B}
-def class: {(?:class A):B}
+def quo  : {(?:quo   A):B}
 def invol: {(?:invol A):B} 
+def term : {(?:term  A):B} 
+def equiv: {(?:equiv A):B} 
 #
 #def type  :    {(Type:A) A : B}
 #def sum   :     {(Sum:A) A : B}

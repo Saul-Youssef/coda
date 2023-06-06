@@ -21,8 +21,7 @@ def domain_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('domain',domain_0,domain_1)
 #
-#   if A : B -> () if A is false
-#   if A : B -> B  if A is true
+#   if and nif return output depending on argument logic.
 #
 #   demo: if (1=1) : 1 2 3
 #   demo: if (1=2) : 1 2 3
@@ -32,13 +31,18 @@ CONTEXT.define('domain',domain_0,domain_1)
 #   demo: if (foo:bar) : 1 2 3
 #   demo: if (bin:x y) : 1 2 3
 #   demo: if (bin:) : 1 2 3
+#   demo: nif (bin:) : 1 2 3
 #
 def if_1(domain,A,B):
-    for a in A:
-        if a.atom(): return data()
+    if A.atomic(): return data()
 def if_0(domain,A,B):
     if A.empty(): return B
 CONTEXT.define('if',if_1,if_0)
+def nif_1(domain,A,B):
+    if A.empty(): return data()
+def nif_0(domain,A,B):
+    if A.atomic(): return B
+CONTEXT.define('nif',nif_1,nif_0)
 #
 #   put A : B creates A:B, it "puts B into A".
 #
@@ -56,16 +60,21 @@ CONTEXT.define('put',lambda domain,A,B: data(A|B))
 #
 def has1(domain,A,B):
     if B.atom():
-#        guard = data((da('=')+A)|B[0].left())
         guard = data((da('=')+A)|B[0].domain())
         return data((da('if')+guard)|B)
 def get1(domain,A,B):
     if B.atom():
-#        guard = data((da('=')+A)|B[0].left())
         guard = data((da('=')+A)|B[0].domain())
         return data((da('if')+guard)|B[0].right())
 CONTEXT.define('has1',has1)
 CONTEXT.define('get1',get1)
+
+def select1(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom():
+        guard = data((da('=')+A)|B[0].left())
+        return data((da('if')+guard)|B[0].right())
+CONTEXT.define('sel1',select1)
 #
 #    Star is syntactic sugar with A*B:X defined to be A:B:X
 #

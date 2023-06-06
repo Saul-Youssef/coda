@@ -15,7 +15,7 @@ import Text,Evaluate,Language
 
 EXIT = ['exit','quit']
 # non-unicode for CLI
-UNICODE.setatoms('*','0','1')
+UNICODE.setatoms('(:)','0','1')
 try:
     while True:
         try:

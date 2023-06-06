@@ -50,6 +50,7 @@ def eq_(domain,A,B):
     if A.atom () and B.atom (): return ((domain+(A[0].left ()))|B[0].left ()) + \
                                        ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)
+CONTEXT.define('equal',eq_,eq_L,eq_R)
 #
 #    Standard binary operators
 #

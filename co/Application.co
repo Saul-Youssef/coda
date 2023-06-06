@@ -1,6 +1,6 @@
 #
 #    apd is distributive
 #
-#    demo: apd a b c : 1 2 3 
+#    demo: apd a b c : 1 2 3
 #
 #def apd : {ap ap2 A:B}

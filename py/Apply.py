@@ -101,19 +101,3 @@ def reduce_1(domain,A,B):
 def reduce_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('reduce',reduce_0,reduce_1)
-
-#def apeq_1(domain,A,B):
-#    B1,BR = B.split()
-#    if B1.atom():
-#        B2,BR = BR.split()
-#        if B2.atom():
-#                (A+B1)|B2
-
-def apr_0(domain,A,B):
-    AL,AR = A.split()
-    BL,BR = B.split()
-    if AL.atom() and BL.atom():
-        return ((co('if')+(A|BL))|BL) + ((domain+AL+BL)|B)
-def apr_1(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('apr',apr_1,apr_0)

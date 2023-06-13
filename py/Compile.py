@@ -31,6 +31,12 @@ def coda(txt):
     import Help,Language
     for t in Help.blocks(Help.comments(txt)): yield Language.lang(t,data(),data())
 
+def compile(txt,DEPTH=100):
+    import Evaluate
+    D = data(da('{'+txt+'}')|data())
+    D2,n = Evaluate.depth(D,DEPTH)
+    return D2
+
 def codx(domain,A,B):
     if all([b.atom() for b in B]):
         for b in B:

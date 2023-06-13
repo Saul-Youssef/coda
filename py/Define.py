@@ -33,3 +33,20 @@ def Let(domain,A,B):
             VALUES[A] = B
             return data()
 CONTEXT.define('let',Let)
+
+def _variables(A):
+    for a in A:
+        if a.domain()==da('?'):
+            yield a
+        else:
+            for b in _variables(a.left() ): yield b
+            for b in _variables(a.right()): yield b
+def variables(A):
+    R = set([])
+    for c in _variables(A): R.add(c)
+    return data(*[r for r in R])
+
+def _Variables(domain,A,B):
+    B2 = Evaluate.resolve(B,100)
+    return variables(B2)
+CONTEXT.define('_variables',_Variables)

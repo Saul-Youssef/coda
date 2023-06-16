@@ -1,6 +1,7 @@
 #
-#    apd is distributive
+#    Ring is ap ap2.
 #
-#    demo: apd a b c : 1 2 3
+#    demo: ring a b c : 1 2 3
+#    demo: ap ring bin 1 2 3 : a b c 
 #
-#def apd : {ap ap2 A:B}
+def ring : ap2

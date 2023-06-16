@@ -158,7 +158,7 @@ class Set(object):
                     L.append(e(f(s,x,y),f(s,y,x)))
                     for z in Z: L.append(e(f(s,x,y)+f(s,y,z),f(s,x,z)))
             sub.set(s,data(*L))
-        return sub 
+        return sub
 #
 #     in this context, a "pure ring" is data ring such that
 #     ring A B : C = ring : (ring A : C ) (ring B : C) and

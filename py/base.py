@@ -135,13 +135,13 @@ class Cache(object):
     def __init__(self):
         self._coda = {}
         self._data = {}
+        self._off = True
     def __repr__(self): return '/'.join([str(len(self._coda)),str(len(self._data))])
     def coda(self,c,F):
-#        if not c in self._coda: self._coda[c] = F(c)
-        if not c in self._coda: self._coda[c] = data(*[c for c in self.expand(F(c))])
+        if self._off or (not c in self._coda) or (c.domain()==da('?')): self._coda[c] = data(*[c for c in self.expand(F(c))])
         return self._coda[c]
     def data(self,d,F):
-        if not d in self._data: self._data[d] = data(*[c for c in self.expand(F(d))])
+        if self._off or not d in self._data: self._data[d] = data(*[c for c in self.expand(F(d))])
         return self._data[d]
     def expand(self,D):
         for c in D:

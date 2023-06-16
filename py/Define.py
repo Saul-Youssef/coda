@@ -34,19 +34,40 @@ def Let(domain,A,B):
             return data()
 CONTEXT.define('let',Let)
 
-def _variables(A):
-    for a in A:
-        if a.domain()==da('?'):
-            yield a
-        else:
-            for b in _variables(a.left() ): yield b
-            for b in _variables(a.right()): yield b
-def variables(A):
-    R = set([])
-    for c in _variables(A): R.add(c)
-    return data(*[r for r in R])
+def Replace(domain,A,B):
+    if A.eval()==A and B.eval()==B:
+        AL,AR = A.split()
+        L = []
+        for b in B:
+            if data(b)==AL:
+                for a in AR: L.append(a)
+            else:
+                L.append(b)
+        return data(*L)
+CONTEXT.define('replace',Replace)
 
-def _Variables(domain,A,B):
-    B2 = Evaluate.resolve(B,100)
-    return variables(B2)
-CONTEXT.define('_variables',_Variables)
+def RReplace(domain,A,B):
+    if A.eval()==A and B.eval()==B:
+        AL,AR = A.split()
+        if len(AL)>0:
+            return replace(AL[0],AR,B)
+        else:
+            return B
+CONTEXT.define('rreplace',RReplace)
+
+def replace(c,D,A):
+    L = []
+    for a in A:
+        if a==c:
+            for d in D: L.append(d)
+        else:
+            L.append(replace(c,D,a.left())|replace(c,D,a.right()))
+    return data(*L)
+
+#  replace coda c with data D within data A.
+
+#
+#def  replace(A,v1,v2): return data(*[creplace(a,v1,v2) for a in A])
+#def creplace(c,v1,v2):
+#    if c==v1: return v2
+#    return replace(c.left(),v1,v2)|replace(c.right(),v1,v2)

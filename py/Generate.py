@@ -12,7 +12,7 @@ numbers = [co(str(i)) for i in range(4)]
 letters = [co('a'),co('b'),co('A'),co('B')]
 
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import',
-                    'IO','Language','Path','Space','Set','Number']
+                    'Generate','IO','Language','Path','Space','Set','Number']
 
 defines = []
 for dom,de in CONTEXT:

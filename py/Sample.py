@@ -12,7 +12,7 @@ numbers = [co(str(i)) for i in range(4)]
 letters = [co('a'),co('b'),co('A'),co('B'),co('?')]
 
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import',
-                    'IO','Language','Path','Sample','Set','Code']
+                    'IO','Language','Path','Sample','Generate','Set','Code']
 excluded_strings = ['float','code_']
 
 defines = []
@@ -137,3 +137,41 @@ class Domain(object):
         for A in As:
             for B in Bs: S.append(data(A|B))
         return S
+
+def atoms_0(domain,A,B):
+    if B.empty(): return data()
+def atoms_1(domain,A,B):
+    if B.invariant() and len(B)>0:
+        import Number
+        ns = Number.ints(B)
+        if len(ns)>0:
+            ne = ns[0]; no = ne
+            if len(ns)>1: no = ns[1]
+            S = evenAtoms(ne)+oddAtoms(no)
+            return S.bin()
+CONTEXT.define('atoms',atoms_0,atoms_1)
+
+def variety(domain,A,B): return data(*defines+numbers+letters)
+CONTEXT.define('variety',variety)
+
+def purewindow_0(domain,A,B):
+    if B.empty(): return data()
+def purewindow_1(domain,A,B):
+    if B.invariant() and len(B)>0:
+        import Number
+        ns = Number.ints(B)
+        if len(ns)==2:
+            width,depth = ns[0],ns[1]
+            return pure(width,depth).bin()
+CONTEXT.define('purewindow',purewindow_0,purewindow_1)
+
+def samplewindow_0(domain,A,B):
+    if B.empty(): return data()
+def samplewindow_1(domain,A,B):
+    if A.invariant() and B.invariant() and len(B)>0:
+        import Number
+        ns = Number.ints(B)
+        if len(ns)==2:
+            width,depth = ns[0],ns[1]
+            return Set(*Domain(*[a for a in A]).window(width,depth)).bin()
+CONTEXT.define('samplewindow',samplewindow_0,samplewindow_1)

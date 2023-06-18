@@ -87,6 +87,7 @@ class Set(object):
         for s in self: S.add(s)
         return Set(*[s for s in S])
     def equal(self,A,B): return data((da('=')+A)|B)
+    def bin(self): return data(*[da('bin')|d for d in self])
 
     def eval(self,depth):
         import Evaluate
@@ -112,6 +113,11 @@ class Set(object):
                 yield Set(*L); L = []
         if len(L)>0: yield Set(*L)
 
+    def property(self,P,X):
+        sub = Subset()
+        import Define
+        for s in self: sub.set(s,Define.theorem(data(P|s),X))
+        return sub
     def nilpotent(self,n,X):
         sub = Subset()
         for s in self: sub.set(s,data(*[pow(n,s,x) for x in X]))

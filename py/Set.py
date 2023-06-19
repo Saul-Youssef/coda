@@ -113,10 +113,15 @@ class Set(object):
                 yield Set(*L); L = []
         if len(L)>0: yield Set(*L)
 
+    def theorem(self,X):
+        sub = Subset()
+        import Variable
+        for s in self: sub.set(s,Variable.theorem(s,X))
+        return sub 
     def property(self,P,X):
         sub = Subset()
-        import Define
-        for s in self: sub.set(s,Define.theorem(data(P|s),X))
+        import Variable
+        for s in self: sub.set(s,Variable.theorem(data(P|s),X))
         return sub
     def nilpotent(self,n,X):
         sub = Subset()

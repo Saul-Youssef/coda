@@ -3,7 +3,7 @@
 #
 from base import *
 #from Space import Space
-from Set import Set
+import Set
 import Help
 
 LANGFRAC = 0.01
@@ -57,7 +57,7 @@ class Gen(object):
                         p2 = self.replace(p,co(t.replace(' ',' : ')))
                         pout.append(p2)
         random.shuffle(pout)
-        return Set(*[data(*p) for p in pout])
+        return Set.Set(*[data(*p) for p in pout])
     def nlang(self,p):
         n = 0
         for pp in p:
@@ -89,18 +89,18 @@ def allcoda(width,depth):
         for T in itertools.product(datas,repeat=2): codas.append(coda(T[0],T[1]))
     return codas
 
-def pure(width,depth): return Set(*[d for d in alldata(width,depth)])
+def pure(width,depth): return Set.Set(*[d for d in alldata(width,depth)])
 
 def evenAtoms(n):
     at = data()|data()
     atoms = [data()]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return Set(*atoms)
+    return Set.Set(*atoms)
 def oddAtoms(n):
     at = data()|data()
     atoms = [data(at)]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return Set(*atoms)
+    return Set.Set(*atoms)
 #
 #   Simple searching
 #
@@ -173,5 +173,5 @@ def samplewindow_1(domain,A,B):
         ns = Number.ints(B)
         if len(ns)==2:
             width,depth = ns[0],ns[1]
-            return Set(*Domain(*[a for a in A]).window(width,depth)).bin()
+            return Set.Set(*Domain(*[a for a in A]).window(width,depth)).bin()
 CONTEXT.define('samplewindow',samplewindow_0,samplewindow_1)

@@ -6,10 +6,9 @@ Tutorials available in this directory.  See the study directory for more advance
 
 |    Tutorial    |     Topic     |
 |:---------------|:--------------|
-| **Language**   | The Coda language is tiny |
-| **Logic**      | Logic is 2+ valued |
+| **Language**   | Using the coda language |
+| **Logic**      | The true/false/undecided valued logic |
 | **Bits and bytes** | Atoms, bits, bytes and byte strings |
 | **Numbers** | Naturals, integers, floats, strings |
-| **Types** | Types, functors, categories, morphisms |
-| **Startup** | How to customize startup |
+| **Startup and import** | How to customize startup |
 | **Python and CLI** | How to use Coda via Python or a Unix shell |

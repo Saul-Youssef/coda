@@ -12,7 +12,7 @@ numbers = [co(str(i)) for i in range(4)]
 letters = [co('a'),co('b'),co('A'),co('B'),co('?')]
 
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import',
-                    'IO','Language','Path','Sample','Generate','Set','Code']
+                    'IO','Theorem','Language','Path','Sample','Generate','Set','Code']
 excluded_strings = ['float','code_']
 
 defines = []
@@ -25,8 +25,10 @@ for dom,de in CONTEXT:
 langs = [co('{$}')]
 #while len(langs)/len(defines) < LANGFRAC: langs.append(co('{$}'))
 
+vars = [da('?')|da('X'),da('?')|da('Y'),da('?')|da('Z'),da('?')|da('W')]
+
 import random,itertools
-codas = defines+numbers+letters
+codas = defines+numbers+letters+vars+vars
 
 class Gen(object):
     def __init__(self,codas,width):
@@ -100,6 +102,11 @@ def oddAtoms(n):
     at = data()|data()
     atoms = [data(at)]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
+    return Set.Set(*atoms)
+def Atoms(n):
+    at = data()|data()
+    atoms = [data()]
+    for i in range(n): atoms.append(atoms[-1]+data(at))
     return Set.Set(*atoms)
 #
 #   Simple searching

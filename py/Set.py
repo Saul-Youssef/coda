@@ -2,6 +2,7 @@
 #    A data "Set" is an undordered collection of datas
 #
 from base import *
+from Theorem import theorem
 import multiprocessing
 
 def Eval(S): return S.eval(100)
@@ -115,13 +116,11 @@ class Set(object):
 
     def theorem(self,X):
         sub = Subset()
-        import Variable
-        for s in self: sub.set(s,Variable.theorem(s,X))
-        return sub 
+        for s in self: sub.set(s,theorem(s,X))
+        return sub
     def property(self,P,X):
         sub = Subset()
-        import Variable
-        for s in self: sub.set(s,Variable.theorem(data(P|s),X))
+        for s in self: sub.set(s,theorem(data(P|s),X))
         return sub
     def nilpotent(self,n,X):
         sub = Subset()

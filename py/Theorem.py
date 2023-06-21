@@ -2,18 +2,21 @@
 #   Data which is never false is called a theorem.
 #
 from base import *
-from Variable import rreplace,variables 
+from Variable import rreplace,variables
+from Log import LOG
+LOG.register('theorem')
 
 def theorem(T,S):
-    import Evaluate
-    T = Evaluate.default(T)
-    if not T.eval()==T: return
+#    import Evaluate
+#    T = Evaluate.default(T)
+#    if not T.eval()==T: return
     vars = variables(T)
     X = [s for s in S]
     import itertools
     xts = [xt for xt in itertools.product(X,repeat=len(vars))]
     if len(vars)==0 or len(X)==0: return T
     TS = []
+    LOG('theorem','Domain',str(len(vars)),str(len(xts)))
     for xt in xts:
         T2 = data(*[t for t in T])
         xl = [x for x in xt]

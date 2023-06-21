@@ -3,12 +3,14 @@
 #
 from base import *
 from Theorem import theorem
+from Log import LOG
 import multiprocessing
 
 def Eval(S): return S.eval(100)
 def eval100(S): return S.eval(100)
 def eval10(S): return S.eval(10)
 def eval1000(S): return S.eval(1000)
+LOG.register('multi')
 
 def multiEval(S,nproc=8):
     n = len(S)//nproc
@@ -47,7 +49,12 @@ class Subset(object):
         from multiprocessing.pool import Pool
         pool = Pool(nproc)
         results = []
-        for result in pool.imap_unordered(eval,S_split): results.append(result)
+        n = 0
+        LOG('multi','Number of processors',str(nproc))
+        for result in pool.imap_unordered(eval,S_split):
+            n += 1
+            LOG('multi',str(n)+'...')
+            results.append(result)
         def f(s,t): return s+t
         from functools import reduce
         return reduce(f,results)

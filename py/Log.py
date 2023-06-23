@@ -3,6 +3,7 @@
 #
 class Log(object):
     def __init__(self): self._status = {}  # name->On/Off
+    def __repr__(self): return ', '.join(['/'.join([key,str(value)]) for key,value in self._status.items()])
     def register(self,name): self.off(name); return self
     def on(self,*names):
         for name in names: self._status[name] = True
@@ -18,7 +19,7 @@ class Log(object):
         if name in self and self[name]: IO.OUT(message+'\n')
         return self
     def logs(self):
-        for name in self._status.keys(): yield name 
+        for name in self._status.keys(): yield name
 
 LOG = Log()
 

@@ -17,6 +17,9 @@ def src(domain):
     if s.startswith('{') and s.endswith('}'): return s[1:-1]
     raise error('Unexpected language input')
 
+def  hasLanguage(A): return any([_hasLanguage(a) for a in A])
+def _hasLanguage(a): return CONTEXT.domain(a)==da('language') or hasLanguage(a.left()) or hasLanguage(a.right())
+
 def language(domain,A,B):
     s = src(domain)
     if s.startswith(' '): return lang(s[1:  ],A,B)

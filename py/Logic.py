@@ -51,6 +51,8 @@ def eq_(domain,A,B):
                                        ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)
 CONTEXT.define('equal',eq_,eq_L,eq_R)
+#CONTEXT.define('=',eq_,eq_L,eq_R)
+#CONTEXT.define('equal',eq_,eq_L,eq_R)
 #
 #    Standard binary operators
 #

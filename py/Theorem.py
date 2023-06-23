@@ -26,6 +26,7 @@ def theorem(T,S):
             x = xl.pop()
             v = vl.pop()
             T2 = rreplace(v,x,T2)
+            LOG('theorem','replace',str(v),str(x),str(T2))
         TS.append(T2)
     L = []
     for t in TS:

@@ -54,7 +54,7 @@ class coda(object):
     def __init__(self,left,right): self._left,self._right = left,right
     def __repr__(self): return '('+repr(self.left())+':'+repr(self.right())+')'
     def __hash__(self): return hash((self._left,self._right,))
-    def __str__(self): return UNICODE.coda(self)
+    def __str__ (self): return UNICODE.coda(self)
     def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
 #
 #   Components

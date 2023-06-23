@@ -32,6 +32,8 @@ class Subset(object):
     def __repr__(self): return str(len(self))
     def __iter__(self):
         for key,value in self._map.items(): yield key
+    def items(self):
+        for key,value in self._map.items(): yield key,value 
     def set(self,d,D):
         self._map[d] = D
         return self

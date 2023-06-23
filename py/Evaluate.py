@@ -1,3 +1,21 @@
+
+from base import *
+
+def langstep(A):
+    result = []
+    for a in A:
+        if a.domain()==da('language'):
+            for aa in a.eval(): result.append(aa)
+        else:
+            result.append(langstep(a.left())|langstep(a.right()))
+    return data(*result)
+def langeval(A,n=100):
+    import Language
+    ntry = 0
+    while Language.hasLanguage(A) and ntry<n:
+        ntry += 1
+        A = langstep(A)
+    return A,ntry 
 #
 #   Simple evaluation recursively using
 #   definitions to a specified depth,
@@ -22,8 +40,6 @@ def resolve(D,n):
 DEPTH = 100
 
 def default(D): return depth(D,DEPTH)[0]
-
-from base import *
 #
 #    Show and set the default evaluation depth
 #

@@ -4,18 +4,17 @@ from base import *
 def langstep(A):
     result = []
     for a in A:
-        if a.domain()==da('language'):
-            for aa in a.eval(): result.append(aa)
+        if CONTEXT.domain(a)==da('language'):
+            for aa in CONTEXT(a): result.append(aa)
         else:
             result.append(langstep(a.left())|langstep(a.right()))
     return data(*result)
-def langeval(A,n=100):
-    import Language
+def language(A,n=100):
     ntry = 0
-    while Language.hasLanguage(A) and ntry<n:
+    while not langstep(A)==A and ntry<n:
         ntry += 1
         A = langstep(A)
-    return A,ntry 
+    return A
 #
 #   Simple evaluation recursively using
 #   definitions to a specified depth,

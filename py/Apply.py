@@ -101,3 +101,6 @@ def reduce_1(domain,A,B):
 def reduce_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('reduce',reduce_0,reduce_1)
+#
+#   While creates an idempotent
+#

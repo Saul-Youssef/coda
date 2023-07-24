@@ -1,7 +1,15 @@
 #
 #    Ring is ap ap2.
 #
-#    demo: ring a b c : 1 2 3
-#    demo: ap ring bin 1 2 3 : a b c 
+#    demo: ring bin 1 2 3 : a b c
 #
-def ring : ap2
+def ring : ap ap2
+#
+#    while A : B applies A to B until it saturates
+#
+#    demo: while {(aps int_add:first 2:B) (tail 2:B)} : 1 2 3 4
+#
+def while : {some (if ((A:B)=B):B) : while A : A : B}
+
+def apair_ : {(A : first 2 : B) (tail 2 : B)}
+def apair : {while apair_ A : B}

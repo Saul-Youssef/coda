@@ -92,6 +92,14 @@ def out(domain,A,B):
             raise error("Error writing to ["+path+"]: ["+str(e)+"]")
 CONTEXT.define('out',out)
 
+def terminal(domain,A,B):
+    BL,BR = B.split()
+    if BL.empty(): return data()
+    if BL.atom():
+        OUT(str(BL))
+        return data(domain|BR)
+CONTEXT.define('terminal',terminal)
+
 def In_1(domain,A,B):
     BL,BR = B.split()
     if BL.atom(): return ((domain+A)|BL) + ((domain+A)|BR)

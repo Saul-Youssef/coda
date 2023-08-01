@@ -145,3 +145,30 @@ CONTEXT.define('nth1',nth1_0,nth1_1)
 #
 CONTEXT.define('pre', lambda domain,A,B : A+B)
 CONTEXT.define('post',lambda domain,A,B : B+A)
+#
+#    invariant(A) is true iff A is recursively invariant
+#
+def invariant(A):
+    return A.invariant() and \
+        all([invariant(a.left ()) for a in A]) and \
+        all([invariant(a.right()) for a in A])
+#
+#   once returns input with duplicates removed.
+#
+#   demo: once : a b c
+#   demo: once : a b c c c d e f
+#
+def once_1(domain,A,B):
+    if invariant(A):
+        AA = set([a for a in A])
+        BL,BR = B.split()
+        if BL.empty():
+            return data()
+        elif BL[0].atom() and invariant(BL):
+            if BL[0] in AA:
+                return data(domain+A|BR)
+            else:
+                return BL+data(domain+A+BL|BR)
+def once_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('once',once_1,once_0)

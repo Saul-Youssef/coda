@@ -14,11 +14,12 @@ def while : {some (if ((A:B)=B):B) : while A : A : B}
 def apair_ : {(A : first 2 : B) (tail 2 : B)}
 def apair : {while apair_ A : B}
 #
-#   ker A is the space determined by A:X=().
+#   ker A is the kernel of A defined by A:X=().
 #
 #   demo: ker null : a b c
 #   demo: ker pass : a b c
 #   demo: ker {3=(count:B)} : a b c d
-#   demo: ker {3=(count:B)} : a b c 
+#   demo: ker {3=(count:B)} : a b c
+#   demo: ap ker {B=2} : 1 2 3 1 2 3
 #
 def ker : {if (A:B):B}

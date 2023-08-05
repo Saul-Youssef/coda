@@ -15,6 +15,7 @@ def some(domain,A,B):
     if A.atomic(): return A
     if A.empty (): return B
 CONTEXT.define('some',some)
+
 #
 #   Reverse the order of it's input sequence.
 #
@@ -148,10 +149,11 @@ CONTEXT.define('post',lambda domain,A,B : B+A)
 #
 #    invariant(A) is true iff A is recursively invariant
 #
-def invariant(A):
-    return A.invariant() and \
-        all([invariant(a.left ()) for a in A]) and \
-        all([invariant(a.right()) for a in A])
+#def invariant(A):
+#    return A.invariant() and \
+#        all([invariant(a.left ()) for a in A]) and \
+#        all([invariant(a.right()) for a in A])
+
 #
 #   once returns input with duplicates removed.
 #
@@ -159,12 +161,12 @@ def invariant(A):
 #   demo: once : a b c c c d e f
 #
 def once_1(domain,A,B):
-    if invariant(A):
+    if A.rigid():
         AA = set([a for a in A])
         BL,BR = B.split()
         if BL.empty():
             return data()
-        elif BL[0].atom() and invariant(BL):
+        elif BL.atom() and BL.rigid():
             if BL[0] in AA:
                 return data(domain+A|BR)
             else:
@@ -172,3 +174,18 @@ def once_1(domain,A,B):
 def once_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('once',once_1,once_0)
+
+def In(domain,A,B):
+    if A.rigid():
+        AA = set([a for a in A])
+        BL,BR = B.split()
+        if BL.empty():
+            return data()
+        elif BL.atom() and BL.rigid():
+            if BL[0] in AA:
+                return BL+data(domain+A|BR)
+            else:
+                return data(domain+A|BR)
+def In_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('in',In,In_0)

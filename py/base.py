@@ -37,6 +37,7 @@ class data(object):
     def atomic   (self): return any([c.atom() for c in self])
     def undecided(self): return not self.empty() and not self.atomic()
     def invariant(self): return all([c.atom() for c in self])
+    def rigid    (self): return self.invariant() and all([c.left().rigid() and c.right().rigid() for c in self])
     def atom     (self): return len(self)==1 and self.atomic()
 #
 #   Evaluation
@@ -135,7 +136,7 @@ class Cache(object):
     def __init__(self):
         self._coda = {}
         self._data = {}
-        self._off = True
+        self._off = False
     def __repr__(self): return '/'.join([str(len(self._coda)),str(len(self._data))])
     def coda(self,c,F):
         if self._off or (not c in self._coda) or (c.domain()==da('?')): self._coda[c] = data(*[c for c in self.expand(F(c))])
@@ -174,11 +175,19 @@ class Unicode(object):
         self._map = {}
         self.setatoms("\u25CE",u"\U0001D7EC",u"\U0001D75E")
         for c in string.printable: self._map[self.byte(c)] = c
-    def setatoms(self,atom,bit0,bit1):
-        self._map[ATOMS.atom] = atom
-        self._map[ATOMS.bit0] = bit0
-        self._map[ATOMS.bit1] = bit1
+    def setatom(self,co,unicode):
+        self._map[co] = unicode
         return self
+    def setatoms(self,atom,bit0,bit1):
+        self.setatom(ATOMS.atom,atom)
+        self.setatom(ATOMS.bit0,bit0)
+        self.setatom(ATOMS.bit1,bit1)
+        return self
+#    def setatoms_(self,atom,bit0,bit1):
+#        self._map[ATOMS.atom] = atom
+#        self._map[ATOMS.bit0] = bit0
+#        self._map[ATOMS.bit1] = bit1
+#        return self
     def __repr__(self): return ','.join([value for key,value in self._map.items()])
     def __add__(self,coda,s):
         self._map[coda] = s

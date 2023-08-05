@@ -78,6 +78,11 @@ import string
 #    if c.domain() in [data(atom),data(bit1),data(bit0)]: return data2unicode(c.right(),'')
 #    return '('+data2unicode(c.left(),' ')+':'+data2unicode(c.right(),' ')+')'
 
+def unicode(domain,A,B):
+    if A.atom() and not B.empty() and B.invariant():
+        UNICODE.setatom(A[0],str(B))
+        return data()
+CONTEXT.define('unicode',unicode)
 #
 #   Wrap code with a one character prefix and postfix.
 #

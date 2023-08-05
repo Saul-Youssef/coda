@@ -186,6 +186,7 @@ CONTEXT.define('code_max',lambda domain,A,B:OP13(A,B),empty)
 #   demo: int_sort : 5 4 3 2 1
 #   demo: int_sort : int_sort : 5 4 3 2 1
 #   demo: float_sort : 5.1 4.1 3.1 2.1 1.1 -99.0
+#   demo: code_sort : z w a b 1
 #
 def int_sort(domain,A,B):
     if all([b.atom() for b in B]):
@@ -204,6 +205,15 @@ def float_sort(domain,A,B):
 def float_sort0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('float_sort',float_sort,float_sort0)
+
+def code_sort(domain,A,B):
+    if all([b.atom() for b in B]):
+        cds = [str(b) for b in B]
+        cds.sort()
+        return data(*[co(s) for s in cds])
+def code_sort0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('code_sort',code_sort,code_sort0)
 #
 #   Involutions
 #

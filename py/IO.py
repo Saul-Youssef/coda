@@ -90,7 +90,7 @@ def out(domain,A,B):
                     return data()
         except Exception as e:
             raise error("Error writing to ["+path+"]: ["+str(e)+"]")
-CONTEXT.define('out',out)
+#CONTEXT.define('out',out)...rename me
 
 def terminal(domain,A,B):
     BL,BR = B.split()
@@ -113,4 +113,4 @@ def In_2(domain,A,B):
                 return pickle.loads(f.read())
 def In_0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('in',In_2,In_0,In_1)
+#CONTEXT.define('in',In_2,In_0,In_1)...rename me 

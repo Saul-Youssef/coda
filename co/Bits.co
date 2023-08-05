@@ -1,6 +1,7 @@
 #
-#    Conventional bit symbols 
+#    Conventional bit symbols and -? for newline 
 #
 let a : (:)
 let 0 : ((:):)
 let 1 : ((:):(:))
+let - : put 1? : put 0? : 0? 0? 0? 0? 1? 0? 1? 0?

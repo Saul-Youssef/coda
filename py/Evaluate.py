@@ -20,13 +20,23 @@ def language(A,n=100):
 #   definitions to a specified depth,
 #   quitting if there is no progress.
 #
-def depth(D,n):
+#def depth(D,n):
+#    if n<=0:
+#        return D,n
+#    else:
+#        D2 = D.eval()
+#        if D==D2: return D2,n
+#        return depth(D2,n-1)
+def depth_(D,n):
     if n<=0:
         return D,n
     else:
         D2 = D.eval()
         if D==D2: return D2,n
-        return depth(D2,n-1)
+        return depth_(D2,n-1)
+import Fast
+FF = Fast.Function(depth_)
+def depth(D,n): return FF(D,n)
 #
 #   Resolve is the same as depth
 #   but returns None if the input

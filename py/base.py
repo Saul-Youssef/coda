@@ -42,8 +42,8 @@ class data(object):
 #
 #   Evaluation
 #
-    def eval(self): return CACHE.data(self,lambda self: self._eval())
-    def _eval(self):
+#    def eval(self): return CACHE.data(self,lambda self: self._eval())
+    def eval(self):
         result = []
         for c in self:
             for d in c.eval(): result.append(d)
@@ -115,7 +115,8 @@ class Context(object):
 #   Partial function, extended to coda -> data with identity
 #
     def __call__(self,c):
-        if c in self: return CACHE.coda(c,lambda c:self[c](c))
+#        if c in self: return CACHE.coda(c,lambda c:self[c](c))
+        if c in self: return self[c](c)
         return data(c)
 #
 #   Adding a definition to this context
@@ -132,25 +133,54 @@ CONTEXT = Context()
 #
 #   Cache of coda->data and data->data results for speed
 #
-class Cache(object):
-    def __init__(self):
-        self._coda = {}
-        self._data = {}
-        self._off = False
-    def __repr__(self): return '/'.join([str(len(self._coda)),str(len(self._data))])
-    def coda(self,c,F):
-        if self._off or (not c in self._coda) or (c.domain()==da('?')): self._coda[c] = data(*[c for c in self.expand(F(c))])
-        return self._coda[c]
-    def data(self,d,F):
-        if self._off or not d in self._data: self._data[d] = data(*[c for c in self.expand(F(d))])
-        return self._data[d]
-    def expand(self,D):
-        for c in D:
-            if c in self._coda:
-                for cc in self._coda[c]: yield cc
-            else:
-                yield c
-CACHE = Cache()
+#class Cache(object):
+#    def __init__(self):
+#        self._coda = {}
+#        self._data = {}
+#        self._state= 'ON'
+#    def __repr__(self): return '/'.join([self._state,str(len(self._coda)),str(len(self._data))])
+#    def data(self,D):
+#
+#
+#
+#class Cache(object):
+#    def __init__(self):
+#        self._coda = {}
+#        self._data = {}
+#        self._off = False
+#    def __repr__(self): return '/'.join([str(len(self._coda)),str(len(self._data))])
+#    def coda(self,c,F):
+#        if c in CONTEXT and not c.domain()==da('?'):
+#            if not c in self._coda: self._coda[c] = self.expand(F(c))
+#            return self._coda[c]
+#        else:
+#            return F(c)
+#        if self._off or (not c in self._coda) or (c.domain()==da('?')): self._coda[c] = data(*[c for c in self.expand(F(c))])
+#        return self._coda[c]
+#    def data(self,d,F):
+#        if not d in self._data: self._data[d] = self.expand(F(d))
+#        return self._data[d]
+#        if d in self._data:
+#            return self._data[d]
+#        else:
+#
+#        if self._off or not d in self._data: self._data[d] = data(*[c for c in self.expand(F(d))])
+#        return self._data[d]
+#    def expand(self,D):
+#        L = []
+#        for c in D:
+#            if c in self._coda:
+#                for cc in self._coda[c]: L.append(cc)
+#            else:
+#                L.append(c)
+#        return data(*L)
+#    def expand(self,D):
+#        for c in D:
+#            if c in self._coda:
+#                for cc in self._coda[c]: yield cc
+#            else:
+#                yield c
+#CACHE = Cache()
 #
 #   Three standard atoms for the domain of bits, bit sequences and byte sequences
 #
@@ -183,11 +213,6 @@ class Unicode(object):
         self.setatom(ATOMS.bit0,bit0)
         self.setatom(ATOMS.bit1,bit1)
         return self
-#    def setatoms_(self,atom,bit0,bit1):
-#        self._map[ATOMS.atom] = atom
-#        self._map[ATOMS.bit0] = bit0
-#        self._map[ATOMS.bit1] = bit1
-#        return self
     def __repr__(self): return ','.join([value for key,value in self._map.items()])
     def __add__(self,coda,s):
         self._map[coda] = s

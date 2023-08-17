@@ -44,7 +44,7 @@ class ConstDefinition(Definition):
         return data(c)
 
 def Let(domain,A,B):
-    if A.rigid() and len(A)==1 and not A|data() in CONTEXT:
+    if A.eval()==A and len(A)==1 and not A|data() in CONTEXT:
         CONTEXT.add(ConstDefinition(A,B))
         return data()
 CONTEXT.define('let',Let)

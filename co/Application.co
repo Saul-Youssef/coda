@@ -24,6 +24,8 @@ def apair : {while apair_ A : B}
 #
 def ker : {if (A:B):B}
 #
+#   Apply A to each input in passing.
 #
+#   apx count : 1 2 3
 #
 def apx : ap {B (A:B)}

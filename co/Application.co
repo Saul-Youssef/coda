@@ -3,7 +3,7 @@
 #
 #    demo: ring bin 1 2 3 : a b c
 #
-def ring : ap ap2
+#def ring : ap ap2
 #
 #    while A : B applies A to B until it saturates
 #
@@ -16,16 +16,25 @@ def apair : {while apair_ A : B}
 #
 #   ker A is the kernel of A defined by A:X=().
 #
-#   demo: ker null : a b c
-#   demo: ker pass : a b c
-#   demo: ker {3=(count:B)} : a b c d
-#   demo: ker {3=(count:B)} : a b c
-#   demo: ap ker {B=2} : 1 2 3 1 2 3
+#   demo: kernel null : a b c
+#   demo: kernel pass : a b c
+#   demo: kernel {3=(count:B)} : a b c d
+#   demo: kernel {3=(count:B)} : a b c
+#   demo: ker {B=2} : 1 2 3 1 2 3
 #
-def ker : {if (A:B):B}
+def kernel : {if (A:B):B}
+def ker : {ap kernel A : B}
 #
 #   Apply A to each input in passing.
 #
-#   apx count : 1 2 3
+#   demo: apx count : 1 2 3
 #
 def apx : ap {B (A:B)}
+#
+#   Morphism space operation
+#
+#   demo: (mor pass : pass) : a b c
+#   demo: (mor pass : rev) : a b c
+#   demo: (mor rev : count) : a b c 
+#
+def mor : {apcon (:A) (:B)}

@@ -84,10 +84,34 @@ def apif_2(domain,A,B):
     if B.atom(): return data((da('if')+data(A|B))|B)
 CONTEXT.define('apif',apif_0,apif_2,apif_1)
 #
+#   Apply argument datas to input sequentially
+#
+#   demo: apcon (:pass) (:rev) : a b c
+#   demo: apcon (:first 2) (:last 2) : a b c d e
+#   demo: apcon (2:first) (:last 2) : a b c d e
+#   demo: apcon (bin 3 3 2:nth 1) (:rev) : a b c d e f g 
+#   demo: apcon (bin 2:first 2) (:last 2) : a b c d e
+#   demo: apcon (bin:pass) (bin:rev) : a b c
+#
+def apcon_0(domain,A,B):
+    if B.empty(): return data()
+def apcon_1(domain,A,B):
+    if A.invariant():
+        L = []
+        for a in A:
+            aL1,aL2 = a.left().split()
+            L.append((a.right()+aL2)|B)
+        return data(*L)
+CONTEXT.define('apcon',apcon_1,apcon_0)
+#def apcon_1(domain,A,B):
+#    if A.invariant():
+#        Fs = [a.right() for a in A]
+#        return data(*[f|B for f in Fs])
+#
 #   Reduce
 #
 #   demo:reduce pass : a a b b c c a
-#   demo:reduce {count:get 1?:B} : a b cc ddd eee eeee
+#   demo:reduce {count:get ((:):(:)):B} : a b cc ddd eee eeee
 #
 def reduce_1(domain,A,B):
     B1,BR = B.split()

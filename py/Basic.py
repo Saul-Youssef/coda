@@ -94,9 +94,16 @@ CONTEXT.define('sel1',select1)
 #   demo: {first 2:B} * {rev:B} : 1 2 3 4 5
 #
 def star(domain,A,B):
-    if A.atom():
-        L,R = A[0].left(),A[0].right()
+    AL,AR = A.split()
+    if AL.atom():
+        L,R = AL[0].left(),AL[0].right()
         LL,LR = L.split()
         if LL==da('bin'):
-            return data(LR|data(R|B))
+            return data(LR|data((R+AR)|B))
+#def starOLD(domain,A,B):
+#    if A.atom():
+#        L,R = A[0].left(),A[0].right()
+#        LL,LR = L.split()
+#        if LL==da('bin'):
+#            return data(LR|data(R|B))
 CONTEXT.define('*',star)

@@ -12,8 +12,8 @@
 #   demo: get ((:):(:)) : x y z (bin: a b c)
 #   demo: get bin: (bin a:b c) (bin:x y)
 #
-def has   : ap {if  (in A:domain:B):B}
-def hasnt : ap {nif (in A:domain:B):B}
-def is    : ap {if  (in A:B):B}
-def isnt  : ap {nif (in A:B):B}
+def has   : ap {if (in A:domain:B):B}
+def hasnt : ap {if (not:in A:domain:B):B}
+def is    : ap {if (in A:B):B}
+def isnt  : ap {if (not:in A:B):B}
 def get   : ap {if (A=(domain:B)):right:B}

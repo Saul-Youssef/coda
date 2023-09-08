@@ -140,3 +140,15 @@ def IMPLY(domain,A,B):
     if A.atomic() and B.empty() : return T.ft(op)
     if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('imply',IMPLY)
+#
+#   some/none define the coarsest data classification
+#
+#   demo: some : a b c
+#   demo: some :
+#   demo: none : a b c
+#   demo: none :
+#
+def some(domain,A,B):
+    if A.atomic(): return A
+    if A.empty (): return B
+CONTEXT.define('some',some)

@@ -329,10 +329,10 @@ class section(object):
 #
 #   cache returns the cache statistics
 #
-def cache(domain,A,B):
-    IO.OUT(repr(CACHE)+'\n')
-    return data()
-CONTEXT.define('cache',cache)
+#def cache(domain,A,B):
+#    IO.OUT(repr(CACHE)+'\n')
+#    return data()
+#CONTEXT.define('cache',cache)
 #
 #   defs makes a table of available definitions.
 #

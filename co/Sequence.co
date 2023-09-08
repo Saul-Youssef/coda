@@ -6,3 +6,9 @@
 #   demo: nth : a b c
 #
 def nth : {ap2 nth1 A : B}
+#
+#   demo: pre a b : 1 2
+#   demo: post a b : 1 2
+#
+def pre  : {A B}
+def post : {B A}

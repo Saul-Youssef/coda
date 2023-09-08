@@ -1,0 +1,7 @@
+#
+#    Logical operations
+#
+#    demo: in 1 2 3 : a b 3 c
+#    demo: in 1 2 3 : a b 4 5 6 
+#
+def in : not * ap aq2 {not:A=B}

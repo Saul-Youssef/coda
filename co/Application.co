@@ -1,18 +1,9 @@
 #
-#    Ring is ap ap2.
-#
-#    demo: ring bin 1 2 3 : a b c
-#
-#def ring : ap ap2
-#
-#    while A : B applies A to B until it saturates
+#    while A : B applies A to B until it saturates, thus becoming idempotent
 #
 #    demo: while {(aps int_add:first 2:B) (tail 2:B)} : 1 2 3 4
 #
 def while : {some (if ((A:B)=B):B) : while A : A : B}
-
-def apair_ : {(A : first 2 : B) (tail 2 : B)}
-def apair : {while apair_ A : B}
 #
 #   ker A is the kernel of A defined by A:X=().
 #
@@ -25,16 +16,10 @@ def apair : {while apair_ A : B}
 def kernel : {if (A:B):B}
 def ker : {ap kernel A : B}
 #
-#   Apply A to each input in passing.
-#
-#   demo: apx count : 1 2 3
-#
-def apx : ap {B (A:B)}
-#
 #   Morphism space operation
 #
 #   demo: (mor pass : pass) : a b c
 #   demo: (mor pass : rev) : a b c
-#   demo: (mor rev : count) : a b c 
+#   demo: (mor rev : count) : a b c
 #
-def mor : {apcon (:A) (:B)}
+def mor : aq2 {(right:A):B}

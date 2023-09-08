@@ -20,6 +20,36 @@ def domain_0(domain,A,B):
 def domain_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('domain',domain_0,domain_1)
+
+def left(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(): return BL[0].left() + data((domain+A)|BR)
+    if BL.empty(): return data()
+CONTEXT.define('left',left)
+def right(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(): return BL[0].right() + data((domain+A)|BR)
+    if BL.empty(): return data()
+CONTEXT.define('right',right)
+#
+#   in A : B returns any b in B which is in A
+#
+#   in 1 2 3 : a 3 b 2 c 1
+#
+#def In(domain,A,B):
+#    if A.rigid():
+#        AA = set([a for a in A])
+#        BL,BR = B.split()
+#        if BL.empty():
+#            return data()
+#        elif BL.atom() and BL.rigid():
+#            if BL[0] in AA:
+#                return BL+data(domain+A|BR)
+#            else:
+#                return data(domain+A|BR)
+#def In_0(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('in',In,In_0)
 #
 #   if and nif return output depending on argument logic.
 #
@@ -58,30 +88,30 @@ CONTEXT.define('put',lambda domain,A,B: data(A|B))
 #
 #   Singleton versions of has, get and atom
 #
-def has1(domain,A,B):
-    if B.atom():
-        guard = data((da('=')+A)|B[0].domain())
-        return data((da('if')+guard)|B)
-def get1(domain,A,B):
-    if B.atom():
-        guard = data((da('=')+A)|B[0].domain())
-        return data((da('if')+guard)|B[0].right())
-CONTEXT.define('has1',has1)
-CONTEXT.define('get1',get1)
-
-def left1(domain,A,B):
-    if B.atom(): return B[0].left()
-def right1(domain,A,B):
-    if B.atom(): return B[0].right()
-CONTEXT.define('left1',left1)
-CONTEXT.define('right1',right1)
-
-def select1(domain,A,B):
-    BL,BR = B.split()
-    if BL.atom():
-        guard = data((da('=')+A)|B[0].left())
-        return data((da('if')+guard)|B[0].right())
-CONTEXT.define('sel1',select1)
+#def has1(domain,A,B):
+#    if B.atom():
+#        guard = data((da('=')+A)|B[0].domain())
+#        return data((da('if')+guard)|B)
+#def get1(domain,A,B):
+#    if B.atom():
+#        guard = data((da('=')+A)|B[0].domain())
+#        return data((da('if')+guard)|B[0].right())
+#CONTEXT.define('has1',has1)
+#CONTEXT.define('get1',get1)
+#
+#def left1(domain,A,B):
+#    if B.atom(): return B[0].left()
+#def right1(domain,A,B):
+#    if B.atom(): return B[0].right()
+#CONTEXT.define('left1',left1)
+#CONTEXT.define('right1',right1)
+#
+#def select1(domain,A,B):
+#    BL,BR = B.split()
+#    if BL.atom():
+#        guard = data((da('=')+A)|B[0].left())
+#        return data((da('if')+guard)|B[0].right())
+#CONTEXT.define('sel1',select1)
 #
 #    Star is syntactic sugar with A*B:X defined to be A:B:X
 #
@@ -94,7 +124,7 @@ CONTEXT.define('sel1',select1)
 #   demo: {first 2:B} * {rev:B} : 1 2 3 4 5
 #   demo: first 2 * pass : 1 2 3
 #   demo: first * pass 2 : 1 2 3
-#   demo: (first * pass) 2 : 1 2 3 
+#   demo: (first * pass) 2 : 1 2 3
 #
 def star(domain,A,B):
     AL,AR = A.split()

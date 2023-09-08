@@ -144,8 +144,8 @@ CONTEXT.define('nth1',nth1_0,nth1_1)
 #   demo: pre 0 : 1 2 3
 #   demo: post 99 : 1 2 3
 #
-CONTEXT.define('pre', lambda domain,A,B : A+B)
-CONTEXT.define('post',lambda domain,A,B : B+A)
+#CONTEXT.define('pre', lambda domain,A,B : A+B)
+#CONTEXT.define('post',lambda domain,A,B : B+A)
 #
 #    invariant(A) is true iff A is recursively invariant
 #
@@ -174,18 +174,3 @@ def once_1(domain,A,B):
 def once_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('once',once_1,once_0)
-
-def In(domain,A,B):
-    if A.rigid():
-        AA = set([a for a in A])
-        BL,BR = B.split()
-        if BL.empty():
-            return data()
-        elif BL.atom() and BL.rigid():
-            if BL[0] in AA:
-                return BL+data(domain+A|BR)
-            else:
-                return data(domain+A|BR)
-def In_0(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('in',In,In_0)

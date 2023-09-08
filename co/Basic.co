@@ -1,30 +1,19 @@
 #
 #   has/hasnt selects, get gets, is/isnt tests
 #
-#   has  A  : ... gets data of the form (A:<something>)
-#   hasnt A : ... gets data that isn't of the form (A:<something>)
-#   get A   : ... gets <something> from data of the form (A:<something>)
-#   is  A   : ... gets data exactly equal to A
-#   isnt A  : ...everything except what's equal to A
-#
-#   demo: has bin : x y z (bin:a b c)
-#   demo: hasnt bin : x y z (bin:a b c)
-#   demo: has : x y z (bin:a b c)
+#   demo: has bin : x y z (bin:a b c) (bin a:b c) (bin:)
+#   demo: hasnt bin : x y z (bin:a b c) (bin a:b c) (bin:)
 #   demo: has ((:):(:)) : x y z (bin:a b c)
-#   demo: get bin : x y z (bin:a b c)
+#   demo: is y : x y z y z y
+#   demo: is y x (bin:a b) : x y z (bin:a b) (bin:a) y z y
+#   demo: is (bin:a b) : x y (bin:a b) z
+#   demo: isnt x y : x y z (bin:a b) (bin:a) y z y
+#   demo: get bin : x y z (bin:a b c) (bin:x y)
 #   demo: get ((:):(:)) : x y z (bin: a b c)
-#   demo: is y : x y z
-#   demo: is (pass:bin:a b) : x y (bin:a b) z
-#   demo: isnt y : x y z
-#   demo: pass : a b c
-#   demo: id : a b c
+#   demo: get bin: (bin a:b c) (bin:x y)
 #
-def has : {ap has1 A : B}
-def hasnt : {apif {has1 A:B} A : B}
-def get : {ap get1 A : B}
-def is : ap2 {apif {A=B} A : B}
-def isnt : ap2 {apif {not:(A=B)} A : B}
-def sel : {ap sel1 A : B}
-def left : {ap left1 A : B}
-def right: {ap right1 A : B}
-def id : pass
+def has   : ap {if  (in A:domain:B):B}
+def hasnt : ap {nif (in A:domain:B):B}
+def is    : ap {if  (in A:B):B}
+def isnt  : ap {nif (in A:B):B}
+def get   : ap {if (A=(domain:B)):right:B}

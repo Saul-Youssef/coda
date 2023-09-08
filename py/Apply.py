@@ -28,7 +28,8 @@ from base import *
 #  demo: int_add 3 : 5
 #  demo: aps int_add : 1 2 3 4 5
 #  demo: apby 2 foo : a b c d e f g
-#  demo: apif {(count:get bin:B)=2} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
+#  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
+##  demo: apif {(count:get bin:B)=2} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
 def ap_0(domain,A,B):
     if B.empty(): return data()
@@ -38,14 +39,24 @@ def ap_2(domain,A,B):
     BL,BR = B.split()
     if len(BL)>0: return ((domain+A)|BL) + ((domain+A)|BR)
 CONTEXT.define('ap',ap_0,ap_1,ap_2)
-def app(domain,A,B):
-    A0,AR = A.split()
-    if A0.atom(): return (A0|B) + ((domain+AR)|B)
-def app_0(domain,A,B):
+
+def aq_0(domain,A,B):
     if A.empty(): return data()
-def app_1(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('app',app_1,app_0,app)
+def aq_1(domain,A,B):
+    if A.atom(): return data(A|B)
+def aq_2(domain,A,B):
+    AL,AR = A.split()
+    return ((domain+AL)|B) + ((domain+AR)|B)
+CONTEXT.define('aq',aq_0,aq_1,aq_2)
+
+#def app(domain,A,B):
+#    A0,AR = A.split()
+#    if A0.atom(): return (A0|B) + ((domain+AR)|B)
+#def app_0(domain,A,B):
+#    if A.empty(): return data()
+#def app_1(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('app',app_1,app_0,app)
 def ap2_1(domain,A,B):
     A0,AR =  A.split()
     A1,AR = AR.split()
@@ -54,16 +65,16 @@ def ap2_0(domain,A,B):
     A0,AR = A.split()
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
-CONTEXT.define('ap2',ap2_1,ap2_0)
-def aps_0(domain,A,B):
-    B0,BR = B.split()
-    B1,BX = BR.split()
-    if B0.atom() and B1.atom(): return data((A+B0)|data((domain+A)|BR))
-def aps_1(domain,A,B):
-    if B.atom(): return B
-def aps_2(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('aps',aps_0,aps_1,aps_2)
+CONTEXT.define('aq2',ap2_1,ap2_0)
+#def aps_0(domain,A,B):
+#    B0,BR = B.split()
+#    B1,BX = BR.split()
+#    if B0.atom() and B1.atom(): return data((A+B0)|data((domain+A)|BR))
+#def aps_1(domain,A,B):
+#    if B.atom(): return B
+#def aps_2(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('aps',aps_0,aps_1,aps_2)
 def apby(domain,A,B):
     AL,AR = A.split()
     import Number
@@ -75,34 +86,34 @@ def apby(domain,A,B):
 def apby_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('apby',apby_0,apby)
-def apif_0(domain,A,B):
-    if B.empty(): return data()
-def apif_1(domain,A,B):
-    BL,BR = B.split()
-    if BL.atom(): return ((domain+A)|BL) + ((domain+A)|BR)
-def apif_2(domain,A,B):
-    if B.atom(): return data((da('if')+data(A|B))|B)
-CONTEXT.define('apif',apif_0,apif_2,apif_1)
+#def apif_0(domain,A,B):
+#    if B.empty(): return data()
+#def apif_1(domain,A,B):
+#    BL,BR = B.split()
+#    if BL.atom(): return ((domain+A)|BL) + ((domain+A)|BR)
+#def apif_2(domain,A,B):
+#    if B.atom(): return data((da('if')+data(A|B))|B)
+#CONTEXT.define('apif',apif_0,apif_2,apif_1)
 #
 #   Apply argument datas to input sequentially
 #
 #   demo: apcon (:pass) (:rev) : a b c
 #   demo: apcon (:first 2) (:last 2) : a b c d e
 #   demo: apcon (2:first) (:last 2) : a b c d e
-#   demo: apcon (bin 3 3 2:nth 1) (:rev) : a b c d e f g 
+#   demo: apcon (bin 3 3 2:nth 1) (:rev) : a b c d e f g
 #   demo: apcon (bin 2:first 2) (:last 2) : a b c d e
 #   demo: apcon (bin:pass) (bin:rev) : a b c
 #
-def apcon_0(domain,A,B):
-    if B.empty(): return data()
-def apcon_1(domain,A,B):
-    if A.invariant():
-        L = []
-        for a in A:
-            aL1,aL2 = a.left().split()
-            L.append((a.right()+aL2)|B)
-        return data(*L)
-CONTEXT.define('apcon',apcon_1,apcon_0)
+#def apcon_0(domain,A,B):
+#    if B.empty(): return data()
+#def apcon_1(domain,A,B):
+#    if A.invariant():
+#        L = []
+#        for a in A:
+#            aL1,aL2 = a.left().split()
+#            L.append((a.right()+aL2)|B)
+#        return data(*L)
+#CONTEXT.define('apcon',apcon_1,apcon_0)
 #def apcon_1(domain,A,B):
 #    if A.invariant():
 #        Fs = [a.right() for a in A]

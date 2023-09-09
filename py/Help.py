@@ -121,6 +121,9 @@ class Python(Block):
                 if line.startswith('CONTEXT.define') and "define('" in line:
                     flag = line.split("define('")[-1].split("'")[0]
                     F.append(flag)
+                elif line.startswith("RE('"):
+                    flag = line.split("RE('")[-1].split("'")[0]
+                    F.append(flag)
             return F
 
 class SourceFile(object):

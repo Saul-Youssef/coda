@@ -85,7 +85,7 @@ def apby(domain,A,B):
                 return (AR|data(*B[:n])) + ((domain+A)|data(*B[n:]))
 def apby_0(domain,A,B):
     if B.empty(): return data()
-CONTEXT.define('apby',apby_0,apby)
+CONTEXT.define('by',apby_0,apby)
 #def apif_0(domain,A,B):
 #    if B.empty(): return data()
 #def apif_1(domain,A,B):

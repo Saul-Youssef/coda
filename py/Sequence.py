@@ -161,3 +161,11 @@ def once_1(domain,A,B):
 def once_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('once',once_1,once_0)
+#
+#   demo: count : a b c d
+#
+def count(domain,A,B):
+    if all([b.atom() for b in B]): return da(str(len(B)))
+def count_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('count',count,count_0)

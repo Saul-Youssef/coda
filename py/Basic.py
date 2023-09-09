@@ -50,6 +50,7 @@ CONTEXT.define('right',right)
 #def In_0(domain,A,B):
 #    if B.empty(): return data()
 #CONTEXT.define('in',In,In_0)
+
 #
 #   if and nif return output depending on argument logic.
 #
@@ -112,6 +113,7 @@ CONTEXT.define('put',lambda domain,A,B: data(A|B))
 #        guard = data((da('=')+A)|B[0].left())
 #        return data((da('if')+guard)|B[0].right())
 #CONTEXT.define('sel1',select1)
+
 #
 #    Star is syntactic sugar with A*B:X defined to be A:B:X
 #
@@ -133,10 +135,4 @@ def star(domain,A,B):
         LL,LR = L.split()
         if LL==da('bin'):
             return data((LR+AR)|data((R+AR)|B))
-#def starOLD(domain,A,B):
-#    if A.atom():
-#        L,R = A[0].left(),A[0].right()
-#        LL,LR = L.split()
-#        if LL==da('bin'):
-#            return data(LR|data(R|B))
 CONTEXT.define('*',star)

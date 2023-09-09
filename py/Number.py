@@ -61,7 +61,7 @@ class Reduce(object):
         atoms,rest = self.split(B)
         reduce = self._reduce(atoms)
         if len(rest)==0 and atoms==reduce: return data(*reduce)
-        return data( (domain+A)|(reduce+rest) )
+        return data((domain+A)|(reduce+rest))
 
 class RE(Reduce):
     def __init__(self,name,coerce,F):
@@ -82,7 +82,6 @@ def _max(L):
     if len(L)==0: return []
     return [max(L)]
 def _sort(L): return sorted(L)
-
 #
 #   demo: ints : a b c 1 2 -45
 #   demo: nats : a b c 1 2 -45
@@ -103,7 +102,9 @@ def _sort(L): return sorted(L)
 #   demo: float_min :
 #   demo: float_max : 1 2 a 3.14 -99.9
 #   demo: float_div 2.1 : 1 2 a 3.14 -99.9
+#   demo: code_sort : a b c c b a 
 #
+RE('code_sort',str,_sort)
 RE('ints',tryint,lambda L:L)
 RE('int_sum',tryint,_sum)
 RE('int_prod',tryint,_prod)

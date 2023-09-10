@@ -33,7 +33,8 @@ def theorem(T,S):
         for c in t: L.append(c)
     return data(*L)
 
-def unbin(A): return [a.right() for a in A if a.domain()==da('bin')]
+#def unbin(A): return [a.right() for a in A if a.domain()==da('bin')]
+def unbin(A): return [a.right() for a in A]
 #
 #   theorem tests if the argument is a theorem with respect to it's input
 #

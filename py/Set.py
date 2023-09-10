@@ -33,7 +33,7 @@ class Subset(object):
     def __iter__(self):
         for key,value in self._map.items(): yield key
     def items(self):
-        for key,value in self._map.items(): yield key,value 
+        for key,value in self._map.items(): yield key,value
     def set(self,d,D):
         self._map[d] = D
         return self
@@ -97,7 +97,8 @@ class Set(object):
         for s in self: S.add(s)
         return Set(*[s for s in S])
     def equal(self,A,B): return data((da('=')+A)|B)
-    def bin(self): return data(*[da('bin')|d for d in self])
+#    def bin(self       ): return data(*[da('bin')|d for d in self])
+    def bin(self,domain=data()): return data(*[domain|d for d in self])
 
     def eval(self,depth):
         import Evaluate

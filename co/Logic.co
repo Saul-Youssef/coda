@@ -1,7 +1,8 @@
 #
-#    Logical operations
+#    in tests if any input atom is equal to an output atom, returning boolean data
 #
-#    demo: in 1 2 3 : a b 3 c
-#    demo: in 1 2 3 : a b 4 5 6 
+#    demo: in : x y z
+#    demo: in 55 66 : x y z
+#    demo: in 55 66 y : x y z
 #
-def in : not * ap aq2 {not:A=B}
+def in : not * ap ax {not:A=B}

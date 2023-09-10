@@ -15,16 +15,15 @@ from base import *
 #  ap A : B -> A:B if B is atom
 #  ap A : () -> ()
 #
-#  demo: foo : 1 2 3
 #  demo: ap foo : 1 2 3
 #  demo: ap {foo : B} : 1 2 3
 #  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
-#  demo: aq a b c d : 1 2 3 4 
+#  demo: aq a b c d : 1 2 3 4
 #  demo: ap aq a b c : 1 2 3
-#  demo: aq2 a b c : 1 2 3
-#  demo: aq2 first 2 3 : a b c d e  g
-#  demo: ap aq2 a b c : 1 2 3
-#  demo: apby 2 foo : a b c d e f g
+#  demo: ax a b c : 1 2 3
+#  demo: ax first 2 3 : a b c d e  g
+#  demo: ap ax a b c : 1 2 3
+#  demo: by 2 foo : a b c d e f g
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
 def ap_0(domain,A,B):
@@ -64,7 +63,7 @@ def ap2_0(domain,A,B):
     A0,AR = A.split()
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
-CONTEXT.define('aq2',ap2_1,ap2_0)
+CONTEXT.define('ax',ap2_1,ap2_0)
 
 #def app(domain,A,B):
 #    A0,AR = A.split()

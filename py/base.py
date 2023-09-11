@@ -115,7 +115,6 @@ class Context(object):
 #   Partial function, extended to coda -> data with identity
 #
     def __call__(self,c):
-#        if c in self: return CACHE.coda(c,lambda c:self[c](c))
         if c in self: return self[c](c)
         return data(c)
 #

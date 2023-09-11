@@ -40,6 +40,24 @@ def rreplace(c,D,A):
         else:
             L.append(rreplace(c,D,a.left())|rreplace(c,D,a.right()))
     return data(*L)
+#
+#   Get undefined codas from input data
+#
+#   demo: undefined :
+#   demo: undefined : a b c
+#   demo: undefined : (foo:bar) x? y? z?
+#   demo: undefined : (bin: bin: bin : x? y? z?)
+#
+def undefined(A):
+    vs = set([])
+    for a in A:
+        if not a in CONTEXT: vs.add(a)
+        vs = vs.union(undefined(a.left())).union(undefined(a.right()))
+    return vs
+
+def Undefined(domain,A,B):
+    if B.eval()==B: return data(*[u for u in undefined(B)])
+CONTEXT.define('undefined',Undefined)
 
 def variables(A):
     vs = set([])
@@ -57,4 +75,4 @@ def variables(A):
 #
 def Variables(domain,A,B):
     if B.eval()==B: return data(*[v for v in variables(B)])
-CONTEXT.define('variables',Variables)
+#CONTEXT.define('variables',Variables)

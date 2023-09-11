@@ -10,6 +10,11 @@ import Evaluate
 #   demo: foo : a b c d e f
 #   demo: def first2 : {first A:B} 2
 #   demo: first2 : a b c d
+#   demo: let 1 : a b c d
+#   demo: 1?
+#   demo: (1:)
+#   demo: def (foo:bar) : first 3
+#   demo: (foo:bar) : a b c d e f 
 #
 def Def(domain,D,V):
     D = Evaluate.resolve(D,100)
@@ -20,19 +25,6 @@ def Def(domain,D,V):
         else        : CONTEXT.add(Definition(D,lambda domain,A,B:data((V+A)|B)))
         return data()
 CONTEXT.define('def',Def)
-
-#VALUES = {}
-#def Value(domain,A,B):
-#    if B.invariant() and B in VALUES: return VALUES[B]
-#CONTEXT.define('?',Value)
-#def Let(domain,A,B):
-#    if A.invariant():
-#        if A in VALUES and not VALUES[A]==B:
-#            return
-#        else:
-#            VALUES[A] = B
-#            return data()
-#CONTEXT.define('let',Let)
 
 class ConstDefinition(Definition):
     def __init__(self,domain,value):

@@ -9,7 +9,7 @@ import Help
 LANGFRAC = 0.01
 
 numbers = [co(str(i)) for i in range(4)]
-letters = [co('a'),co('b'),co('A'),co('B'),co('?')]
+letters = [co('a'),co('b'),co('A'),co('B')]
 
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import','Variable',
                     'IO','Theorem','Language','Path','Sample','Generate','Set','Code']
@@ -27,10 +27,11 @@ langs = [co('{$}')]
 
 vars = [data()|da(v) for v in ['X','Y','Z','W']]
 
+
 #vars = [da('?')|da('X'),da('?')|da('Y'),da('?')|da('Z'),da('?')|da('W')]
 
 import random,itertools
-codas = defines+numbers+letters+vars+vars
+codas = defines+numbers+letters+vars+vars+langs
 
 class Gen(object):
     def __init__(self,codas,width):

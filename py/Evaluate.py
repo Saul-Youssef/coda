@@ -46,7 +46,7 @@ def resolve(D,n):
     D2,n = depth(D,n)
     if n>0: return D2
 
-DEPTH = 100
+DEPTH = 300
 
 def default(D): return depth(D,DEPTH)[0]
 #

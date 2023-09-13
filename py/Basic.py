@@ -2,7 +2,6 @@
 #   Basic definitions
 #
 from base import *
-import Number
 #
 #    pass : B -> B and null : B -> ()
 #
@@ -13,6 +12,38 @@ CONTEXT.define('pass',lambda domain,A,B:B)
 CONTEXT.define('null',lambda domain,A,B:data())
 CONTEXT.define('bin') # generic built-in container
 #
+#   put A : B creates A:B, it "puts B into A".
+#
+#   put A : B -> (A:B)
+#
+#   demo: put x : 1 2 3
+#   demo: put x y : 1 2 3
+#   demo: ap put x : 1 2 3
+#   demo: (put:)
+#   demo: pure : put :
+#
+CONTEXT.define('put',lambda domain,A,B: data(A|B))
+#
+#   demo: get bin : bin : 1 2 3
+#   demo: get bin : (bin x y z : 1 2 3)
+#   demo: get : (:a b c) (put : 1 2 3)
+#
+def get(domain,A,B):
+    if A.rigid():
+        if B.empty(): return data()
+        L = []; Bs = [b for b in B]
+        while len(Bs)>0 and Bs[0].atom():
+            b = Bs.pop(0)
+            if b.domain()==A:
+                for r in b.right(): L.append(r)
+        front = data(*L)
+        back  = data((domain+A)|data(*Bs))
+        return front+back
+CONTEXT.define('get',get)
+#
+#   demo: left : bin 1 2 3 : a b c
+#   demo: right : bin 1 2 3 : a b c
+#   demo: domain : bin 1 2 3 : a b c
 #
 def domain_0(domain,A,B):
     BL,BR = B.split()
@@ -20,7 +51,6 @@ def domain_0(domain,A,B):
 def domain_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('domain',domain_0,domain_1)
-
 def left(domain,A,B):
     BL,BR = B.split()
     if BL.atom(): return BL[0].left() + data((domain+A)|BR)
@@ -31,26 +61,6 @@ def right(domain,A,B):
     if BL.atom(): return BL[0].right() + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('right',right)
-#
-#   in A : B returns any b in B which is in A
-#
-#   in 1 2 3 : a 3 b 2 c 1
-#
-#def In(domain,A,B):
-#    if A.rigid():
-#        AA = set([a for a in A])
-#        BL,BR = B.split()
-#        if BL.empty():
-#            return data()
-#        elif BL.atom() and BL.rigid():
-#            if BL[0] in AA:
-#                return BL+data(domain+A|BR)
-#            else:
-#                return data(domain+A|BR)
-#def In_0(domain,A,B):
-#    if B.empty(): return data()
-#CONTEXT.define('in',In,In_0)
-
 #
 #   if and nif return output depending on argument logic.
 #
@@ -74,47 +84,7 @@ def nif_1(domain,A,B):
 def nif_0(domain,A,B):
     if A.atomic(): return B
 CONTEXT.define('nif',nif_1,nif_0)
-#
-#   put A : B creates A:B, it "puts B into A".
-#
-#   put A : B -> (A:B)
-#
-#   demo: put x : 1 2 3
-#   demo: put x y : 1 2 3
-#   demo: ap put x : 1 2 3
-#   demo: (put:)
-#   demo: pure : put :
-#
-CONTEXT.define('put',lambda domain,A,B: data(A|B))
-#
-#   Singleton versions of has, get and atom
-#
-#def has1(domain,A,B):
-#    if B.atom():
-#        guard = data((da('=')+A)|B[0].domain())
-#        return data((da('if')+guard)|B)
-#def get1(domain,A,B):
-#    if B.atom():
-#        guard = data((da('=')+A)|B[0].domain())
-#        return data((da('if')+guard)|B[0].right())
-#CONTEXT.define('has1',has1)
-#CONTEXT.define('get1',get1)
-#
-#def left1(domain,A,B):
-#    if B.atom(): return B[0].left()
-#def right1(domain,A,B):
-#    if B.atom(): return B[0].right()
-#CONTEXT.define('left1',left1)
-#CONTEXT.define('right1',right1)
-#
-#def select1(domain,A,B):
-#    BL,BR = B.split()
-#    if BL.atom():
-#        guard = data((da('=')+A)|B[0].left())
-#        return data((da('if')+guard)|B[0].right())
-#CONTEXT.define('sel1',select1)
-
-#
+##
 #    Star is syntactic sugar with A*B:X defined to be A:B:X
 #
 #    If you think of A and B as functions, with action X -> A:X,

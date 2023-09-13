@@ -1,0 +1,15 @@
+#
+#    Definition
+#
+
+#
+#   demo: arg 1 2 3 : x y z
+#
+def arg : {A}
+
+#
+#   demo: let x : 1 2 3
+#   demo: x?
+#   demo: (x:)
+#
+def let : {def A : arg B}

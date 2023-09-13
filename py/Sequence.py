@@ -147,20 +147,20 @@ CONTEXT.define('nth1',nth1_0,nth1_1)
 #   demo: once : a b c
 #   demo: once : a b c c c d e f
 #
-def once_1(domain,A,B):
-    if A.rigid():
-        AA = set([a for a in A])
-        BL,BR = B.split()
-        if BL.empty():
-            return data()
-        elif BL.atom() and BL.rigid():
-            if BL[0] in AA:
-                return data(domain+A|BR)
-            else:
-                return BL+data(domain+A+BL|BR)
-def once_0(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('once',once_1,once_0)
+#def once_1(domain,A,B):
+#    if A.rigid():
+#        AA = set([a for a in A])
+#        BL,BR = B.split()
+#        if BL.empty():
+#            return data()
+#        elif BL.atom() and BL.rigid():
+#            if BL[0] in AA:
+#                return data(domain+A|BR)
+#            else:
+#                return BL+data(domain+A+BL|BR)
+#def once_0(domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('once',once_1,once_0)
 #
 #   demo: count : a b c d
 #

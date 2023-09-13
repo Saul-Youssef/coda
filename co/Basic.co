@@ -16,4 +16,4 @@ def has   : ap {if (in A:domain:B):B}
 def hasnt : ap {if (not:in A:domain:B):B}
 def is    : ap {if (in A:B):B}
 def isnt  : ap {if (not:in A:B):B}
-def get   : ap {if (A=(domain:B)):right:B}
+#def get   : ap {if (A=(domain:B)):right:B}

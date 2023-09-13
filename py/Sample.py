@@ -25,7 +25,9 @@ for dom,de in CONTEXT:
 langs = [co('{$}')]
 #while len(langs)/len(defines) < LANGFRAC: langs.append(co('{$}'))
 
-vars = [da('?')|da('X'),da('?')|da('Y'),da('?')|da('Z'),da('?')|da('W')]
+vars = [data()|da(v) for v in ['X','Y','Z','W']]
+
+#vars = [da('?')|da('X'),da('?')|da('Y'),da('?')|da('Z'),da('?')|da('W')]
 
 import random,itertools
 codas = defines+numbers+letters+vars+vars

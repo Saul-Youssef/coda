@@ -14,7 +14,7 @@ import Evaluate
 #   demo: 1?
 #   demo: (1:)
 #   demo: def (foo:bar) : first 3
-#   demo: (foo:bar) : a b c d e f 
+#   demo: (foo:bar) : a b c d e f
 #
 def Def(domain,D,V):
     D = Evaluate.resolve(D,100)
@@ -26,17 +26,20 @@ def Def(domain,D,V):
         return data()
 CONTEXT.define('def',Def)
 
-class ConstDefinition(Definition):
-    def __init__(self,domain,value):
-        self._domain = domain
-        self._value  = value
-    def __len__(self): return 1
-    def __call__(self,c):
-        if c.domain()==self._domain: return self._value
-        return data(c)
+def Defined(domain,A,B): return data(*[dom[0] for dom,Def in CONTEXT if len(dom)>0])
+CONTEXT.define('defs',Defined)
 
-def Let(domain,A,B):
-    if A.eval()==A and len(A)==1 and not A|data() in CONTEXT:
-        CONTEXT.add(ConstDefinition(A,B))
-        return data()
-CONTEXT.define('let',Let)
+#class ConstDefinition(Definition):
+#    def __init__(self,domain,value):
+#        self._domain = domain
+#        self._value  = value
+#    def __len__(self): return 1
+#    def __call__(self,c):
+#        if c.domain()==self._domain: return self._value
+#        return data(c)
+
+#def Let(domain,A,B):
+#    if A.eval()==A and len(A)==1 and not A|data() in CONTEXT:
+#        CONTEXT.add(ConstDefinition(A,B))
+#        return data()
+#CONTEXT.define('let',Let)

@@ -336,20 +336,19 @@ class section(object):
 #    IO.OUT(repr(CACHE)+'\n')
 #    return data()
 #CONTEXT.define('cache',cache)
+
+
 #
 #   defs makes a table of available definitions.
 #
-#   demo: defs:
-#   demo: defs : Basic
-#   demo: defs : Basic Number
+#   demo: info :
+#   demo: info : Basic
+#   demo: info : Basic Number
 #
 def defs(domain,A,B):
-#    import Code
-#    modules = [Code.coda2str(b) for b in B]
     modules = [str(b) for b in B]
     table = []
     for domain,definition in CONTEXT:
-#        dom = Code.pretty(domain)
         dom = str(domain)
         H = Help(dom)
         if not dom.endswith('1') and not dom.endswith('_') and len(H.summary())>2:
@@ -357,7 +356,39 @@ def defs(domain,A,B):
                 table.append([H.module(),dom,H.summary(),len(definition)])
     deftable(table)
     return data()
-CONTEXT.define('defs',defs)
+CONTEXT.define('info',defs)
+#
+#   Get python or coda module of input domains.
+#
+#   demo: defs:
+#   demo: module : defs :
+#
+def module(domain,A,B):
+    if B.rigid():
+        L = []
+        for b in B:
+            if b in CONTEXT:
+                L.append(co(Help(str(b)).module()))
+        return data(*L)
+CONTEXT.define('module',module)
+
+#CONTEXT.define('Domain')
+#CONTEXT.define('Module')
+#
+#def definfo(domain,A,B):
+#    if A.invariant():
+#        exclude = [str(a) for a in A]
+#        d = {}
+#        for dom,Def in CONTEXT:
+#            module = Help(str(dom)).module()
+#            if not module in exclude: d[dom] = co(module)
+#        L = []
+#        for dom,mod in d.items():
+#            Dom = da('Domain')|data(dom)
+#            Mod = da('Module')|data(mod)
+#            L.append(data()|(Dom+Mod))
+#        return data(*L)
+#CONTEXT.define('definfo',definfo)
 
 def deftable(table):
     max_module,max_flag,max_summary = 0,0,0

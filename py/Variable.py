@@ -73,6 +73,6 @@ def variables(A):
 #
 #   demo: variables : X? 1 2 3 Y?
 #
-def Variables(domain,A,B):
-    if B.eval()==B: return data(*[v for v in variables(B)])
+#def Variables(domain,A,B):
+#    if B.eval()==B: return data(*[v for v in variables(B)])
 #CONTEXT.define('variables',Variables)

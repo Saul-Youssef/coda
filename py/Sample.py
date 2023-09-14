@@ -25,8 +25,7 @@ for dom,de in CONTEXT:
 langs = [co('{$}')]
 #while len(langs)/len(defines) < LANGFRAC: langs.append(co('{$}'))
 
-vars = [data()|da(v) for v in ['X','Y','Z','W']]
-
+vars = [da(v)|data() for v in ['X','Y','Z','W']]
 
 #vars = [da('?')|da('X'),da('?')|da('Y'),da('?')|da('Z'),da('?')|da('W')]
 
@@ -154,21 +153,22 @@ class Domain(object):
 #   demo: sample.coda :
 #   demo: sample.pure : 2 2
 #
-def atoms_0(domain,A,B):
+def even_0(domain,A,B):
     if B.empty(): return data()
-def atoms_1(domain,A,B):
+def even_1(domain,A,B):
     if B.invariant() and len(B)>0 and A.invariant():
         import Number
         ns = Number.ints(B)
-        if len(ns)>0:
-            ne = ns[0]; no = ne
-            if len(ns)>1: no = ns[1]
-            S = evenAtoms(ne)+oddAtoms(no)
-            return S.bin(A)
-CONTEXT.define('sample.atoms',atoms_0,atoms_1)
-
-def variety(domain,A,B): return data(*defines+numbers+letters)
-CONTEXT.define('sample.coda',variety)
+        if len(ns)>0: return evenAtoms(ns[0]).bin()
+CONTEXT.define('sample.even',even_0,even_1)
+def odd_0(domain,A,B):
+    if B.empty(): return data()
+def odd_1(domain,A,B):
+    if B.invariant() and len(B)>0 and A.invariant():
+        import Number
+        ns = Number.ints(B)
+        if len(ns)>0: return oddAtoms(ns[0]).bin()
+CONTEXT.define('sample.odd',odd_0,odd_1)
 
 def purewindow_0(domain,A,B):
     if B.empty(): return data()
@@ -184,10 +184,22 @@ CONTEXT.define('sample.pure',purewindow_0,purewindow_1)
 def samplewindow_0(domain,A,B):
     if B.empty(): return data()
 def samplewindow_1(domain,A,B):
-    if A.invariant() and B.invariant() and len(B)>0 and A.invariant():
+    if A.invariant() and B.invariant() and len(B)>0:
         import Number
         ns = Number.ints(B)
         if len(ns)==2:
             width,depth = ns[0],ns[1]
             return Set.Set(*Domain(*[a for a in A]).window(width,depth)).bin()
-CONTEXT.define('sample.data',samplewindow_0,samplewindow_1)
+CONTEXT.define('sample.window',samplewindow_0,samplewindow_1)
+
+def sampledata_0(domain,A,B):
+    if B.empty(): return data()
+def sampledata_1(domain,A,B):
+    if A.eval()==A and B.rigid() and len(B)>0:
+        import Number
+        ns = Number.ints(B)
+        n = 1
+        if len(ns)>0: n = abs(ns[0])
+        G = Gen([a for a in A],n)
+        return G.set().bin()
+CONTEXT.define('sample.data',sampledata_0,sampledata_1)

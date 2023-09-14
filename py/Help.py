@@ -360,8 +360,10 @@ CONTEXT.define('info',defs)
 #
 #   Get python or coda module of input domains.
 #
-#   demo: defs:
+#   demo: defs :
 #   demo: module : defs :
+#   demo: once : module : defs : 
+#   demo: defs : Basic Number Sequence Apply
 #
 def module(domain,A,B):
     if B.rigid():
@@ -371,6 +373,17 @@ def module(domain,A,B):
                 L.append(co(Help(str(b)).module()))
         return data(*L)
 CONTEXT.define('module',module)
+
+def Defined(domain,A,B):
+    if B.rigid():
+        modules = [str(b) for b in B]
+        L = []
+        for dom,Def in CONTEXT:
+            mod = Help(str(dom)).module()
+            if mod in modules or modules==[] and len(dom)>0: L.append(dom[0])
+        return data(*L)
+CONTEXT.define('defs',Defined)
+
 
 #CONTEXT.define('Domain')
 #CONTEXT.define('Module')

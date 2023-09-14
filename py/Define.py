@@ -26,9 +26,6 @@ def Def(domain,D,V):
         return data()
 CONTEXT.define('def',Def)
 
-def Defined(domain,A,B): return data(*[dom[0] for dom,Def in CONTEXT if len(dom)>0])
-CONTEXT.define('defs',Defined)
-
 #class ConstDefinition(Definition):
 #    def __init__(self,domain,value):
 #        self._domain = domain

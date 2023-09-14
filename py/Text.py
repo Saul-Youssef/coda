@@ -9,6 +9,7 @@ def decorate(txt,color='default',style='default'):
     return ESC+'['+colors[color]+styles[style]+'m'+txt+ESC+'[0m'
 
 from base import *
+import string
 #
 #   Get all codes up to argument specified length
 #   with input alphabet.
@@ -33,13 +34,20 @@ def _alphawords(max,base,alphabet):
             yield base+c
             for w in _alphawords(max,base+c,alphabet): yield w
 #
-#   A standard alphabet
+#   Standard text-related data.
 #
 #   demo: alphabet:
+#   demo: letters:
+#   demo: digits:
+#   demo: printable:
 #
-def alphabet(domain,A,B):
-    import string
-    return data(*[co(s) for s in string.printable.split('\t')[0]])
+def    digits(domain,A,B): return data(*[co(s) for s in string.digits.split('\t')[0]])
+def   letters(domain,A,B): return data(*[co(s) for s in string.ascii_letters.split('\t')[0]])
+def printable(domain,A,B): return data(*[co(s) for s in string.printable.split('\t')[0]])
+def  alphabet(domain,A,B): return data(*[co(s) for s in string.ascii_lowercase.split('\t')[0]])
+CONTEXT.define('digits',digits)
+CONTEXT.define('letters',letters)
+CONTEXT.define('printable',printable)
 CONTEXT.define('alphabet',alphabet)
 #
 #   A very non-practical data consisting of all codes with input alphabet
@@ -100,8 +108,6 @@ def data_display(D,margin):
 def coda_display(c,margin):
     if False and c in Unicode:
         yield margin+Unicode[c]
-#    elif len(margin)+len(str(c))<80 and len(str(c))<20:
-#        yield margin+str(c)
     elif len(margin)+len(repr(c))<80 and len(repr(c))<20:
         yield margin+repr(c)
     else:
@@ -111,9 +117,6 @@ def coda_display(c,margin):
         for line in data_display(c.right(),margin+margin): yield line
         yield margin+')'
 
-
-#from base import *
-#import Code
 if __name__=='__main__':
     t = '@@@'
     print(t)

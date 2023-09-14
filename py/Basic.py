@@ -53,7 +53,10 @@ def domain_1(domain,A,B):
 CONTEXT.define('domain',domain_0,domain_1)
 def left(domain,A,B):
     BL,BR = B.split()
-    if BL.atom(): return BL[0].left() + data((domain+A)|BR)
+    if BL.atom():
+        L = BL[0].left()
+        LL,LR = L.split()
+        return LR + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('left',left)
 def right(domain,A,B):

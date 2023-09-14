@@ -17,6 +17,7 @@ from base import *
 #   demo: collect {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
 #   demo: counts {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
 #
+CONTEXT.define('cls')
 def equiv(domain,A,B):
     if all([b.atom() for b in B]):
         classes = {}
@@ -29,7 +30,7 @@ def equiv(domain,A,B):
             classes[equiv] = classes[equiv] + [b]
         if not None in classes:
             L = []
-            for equiv,cls in classes.items(): L.append(da('bin')|data(*cls))
+            for equiv,cls in classes.items(): L.append(da('cls')|data(*cls))
             return data(*L)
 def equiv_0(domain,A,B):
     if B.empty(): return data()
@@ -46,11 +47,11 @@ def collect(domain,A,B):
             classes[equiv] = classes[equiv] + [b]
         if not None in classes:
             L = []
-            for equiv,cls in classes.items(): L.append((da('bin')+equiv)|data(*cls))
+            for equiv,cls in classes.items(): L.append((da('cls')+equiv)|data(*cls))
             return data(*L)
 def collect_0(domain,A,B):
     if B.empty(): return data()
-#CONTEXT.define('collect',collect,collect_0)
+CONTEXT.define('collect',collect,collect_0)
 def counts(domain,A,B):
     if all([b.atom() for b in B]):
         classes = {}

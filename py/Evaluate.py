@@ -100,11 +100,58 @@ CONTEXT.define('step',stepEval,stepEval_0)
 #
 #     evaluate an argument specified number of times
 #
-def eval(domain,A,B):
-    if A.atom() or A.empty():
+#def eval(domain,A,B):
+#    if A.atom() or A.empty():
+#        import Number
+#        ns = Number.ints(A)
+#        n = 1
+#        if len(ns)==1: n = ns[0]
+#        return depth(B,n)[0]
+#CONTEXT.define('eval',eval)
+from Log import LOG
+import multiprocessing
+
+def eval_split(B0,nproc):
+    B = language(B0,100)
+    n = max(1,len(B)//nproc)
+    Bs = [b for b in B]
+    split = []
+    while len(Bs)>0:
+        M = []
+        while len(Bs)>0 and len(M)<n: M.append(Bs.pop(0))
+        if len(M)>0: split.append(data(*M))
+    return split
+#
+#   demo: aaa
+#
+def eval_1(domain,A,B):
+    if A.rigid():
         import Number
         ns = Number.ints(A)
-        n = 1
-        if len(ns)==1: n = ns[0]
-        return depth(B,n)[0]
-CONTEXT.define('eval',eval)
+        depth,nproc = 100,multiprocessing.cpu_count()-4
+        while len(ns)>0: depth = ns.pop(0)
+        while len(ns)>0: nproc = ns.pop(0)
+        depth = max(1,depth)
+        nproc = max(1,nproc)
+        print('aaaaa',nproc)
+        split = eval_split(B,nproc)
+        print('aaaa',len(split))
+        for s in split:
+            print('aaa s',s)
+
+#        pool = Pool(nproc)
+#        LOG('multi','Number of processors',str(nproc))
+#        import Eval
+#        def Feval(D): return Eval.depth(D,depth)
+        results = []
+#        for result in pool.imap_unordered(Feval,split):
+#            n += 1
+#            LOG('multi',str(n)+'...')
+#            results.append(result)
+        L = []
+        for result in results:
+            for c in result: L.append(c)
+        return data(*L)
+def eval_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('eval',eval_0,eval_1)

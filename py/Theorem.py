@@ -13,7 +13,7 @@ def theorem(T,S):
     xts = [xt for xt in itertools.product(X,repeat=len(vars))]
     if len(vars)==0 or len(X)==0: return T
     TS = []
-    LOG('theorem','Domain',str(len(vars)),str(len(xts)))
+    LOG('theorem','undecided: ',','.join([str(v) for v in vars]))
     for xt in xts:
         T2 = data(*[t for t in T])
         xl = [x for x in xt]
@@ -23,14 +23,13 @@ def theorem(T,S):
             x = xl.pop()
             v = vl.pop()
             T2 = rreplace(v,x,T2)
-            LOG('theorem','replace',str(v),str(x),str(T2))
+#            LOG('theorem','replace',str(v),str(x),str(T2))
         TS.append(T2)
     L = []
     for t in TS:
         for c in t: L.append(c)
     return data(*L)
 
-#def unbin(A): return [a.right() for a in A if a.domain()==da('bin')]
 def unbin(A): return [a.right() for a in A]
 #
 #   theorem tests if the argument is a theorem with respect to it's input
@@ -40,7 +39,8 @@ def unbin(A): return [a.right() for a in A]
 #   demo: theorem (rev:rev:X?=X?) : (put : 1 2 3 ) (put : 4 5 6 )
 #   demo: theorem (nth 3:X?) : (put : 1 2) (put : a b)
 #   demo: theorem (nth 3:X?) : (put : 1 2) (put : a b) (put : 1 2 3)
+#   demo: theorem (X?=Y?) : (put : x? y?) (:1 2 3 4)
 #
 def Theorem(domain,A,B):
-    if A.eval()==A and B.eval()==B: return theorem(A,unbin(B))
+    if A.eval()==A and B.eval()==B and B.invariant(): return theorem(A,unbin(B))
 CONTEXT.define('theorem',Theorem)

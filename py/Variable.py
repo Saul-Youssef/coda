@@ -22,15 +22,15 @@ def RReplace(domain,A,B):
             return B
 CONTEXT.define('rreplace',RReplace)
 
-def With(domain,A,B):
-    if A.eval()==A and B.eval()==B:
-        eqs = [a for a in A if a.domain()==da('=')]
-        BR = data(*[b for b in B])
-        for eq in eqs:
-            L,R = eq.left().split()
-            if len(R)==1: BR = rreplace(R[0],eq.right(),BR)
-        return BR
-CONTEXT.define('with',With)
+#def With(domain,A,B):
+#    if A.eval()==A and B.eval()==B:
+#        eqs = [a for a in A if a.domain()==da('=')]
+#        BR = data(*[b for b in B])
+#        for eq in eqs:
+#            L,R = eq.left().split()
+#            if len(R)==1: BR = rreplace(R[0],eq.right(),BR)
+#        return BR
+#CONTEXT.define('with',With)
 
 def rreplace(c,D,A):
     L = []

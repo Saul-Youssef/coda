@@ -40,7 +40,6 @@ CONTEXT.define('logs',logs)
 def log_on(domain,A,B):
     if B.rigid():
         for b in B:
-            print('aaaa',b,str(b) in LOG)
             if str(b) in LOG: LOG.on(str(b))
         return data()
 def log_off(domain,A,B):

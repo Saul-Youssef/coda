@@ -108,8 +108,9 @@ def oddAtoms(n):
 def Atoms(n):
     at = data()|data()
     atoms = [data()]
-    for i in range(n): atoms.append(atoms[-1]+data(at))
-    return Set.Set(*atoms)
+    while len(atoms)<n: atoms.append(atoms[-1]+data(at))
+    print('aaaaaa',len(atoms))
+    return data(*[data()|a for a in atoms])
 #
 #   Simple searching
 #
@@ -149,9 +150,15 @@ class Domain(object):
 #
 #   Get a sample of even and odd atoms.
 #
-#   demo: sample.atoms : 10
-#   demo: sample.coda :
+#   demo: sample.even : 5
+#   demo: sample.odd  : 5
+#   demo: sample.atom : 5
+#   demo: count : sample.atom : 10
 #   demo: sample.pure : 2 2
+#   demo: sample.data a : 5
+#   demo: sample.data a b : 5
+#   demo: sample.data <A> <B> <{$}> a : 3
+#   demo: sample.data <A> <B> <{$}> (defs:Apply Basic Logic Number Sequence) : 2
 #
 def even_0(domain,A,B):
     if B.empty(): return data()
@@ -169,6 +176,14 @@ def odd_1(domain,A,B):
         ns = Number.ints(B)
         if len(ns)>0: return oddAtoms(ns[0]).bin()
 CONTEXT.define('sample.odd',odd_0,odd_1)
+#def atom_0(domain,A,B):
+#    if B.empty(): return data()
+#def atom_1(domain,A,B):
+#    if B.invariant() and len(B)>0 and A.invariant():
+#        import Number
+#        ns = Number.ints(B)
+#        if len(ns)>0: return Atoms(ns[0])
+#CONTEXT.define('sample.atom',odd_0,odd_1)
 
 def purewindow_0(domain,A,B):
     if B.empty(): return data()

@@ -48,11 +48,6 @@ class data(object):
         for c in self:
             for d in c.eval(): result.append(d)
         return data(*result)
-    def evaluate(self,context):
-        result = []
-        for c in self:
-            for d in c.evaluate(context): result.append(d)
-        return data(*result)
 #
 #   == A coda is a pair of data ==
 #
@@ -67,11 +62,7 @@ class coda(object):
 #
     def left (self): return self._left
     def right(self): return self._right
-    def domain(self):
-        dom = self.left().split()[0]; s = str(dom)
-        if s.startswith('{') and s.endswith('}'): return da('language')
-        else                                    : return dom
-#        return self.left().split()[0]
+    def domain(self): return self.left().split()[0]
 #
 #   Data creation from a pair of codas
 #
@@ -86,11 +77,6 @@ class coda(object):
     def eval(self):
         c = self.left().eval() | self.right().eval()
         return CONTEXT(c)
-    def evaluate(self,context):
-        c = self.left().evaluate(context) | self.right().evaluate(context)
-        return context(c)
-#        return CONTEXT(self.left().eval()|self.right().eval())
-#        return CONTEXT(self.left().eval()|self.right())
 #
 #   == A definition is a partial function from codas with
 #   a specified domain to data ==
@@ -116,9 +102,12 @@ class Definition(object):
 class Context(object):
     def __init__(self):
         self._definitions = {} # domain -> definition
-        self._cache       = {} # cached results
+        self._cache = {}
     def __repr__(self): return  str(len(self._definitions))+' '+','.join([str(domain) for domain,definition in self._definitions.items()])
-    def domain(self,c): return c.domain()
+    def domain(self,c): # handles the {...} -> language convention
+        d = c.domain(); s = str(d)
+        if s.startswith('{') and s.endswith('}'): d = da('language')
+        return d
     def __contains__(self,c): return self.domain(c) in self._definitions
     def __getitem__(self,c): return self._definitions[self.domain(c)]
     def __iter__(self):
@@ -132,8 +121,7 @@ class Context(object):
             if c in self._cache:
                 return self._cache[c]
             else:
-#                d = self[c](c)
-                d = self[c](c.left()|c.right().eval())
+                d = self[c](c)
                 self._cache[c] = d
                 return d
 #            return self[c](c)

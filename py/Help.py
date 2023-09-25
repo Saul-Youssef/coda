@@ -7,18 +7,19 @@ import IO
 #
 #   Help system
 #
-#   demo: help : n
+#   demo: help : rev
 #   demo: help : <=>
 #   demo: help : <|>
-#   demo: demo n : 2
+#   demo: demo 2 : rev
 #   demo: help : Sequence
 #
 def help(domain,A,B):
     I,R = B.split()
-    if I.atom():
+    print('aaaaaa I,R',I,R,I.rigid())
+#    if I.atom():
+    if I.rigid():
+        print('aaaaaa',I)
         if I[0] in CONTEXT:
-#            import Code
-#            H = Help(Code.coda2str(I[0]))
             H = Help(str(I[0]))
             H.display()
             return data()
@@ -362,7 +363,7 @@ CONTEXT.define('info',defs)
 #
 #   demo: defs :
 #   demo: module : defs :
-#   demo: once : module : defs : 
+#   demo: once : module : defs :
 #   demo: defs : Basic Number Sequence Apply
 #
 def module(domain,A,B):

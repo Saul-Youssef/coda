@@ -16,9 +16,9 @@ CONTEXT.define('bin') # generic built-in container
 #
 #   put A : B -> (A:B)
 #
-#   demo: put x : 1 2 3
-#   demo: put x y : 1 2 3
-#   demo: ap put x : 1 2 3
+#   demo: put bin : 1 2 3
+#   demo: put bin a b c : 1 2 3
+#   demo: ap put bin : 1 2 3
 #   demo: (put:)
 #   demo: pure : put :
 #

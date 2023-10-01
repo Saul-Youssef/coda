@@ -11,28 +11,22 @@ import IO
 #   demo: help : <=>
 #   demo: help : <|>
 #   demo: demo 2 : rev
-#   demo: help : Sequence
+#   demo: info :
 #
 def help(domain,A,B):
-    I,R = B.split()
-    print('aaaaaa I,R',I,R,I.rigid())
-#    if I.atom():
-    if I.rigid():
-        print('aaaaaa',I)
-        if I[0] in CONTEXT:
-            H = Help(str(I[0]))
-            H.display()
-            return data()
-    else:
-        return data(domain|da('help'))
+    if B.rigid():
+        s = 'help'
+        if len(B)>0: s = str(B[0])
+        H = Help(s)
+        H.display()
+        return data()
 CONTEXT.define('help',help)
-
 #
 #
-def sources(A,B):
+def sources(domain,A,B):
     for S in SOURCES: print(S)
     return data()
-#DEF.add(data(b'sources'),sources)
+CONTEXT.define('sources',sources)
 #
 #    classes to hold coda source code sections, i.e. either comment blocks
 #    or multi-line source code blocks (which are really one line).  The
@@ -198,13 +192,6 @@ def source(domain,A,B):
     if BL.atom():
         txt = str(BL)
         return data(*([co(t) for t in blocks(comments(txt))] + [(domain+A)|BR]))
-#    I,R = B.split()
-#    if I.atom():
-#        if is_code(I[0]):
-#            txt = I[0]
-#            return data(*[t for t in blocks(comments(txt))]) + one(b'source',A,R)
-#        else:
-#            raise error('Unexpected coda source file input')
 def source_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('source',source,source_0)
@@ -239,20 +226,18 @@ path = inspect.getabsfile(sources)
 pydir = '/'.join(path.split('/')[:-1])
 paths = [os.path.join(pydir,f) for f in os.listdir(pydir) if f.endswith('.py')]
 for path in paths: SOURCES.append(SourceFile(path))
-
 #
 #   Demos are an easy way to learn the definitions.
 #
-#   demo: help : n
-#   demo: demo 1 : n
-#   demo: demo 7 : n
+#   demo: help : rev
+#   demo: demo 1 : rev
+#   demo: demo 4 : rev
 #
 def demo(domain,A,B):
     AL,AR = A.split()
     BL,BR = B.split()
     if (AL.atom() or AL.empty()) and BL.atom():
         H = Help(str(BL))
-#        H = Help(Code.pretty(BL))
         import Number
         if not H is None and not H.comment() is None and not H.comment()=='' and len(Number.ints(AL))>0:
             ns = Number.ints(AL)
@@ -261,7 +246,6 @@ def demo(domain,A,B):
                 demcode = H.comment().demos()[n-1]
                 import Language
                 return Language.lang(demcode.strip(),data(),data())
-#                return data(colon(data(b'{'+demcode.encode()+b'}'),data()))
             else:
                 return data()
 def demo_0(domain,A,B):
@@ -331,15 +315,6 @@ class section(object):
                 IO.OUT(self.indent*' '+line+'\n')
             n += 1
 #
-#   cache returns the cache statistics
-#
-#def cache(domain,A,B):
-#    IO.OUT(repr(CACHE)+'\n')
-#    return data()
-#CONTEXT.define('cache',cache)
-
-
-#
 #   defs makes a table of available definitions.
 #
 #   demo: info :
@@ -355,8 +330,8 @@ def defs(domain,A,B):
         if not dom.endswith('1') and not dom.endswith('_') and len(H.summary())>2:
             if len(modules)==0 or H.module() in modules:
                 table.append([H.module(),dom,H.summary(),len(definition)])
-    deftable(table)
-    return data()
+#    deftable(table)
+    return da(deftable2(table))
 CONTEXT.define('info',defs)
 #
 #   Get python or coda module of input domains.
@@ -385,25 +360,6 @@ def Defined(domain,A,B):
         return data(*L)
 CONTEXT.define('defs',Defined)
 
-
-#CONTEXT.define('Domain')
-#CONTEXT.define('Module')
-#
-#def definfo(domain,A,B):
-#    if A.invariant():
-#        exclude = [str(a) for a in A]
-#        d = {}
-#        for dom,Def in CONTEXT:
-#            module = Help(str(dom)).module()
-#            if not module in exclude: d[dom] = co(module)
-#        L = []
-#        for dom,mod in d.items():
-#            Dom = da('Domain')|data(dom)
-#            Mod = da('Module')|data(mod)
-#            L.append(data()|(Dom+Mod))
-#        return data(*L)
-#CONTEXT.define('definfo',definfo)
-
 def deftable(table):
     max_module,max_flag,max_summary = 0,0,0
     for module,flag,summary,n in table:
@@ -423,6 +379,29 @@ def deftable(table):
 #        print(flag+module+str(n)+'..'+summary)
         IO.OUT(flag+module+str(n)+'..'+summary+'\n')
     IO.OUT(str(CONTEXT))
+
+def deftable2(table):
+    max_module,max_flag,max_summary = 0,0,0
+    for module,flag,summary,n in table:
+        if len(module)>max_module  : max_module  = len(module)
+        if len(flag)  >max_flag    : max_flag    = len(flag)
+        if len(summary)>max_summary: max_summary = len(summary)
+    T = sorted(table)
+    MARGIN = 2;
+    max_module += MARGIN
+    max_flag   += MARGIN
+    out = []
+    for module,flag,summary,n in T:
+        import Text
+        while len(module)<max_module: module = module+'.'
+        while len(flag)  <max_flag  : flag   = flag + '.'
+#        flag = Text.decorate(flag,'blue','bold')
+#        summary = Text.decorate(summary,'magenta','underline')
+#        print(flag+module+str(n)+'..'+summary)
+        out.append(flag+module+'..'+summary)
+#        IO.OUT(flag+module+str(n)+'..'+summary+'\n')
+#    IO.OUT(str(CONTEXT))
+    return '\n'.join(out)
 
 if __name__=='__main__':
     f = open('/Users/youssef/coda/co/Number.co','r')

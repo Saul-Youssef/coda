@@ -1,65 +1,87 @@
 #
-#    eval : with x?=5 : x?
+#    In the boot context, the following definitions are active.
 #
-#    Represents data B with definitions A.  Definitions may be
+#    env, =, with, eval, multi, base?
 #
-#    1. Domain names such as ap, rev, * or language, representing
-#       partial functions from coda to data as defined either in python .py files
-#       or via the language in .co files.
-#    2. Codas A=B where A is an undefined coda, interpreted as a new definition
-#       A -> B.
+#    env A          -- imports external definitions, if any
+#    =              -- pure data equality
+#    with A : B     -- Data B with definitions A
+#    eval 100 : B   -- Evaluate one (with X:Y) at most A times resulting in (with X:Y') where Y=Y' with definitions X.
+#    multi 100 : B  --
+#    base?          -- Standard collection of imported definitions from internal py and co files.
 #
-#    coda url1 url2 url3 : eval 100 : with base? x?=5 : (x? x?) = (rev : x? x?)
+#    with is a pure atom, eval evaluates up to specified number of tries.
+#    multi evaluates it's inputs, possibly with multiprocessing.
 #
-#    T is a theorem means...
+#    env /a/b/c a.b.c/foo : eval 100 : with base? x?=45 : ...
 #
-#    with A : T is never false for any A.
-#    with A B : T = with A B : with A : T
+#    Suppose T is a "theorem".  This means T is "never false", meaning...
 #
-#    with x?=5 : test
-#    with x?=6 : test
+#    o T is never false independent of future definitions.  This is the same as
+#    o with X : T is never false for any X
 #
-#    with (isnt ap : base?) (x?=45) (y?=z?):
+#    not : right : eval X : with Y : T  is true for any X, Y
+#
 #        .....
 from base import *
+import Number
 
-EQ   = da('=')
-WITH = da('with')
-CONTEXT.define('with')
+DEFAULT_DEPTH = 100
 
-def With(A):
-    context = Context()
-    for a in A:
-        if a.domain()==EQ:
-            print('aaaaa',a)
-        elif a in CONTEXT:
-            context._definitions[data(a)] = CONTEXT._definitions[data(a)]
-        else:
-            print('aaaaa error',a)
-    return context
-
-def evaluate(domain,A,B):
+#
+#   Evaluate (with A : B) to a specified depth.
+#
+#   demo: rev : a b c
+#   demo: with : rev : a b c
+#   demo: eval : with : rev : a b c
+#   demo: right : eval : with (defs:) : rev : a b c
+#   demo: eval : with (:) ((:):(:)) language : rev : a b c
+#   demo: eval : with (:) ((:):(:)) language rev : rev : a b c
+#
+def eval(domain,A,B):
     if A.rigid() and B.atom():
-        import Number
-        ns = Number.ints(A)
-        n = 100
-        if len(ns)==1: n = ns[0]
-
-        b = B[0]
-        if b.domain()==WITH:
-            BL,BR = b.left().split()
-            context = With(BR)
-            R = Eval(n,context,b.right())
-            return data(b.left()|R)
+        n = Number.intdef(DEFAULT_DEPTH,A)
+        left  = B[0].left()
+        right = B[0].right()
+        dom,arg = left.split()
+        if dom==da('with'):
+            while not arg==arg.evaluate(CONTEXT): arg = arg.evaluate(CONTEXT)
+            context = CONTEXT.subcontext(arg)
+            R = withEval(n,context,right)
+            return data((dom+arg)|R)
         else:
             return data()
-CONTEXT.define('evaluate',evaluate)
+CONTEXT.define('eval',eval)
+CONTEXT.define('with')
 
-def Eval(n,context,D):
+#def evalOLD(domain,A,B):
+#    if A.rigid() and B.atom():
+#        import Number
+#        ns = Number.ints(A)
+#        n = 100
+#        if len(ns)==1: n = ns[0]
+#
+#        b = B[0]
+#        if b.domain()==da('with'):
+#            BL,BR = b.left().split()
+#            print('aaaaa 1',CONTEXT)
+#            print('aaaaa 2',BR)
+#            context = CONTEXT.subcontext(BR)
+#            print('aaaa',context)
+#            R = withEval(n,context,b.right())
+#            if not R is None: return data(b.left()|R)
+#        else:
+#            return data()
+#
+#   evaluate recursively at most n times.
+#
+#   Evaluation preserves the equality of D within the supplied context.
+#
+def withEval(n,context,D):
     if n<=0: return D.evaluate(context)
     else:
         D2 = D.evaluate(context)
         if D==D2:
             return D
         else:
-            return Eval(n-1,context,D2)
+            return withEval(n-1,context,D2)

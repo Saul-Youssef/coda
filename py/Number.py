@@ -32,6 +32,10 @@ def trynat(x):
 def   ints(D): return [tryint  (d) for d in D if not tryint  (d) is None]
 def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 def  codes(D): return [str(c) for c in D]
+def intdef(n,D):
+    ns = ints(D)
+    if len(ns)>0: return ns[0]
+    return n
 #
 #    The natural numbers as a whole
 #
@@ -102,7 +106,7 @@ def _sort(L): return sorted(L)
 #   demo: float_min :
 #   demo: float_max : 1 2 a 3.14 -99.9
 #   demo: float_div 2.1 : 1 2 a 3.14 -99.9
-#   demo: code_sort : a b c c b a 
+#   demo: code_sort : a b c c b a
 #
 RE('code_sort',str,_sort)
 RE('ints',tryint,lambda L:L)

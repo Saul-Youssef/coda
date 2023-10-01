@@ -87,10 +87,10 @@ class coda(object):
         c = self.left().eval() | self.right().eval()
         return CONTEXT(c)
     def evaluate(self,context):
-        c = self.left().evaluate(context) | self.right().evaluate(context)
+        if self.domain()==da('with'): return data(self)
+#        c = self.left().evaluate(context)|self.right().evaluate(context)
+        c = self.left().evaluate(context)|self.right()
         return context(c)
-#        return CONTEXT(self.left().eval()|self.right().eval())
-#        return CONTEXT(self.left().eval()|self.right())
 #
 #   == A definition is a partial function from codas with
 #   a specified domain to data ==
@@ -127,16 +127,22 @@ class Context(object):
 #
 #   Partial function, extended to coda -> data with identity
 #
+    def subcontext(self,A):
+        n = Context()
+        n._definitions[data()] = self._definitions[data()]
+        for a in A:
+            if a in self:
+                if data(a) in self._definitions:
+                    n._definitions[data(a)] = self._definitions[data(a)]
+        return n
     def __call__(self,c):
         if c in self:
-            if c in self._cache:
+            if False and c in self._cache:
                 return self._cache[c]
             else:
-#                d = self[c](c)
-                d = self[c](c.left()|c.right().eval())
+                d = self[c](c.left()|c.right().evaluate(self))
                 self._cache[c] = d
                 return d
-#            return self[c](c)
         return data(c)
 #
 #   Adding a definition to this context

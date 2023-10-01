@@ -1,8 +1,0 @@
-#
-#   Sampling for searching
-#
-#let sample.letter   : <A> <B> <{$}> a b
-#let sample.number   : 0 1 2
-#let sample.variable : ap put : x y z w
-#let sample.module   : Basic Apply Sequence Logic Number
-#def sample.domain   : {ap {if (in A:module:B):B} B : defs: }

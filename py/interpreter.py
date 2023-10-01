@@ -11,7 +11,7 @@ readline.parse_and_bind("tab: complete")
 #    System
 #
 from start import *
-import Text,Evaluate,Language
+import Text,With,Language
 
 EXIT = ['exit','quit']
 # non-unicode for CLI
@@ -21,7 +21,10 @@ try:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
-            D = Evaluate.default(Language.lang(line,data(),data()))
+
+            D = Language.lang(line,data(),data())
+            D = With.withEval(100,CONTEXT,D)
+
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
             print('')

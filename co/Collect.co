@@ -1,0 +1,9 @@
+#
+#   Equivalence classes
+#
+#   demo: collect : a b c d
+#   demo: collect : (bin:a) (bin:b) (bin:c) (bin:d)
+#   demo: collect : ap {put bin (nchar:B):B} : a b aa bb aaa cccc zz xxx xxx
+#   demo: equiv nchar : a b aa bb aaa cccc zz xxx xxx
+#
+def equiv : collect * ap {put bin (A:B):B}

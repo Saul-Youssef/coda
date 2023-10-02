@@ -16,12 +16,12 @@ from base import *
 #  ap A : () -> ()
 #
 #  demo: ap foo : 1 2 3
-#  demo: ap {foo : B} : 1 2 3
+#  demo: ap {bin : B} : 1 2 3
 #  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
-#  demo: aq a b c d : 1 2 3 4
+#  demo: aq bin bin bin bin : 1 2 3 4
 #  demo: ap aq a b c : 1 2 3
-#  demo: ax a b c : 1 2 3
-#  demo: ax first 2 3 : a b c d e  g
+#  demo: ax bin a b c : 1 2 3
+#  demo: ax first 2 3 : a b c d e f g
 #  demo: ap ax a b c : 1 2 3
 #  demo: by 2 foo : a b c d e f g
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)

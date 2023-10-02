@@ -137,13 +137,21 @@ class Context(object):
         return n
     def __call__(self,c):
         if c in self:
-            if False and c in self._cache:
+            if c in self._cache:
                 return self._cache[c]
             else:
                 d = self[c](c.left()|c.right().evaluate(self))
-                self._cache[c] = d
+                if c.left().rigid(): self._cache[c] = d
+                self.update(d)
                 return d
         return data(c)
+    def update(self,D):
+        for d in D:
+            if d.domain()==da('definition'):
+                dom,A = d.left().split()
+                B = d.right()
+                definition = Definition(A,lambda domain,A2,B2:data((B+A2)|B2))
+                if not A in self._definitions: self._definitions[A] = definition
 #
 #   Adding a definition to this context
 #

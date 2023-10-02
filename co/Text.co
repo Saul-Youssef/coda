@@ -1,0 +1,7 @@
+#
+#
+#    Count the number of characters
+#
+#    demo: nchar : a b aa bb aaa cccc zz xxx xxx
+#
+def nchar : ap {count * get ((:):(:)):B}

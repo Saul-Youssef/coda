@@ -10,62 +10,18 @@ from base import *
 #   3. Codes with the same length as byte sequences.
 #   4. Same as 3 with the length (bin L:..codes with length L..)
 #
-#   demo: equiv : a b a b a a a x
-#   demo: collect : a b a b a a a x
-#   demo: get ((:):(:)) : a b aa bb aaa cccc zz xxx xxx
-#   demo: equiv {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
-#   demo: collect {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
-#   demo: counts {count:get ((:):(:)):B} : a b aa bb aaa cccc zz xxx xxx
+#   demo: collect : a b c d
+#   demo: collect : (bin:a) (bin:b) (bin:c) (bin:d)
+#   demo: collect : ap {put bin (nchar:B):B} : a b aa bb aaa cccc zz xxx xxx
+#   demo: equiv nchar : a b aa bb aaa cccc zz xxx xxx
 #
-CONTEXT.define('cls')
-def equiv(domain,A,B):
-    if all([b.atom() for b in B]):
-        classes = {}
-        if A.empty(): A = da('pass')
-        for b in B:
-            equiv = data(A|data(b))
-            import Evaluate
-            equiv = Evaluate.resolve(equiv,500)
-            if not equiv in classes: classes[equiv] = []
-            classes[equiv] = classes[equiv] + [b]
-        if not None in classes:
-            L = []
-            for equiv,cls in classes.items(): L.append(da('cls')|data(*cls))
-            return data(*L)
-def equiv_0(domain,A,B):
-    if B.empty(): return data()
-#CONTEXT.define('equiv',equiv,equiv_0)
 def collect(domain,A,B):
-    if all([b.atom() for b in B]):
-        classes = {}
-        if A.empty(): A = da('pass')
+    if all([b.atom() and b.left().rigid() for b in B]):
+        lefts = {}
         for b in B:
-            equiv = data(A|data(b))
-            import Evaluate
-            equiv = Evaluate.resolve(equiv,500)
-            if not equiv in classes: classes[equiv] = []
-            classes[equiv] = classes[equiv] + [b]
-        if not None in classes:
-            L = []
-            for equiv,cls in classes.items(): L.append((da('cls')+equiv)|data(*cls))
-            return data(*L)
-def collect_0(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('collect',collect,collect_0)
-def counts(domain,A,B):
-    if all([b.atom() for b in B]):
-        classes = {}
-        if A.empty(): A = da('pass')
-        for b in B:
-            equiv = data(A|data(b))
-            import Evaluate
-            equiv = Evaluate.resolve(equiv,500)
-            if not equiv in classes: classes[equiv] = []
-            classes[equiv] = classes[equiv] + [b]
-        if not None in classes:
-            L = []
-            for equiv,cls in classes.items(): L.append((da('bin')+da(str(len(cls))))|data(*cls))
-            return data(*L)
-def counts_0(domain,A,B):
-    if B.empty(): return data()
-#CONTEXT.define('counts',counts,counts_0)
+            if not b.left() in lefts: lefts[b.left()] = []
+            lefts[b.left()] = lefts[b.left()] + [r for r in b.right()]
+        L = []
+        for left,rights in lefts.items(): L.append(left|data(*rights))
+        return data(*L)
+CONTEXT.define('collect',collect)

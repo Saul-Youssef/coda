@@ -1,7 +1,0 @@
-#
-#   Equivalence classes
-#
-#   demo: collect (count * get ((:):(:))) : a b c aa bb 55555 cc aaa z zzzz
-#   demo: equiv (count * get ((:):(:))) : a b c aa bb 55555 cc aaa z zzzz
-#
-def equiv : ap {first:get cls:B} * collect A * hasnt cls

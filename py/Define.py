@@ -16,13 +16,19 @@ import Evaluate
 #   demo: def (foo:bar) : first 3
 #   demo: (foo:bar) : a b c d e f
 #
-def Def(domain,A,B):
-    if A.rigid():
-        D,n = Evaluate.depth(B,100) # for efficiency
-        if D.empty(): CONTEXT.add(Definition(A))
-        else        : CONTEXT.add(Definition(A,lambda domain,A2,B2:data((D+A2)|B2)))
-        return data()
-CONTEXT.define('def',Def)
+#def Def(domain,A,B):
+#    if A.rigid():
+#        D,n = Evaluate.depth(B,100) # for efficiency
+#        if D.empty(): CONTEXT.add(Definition(A))
+#        else        : CONTEXT.add(Definition(A,lambda domain,A2,B2:data((D+A2)|B2)))
+#        return data()
+#CONTEXT.define('def',Def)
+
+CONTEXT.define('definition')
+
+def define(domain,A,B):
+    if A.rigid() and B.rigid(): return data((da('definition')+A)|B)
+CONTEXT.define('def',define)
 
 #def Def_OLD(domain,D,V):
 #    D = Evaluate.resolve(D,100)

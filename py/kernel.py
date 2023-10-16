@@ -31,25 +31,12 @@ class EchoKernel(Kernel):
             for d in Compile.coda(code):
                 try:
                     D = Evaluate.default(d)
-#                    if not D.empty():
                     IO.OUT(str(D))
                     s = IO.OUT.flush()
                     if len(s)>0: L.append(s)
-#                        L.append(IO.OUT.flush())
                 except Exception as e:
                     L.append(IO.OUT.flush()+'...traceback: '+str(e))
             stream_content = {'name': 'stdout', 'text': '\n'.join(L)}
-#
-#            L = []
-#            for d in Compile.coda(code):
-#                for c in d: L.append(c)
-#            D = base.data(*L)
-#            try:
-#                IO.OUT(str(Evaluate.default(D)))
-#                out = IO.OUT.flush()
-#            except Exception as e:
-#                out = IO.OUT.flush()+'...traceback: '+str(e)
-#            stream_content = {'name': 'stdout', 'text': out}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
         return {'status': 'ok',

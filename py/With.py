@@ -3,31 +3,12 @@
 #
 #    env, =, with, eval, multi, base?
 #
-#    env A          -- imports external definitions, if any
-#    =              -- pure data equality
-#    with A : B     -- Data B with definitions A
-#    eval 100 : B   -- Evaluate one (with X:Y) at most A times resulting in (with X:Y') where Y=Y' with definitions X.
-#    multi 100 : B  --
-#    base?          -- Standard collection of imported definitions from internal py and co files.
-#
-#    with is a pure atom, eval evaluates up to specified number of tries.
-#    multi evaluates it's inputs, possibly with multiprocessing.
-#
-#    env /a/b/c a.b.c/foo : eval 100 : with base? x?=45 : ...
-#
-#    Suppose T is a "theorem".  This means T is "never false", meaning...
-#
-#    o T is never false independent of future definitions.  This is the same as
-#    o with X : T is never false for any X
-#
-#    not : right : eval X : with Y : T  is true for any X, Y
 #
 #        .....
 from base import *
 import Number
 
 DEFAULT_DEPTH = 100
-
 #
 #   Evaluate (with A : B) to a specified depth.
 #
@@ -37,7 +18,18 @@ DEFAULT_DEPTH = 100
 #   demo: right : eval : with (defs:) : rev : a b c
 #   demo: eval : with (:) ((:):(:)) language : rev : a b c
 #   demo: eval : with (:) ((:):(:)) language rev : rev : a b c
+#   demo: eval : with (:) ((:):(:)) language rev (x?=5) : {rev : a b c x?}:
 #
+def eval(domain,A,B):
+    newcontext = context.copy(A)
+    n = Number.intdef(DEFAULT_DEPTH,A)
+    E = B.eval(newcontext)
+    while not B==E and n>0:
+        n = n - 1
+        B = E.eval(newcontext)
+    if B==E: return B
+    else   : return data(data(domain+A)|E)
+
 def eval(domain,A,B):
     if A.rigid() and B.atom():
         n = Number.intdef(DEFAULT_DEPTH,A)
@@ -47,6 +39,7 @@ def eval(domain,A,B):
         if dom==da('with'):
             while not arg==arg.evaluate(CONTEXT): arg = arg.evaluate(CONTEXT)
             context = CONTEXT.subcontext(arg)
+            context = context.add_variables(arg)
             R = withEval(n,context,right)
             return data((dom+arg)|R)
         else:

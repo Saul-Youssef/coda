@@ -34,25 +34,6 @@ class data(object):
 #   Logic
 #
     def empty    (self): return len(self)==0
-    def atomic   (self): return any([c.atom() for c in self])
-    def undecided(self): return not self.empty() and not self.atomic()
-    def invariant(self): return all([c.atom() for c in self])
-    def rigid    (self): return self.invariant() and all([c.left().rigid() and c.right().rigid() for c in self])
-    def atom     (self): return len(self)==1 and self.atomic()
-#
-#   Evaluation
-#
-#    def eval(self): return CACHE.data(self,lambda self: self._eval())
-    def eval(self):
-        result = []
-        for c in self:
-            for d in c.eval(): result.append(d)
-        return data(*result)
-    def evaluate(self,context):
-        result = []
-        for c in self:
-            for d in c.evaluate(context): result.append(d)
-        return data(*result)
 #
 #   == A coda is a pair of data ==
 #
@@ -67,48 +48,17 @@ class coda(object):
 #
     def left (self): return self._left
     def right(self): return self._right
+    def triplet(self):
+        dom,A = self.left().split()
+        return dom,A,self.right()
     def domain(self):
-        dom = self.left().split()[0]; s = str(dom)
-        if s.startswith('{') and s.endswith('}'): return da('language')
-        else                                    : return dom
-#        return self.left().split()[0]
+        dom,A,B = self.triplet()
+        if str(dom).startswith('{') and str(dom).endswith('}'): return da('language')
+        return dom
 #
 #   Data creation from a pair of codas
 #
     def __add__(self,c): return data(self,c)
-#
-#   Logic
-#
-    def atom(self): return CONTEXT.invariant(self)
-#
-#   Evaluation
-#
-    def eval(self):
-        c = self.left().eval() | self.right().eval()
-        return CONTEXT(c)
-    def evaluate(self,context):
-        if self.domain()==da('with'): return data(self)
-        c = self.left().evaluate(context)|self.right()
-        return context(c)
-#
-#   == A definition is a partial function from codas with
-#   a specified domain to data ==
-#
-class Definition(object):
-    def __init__(self,domain,*pfs): self._domain,self._pfs = domain,pfs
-    def __repr__(self): return str(self._domain)+' '+'/'.join([str(id(pf)) for pf in self._pfs])
-    def __contains__(self,c): return c.domain()==self._domain
-    def domain(self): return self._domain
-    def __len__(self): return len(self._pfs)
-#
-#   Partial function extended to coda -> data with identity
-#
-    def __call__(self,c):
-        domain,A = c.left().split(); B = c.right()
-        for pf in self._pfs:
-            R = pf(domain,A,B)
-            if not R is None: return R
-        return data(c)
 #
 #   == A Context is a collection of definitions with disjoint domains ==
 #

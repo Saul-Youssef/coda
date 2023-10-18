@@ -32,6 +32,7 @@ try:
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
+            raise 
             print('')
 except EOFError:
     pass

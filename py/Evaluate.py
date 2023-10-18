@@ -2,6 +2,8 @@
 from base import *
 import Number
 
+DEFAULT = 100
+
 def intdef(ndef,A):
     n = ndef
     try: n = int(str(A))
@@ -39,7 +41,7 @@ def evaluate(n,context,D):
 #   demo: use : (let x:5) (let y:6)
 #   demo: int_sum : x? y?
 #   demo: x? y?
-#   demo: first3 : a b c d 
+#   demo: first3 : a b c d
 #
 def eval_with(context,domain,A,B):
     if A.atom(context) and B.atom(context):
@@ -57,4 +59,8 @@ def eval_0(context,domain,A,B):
         n = Number.intdef(1,A); b = B[0]
         if not b.domain()==da('with'): return evaluate(n,context,B)
 CONTEXT.define('eval1',eval_0,eval_with)
+#
+#
+#    demo: eval 100 : with (let y:5 6) : bool:(rev:rev:y?) = (rev:y?)
+# 
 CONTEXT.define('with')

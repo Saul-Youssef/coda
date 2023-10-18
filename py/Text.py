@@ -16,15 +16,15 @@ import string
 #
 #   demo: codes 3 : a b c
 #
-def codes(domain,A,B):
-    if all([a.atom() for a in A]+[b.atom() for b in B]):
+def codes(context,domain,A,B):
+    if all([a.atom(context) for a in A]+[b.atom(context) for b in B]):
         import Number
         maxs = Number.ints(A)
         if len(maxs)==1:
             alpha = [str(b) for b in B]
             txts = [w for w in _alphawords(maxs[0],'',alpha)]
             return data(*[co(txt) for txt in txts])
-def codes_0(domain,A,B):
+def codes_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('codes',codes,codes_0)
 
@@ -41,28 +41,28 @@ def _alphawords(max,base,alphabet):
 #   demo: digits:
 #   demo: printable:
 #
-def    digits(domain,A,B): return data(*[co(s) for s in string.digits.split('\t')[0]])
-def   letters(domain,A,B): return data(*[co(s) for s in string.ascii_letters.split('\t')[0]])
-def printable(domain,A,B): return data(*[co(s) for s in string.printable.split('\t')[0]])
-def  alphabet(domain,A,B): return data(*[co(s) for s in string.ascii_lowercase.split('\t')[0]])
+def    digits(context,domain,A,B): return data(*[co(s) for s in string.digits.split('\t')[0]])
+def   letters(context,domain,A,B): return data(*[co(s) for s in string.ascii_letters.split('\t')[0]])
+def printable(context,domain,A,B): return data(*[co(s) for s in string.printable.split('\t')[0]])
+def  alphabet(context,domain,A,B): return data(*[co(s) for s in string.ascii_lowercase.split('\t')[0]])
 CONTEXT.define('digits',digits)
 CONTEXT.define('letters',letters)
 CONTEXT.define('printable',printable)
 CONTEXT.define('alphabet',alphabet)
 #
 #   A very non-practical data consisting of all codes with input alphabet
-#
+#   FIX ME 
 #   demo: step 5 : allcodes :
 #
-def allcodes(domain,A,B):
+def allcodes(context,domain,A,B):
     import Number
-    if (A.empty() or A.atom()) and len(Number.ints(A))<=1:
+    if (A.empty() or A.atom(context)) and len(Number.ints(A))<=1:
         n = 0
         if len(Number.ints(A))>0: n = Number.ints(A)[0]
 
         codes = da('codes'); N = da(str(n)); Np = da(str(n+1))
         return ((codes+N)|B) + ((domain+Np)|B)
-def allcodes_0(domain,A,B):
+def allcodes_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('allcodes',allcodes,allcodes_0)
 #
@@ -73,15 +73,15 @@ CONTEXT.define('allcodes',allcodes,allcodes_0)
 #   demo: pure : hello
 #   demo: pure a : hello
 #
-def pure(domain,A,B):
+def pure(context,domain,A,B):
     BL,BR = B.split()
-    if BL.atom() and (A.empty() or A.atom()):
+    if BL.atom(context) and (A.empty() or A.atom(context)):
         if A.empty():
             return da(repr(BL)) + data((domain+A)|BR)
         else:
             atom = str(A[0])
             return da(str_atom_data(BL,atom)) + data((domain+A)|BR)
-def pure_0(domain,A,B):
+def pure_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('pure',pure,pure_0)
 
@@ -91,31 +91,97 @@ def str_atom_coda(c,ch):
     else:
         return '('+str_atom_data(c.left(),ch)+':'+str_atom_data(c.right(),ch)+')'
 def str_atom_data(d,ch): return ''.join([str_atom_coda(c,ch) for c in d])
-
-#def dis_1(domain,A,B):
-#    if all([b.atom() for b in B]):
-#        lines = []
-#        for line in data_display(B,'__'): lines.append(line[2:])
-#        return da('\n'.join(lines))
-#def dis_0(domain,A,B):
-#    if B.empty(): return data()
-#CONTEXT.define('purev',dis_1,dis_0)
 #
-def data_display(D,margin):
-    for c in D:
-        for line in coda_display(c,margin): yield line
+#   Wrap code with a one character prefix and postfix.
+#
+#   demo: wrap [] : xxx
+#   demo: wrap | : xxx
+#   demo: wrap <()> : xxx
+#   demo: wrap <{}> : xxx
+#   demo: wrap <<>> : xxx
+#
+def wrap(context,domain,A,B):
+    A0,AR = A.split()
+    B0,BR = B.split()
+    if A0.atom(context) and B0.atom(context):
+        w = str(A0); txt = str(B0)
+        if w=='':
+            l,r = '',''
+        else:
+            l,r = w[0],w[-1]
+        return da(l+txt+r) + data((domain+A)|BR)
+def wrap_0(context,domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('wrap',wrap,wrap_0)
+#
+#   Selects codes that start/end with argument specified pre or post code
+#
+#   demo: startswith xy : xya xbbbx yzzz xycccx
+#   demo: startswith x y : x y <> xx yy zz
+#   demo: startswith <x y> : <x yaaa> <x ybbb> xxx
+#   demo: endswith a : xa xb xc ya yb yc
+#   demo: endswith a b : xa xb xc ya yb yc
+#
+def startswith(context,domain,A,B):
+    if all([a.atom(context) for a in A]):
+        BL,BR = B.split()
+        if BL.atom(context):
+            pre = [str(data(a)) for a in A]
+            txt = str(BL)
+            if any([txt.startswith(p) for p in pre]):
+                return BL + data((domain+A)|BR)
+            else:
+                return      data((domain+A)|BR)
+def startswith_0(context,domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('startswith',startswith,startswith_0)
 
-def coda_display(c,margin):
-    if False and c in Unicode:
-        yield margin+Unicode[c]
-    elif len(margin)+len(repr(c))<80 and len(repr(c))<20:
-        yield margin+repr(c)
-    else:
-        yield margin+'('
-        for line in data_display(c.left(),margin+margin): yield line
-        yield margin+':'
-        for line in data_display(c.right(),margin+margin): yield line
-        yield margin+')'
+def endswith(context,domain,A,B):
+    if all([a.atom(context) for a in A]):
+        BL,BR = B.split()
+        if BL.atom(context):
+            pre = [str(data(a)) for a in A]
+            txt = str(BL)
+            if any([txt.endswith(p) for p in pre]):
+                return BL + data((domain+A)|BR)
+            else:
+                return      data((domain+A)|BR)
+def endswith_0(context,domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('endswith',endswith,endswith_0)
+#
+#   Join codes with argument provided separator.
+#
+#   demo: join , : a b c
+#   demo: join <-> : a b c
+#   demo: count : join < > : a b c
+#   demo: join <> : a b c
+#   demo: join : a b c
+#   demo: split . : a.b.c.d
+#   demo: join . : split . : a.b.c.d
+#   demo: split % <=> : <aaa%bbb=ccc>
+#
+def join(context,domain,A,B):
+    if all([a.atom(context) for a in A]+[b.atom(context) for b in B]):
+        sep = ''.join([str(a) for a in A])
+        return da(sep.join([str(b) for b in B]))
+CONTEXT.define('join',join)
+def split(context,domain,A,B):
+    if all([a.atom(context) for a in A]+[b.atom(context) for b in B]):
+        splits = [str(a) for a in A if not str(a)=='']
+        Bs = [str(b) for b in B]
+        if len(splits)==0:
+            T = []
+            for b in Bs:
+                for t in b: T.append(t)
+        while len(splits)>0:
+            sep = splits.pop()
+            T = []
+            for b in Bs:
+                for x in b.split(sep): T.append(x)
+            Bs = T
+        return data(*[co(t) for t in T])
+CONTEXT.define('split',split)
 
 if __name__=='__main__':
     t = '@@@'

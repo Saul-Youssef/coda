@@ -15,8 +15,8 @@ from base import *
 #   demo: collect : ap {put bin (nchar:B):B} : a b aa bb aaa cccc zz xxx xxx
 #   demo: equiv nchar : a b aa bb aaa cccc zz xxx xxx
 #
-def collect(context,domain,A,B):
-    if all([b.atom(context) and b.left().rigid(context) for b in B]):
+def collect(domain,A,B):
+    if all([b.atom() and b.left().rigid() for b in B]):
         lefts = {}
         for b in B:
             if not b.left() in lefts: lefts[b.left()] = []

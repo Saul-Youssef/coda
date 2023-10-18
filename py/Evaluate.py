@@ -1,110 +1,60 @@
 
 from base import *
+import Number
 
-def langstep(A):
-    result = []
-    for a in A:
-        if CONTEXT.domain(a)==da('language'):
-            for aa in CONTEXT(a): result.append(aa)
-        else:
-            result.append(langstep(a.left())|langstep(a.right()))
-    return data(*result)
-def language(A,n=100):
-    ntry = 0
-    while not langstep(A)==A and ntry<n:
-        ntry += 1
-        A = langstep(A)
-    return A
-#
-#   Simple evaluation recursively using
-#   definitions to a specified depth,
-#   quitting if there is no progress.
-#
-#def depth(D,n):
-#    if n<=0:
-#        return D,n
-#    else:
-#        D2 = D.eval()
-#        if D==D2: return D2,n
-#        return depth(D2,n-1)
-def depth_(D,n):
-    if n<=0:
-        return D,n
-    else:
-        D2 = D.eval()
-        if D==D2: return D2,n
-        return depth(D2,n-1)
-import Fast
-FF = Fast.Function(depth_)
-def depth(D,n): return FF(D,n)
-#
-#   Resolve is the same as depth
-#   but returns None if the input
-#   data has not converged.
-#
-def resolve(D,n):
-    D2,n = depth(D,n)
-    if n>0: return D2
+def intdef(ndef,A):
+    n = ndef
+    try: n = int(str(A))
+    except: pass
+    return n
 
-DEPTH = 100
+def evaluate_data(context,D):
+    L = []
+    for d in D:
+        for c in evaluate_coda(context,d): L.append(c)
+    return data(*L)
 
-def default(D): return depth(D,DEPTH)[0]
+def evaluate_coda(context,c):
+    if c in context: return context(evaluate_data(context,c.left())|evaluate_data(context,c.right()))
+    else           : return data(evaluate_data(context,c.left())|c.right())
+
+def evaluate(n,context,D):
+    D2 = evaluate_data(context,D)
+    if n<=0 or D==D2: return D2
+    else            : return evaluate(n-1,context,D2)
 #
-#    Show and set the default evaluation depth
+#   evaluation of data and new contexts with 'with'
 #
-#    demo: getDefaultDepth :
-#    demo: nat : 0
-#    demo: setDefaultDepth : 20
-#    demo: getDefaultDepth :
-#    demo: nat : 0
+#   eval : evaluates to specified depth
+#   use  : uses input definitions in the current context
+#   with : create a new 'scope' including argument specified definitions
 #
-def setDefaultDepth(domain,A,B):
-    if B.atom():
-        import Number
-        global DEPTH
-        ns = Number.ints(B)
-        if len(ns)==1 and ns[0]>=0: DEPTH = ns[0]
-        return da(str(DEPTH))
-    elif B.empty():
-        return data()
-CONTEXT.define('setDefaultDepth',setDefaultDepth)
-CONTEXT.define('getDefaultDepth',lambda domain,A,B: da(str(DEPTH)))
+#   demo: eval 100 : {a b c}:
+#   demo: eval : {a b c}:
+#   demo: eval 10 : with : nat : 0
+#   demo: eval 10 : with (let x:5) : x?
+#   demo: x?
+#   demo: get with : eval 100 : with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: x? y?
+#   demo: use : (let x:5) (let y:6)
+#   demo: int_sum : x? y?
+#   demo: x? y?
+#   demo: first3 : a b c d 
 #
-#     step displays step-by-step evaluation of it's input
-#
-#     demo: step 10 : nat : 0
-#     demo: step 100 : sum n : 1 1
-#
-def stepEval(domain,A,B):
-    if A.atom() or A.empty():
-        import Number
-        ns = Number.ints(A)
-        if len(ns)==1 and ns[0]>=0: depth = ns[0]
-        else                      : depth = DEPTH
-        step = [B]
-        B2 = B.eval()
-        while not step[-1]==B2 and len(step)<=depth:
-            step.append(B2)
-            B2 = B2.eval()
-        outs = []
-        n = 0
-        width = len(str(len(step)))
-        for s in step:
-            num = str(n)
-            while len(num)<width: num = ' '+num
-            outs.append('['+num+']'+' '+str(s)); n += 1
-        return da('\n'.join(outs))
-def stepEval_0(domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('step',stepEval,stepEval_0)
-#
-#     evaluate an argument specified number of times
-#
-#def eval(domain,A,B):
-#    if A.atom() or A.empty():
-#        import Number
-#        ns = Number.ints(A)
-#        n = 1
-#        if len(ns)==1: n = ns[0]
-#        return depth(B,n)[0]
-#CONTEXT.define('eval',eval)
+def eval_with(context,domain,A,B):
+    if A.atom(context) and B.atom(context):
+        n = Number.intdef(1,A); b = B[0]
+        if b.domain()==da('with') and b.arg().rigid(context):
+            defs  = [c for c in b.arg() if c.domain()==da('def')]
+            uses  = [da('use1')|data(de) for de in defs]
+            new = context.copy()
+            D = evaluate(100,new,data(*uses))
+            if D.empty():
+                n = Number.intdef(1,A)
+                return data((b.domain()+b.arg())|evaluate(n,new,b.right()))
+def eval_0(context,domain,A,B):
+    if A.rigid(context) and B.atom(context):
+        n = Number.intdef(1,A); b = B[0]
+        if not b.domain()==da('with'): return evaluate(n,context,B)
+CONTEXT.define('eval1',eval_0,eval_with)
+CONTEXT.define('with')

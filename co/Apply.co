@@ -22,4 +22,4 @@ def ker : {ap kernel A : B}
 #   demo: (mor pass : rev) : a b c
 #   demo: (mor rev : count) : a b c
 #
-def mor : ax {(right:A):B}
+#def mor : ax {(right:A):B}

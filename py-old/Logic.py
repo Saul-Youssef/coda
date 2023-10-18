@@ -25,32 +25,34 @@ from base import *
 #  demo: not: 1 2 3 4
 #  demo: not: (foo:bar)
 #
-AT = data(coda(data(),data()))
-def bool(context,domain,A,B):
-    if B.irred(context): return AT
+ATOM = data(coda(data(),data()))
+def bool(domain,A,B):
+    if B.atomic(): return ATOM
     if B.empty(): return data()
 CONTEXT.define('bool',bool)
-def complement(context,domain,A,B):
-    if B.irred(context): return data()
-    if B.empty(): return AT
+def complement(domain,A,B):
+    if B.atomic(): return data()
+    if B.empty (): return ATOM
 CONTEXT.define('not',complement)
-def eq_L(context,domain,A,B):
+def eq_L(domain,A,B):
     AL,AR = data(*A[:1]),data(*A[1:])
     BL,BR = data(*B[:1]),data(*B[1:])
-    if AL.atom(context) and BL.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
-def eq_R(context,domain,A,B):
+    if AL.atom() and BL.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR)
+def eq_R(domain,A,B):
     AL,AR = data(*A[:-1]),data(*A[-1:])
     BL,BR = data(*B[:-1]),data(*B[-1:])
-    if AR.atom(context) and BR.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
-def eq_(context,domain,A,B):
+    if AR.atom() and BR.atom(): return ((domain+AL)|BL) + ((domain+AR)|BR)
+def eq_(domain,A,B):
     if A==B: return data()
-    if A.irred(context) and B.empty(): return AT
-    if A.empty() and B.irred(context): return AT
+    if A.atomic () and B.empty(): return ATOM
+    if A.empty() and B.atomic (): return ATOM
     if A.empty() and B.empty(): return data()
-    if A.atom(context) and B.atom(context): return ((domain+(A[0].left ()))|B[0].left ()) + \
+    if A.atom () and B.atom (): return ((domain+(A[0].left ()))|B[0].left ()) + \
                                        ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)
 CONTEXT.define('equal',eq_,eq_L,eq_R)
+#CONTEXT.define('=',eq_,eq_L,eq_R)
+#CONTEXT.define('equal',eq_,eq_L,eq_R)
 #
 #    Standard binary operators
 #
@@ -70,7 +72,7 @@ class TruthTable(object):
     def ff(self,name): return self.value(self._tt[name][3])
     def value(self,i):
         if i==1: return data()
-        if i==0: return AT
+        if i==0: return ATOM
 T = TruthTable()
 #
 #    Binary logical operators with standard truth tables
@@ -88,55 +90,55 @@ T = TruthTable()
 #    demo: nand a : b
 #    demo: imply a : b
 #
-def OR(context,domain,A,B):
+def OR(domain,A,B):
     op = 'or'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('or',OR)
-def AND(context,domain,A,B):
+def AND(domain,A,B):
     op = 'and'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('and',AND)
-def NOR(context,domain,A,B):
+def NOR(domain,A,B):
     op = 'nor'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('nor',NOR)
-def XOR(context,domain,A,B):
+def XOR(domain,A,B):
     op = 'xor'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('xor',XOR)
-def NAND(context,domain,A,B):
+def NAND(domain,A,B):
     op = 'nand'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('nand',NAND)
-def XNOR(context,domain,A,B):
+def XNOR(domain,A,B):
     op = 'xnor'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('xnor',XNOR)
 CONTEXT.define('iff',XNOR)
-def IMPLY(context,domain,A,B):
+def IMPLY(domain,A,B):
     op = 'imply'
     if A.empty()  and B.empty() : return T.tt(op)
-    if A.empty()  and B.irred(context): return T.tf(op)
-    if A.irred(context) and B.empty() : return T.ft(op)
-    if A.irred(context) and B.irred(context): return T.ff(op)
+    if A.empty()  and B.atomic(): return T.tf(op)
+    if A.atomic() and B.empty() : return T.ft(op)
+    if A.atomic() and B.atomic(): return T.ff(op)
 CONTEXT.define('imply',IMPLY)
 #
 #   some/none define the coarsest data classification
@@ -146,7 +148,7 @@ CONTEXT.define('imply',IMPLY)
 #   demo: none : a b c
 #   demo: none :
 #
-def some(context,domain,A,B):
-    if A.irred(context): return A
-    if A.empty(): return B
+def some(domain,A,B):
+    if A.atomic(): return A
+    if A.empty (): return B
 CONTEXT.define('some',some)

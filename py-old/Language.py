@@ -17,7 +17,7 @@ def src(domain):
     if s.startswith('{') and s.endswith('}'): return s[1:-1]
     raise error('Unexpected language input')
 
-def language(context,domain,A,B):
+def language(domain,A,B):
     s = src(domain)
     if s.startswith(' '): return lang(s[1:  ],A,B)
     if s.endswith  (' '): return lang(s[ :-1],A,B)

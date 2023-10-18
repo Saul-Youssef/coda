@@ -25,14 +25,13 @@ from base import *
 #  demo: not: 1 2 3 4
 #  demo: not: (foo:bar)
 #
-AT = data(coda(data(),data()))
 def bool(context,domain,A,B):
-    if B.irred(context): return AT
+    if B.irred(context): return ATOM
     if B.empty(): return data()
 CONTEXT.define('bool',bool)
 def complement(context,domain,A,B):
     if B.irred(context): return data()
-    if B.empty(): return AT
+    if B.empty (): return ATOM
 CONTEXT.define('not',complement)
 def eq_L(context,domain,A,B):
     AL,AR = data(*A[:1]),data(*A[1:])
@@ -44,13 +43,15 @@ def eq_R(context,domain,A,B):
     if AR.atom(context) and BR.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
 def eq_(context,domain,A,B):
     if A==B: return data()
-    if A.irred(context) and B.empty(): return AT
-    if A.empty() and B.irred(context): return AT
+    if A.irred(context) and B.empty(): return ATOM
+    if A.empty() and B.irred(context): return ATOM
     if A.empty() and B.empty(): return data()
     if A.atom(context) and B.atom(context): return ((domain+(A[0].left ()))|B[0].left ()) + \
                                        ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)
 CONTEXT.define('equal',eq_,eq_L,eq_R)
+#CONTEXT.define('=',eq_,eq_L,eq_R)
+#CONTEXT.define('equal',eq_,eq_L,eq_R)
 #
 #    Standard binary operators
 #
@@ -70,7 +71,7 @@ class TruthTable(object):
     def ff(self,name): return self.value(self._tt[name][3])
     def value(self,i):
         if i==1: return data()
-        if i==0: return AT
+        if i==0: return ATOM
 T = TruthTable()
 #
 #    Binary logical operators with standard truth tables
@@ -148,5 +149,5 @@ CONTEXT.define('imply',IMPLY)
 #
 def some(context,domain,A,B):
     if A.irred(context): return A
-    if A.empty(): return B
+    if A.empty (): return B
 CONTEXT.define('some',some)

@@ -1,0 +1,14 @@
+#
+#   evaluate data
+#
+#   demo: eval 100 : {a b c}:
+#   demo: eval : {a b c}:
+#   demo: eval 10 : with : nat : 0
+#   demo: eval 10 : with (let x:5) : x?
+#   demo: x?
+#   demo: get with : eval 100 : with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: x? y?
+#   demo: (let x:5) (let y:6) (int_sum : x? y?)
+#   demo: x? y?
+#
+def eval : ap eval1

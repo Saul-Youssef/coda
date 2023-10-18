@@ -8,8 +8,8 @@ from base import *
 #    demo: pass : 1 2 3
 #    demo: null : 1 2 3
 #
-CONTEXT.define('pass',lambda context,domain,A,B:B)
-CONTEXT.define('null',lambda context,domain,A,B:data())
+CONTEXT.define('pass',lambda domain,A,B:B)
+CONTEXT.define('null',lambda domain,A,B:data())
 CONTEXT.define('bin') # generic built-in container
 #
 #   put A : B creates A:B, it "puts B into A".
@@ -20,17 +20,19 @@ CONTEXT.define('bin') # generic built-in container
 #   demo: put bin a b c : 1 2 3
 #   demo: ap put bin : 1 2 3
 #   demo: (put:)
+#   demo: pure : put :
+#
+CONTEXT.define('put',lambda domain,A,B: data(A|B))
+#
 #   demo: get bin : bin : 1 2 3
 #   demo: get bin : (bin x y z : 1 2 3)
 #   demo: get : (:a b c) (put : 1 2 3)
 #
-CONTEXT.define('put',lambda context,domain,A,B: data(A|B))
-
-def get(context,domain,A,B):
-    if A.rigid(context):
+def get(domain,A,B):
+    if A.rigid():
         if B.empty(): return data()
         L = []; Bs = [b for b in B]
-        while len(Bs)>0 and Bs[0].atom(context):
+        while len(Bs)>0 and Bs[0].atom():
             b = Bs.pop(0)
             if b.domain()==A:
                 for r in b.right(): L.append(r)
@@ -43,23 +45,23 @@ CONTEXT.define('get',get)
 #   demo: right : bin 1 2 3 : a b c
 #   demo: domain : bin 1 2 3 : a b c
 #
-def domain_0(context,domain,A,B):
+def domain_0(domain,A,B):
     BL,BR = B.split()
-    if BL.atom(context): return BL[0].domain() + data((domain+A)|BR)
-def domain_1(context,domain,A,B):
+    if BL.atom(): return BL[0].domain() + data((domain+A)|BR)
+def domain_1(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('domain',domain_0,domain_1)
-def left(context,domain,A,B):
+def left(domain,A,B):
     BL,BR = B.split()
-    if BL.atom(context):
+    if BL.atom():
         L = BL[0].left()
         LL,LR = L.split()
         return LR + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('left',left)
-def right(context,domain,A,B):
+def right(domain,A,B):
     BL,BR = B.split()
-    if BL.atom(context): return BL[0].right() + data((domain+A)|BR)
+    if BL.atom(): return BL[0].right() + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('right',right)
 #
@@ -73,20 +75,19 @@ CONTEXT.define('right',right)
 #   demo: if (foo:bar) : 1 2 3
 #   demo: if (bin:x y) : 1 2 3
 #   demo: if (bin:) : 1 2 3
-#   demo: if (not:bin:) : 1 2 3
 #   demo: nif (bin:) : 1 2 3
 #
-def if_1(context,domain,A,B):
-    if A.irred(context): return data()
-def if_0(context,domain,A,B):
+def if_1(domain,A,B):
+    if A.atomic(): return data()
+def if_0(domain,A,B):
     if A.empty(): return B
 CONTEXT.define('if',if_1,if_0)
-def nif_1(context,domain,A,B):
+def nif_1(domain,A,B):
     if A.empty(): return data()
-def nif_0(context,domain,A,B):
-    if A.irred(context): return B
+def nif_0(domain,A,B):
+    if A.atomic(): return B
 CONTEXT.define('nif',nif_1,nif_0)
-#
+##
 #    Star is syntactic sugar with A*B:X defined to be A:B:X
 #
 #    If you think of A and B as functions, with action X -> A:X,
@@ -100,10 +101,11 @@ CONTEXT.define('nif',nif_1,nif_0)
 #   demo: first * pass 2 : 1 2 3
 #   demo: (first * pass) 2 : 1 2 3
 #
-def star(context,domain,A,B):
+def star(domain,A,B):
     AL,AR = A.split()
-    if AL.atom(context):
+    if AL.atom():
         L,R = AL[0].left(),AL[0].right()
         LL,LR = L.split()
-        if LL==da('bin'): return data((LR+AR)|data((R+AR)|B))
+        if LL==da('bin'):
+            return data((LR+AR)|data((R+AR)|B))
 CONTEXT.define('*',star)

@@ -45,7 +45,7 @@ def intdef(n,D):
 #    demo: rev : nat : 0
 #    demo: rev : rev : nat : 0
 #
-def nat(context,domain,A,B):
+def nat(domain,A,B):
     ns = ints(B)
     if len(ns)==1:
         n = ns.pop()
@@ -56,13 +56,13 @@ class Reduce(object):
     def __init__(self,name,reduce):
         self._name   = name
         self._reduce = reduce # atoms to atoms
-        CONTEXT.define(name,lambda context,domain,A,B:self(context,domain,A,B))
-    def split(self,context,B):
+        CONTEXT.define(name,lambda domain,A,B:self(domain,A,B))
+    def split(self,B):
         atoms,rest = [],[b for b in B]
-        while len(rest)>0 and rest[0].atom(context): atoms.append(rest.pop(0))
+        while len(rest)>0 and rest[0].atom(): atoms.append(rest.pop(0))
         return data(*atoms),data(*rest)
-    def __call__(self,context,domain,A,B):
-        atoms,rest = self.split(context,B)
+    def __call__(self,domain,A,B):
+        atoms,rest = self.split(B)
         reduce = self._reduce(atoms)
         if len(rest)==0 and atoms==reduce: return data(*reduce)
         return data((domain+A)|(reduce+rest))
@@ -115,23 +115,23 @@ RE('int_prod',tryint,_prod)
 RE('int_sort',tryint,_sort)
 RE('int_min',tryint,_min)
 RE('int_max',tryint,_max)
-def int_inv_0(context,domain,A,B):
+def int_inv_0(domain,A,B):
     if B.empty(): return data()
-def int_inv_1(context,domain,A,B):
+def int_inv_1(domain,A,B):
     BL,BR = B.split()
-    if BL.atom(context):
+    if BL.atom():
         L  = ints(BL)
         Li = [co(str(-l)) for l in L]
         return data(*Li)+data((domain+A)|BR)
 CONTEXT.define('int_inv',int_inv_0,int_inv_1)
-def int_div_0(context,domain,A,B):
+def int_div_0(domain,A,B):
     if B.empty(): return data()
-def int_div_2(context,domain,A,B):
+def int_div_2(domain,A,B):
     if A.empty(): return B
-def int_div_1(context,domain,A,B):
-    if A.rigid(context) and len(A)==1:
+def int_div_1(domain,A,B):
+    if A.rigid() and len(A)==1:
         BL,BR = B.split()
-        if BL.atom(context):
+        if BL.atom():
             num = tryint(BL)
             den = tryint(A)
             if den is None: return None
@@ -148,23 +148,23 @@ RE('float_prod',tryfloat,_prod)
 RE('float_sort',tryfloat,_sort)
 RE('float_min',tryfloat,_min)
 RE('float_max',tryfloat,_max)
-def float_inv_0(context,domain,A,B):
+def float_inv_0(domain,A,B):
     if B.empty(): return data()
-def float_inv_1(context,domain,A,B):
+def float_inv_1(domain,A,B):
     BL,BR = B.split()
-    if BL.atom(context):
+    if BL.atom():
         L  = floats(BL)
         Li = [co(str(-l)) for l in L]
         return data(*Li)+data((domain+A)|BR)
 CONTEXT.define('float_inv',int_inv_0,int_inv_1)
-def float_div_0(context,domain,A,B):
+def float_div_0(domain,A,B):
     if B.empty(): return data()
-def float_div_2(context,domain,A,B):
+def float_div_2(domain,A,B):
     if A.empty(): return B
-def float_div_1(context,domain,A,B):
-    if A.rigid(context) and len(A)==1:
+def float_div_1(domain,A,B):
+    if A.rigid() and len(A)==1:
         BL,BR = B.split()
-        if BL.atom(context):
+        if BL.atom():
             num = tryfloat(BL)
             den = tryfloat(A)
             if den is None: return None

@@ -5,22 +5,17 @@
 #   Command line setup
 #
 import rlcompleter
-import readline,sys
+import readline
 readline.parse_and_bind("tab: complete")
 #
 #    System
 #
-from base import *
-import Text,Language,Evaluate
+from start import *
+import Text,With,Language
 
 EXIT = ['exit','quit']
-UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
-#
-#   import local definitions from .../coda/co
-#
-D = Evaluate.evaluate(100,CONTEXT,Language.lang('ap use1 : localdef:',data(),data()))
-if not D.empty(): raise error('Local definition error '+str(D))
-
+# non-unicode for CLI
+UNICODE.setatoms('(:)','0','1')
 try:
     while True:
         try:
@@ -28,7 +23,7 @@ try:
             if line in EXIT: break
 
             D = Language.lang(line,data(),data())
-            D = Evaluate.evaluate(100,CONTEXT,D)
+            D = With.withEval(100,CONTEXT,D)
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:

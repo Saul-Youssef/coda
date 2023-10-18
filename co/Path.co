@@ -1,0 +1,9 @@
+#
+#    Move up and down in a file system
+#
+#    demo: up : home:
+#    demo: down co : home:
+#    demo: dir co : down co : home:
+#
+def down : {ap ax down1 A : B}
+def up : {ap up1 : B}

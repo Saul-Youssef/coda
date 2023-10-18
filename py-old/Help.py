@@ -13,8 +13,8 @@ import IO
 #   demo: demo 2 : rev
 #   demo: info :
 #
-def help(context,domain,A,B):
-    if B.rigid(context):
+def help(domain,A,B):
+    if B.rigid():
         s = 'help'
         if len(B)>0: s = str(B[0])
         H = Help(s)
@@ -23,7 +23,7 @@ def help(context,domain,A,B):
 CONTEXT.define('help',help)
 #
 #
-def sources(context,domain,A,B):
+def sources(domain,A,B):
     for S in SOURCES: print(S)
     return data()
 CONTEXT.define('sources',sources)
@@ -187,6 +187,15 @@ def separate(filetext):
         lines2.append(lastline)
     return ('\n'.join(lines2)).split('$$SEPARATOR$$')
 
+def source(domain,A,B):
+    BL,BR = B.split()
+    if BL.atom():
+        txt = str(BL)
+        return data(*([co(t) for t in blocks(comments(txt))] + [(domain+A)|BR]))
+def source_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('source',source,source_0)
+
 def comments(text):
     # remove comments from coda source code text
     L = text.split('\n')
@@ -221,14 +230,13 @@ for path in paths: SOURCES.append(SourceFile(path))
 #   Demos are an easy way to learn the definitions.
 #
 #   demo: help : rev
-#   demo: demo rev : 1
-#   demo: demo rev : 2 
+#   demo: demo 1 : rev
+#   demo: demo 4 : rev
 #
-#def demo(context,domain,A,B):
-def demo(context,domain,B,A):
+def demo(domain,A,B):
     AL,AR = A.split()
     BL,BR = B.split()
-    if (AL.atom(context) or AL.empty()) and BL.atom(context):
+    if (AL.atom() or AL.empty()) and BL.atom():
         H = Help(str(BL))
         import Number
         if not H is None and not H.comment() is None and not H.comment()=='' and len(Number.ints(AL))>0:
@@ -240,7 +248,7 @@ def demo(context,domain,B,A):
                 return Language.lang(demcode.strip(),data(),data())
             else:
                 return data()
-def demo_0(context,domain,A,B):
+def demo_0(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('demo',demo,demo_0)
 #
@@ -313,7 +321,7 @@ class section(object):
 #   demo: info : Basic
 #   demo: info : Basic Number
 #
-def defs(context,domain,A,B):
+def defs(domain,A,B):
     modules = [str(b) for b in B]
     table = []
     for domain,definition in CONTEXT:
@@ -333,8 +341,8 @@ CONTEXT.define('info',defs)
 #   demo: once : module : defs :
 #   demo: defs : Basic Number Sequence Apply
 #
-def module(context,domain,A,B):
-    if B.rigid(context):
+def module(domain,A,B):
+    if B.rigid():
         L = []
         for b in B:
             if b in CONTEXT:
@@ -342,8 +350,8 @@ def module(context,domain,A,B):
         return data(*L)
 CONTEXT.define('module',module)
 
-def Defined(context,domain,A,B):
-    if B.rigid(context):
+def Defined(domain,A,B):
+    if B.rigid():
         modules = [str(b) for b in B]
         L = []
         for dom,Def in CONTEXT:

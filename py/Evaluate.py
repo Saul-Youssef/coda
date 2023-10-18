@@ -31,36 +31,34 @@ def evaluate(n,context,D):
 #   use  : uses input definitions in the current context
 #   with : create a new 'scope' including argument specified definitions
 #
-#   demo: eval 100 : {a b c}:
-#   demo: eval : {a b c}:
-#   demo: eval 10 : with : nat : 0
-#   demo: eval 10 : with (let x:5) : x?
-#   demo: x?
-#   demo: get with : eval 100 : with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: eval : a b c
+#   demo: eval :
+#   demo: eval : with (let x:5) (let y:6) : int_sum : x? y?
 #   demo: x? y?
-#   demo: use : (let x:5) (let y:6)
-#   demo: int_sum : x? y?
-#   demo: x? y?
-#   demo: first3 : a b c d
+#   demo: eval : with (def first3 : {first 3:B}) : first3 : a b c d e f g
+#   demo: get with : with (def first3 : {first 3:B}) : first3 : a b c d e f g
+#   demo: first3 : a b c d e f g
+#   demo: eval : with (let x:a) (let y:b) : (x? y?) = (y? x?)
+#   demo: eval : with (let x:a) (let y:a) : (x? y?) = (y? x?)
 #
 def eval_with(context,domain,A,B):
-    if A.atom(context) and B.atom(context):
-        n = Number.intdef(1,A); b = B[0]
+    if A.rigid(context) and B.atom(context):
+        b = B[0]
         if b.domain()==da('with') and b.arg().rigid(context):
             defs  = [c for c in b.arg() if c.domain()==da('def')]
             uses  = [da('use1')|data(de) for de in defs]
             new = context.copy()
-            D = evaluate(100,new,data(*uses))
-            if D.empty():
-                n = Number.intdef(1,A)
+            D = evaluate(DEFAULT,new,data(*uses)) # add definitions to new context.
+            if D.empty(): # evaluate right side of with in new context.
+                n = Number.intdef(DEFAULT,A)
                 return data((b.domain()+b.arg())|evaluate(n,new,b.right()))
 def eval_0(context,domain,A,B):
     if A.rigid(context) and B.atom(context):
-        n = Number.intdef(1,A); b = B[0]
+        n = Number.intdef(DEFAULT,A); b = B[0]
         if not b.domain()==da('with'): return evaluate(n,context,B)
 CONTEXT.define('eval1',eval_0,eval_with)
 #
 #
 #    demo: eval 100 : with (let y:5 6) : bool:(rev:rev:y?) = (rev:y?)
-# 
+#
 CONTEXT.define('with')

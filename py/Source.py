@@ -4,11 +4,12 @@
 from base import *
 
 def localdef(context,domain,A,B):
-#    code = 'coda : source : readpath : dir co : endswith </co> : dir : home : '
     code = 'coda : source : readpath : dir co : down1 co : home : '
     import Language
     return Language.lang(code,data(),data())
 CONTEXT.define('localdef',localdef)
+#    code = 'coda : source : readpath : dir co : endswith </co> : dir : home : '
+
 #
 #   Compile input text source code into data.
 #
@@ -26,6 +27,14 @@ def coda_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('coda',coda,coda_0)
 #
+#   compile source code block from a file
+#   after removing comments and using
+#   indentation for continuation.
+#
+def language(txt):
+    import Help,Language
+    for t in Help.blocks(Help.comments(txt)): yield Language.lang(t,data(),data())
+#
 #   Get source code blocks with indentation and removing comments
 #
 #   demo: source : readpath : first 2 : dir co : endswith </co> : dir : home :
@@ -40,16 +49,6 @@ def source(context,domain,A,B):
 def source_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('source',source,source_0)
-#
-#   The startup directory of the currently running software
-#
-#   Make a file coda.co in this directory to create startup
-#   data for the interpreter
-#
-#   demo: start:
-#   demo: dir : start :
-#
-
 #
 #   The home directory of the currently running software
 #

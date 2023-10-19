@@ -21,3 +21,21 @@ def Use1(context,domain,A,B):
             return data()
 CONTEXT.define('use1',Use1)
 CONTEXT.define('def')
+#
+#   Get undefined codas from input data
+#
+#   demo: undefined :
+#   demo: undefined : a b c
+#   demo: undefined : (foo:bar) x? y? z?
+#   demo: undefined : (bin: bin: bin : x? y? z?)
+#
+def undefined(context,A):
+    us = set([])
+    for a in A:
+        if not a in context: us.add(a)
+        us = us.union(undefined(context,a.left())).union(undefined(context,a.right()))
+    return us
+
+def Undefined(context,domain,A,B):
+    if context.evaluate(1,B)==B: return data(*[u for u in undefined(context,B)])
+CONTEXT.define('undefined',Undefined)

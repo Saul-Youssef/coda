@@ -18,7 +18,8 @@ UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 #
 #   import local definitions from .../coda/co
 #
-D = Evaluate.evaluate(100,CONTEXT,Language.lang('ap use1 : localdef:',data(),data()))
+D = CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',data(),data()))
+#D = Evaluate.evaluate(100,CONTEXT,Language.lang('ap use1 : localdef:',data(),data()))
 if not D.empty(): raise error('Local definition error '+str(D))
 
 try:
@@ -28,11 +29,12 @@ try:
             if line in EXIT: break
 
             D = Language.lang(line,data(),data())
-            D = Evaluate.evaluate(100,CONTEXT,D)
+            D = CONTEXT.evaluate(100,D)
+#            D = Evaluate.evaluate(100,CONTEXT,D)
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
-            raise 
+            raise
             print('')
 except EOFError:
     pass

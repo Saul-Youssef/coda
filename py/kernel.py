@@ -6,9 +6,12 @@
 #
 from ipykernel.kernelbase import Kernel
 
-import base,Language,Evaluate,IO,Compile
+import base,Language,Evaluate,IO,Source
 IO.OUT.kernel() # set stdout to kernel mode
-Evaluate.resolve(Language.lang('homecontext:', base.data(),base.data()),1000)
+#Evaluate.resolve(Language.lang('homecontext:', base.data(),base.data()),1000)
+#D = Evaluate.evaluate(100,base.CONTEXT,Language.lang('ap use1 : localdef:',base.data(),base.data()))
+D = base.CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',base.data(),base.data()))
+if not D.empty(): raise error('Local definition error '+str(D))
 
 class EchoKernel(Kernel):
     implementation = 'Echo'
@@ -28,9 +31,12 @@ class EchoKernel(Kernel):
                    allow_stdin=True):
         if not silent:
             L = []
-            for d in Compile.coda(code):
+#            for d in Compile.coda(code):
+            for d in Source.language(code):
                 try:
-                    D = Evaluate.default(d)
+#                    D = Evaluate.default(d)
+                    D = base.CONTEXT.evaluate(100,d)
+#                    D = Evaluate.evaluate(100,base.CONTEXT,d)
                     IO.OUT(str(D))
                     s = IO.OUT.flush()
                     if len(s)>0: L.append(s)

@@ -27,6 +27,7 @@ class data(object):
     def irred (self,context): return any(c.atom(context) for c in self)
     def atom  (self,context): return len(self)==1 and self.atomic(context)
     def rigid (self,context): return self.atomic(context) and all(c.left().rigid(context) and c.right().rigid(context) for c in self)
+    def invar (self,context): return not all(c.invar(context) for c in self)
 #
 #   Algebra
 #
@@ -62,6 +63,7 @@ class coda(object):
 #
     def atom(self,context): return self in context and len(context[self])==0
     def rigid(self,context): return data(self).rigid(context)
+    def invar(self,context): return self.atom(context) or not self in context 
 
 ATOM = data()|data()
 BIT0 = data(ATOM)|data()
@@ -76,7 +78,7 @@ class Context(object):
     def __repr__(self): return ','.join([str(dom) for dom,defs in self])
     def copy(self):
         cont = Context()
-        for key,value in self: cont._defs[key] = value
+        for key,value in self._defs.items() : cont._defs [key] = value
         return cont
     def has(self,dom): return dom in self._defs
     def add(self,domain,*Fs):
@@ -92,6 +94,20 @@ class Context(object):
                 D = F(self,domain,A,B)
                 if not D is None: return D
             return data(c)
+
+    def evaluate(self,n,D):
+        D2 = self.edata(D)
+        if n<=0 or D==D2: return D2
+        else            : return self.evaluate(n-1,D2)
+    def edata(self,D):
+        L = []
+        for d in D:
+            for c in self.ecoda(d): L.append(c)
+        return data(*L)
+    def ecoda(self,c):
+        if c in self: return self(self.edata(c.left())|self.edata(c.right()))
+        else        : return data(self.edata(c.left())|c.right())
+
 CONTEXT = Context(data(),data(ATOM),data(BIT0),data(BIT1))
 #
 #   Unicode <-> data

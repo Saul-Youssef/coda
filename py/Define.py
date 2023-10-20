@@ -14,7 +14,7 @@ from base import *
 #    demo: use : (let x:55) (def first2 : {first 2:B}) (def first3 : {first 3:B})
 #
 def Use1(context,domain,A,B):
-    if B.atom(context) and B.rigid(context) and B[0].domain()==da('def'):
+    if B.atom(context) and B.invar(context) and B[0].domain()==da('def'):
         b = B[0]
         if not context.has(b.arg()):
             context.add(b.arg(),lambda cont,dom,AA,BB: data((b.right()+AA)|BB))
@@ -35,7 +35,16 @@ def undefined(context,A):
         if not a in context: us.add(a)
         us = us.union(undefined(context,a.left())).union(undefined(context,a.right()))
     return us
+def invariant(context,A):
+    ins = set([])
+    for a in A:
+        if a.invar(context): ins.add(a)
+        ins = ins.union(invariant(context,a.left())).union(invariant(context,a.right()))
+    return ins
 
 def Undefined(context,domain,A,B):
     if context.evaluate(1,B)==B: return data(*[u for u in undefined(context,B)])
 CONTEXT.define('undefined',Undefined)
+def Invariant(context,domain,A,B):
+    if context.evaluate(1,B)==B: return B
+CONTEXT.define('invariant',Invariant)

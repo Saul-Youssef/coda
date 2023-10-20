@@ -3,7 +3,7 @@
 #
 from base import *
 #from Space import Space
-#import Set
+import Set
 import Help
 
 LANGFRAC = 0.01
@@ -14,8 +14,6 @@ letters = [co('a'),co('b'),co('A'),co('B')]
 excluded_modules = ['Text','Compile','Define','Evaluate','Help','Import','Variable',
                     'IO','Theorem','Language','Path','Sample','Generate','Set','Code']
 excluded_strings = ['float','code_']
-
-def bin(Ds): return data(*[data()|D for D in Ds])
 
 defines = []
 for dom,de in CONTEXT:
@@ -63,8 +61,7 @@ class Gen(object):
                         p2 = self.replace(p,co(t.replace(' ',' : ')))
                         pout.append(p2)
         random.shuffle(pout)
-        return [data(*p) for p in pout]
-#        return Set.Set(*[data(*p) for p in pout])
+        return Set.Set(*[data(*p) for p in pout])
     def nlang(self,p):
         n = 0
         for pp in p:
@@ -96,26 +93,24 @@ def allcoda(width,depth):
         for T in itertools.product(datas,repeat=2): codas.append(coda(T[0],T[1]))
     return codas
 
-def pure(width,depth): return alldata(width,depth)
-#return Set.Set(*[d for d in alldata(width,depth)])
+def pure(width,depth): return Set.Set(*[d for d in alldata(width,depth)])
 
 def evenAtoms(n):
     at = data()|data()
     atoms = [data()]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return atoms
-#    return Set.Set(*atoms)
+    return Set.Set(*atoms)
 def oddAtoms(n):
     at = data()|data()
     atoms = [data(at)]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at,at))
-    return atoms
-#    return Set.Set(*atoms)
+    return Set.Set(*atoms)
 def Atoms(n):
     at = data()|data()
     atoms = [data()]
     while len(atoms)<n: atoms.append(atoms[-1]+data(at))
-    return atoms
+    print('aaaaaa',len(atoms))
+    return data(*[data()|a for a in atoms])
 #
 #   Simple searching
 #
@@ -165,62 +160,61 @@ class Domain(object):
 #   demo: sample.data <A> <B> <{$}> a : 3
 #   demo: sample.data <A> <B> <{$}> (defs:Apply Basic Logic Number Sequence) : 2
 #
-def even_0(context,domain,A,B):
+def even_0(domain,A,B):
     if B.empty(): return data()
-def even_1(context,domain,A,B):
-    if B.rigid(context) and len(B)>0 and A.rigid(context):
+def even_1(domain,A,B):
+    if B.invariant() and len(B)>0 and A.invariant():
         import Number
         ns = Number.ints(B)
-        if len(ns)>0: return bin(evenAtoms(ns[0]))
+        if len(ns)>0: return evenAtoms(ns[0]).bin()
 CONTEXT.define('sample.even',even_0,even_1)
-def odd_0(context,domain,A,B):
+def odd_0(domain,A,B):
     if B.empty(): return data()
-def odd_1(context,domain,A,B):
-    if B.rigid(context) and len(B)>0 and A.rigid(context):
+def odd_1(domain,A,B):
+    if B.invariant() and len(B)>0 and A.invariant():
         import Number
         ns = Number.ints(B)
-        if len(ns)>0: return bin(oddAtoms(ns[0]))
+        if len(ns)>0: return oddAtoms(ns[0]).bin()
 CONTEXT.define('sample.odd',odd_0,odd_1)
-def atom_0(context,domain,A,B):
-    if B.empty(): return data()
-def atom_1(context,domain,A,B):
-    if B.rigid(context) and len(B)>0 and A.rigid(context):
-        import Number
-        ns = Number.ints(B)
-        if len(ns)==1: return bin(Atoms(ns[0]))
-CONTEXT.define('sample.atom',atom_0,atom_1)
+#def atom_0(domain,A,B):
+#    if B.empty(): return data()
+#def atom_1(domain,A,B):
+#    if B.invariant() and len(B)>0 and A.invariant():
+#        import Number
+#        ns = Number.ints(B)
+#        if len(ns)>0: return Atoms(ns[0])
+#CONTEXT.define('sample.atom',odd_0,odd_1)
 
-def purewindow_0(context,domain,A,B):
+def purewindow_0(domain,A,B):
     if B.empty(): return data()
-def purewindow_1(context,domain,A,B):
-    if B.rigid(context) and len(B)>0 and A.rigid(context):
+def purewindow_1(domain,A,B):
+    if B.invariant() and len(B)>0 and A.invariant():
         import Number
         ns = Number.ints(B)
         if len(ns)==2:
             width,depth = ns[0],ns[1]
-            return bin(pure(width,depth))
+            return pure(width,depth).bin()
 CONTEXT.define('sample.pure',purewindow_0,purewindow_1)
 
-def samplewindow_0(context,domain,A,B):
+def samplewindow_0(domain,A,B):
     if B.empty(): return data()
-def samplewindow_1(context,domain,A,B):
-    if A.rigid() and B.rigid() and len(B)>0:
+def samplewindow_1(domain,A,B):
+    if A.invariant() and B.invariant() and len(B)>0:
         import Number
         ns = Number.ints(B)
         if len(ns)==2:
             width,depth = ns[0],ns[1]
-            W = Domain(*[a for a in A]).window(width,depth)
-            return bin(W)
+            return Set.Set(*Domain(*[a for a in A]).window(width,depth)).bin()
 CONTEXT.define('sample.window',samplewindow_0,samplewindow_1)
 
-def sampledata_0(context,domain,A,B):
+def sampledata_0(domain,A,B):
     if B.empty(): return data()
-def sampledata_1(context,domain,A,B):
-    if A.invar(context) and B.rigid(context) and len(B)>0:
+def sampledata_1(domain,A,B):
+    if A.eval()==A and B.rigid() and len(B)>0:
         import Number
         ns = Number.ints(B)
         n = 1
         if len(ns)>0: n = abs(ns[0])
         G = Gen([a for a in A],n)
-        return bin(G.set())
+        return G.set().bin()
 CONTEXT.define('sample.data',sampledata_0,sampledata_1)

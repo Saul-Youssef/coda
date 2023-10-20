@@ -1,9 +1,15 @@
 
 
-o Fix the stupid newline input() issue 
+
+1. Make a new step
+2. Test super-caching
+3. Design and test multiprocessing
+
+================
+
+o Fix the stupid newline input() issue
 o Help seems to be semi-broken ATM
 o Handle exceptions and keyboardinterrupts
-o Make definitions evaluate like everything else
 o Do group theory as an example
 o Classification, Search, Machine learning
      Classify even and odd peano integers
@@ -13,20 +19,5 @@ o Adjoint functor theorem, re-produce Aldor paper
 o Functors
 o Speed up with caching
 o Speed up with parallelism
-o Speed up with execution "harness" to avoid dumb re-evaluation
-o Write talk
-o Write paper
 o Video?
-o Collect and equivalence relations
 o Fix up help system
-
-========== Working ===========================
-
-o Add peano
-o Write up Godel tutorial
-
-========= Done ===========================
-
-o Polish up tutorials
-o Add collect, equivalence classes/relations
-o Finish the rest of the tutorials

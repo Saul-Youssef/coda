@@ -4,7 +4,7 @@
 #   Saul Youssef, January 2023
 #====================================================================================
 #
-#   = A data is a finite sequence of codas =
+#   A data is a finite sequence of codas
 #
 class data(object):
     def __init__(self,*codas): self._sequence = codas
@@ -27,7 +27,7 @@ class data(object):
     def irred (self,context): return any(c.atom(context) for c in self)
     def atom  (self,context): return len(self)==1 and self.atomic(context)
     def rigid (self,context): return self.atomic(context) and all(c.left().rigid(context) and c.right().rigid(context) for c in self)
-    def invar (self,context): return not all(c.invar(context) for c in self)
+    def invar (self,context): return context.evaluate(1,self)==self
 #
 #   Algebra
 #
@@ -35,7 +35,7 @@ class data(object):
     def __or__ (self,A): return coda(self,A)           # A:B in the language
     def empty    (self): return len(self)==0
 #
-#   = A coda is a pair of data =
+#   A coda is a pair of data
 #
 class coda(object):
     def __init__(self,left,right): self._left,self._right = left,right
@@ -63,22 +63,55 @@ class coda(object):
 #
     def atom(self,context): return self in context and len(context[self])==0
     def rigid(self,context): return data(self).rigid(context)
-    def invar(self,context): return self.atom(context) or not self in context 
+    def invar(self,context): return self.atom(context) or (not self in context)
 
 ATOM = data()|data()
 BIT0 = data(ATOM)|data()
 BIT1 = data(ATOM)|data(ATOM)
+
+class Cache(object):
+    def __init__(self):
+        self._ndata = {}
+        self._edata = {}
+        self._ecoda = {}
+    def evaluate(self,context,n,D):
+        if (n,D) in self._ndata:
+            return self._ndata[(n,D)]
+        else:
+            D2 = context._evaluate(n,D)
+            self._ndata[(n,D)] = D2
+            return D2
+    def edata(self,context,D):
+        if D in self._edata:
+            return self._edata[D]
+        else:
+            D2 = context._edata(D)
+            self._edata[D] = D2
+            return D2
+    def ecoda(self,context,c):
+        if c in self._ecoda:
+            return self._ecoda[c]
+        else:
+            D = context._ecoda(c)
+            self._ecoda[c] = D
+            return D
 #
-#   = A context is a function from coda to data =
+#   A context is a function from coda to data
 #
 class Context(object):
-    def __init__(self,*doms): self._defs = {dom:[] for dom in doms}
+    def __init__(self,*doms):
+        self._defs = {dom:[] for dom in doms}
+        self._cache = {} # cached results of self.evaluate(n,D)
+        self._ncache = {}
+        self._dcache = {}
+        self._ecache = {}
     def __iter__(self):
         for domain,defs in self._defs.items(): yield domain,defs
     def __repr__(self): return ','.join([str(dom) for dom,defs in self])
     def copy(self):
         cont = Context()
         for key,value in self._defs.items() : cont._defs [key] = value
+        for key,value in self._cache.items(): cont._cache[key] = value
         return cont
     def has(self,dom): return dom in self._defs
     def add(self,domain,*Fs):
@@ -96,6 +129,13 @@ class Context(object):
             return data(c)
 
     def evaluate(self,n,D):
+        if (n,D) in self._cache:
+            return self._cache[(n,D)]
+        else:
+            D2 = self._evaluate(n,D)
+            self._cache[(n,D)] = D2
+            return D2
+    def _evaluate(self,n,D):
         D2 = self.edata(D)
         if n<=0 or D==D2: return D2
         else            : return self.evaluate(n-1,D2)

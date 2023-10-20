@@ -61,5 +61,34 @@ def eval_0(context,domain,A,B):
 #        if not b.domain()==da('with'): return evaluate(n,context,B)
 CONTEXT.define('eval1',eval_0,eval_with)
 CONTEXT.define('with')
-
-#            D = evaluate(DEFAULT,new,data(*uses)) # add definitions to new context.
+#
+#     step evaluation step-by-step evaluation of it's input
+#
+#     demo: step 10 : nat : 0
+#     demo: step 100 : sum n : 1 1
+#
+def stepEval(context,domain,A,B):
+#    if A.atom() or A.empty():
+    if A.rigid(context):
+        import Number
+        ns = Number.ints(A)
+        if len(ns)==1 and ns[0]>=0: depth = ns[0]
+        else                      : depth = DEPTH
+        step = [B]
+#        B2 = B.eval()
+        B2 = context.edata(B)
+        while not step[-1]==B2 and len(step)<=depth:
+            step.append(B2)
+#            B2 = B2.eval()
+            B2 = context.edata(B)
+        outs = []
+        n = 0
+        width = len(str(len(step)))
+        for s in step:
+            num = str(n)
+            while len(num)<width: num = ' '+num
+            outs.append('['+num+']'+' '+str(s)); n += 1
+        return da('\n'.join(outs))
+def stepEval_0(domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('step',stepEval,stepEval_0)

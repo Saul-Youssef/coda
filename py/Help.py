@@ -222,7 +222,7 @@ for path in paths: SOURCES.append(SourceFile(path))
 #
 #   demo: help : rev
 #   demo: demo rev : 1
-#   demo: demo rev : 2 
+#   demo: demo rev : 2
 #
 #def demo(context,domain,A,B):
 def demo(context,domain,B,A):
@@ -322,7 +322,6 @@ def defs(context,domain,A,B):
         if not dom.endswith('1') and not dom.endswith('_') and len(H.summary())>2:
             if len(modules)==0 or H.module() in modules:
                 table.append([H.module(),dom,H.summary(),len(definition)])
-#    deftable(table)
     return da(deftable2(table))
 CONTEXT.define('info',defs)
 #

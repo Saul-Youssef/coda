@@ -150,6 +150,7 @@ class Context(object):
     def ecoda(self,c): return self._cache.ecoda(self,c)
     def _ecoda(self,c):
         if c in self: return self(self.edata(c.left())|self.edata(c.right()))
+#        else        : return data(self.edata(c.left())|           c.right() )
         else        : return data(self.edata(c.left())|self.edata(c.right()))
 
 CONTEXT = Context(data(),data(ATOM),data(BIT0),data(BIT1))

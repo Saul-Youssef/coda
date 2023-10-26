@@ -21,6 +21,15 @@ UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 D = CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',data(),data()))
 if not D.empty(): raise error('Local definition error '+str(D))
 
+KI = False
+if len(sys.argv)>1:
+    if sys.argv[1]=='-': KI = True
+    try:
+        n = sys.argv[1]
+        if n>1: Evaluate.DEFAULT = n
+    except ValueError:
+        pass
+
 try:
     while True:
         try:
@@ -32,6 +41,7 @@ try:
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
+            if KI: raise
             print('')
 except EOFError:
     pass

@@ -4,7 +4,11 @@
 from base import *
 import os
 #
-#    Go up/down one level in a file system
+#    Go up/down in a file system
+#
+#    demo: home:
+#    demo: up : home:
+#    demo: down xxx : home: 
 #
 def up_1(context,domain,A,B):
     BL,BR = B.split()
@@ -12,8 +16,6 @@ def up_1(context,domain,A,B):
 def up_2(context,domain,A,B):
     if B.atom(context):
         p = str(B[0])
-#        import os
-#        path = os.path.abspath(os.path.expanduser(p))
         path = p
         return da('/'.join(path.split('/')[:-1]))
 def up_3(context,domain,A,B):
@@ -25,7 +27,6 @@ def down_1(context,domain,A,B):
     if BL.atom(context): return ((domain+A)|BL) + ((domain+A)|BR)
 def down_2(context,domain,A,B):
     if A.atom(context) and B.atom(context):
-#        dirpath = os.path.abspath(os.path.expanduser(str(B[0])))
         dirpath = str(B[0])
         if not dirpath.endswith('/'): dirpath = dirpath+'/'
         fn = str(A[0]).split('/')[-1]

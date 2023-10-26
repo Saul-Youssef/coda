@@ -1,23 +1,14 @@
 
 
 
-1. Make a new step
-2. Test super-caching
-3. Design and test multiprocessing
+4. Design and test multiprocessing
+5. Help, logging
 
 ================
 
-o Fix the stupid newline input() issue
-o Help seems to be semi-broken ATM
-o Handle exceptions and keyboardinterrupts
-o Do group theory as an example
-o Classification, Search, Machine learning
-     Classify even and odd peano integers
-o Use Term:T in terminal output
 o Theoretical results re: Category theory.  Analogue of n-Categories, ?
 o Adjoint functor theorem, re-produce Aldor paper
 o Functors
-o Speed up with caching
 o Speed up with parallelism
 o Video?
 o Fix up help system

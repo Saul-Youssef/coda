@@ -49,19 +49,29 @@ def domain_0(context,domain,A,B):
 def domain_1(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('domain',domain_0,domain_1)
-def left(context,domain,A,B):
-    BL,BR = B.split()
-    if BL.atom(context):
-        L = BL[0].left()
-        LL,LR = L.split()
-        return LR + data((domain+A)|BR)
-    if BL.empty(): return data()
-CONTEXT.define('left',left)
 def right(context,domain,A,B):
     BL,BR = B.split()
     if BL.atom(context): return BL[0].right() + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('right',right)
+def left(context,domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(context): return BL[0].left() + data((domain+A)|BR)
+    if BL.empty(): return data()
+CONTEXT.define('left',left)
+def arg(context,domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(context): return BL[0].arg() + data((domain+A)|BR)
+    if BL.empty(): return data()
+CONTEXT.define('arg',arg)
+#def left(context,domain,A,B):
+#    BL,BR = B.split()
+#    if BL.atom(context):
+#        L = BL[0].left()
+#        LL,LR = L.split()
+#        return LR + data((domain+A)|BR)
+#    if BL.empty(): return data()
+#CONTEXT.define('left',left)
 #
 #   if and nif return output depending on argument logic.
 #

@@ -4,7 +4,7 @@ import Number
 
 DEFAULT = 100
 
-def multi_split(n,B):
+def _split(n,B):
     Bs = [b for b in B]
     out = []
     T = []
@@ -16,24 +16,67 @@ def multi_split(n,B):
     if len(T)>0: out.append(data(*T))
     return out
 
-MULTI_DEFAULT = 500
-def EVAL(D): return CONTEXT.evaluate(MULTI_DEFAULT,D)
+def EVAL(D): return CONTEXT.evaluate(100,D)
+def APP_100  (D): return CONTEXT.evaluate(  100,D)
+def APP_500  (D): return CONTEXT.evaluate(  500,D)
+def APP_1000 (D): return CONTEXT.evaluate( 1000,D)
+def APP_5000 (D): return CONTEXT.evaluate( 5000,D)
+def APP_10000(D): return CONTEXT.evaluate(10000,D)
 
-def multiEval(context,domain,A,B):
-    if A.rigid(context) and B.atomic(context):
-        nproc = 8
+def multiarg(A):
+    args = []
+    n = 500
+    for a in A:
+        try:
+            n = int(str(a))
+        except ValueError:
+            args.append(a)
+    return n,data(*args)
+
+def multi(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        import multiprocessing
+        nproc = min(len(B),multiprocessing.cpu_count()-4)
         n = len(B)//nproc
-        Bs = multi_split(n,B)
+        depth,ARG = multiarg(A)
+
+        B2 = data(*[ARG|data(b) for b in B])
+        Bsplit = _split(n,B2)
+
         from multiprocessing.pool import Pool
-        pool = Pool(nproc)
+        pool = Pool(len(Bsplit))
+
+        ap = APP_500
+        if depth>500: ap = APP_1000
+        if depth>1000: ap = APP_5000
+        if depth>5000: ap = APP_10000
+
         results = []
-        for result in pool.imap_unordered(EVAL,Bs):
-            results.append(result)
-        L = []
-        for result in results:
-            for c in result: L.append(c)
-        return data(*L)
-CONTEXT.define('multi',multiEval)
+        for result in pool.imap_unordered(ap,Bsplit): results.append(result)
+        def f(s,t): return s+t
+        from functools import reduce
+        return reduce(f,results)
+CONTEXT.define('multi',multi)
+
+#def multiEval(context,domain,A,B):
+##    if A.rigid(context) and B.atomic(context):
+#    if A.rigid(context):
+#        import multiprocessing
+#        nproc = max(1,multiprocessing.cpu_count()-4)
+#        nproc = Number.intdef(nproc,A)
+#        Bs = context.atom_data(nproc,B)
+#        n = len(Bs)//nproc
+#        Bsplit = _split(n,B)
+#
+#        from multiprocessing.pool import Pool
+##        pool = Pool(nproc)
+#        pool = Pool(len(Bsplit))
+#        results = []
+#        for result in pool.imap_unordered(EVAL,Bsplit): results.append(result)
+#        def f(s,t): return s+t
+#        from functools import reduce
+#        return reduce(f,results)
+#CONTEXT.define('multi',multiEval)
 #
 #   evaluation of data and new contexts with 'with'
 #
@@ -68,6 +111,13 @@ def eval_0(context,domain,A,B):
         if not b.domain()==da('with'): return context.evaluate(n,B)
 CONTEXT.define('eval1',eval_0,eval_with)
 CONTEXT.define('with')
+
+def atoms(context,domain,A,B):
+    if A.rigid(context):
+        import Number
+        n = Number.intdef(DEFAULT,A)
+        return context.atom_data(n,B)
+CONTEXT.define('atoms',atoms)
 #
 #     step evaluation step-by-step evaluation of it's input
 #

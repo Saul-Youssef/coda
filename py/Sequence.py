@@ -41,6 +41,8 @@ CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #   demo: last : a b c
 #   demo: last 1 : a b c
 #   demo: last 2 : a b c
+#   demo: skip : a b c
+#   demo: skip 2 : a b c d e
 #
 def first_1(context,domain,A,B):
     if B.empty(): return data()
@@ -82,6 +84,15 @@ def last_3(context,domain,A,B):
             L,R = data(*B[:-1]),data(*B[-1:])
             if R.atom(context): return data((domain+da(str(n-1)))|L) + R
 CONTEXT.define('last',last_0,last_1,last_2,last_3)
+def skip_0(context,domain,A,B):
+    if B.empty(): return data()
+def skip_1(context,domain,A,B):
+    if A.rigid(context):
+        n = Number.intdef(1,A)
+        if n==0: return B
+        BL,BR = B.split()
+        if BL.atom(context): return data((domain+da(str(n-1)))|BR)
+CONTEXT.define('skip',skip_0,skip_1)
 #
 #   Repeats the arguments for each input.
 #
@@ -102,7 +113,8 @@ CONTEXT.define('rep',rep_1,rep_0)
 def nth1_0(context,domain,A,B):
     A0,AR = A.split()
     B0,BR = B.split()
-    if A0.atom(context) and B0.atom(context):
+    if A0.empty(): return data()
+    elif A0.atom(context) and B0.atom(context):
         ns = Number.ints(A0)
         if len(ns)>0:
             n = ns[0]

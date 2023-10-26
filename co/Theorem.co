@@ -1,4 +1,12 @@
-
-
-
-def theorem : { ap {with (right:B):A} A : assign A : B}
+#
+#   demo: permutation 2 : a b
+#   demo: permutation 3 : a b
+#   demo: permutation 3 : a
+#   demo: assign (x?=y?) : ap put : a b
+#   demo: assign (x?=y?) : permutation 3 : a b
+#   demo: eval : cases (bool:(x?=y?)) : permutation 2 : a b
+#   demo: get with : eval : cases (bool:(x?=y?)) : permutation 2 : a b
+#   demo: get with : eval : cases (bool:(x?=y?)) : permutation 2 : a a
+#
+def cases : { ap {with (right:B):A} A : assign A : B}
+def theorem : {get with : eval : cases A : B }

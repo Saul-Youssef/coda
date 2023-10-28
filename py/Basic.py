@@ -8,8 +8,12 @@ from base import *
 #    demo: pass : 1 2 3
 #    demo: null : 1 2 3
 #
-CONTEXT.define('pass',lambda context,domain,A,B:B)
-CONTEXT.define('null',lambda context,domain,A,B:data())
+def Pass(context,domain,A,B): return B
+def Null(context,domain,A,B): return data()
+CONTEXT.define('pass',Pass)
+CONTEXT.define('null',Null)
+#CONTEXT.define('pass',lambda context,domain,A,B:B)
+#CONTEXT.define('null',lambda context,domain,A,B:data())
 CONTEXT.define('bin') # generic built-in container
 #
 #   put A : B creates A:B, it "puts B into A".
@@ -24,7 +28,9 @@ CONTEXT.define('bin') # generic built-in container
 #   demo: get bin : (bin x y z : 1 2 3)
 #   demo: get : (:a b c) (put : 1 2 3)
 #
-CONTEXT.define('put',lambda context,domain,A,B: data(A|B))
+def Put(context,domain,A,B): return data(A|B)
+CONTEXT.define('put',Put)
+#CONTEXT.define('put',lambda context,domain,A,B: data(A|B))
 
 def get(context,domain,A,B):
     if A.rigid(context):

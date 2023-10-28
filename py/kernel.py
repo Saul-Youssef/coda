@@ -35,7 +35,7 @@ class EchoKernel(Kernel):
             for d in Source.language(code):
                 try:
 #                    D = Evaluate.default(d)
-                    D = base.CONTEXT.evaluate(100,d)
+                    D = base.CONTEXT.xeval(base.da('with')).evaluate(100,d)
 #                    D = Evaluate.evaluate(100,base.CONTEXT,d)
                     IO.OUT(str(D))
                     s = IO.OUT.flush()

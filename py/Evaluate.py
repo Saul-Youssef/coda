@@ -16,67 +16,96 @@ def _split(n,B):
     if len(T)>0: out.append(data(*T))
     return out
 
-def EVAL(D): return CONTEXT.evaluate(100,D)
-def APP_100  (D): return CONTEXT.evaluate(  100,D)
-def APP_500  (D): return CONTEXT.evaluate(  500,D)
-def APP_1000 (D): return CONTEXT.evaluate( 1000,D)
-def APP_5000 (D): return CONTEXT.evaluate( 5000,D)
-def APP_10000(D): return CONTEXT.evaluate(10000,D)
-
-def multiarg(A):
-    args = []
-    n = 500
-    for a in A:
-        try:
-            n = int(str(a))
-        except ValueError:
-            args.append(a)
-    return n,data(*args)
-
-def multi(context,domain,A,B):
-    if A.atomic(context) and B.atomic(context):
-        import multiprocessing
-        nproc = min(len(B),multiprocessing.cpu_count()-4)
-        n = len(B)//nproc
-        depth,ARG = multiarg(A)
-
-        B2 = data(*[ARG|data(b) for b in B])
-        Bsplit = _split(n,B2)
-
-        from multiprocessing.pool import Pool
-        pool = Pool(len(Bsplit))
-
-        ap = APP_500
-        if depth>500: ap = APP_1000
-        if depth>1000: ap = APP_5000
-        if depth>5000: ap = APP_10000
-
-        results = []
-        for result in pool.imap_unordered(ap,Bsplit): results.append(result)
-        def f(s,t): return s+t
-        from functools import reduce
-        return reduce(f,results)
-CONTEXT.define('multi',multi)
-
-#def multiEval(context,domain,A,B):
-##    if A.rigid(context) and B.atomic(context):
-#    if A.rigid(context):
+#def EVAL(D): return CONTEXT.evaluate(100,D)
+#def APP_100  (D): return CONTEXT.evaluate(  100,D)
+#def APP_500  (D): return CONTEXT.evaluate(  500,D)
+#def APP_1000 (D): return CONTEXT.evaluate( 1000,D)
+#def APP_5000 (D): return CONTEXT.evaluate( 5000,D)
+#def APP_10000(D): return CONTEXT.evaluate(10000,D)
+#
+#def multiarg(A):
+#    args = [a for a in A]
+#    n = 500
+#    if len(args)>0:
+#        try:
+#            n = int(str(args[0]))
+#            args.pop(0)
+#        except ValueError:
+#            pass
+#    return n,data(*args)
+#
+#   map A : B is the same as ap A : B except
+#     1. Each application is done in a separate process for speed.
+#     2. If the first atom in A is an integer, it is interpreted
+#     3. As the maximum depth of the application.
+#
+#   demo: map {int_sum:first 500:get:B} : (:nat:0) (:nat:0) (:nat:0)
+#   demo: map 1000 {int_sum:first 500:get:B} : (:nat:0) (:nat:0) (:nat:0)
+#   demo: ap pause 10 : 0 1 2 3 4 5 6 7 8 9
+#   demo: map pause 11 : 0 1 2 3 4 5 6 7 8 9
+#
+#def Map(context,domain,A,B):
+#    if A.atomic(context) and B.atomic(context):
 #        import multiprocessing
-#        nproc = max(1,multiprocessing.cpu_count()-4)
-#        nproc = Number.intdef(nproc,A)
-#        Bs = context.atom_data(nproc,B)
-#        n = len(Bs)//nproc
-#        Bsplit = _split(n,B)
+#        nproc = min(len(B),multiprocessing.cpu_count()-4)
+#        n = len(B)//nproc
+#        depth,ARG = multiarg(A)
+#
+#        B2 = data(*[ARG|data(b) for b in B])
+#        Bsplit = _split(n,B2)
 #
 #        from multiprocessing.pool import Pool
-##        pool = Pool(nproc)
 #        pool = Pool(len(Bsplit))
+#
+#        ap = APP_500
+#        if depth> 500: ap = APP_1000
+#        if depth>1000: ap = APP_5000
+#        if depth>5000: ap = APP_10000
+#
 #        results = []
-#        for result in pool.imap_unordered(EVAL,Bsplit): results.append(result)
+#        for result in pool.imap_unordered(ap,Bsplit): results.append(result)
 #        def f(s,t): return s+t
 #        from functools import reduce
 #        return reduce(f,results)
-#CONTEXT.define('multi',multiEval)
+#CONTEXT.define('map',Map)
+#
+#def Evaluate(context,n,D): return context.evaluate(500,D)
+#
+
+def MULTI_TEST(P):
+    context = P[0]
+    D = P[1]
+    return context.evaluate(500,D)
+#    context = CONTEXT.copy()
+#    return context.evaluate(500,D)
+#    return D
+#    E = context.__getattribute__('evaluate')
+#    return E(500,D)
+#    return context.copy().evaluate(500,D)
+#return Evaluate(P[0],500,P[1])
+#    return P[0].evaluate(500,P[1])
+#    return CONTEXT.copy().evaluate(500,D)
+
+def Multi(context,domain,A,B):
+    if A.rigid(context) and B.atomic(context):
+        import multiprocessing
+        nproc = min(len(B)+1,multiprocessing.cpu_count()-4)
+        n = len(B)//nproc
+
+#        B2 = [(CONTEXT.copy(),data(b)) for b in B]
+
+#        B2 = data(*[(da('eval')+A)|data(b) for b in B])
+        Bsplit = _split(n,B)
+        Bs2 = [[CONTEXT.copy(),D] for D in Bsplit]
+
+        from multiprocessing.pool import Pool
+        pool = Pool(nproc)
+        results = []
+        for result in pool.imap_unordered(MULTI_TEST,Bs2): results.append(result)
+        def f(s,t): return s+t
+        from functools import reduce
+        return reduce(f,results)
+CONTEXT.define('multi',Multi)
 #
 #   evaluation of data and new contexts with 'with'
 #
@@ -93,7 +122,12 @@ CONTEXT.define('multi',multi)
 #   demo: first3 : a b c d e f g
 #   demo: eval : with (let x:a) (let y:b) : (x? y?) = (y? x?)
 #   demo: eval 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
+#   demo: nat : 0
+#   demo: with : nat : 0
+#   demo: eval 100 : with : nat : 0
 #
+def eval_0(context,domain,A,B):
+    if B.empty(): return data()
 def eval_with(context,domain,A,B):
     if A.rigid(context) and B.atom(context):
         b = B[0]
@@ -105,19 +139,12 @@ def eval_with(context,domain,A,B):
             if D.empty(): # evaluate right side of with in new context.
                 n = Number.intdef(DEFAULT,A)
                 return data((b.domain()+b.arg())|new.evaluate(n,b.right()))
-def eval_0(context,domain,A,B):
+def eval_1(context,domain,A,B):
     if A.rigid(context) and B.atom(context):
         n = Number.intdef(DEFAULT,A); b = B[0]
         if not b.domain()==da('with'): return context.evaluate(n,B)
-CONTEXT.define('eval1',eval_0,eval_with)
+CONTEXT.define('eval1',eval_0,eval_with,eval_1)
 CONTEXT.define('with')
-
-def atoms(context,domain,A,B):
-    if A.rigid(context):
-        import Number
-        n = Number.intdef(DEFAULT,A)
-        return context.atom_data(n,B)
-CONTEXT.define('atoms',atoms)
 #
 #     step evaluation step-by-step evaluation of it's input
 #

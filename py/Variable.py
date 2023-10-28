@@ -51,7 +51,7 @@ CONTEXT.define('permutation',permutation_0)
 
 def assign(context,domain,A,B):
     AS = da('let')
-    if A.invar(context) and B.atomic(context):
+    if A==context.evaluate(1,A) and B.atomic(context):
         vars = [v.left() for v in undefined(context,A) if v.right()==data()]  # coda variables
         n = len(vars)
         L = []

@@ -36,6 +36,10 @@ def intdef(n,D):
     ns = ints(D)
     if len(ns)>0: return ns[0]
     return n
+def floatdef(x,D):
+    xs = floats(D)
+    if len(xs)>0: return xs[0]
+    return x
 #
 #    The natural numbers as a whole
 #
@@ -56,7 +60,8 @@ class Reduce(object):
     def __init__(self,name,reduce):
         self._name   = name
         self._reduce = reduce # atoms to atoms
-        CONTEXT.define(name,lambda context,domain,A,B:self(context,domain,A,B))
+#        CONTEXT.define(name,lambda context,domain,A,B:self(context,domain,A,B))
+        CONTEXT.define(name,self)
     def split(self,context,B):
         atoms,rest = [],[b for b in B]
         while len(rest)>0 and rest[0].atom(context): atoms.append(rest.pop(0))

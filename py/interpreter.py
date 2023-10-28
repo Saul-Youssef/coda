@@ -31,13 +31,16 @@ if len(sys.argv)>1:
         pass
 
 try:
+    CONTEXT = CONTEXT.xeval(da('with'))
     while True:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
 
+#            D = Language.lang('eval:'+line,data(),data())
             D = Language.lang(line,data(),data())
             D = CONTEXT.evaluate(100,D)
+#            D = CONTEXT.xeval(da('with')).evaluate(100,D)
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:

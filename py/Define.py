@@ -17,7 +17,12 @@ def Use1(context,domain,A,B):
     if B.atom(context) and B.invar(context) and B[0].domain()==da('def'):
         b = B[0]
         if not context.has(b.arg()):
-            context.add(b.arg(),lambda cont,dom,AA,BB: data((b.right()+AA)|BB))
+#            context.add(b.arg(),lambda cont,dom,AA,BB: data((b.right()+AA)|BB))
+            context.add(b.arg(),PartialFunction(b.right()))
             return data()
 CONTEXT.define('use1',Use1)
 CONTEXT.define('def')
+
+class PartialFunction(object):
+    def __init__(self,left): self._left = left
+    def __call__(self,context,domain,A,B): return data((self._left+A)|B)

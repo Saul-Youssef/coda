@@ -1,0 +1,12 @@
+#
+#   demo: permutation 2 : a b
+#   demo: permutation 3 : a b
+#   demo: permutation 3 : a
+#   demo: assign (x?=y?) : (:a b) (:a a)
+#   demo: cases (x?=y?) : (:a b) (:a a)
+#   demo: eval : cases (x?=y?) : (:a b) (:a a)
+#   demo: cases (count:(x?=y?)) : permutation 2 : a b
+#   demo: eval : cases (count:(x?=y?)) : permutation 2 : a b
+#   demo: get with : eval : cases (count:(x?=y?)) : permutation 2 : a b
+#
+def cases : {ap {with (right:B):A} A : assign A : B}

@@ -28,7 +28,9 @@ class data(object):
     def irred (self,context): return any(c.atom(context) for c in self)
     def atom  (self,context): return len(self)==1 and self.atomic(context)
     def rigid (self,context): return self.atomic(context) and all(c.left().rigid(context) and c.right().rigid(context) for c in self)
-    def invar (self,context): return context.evaluate(1,self)==self
+#    def invar (self,context): return context.evaluate(1,self)==self
+    def invar (self,context): return all(c.invar(context) for c in self)
+#    def invariant(self,context): return all(c.invariant(context) and c.left().invariant(context) and c.right().invariant(context) for c in self)
 #
 #   Algebra
 #
@@ -65,6 +67,7 @@ class coda(object):
     def atom(self,context): return self in context and len(context[self])==0
     def rigid(self,context): return data(self).rigid(context)
     def invar(self,context): return self.atom(context) or (not self in context)
+#    def invariant(self,context): return (not self in context) or len(context[self])==0
 
 ATOM = data()|data()
 BIT0 = data(ATOM)|data()
@@ -111,13 +114,16 @@ class Context(object):
     def __init__(self,*doms):
         self._defs = {dom:[] for dom in doms}
         self._cache = Cache()
+        self._xeval = set([])
+    def xeval(self,*doms):
+        self._xeval = set([dom for dom in doms])
+        return self
     def __iter__(self):
         for domain,defs in self._defs.items(): yield domain,defs
     def __repr__(self): return ','.join([str(dom) for dom,defs in self])
-    def copy(self): # resetting cache to empty
+    def copy(self): # copy with emptied cache and no xevals
         new = Context()
         for key,value in self._defs.items() : new._defs [key] = value
-#        cont._cache = self._cache.copy()
         return new
     def has(self,dom): return dom in self._defs
     def add(self,domain,*Fs):
@@ -134,7 +140,8 @@ class Context(object):
                 if not D is None: return D
             return data(c)
 #
-#   Data evaluation within the context
+#   Data evaluation within the context excluding domains in
+#   the set Exclude repeating up to n times or until saturation
 #
     def evaluate(self,n,D): return self._cache.evaluate(self,n,D)
     def _evaluate(self,n,D):
@@ -149,9 +156,11 @@ class Context(object):
         return data(*L)
     def ecoda(self,c): return self._cache.ecoda(self,c)
     def _ecoda(self,c):
-        if c in self: return self(self.edata(c.left())|self.edata(c.right()))
-#        else        : return data(self.edata(c.left())|           c.right() )
-        else        : return data(self.edata(c.left())|self.edata(c.right()))
+        if c in self:
+            if c.domain() in self._xeval: return self(self.edata(c.left())|c.right())
+            else                        : return self(self.edata(c.left())|self.edata(c.right()))
+        else:
+            return data(self.edata(c.left())|self.edata(c.right()))
 
 CONTEXT = Context(data(),data(ATOM),data(BIT0),data(BIT1))
 #

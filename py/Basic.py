@@ -48,6 +48,7 @@ CONTEXT.define('get',get)
 #   demo: left : bin 1 2 3 : a b c
 #   demo: right : bin 1 2 3 : a b c
 #   demo: domain : bin 1 2 3 : a b c
+#   demo: arg : bin 1 2 3 : a b c
 #
 def domain_0(context,domain,A,B):
     BL,BR = B.split()
@@ -104,6 +105,7 @@ def nif_0(context,domain,A,B):
 CONTEXT.define('nif',nif_1,nif_0)
 #
 #    Star is syntactic sugar with A*B:X defined to be A:B:X
+#    Star is syntactic sugar where A*B X : Y is defined to be A : B X : Y.
 #
 #    If you think of A and B as functions, with action X -> A:X,
 #    this is function composition.
@@ -112,8 +114,7 @@ CONTEXT.define('nif',nif_1,nif_0)
 #   demo: first*count:a b c
 #   demo: {first 2:B} * {first 3:B} : 1 2 3 4 5
 #   demo: {first 2:B} * {rev:B} : 1 2 3 4 5
-#   demo: first 2 * pass : 1 2 3
-#   demo: first * pass 2 : 1 2 3
+#   demo: (pass*first) 2 : 1 2 3 
 #   demo: (first * pass) 2 : 1 2 3
 #
 def star(context,domain,A,B):
@@ -121,5 +122,5 @@ def star(context,domain,A,B):
     if AL.atom(context):
         L,R = AL[0].left(),AL[0].right()
         LL,LR = L.split()
-        if LL==da('bin'): return data((LR+AR)|data((R+AR)|B))
+        if LL==da('bin'): return data((LR)|data((R+AR)|B))
 CONTEXT.define('*',star)

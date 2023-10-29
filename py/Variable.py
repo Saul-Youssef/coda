@@ -23,12 +23,12 @@ def invariant(context,A):
         ins = ins.union(invariant(context,a.left())).union(invariant(context,a.right()))
     return ins
 
-def Undefined(context,domain,A,B):
-    if context.evaluate(1,B)==B: return data(*[u for u in undefined(context,B)])
-CONTEXT.define('undefined',Undefined)
-def Invariant(context,domain,A,B):
-    if context.evaluate(1,B)==B: return B
-CONTEXT.define('invariant',Invariant)
+#def Undefined(context,domain,A,B):
+#    if context.evaluate(1,B)==B: return data(*[u for u in undefined(context,B)])
+#CONTEXT.define('undefined',Undefined)
+#def Invariant(context,domain,A,B):
+#    if context.evaluate(1,B)==B: return B
+#CONTEXT.define('invariant',Invariant)
 #
 #   demo: permutation 2 : a b
 #   demo: permutation 3 : a b

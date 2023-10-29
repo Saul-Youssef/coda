@@ -105,7 +105,7 @@ def rep_1(context,domain,A,B):
     BL,BR = B.split()
     if BL.atom(context): return A + data((domain+A)|BR)
 def rep_0(context,domain,A,B):
-    if B.empty(): return data()
+    if B.empty() or A.empty(): return data()
 CONTEXT.define('rep',rep_1,rep_0)
 #
 #   Select the n'th item(s) from input.

@@ -64,7 +64,6 @@ class Gen(object):
                         pout.append(p2)
         random.shuffle(pout)
         return [data(*p) for p in pout]
-#        return Set.Set(*[data(*p) for p in pout])
     def nlang(self,p):
         n = 0
         for pp in p:
@@ -216,7 +215,7 @@ CONTEXT.define('sample.window',samplewindow_0,samplewindow_1)
 def sampledata_0(context,domain,A,B):
     if B.empty(): return data()
 def sampledata_1(context,domain,A,B):
-    if A.invar(context) and B.rigid(context) and len(B)>0:
+    if A.rigid(context) and B.rigid(context) and len(B)>0:
         import Number
         ns = Number.ints(B)
         n = 1

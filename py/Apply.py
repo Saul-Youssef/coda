@@ -31,11 +31,11 @@ def ap_1(context,domain,A,B):
     if B.atom(context): return data(A|B)
 def ap_2(context,domain,A,B):
     return data(*[(domain+A)|data(b) for b in B])
+CONTEXT.define('ap',ap_0,ap_1,ap_2)
 #    BL,BR = B.split()
 #    if len(BL)>0:
 #        if len(BR)>0: return ((domain+A)|BL) + ((domain+A)|BR)
 #        return data((domain+A)|BL)
-CONTEXT.define('ap',ap_0,ap_1,ap_2)
 
 def aq_0(context,domain,A,B):
     if A.empty(): return data()

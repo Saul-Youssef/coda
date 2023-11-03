@@ -32,19 +32,6 @@ def ap_1(context,domain,A,B):
 def ap_2(context,domain,A,B):
     return data(*[(domain+A)|data(b) for b in B])
 CONTEXT.define('ap',ap_0,ap_1,ap_2)
-#    BL,BR = B.split()
-#    if len(BL)>0:
-#        if len(BR)>0: return ((domain+A)|BL) + ((domain+A)|BR)
-#        return data((domain+A)|BL)
-
-def aq_0(context,domain,A,B):
-    if A.empty(): return data()
-def aq_1(context,domain,A,B):
-    if A.atom(context): return data(A|B)
-def aq_2(context,domain,A,B):
-    AL,AR = A.split()
-    if AL.atom(context): return ((domain+AL)|B) + ((domain+AR)|B)
-CONTEXT.define('aq',aq_0,aq_1,aq_2)
 
 def apby(context,domain,A,B):
     AL,AR = A.split()
@@ -58,12 +45,28 @@ def apby_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('by',apby_0,apby)
 
-def ap2_1(context,domain,A,B):
+def aq2_1(context,domain,A,B):
     A0,AR =  A.split()
     A1,AR = AR.split()
     if A0.atom(context) and A1.atom(context): return ((A0+A1)|B) + ((domain+A0+AR)|B)
-def ap2_0(context,domain,A,B):
+def aq2_0(context,domain,A,B):
     A0,AR = A.split()
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
-CONTEXT.define('ax',ap2_1,ap2_0)
+CONTEXT.define('aq',aq2_1,aq2_0)
+
+#def aq_0(context,domain,A,B):
+#    if A.empty(): return data()
+#def aq_1(context,domain,A,B):
+#    if A.atom(context): return data(A|B)
+#def aq_2(context,domain,A,B):
+#    return data(*[(domain+data(a)|B) for a in A])
+#CONTEXT.define('aq',aq_0,aq_1,aq_2)
+
+#def aq_0(context,domain,A,B):
+#    if A.empty(): return data()
+#def aq_1(context,domain,A,B):
+#    if A.atom(context): return data(A|B)
+#def aq_2(context,domain,A,B):
+#    AL,AR = A.split()
+#    if AL.atom(context): return ((domain+AL)|B) + ((domain+AR)|B)

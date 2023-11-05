@@ -13,6 +13,7 @@ from base import *
 #   demo: collect : a b c d
 #   demo: collect : (bin:a) (bin:b) (bin:c) (bin:d)
 #   demo: collect : ap {put bin (nchar:B):B} : a b aa bb aaa cccc zz xxx xxx
+#   demo: collect : (bin 1:c) (bin 1:a b) (bin 2:aa bb zz) (:a) (:b) a b c 
 #   demo: equiv nchar : a b aa bb aaa cccc zz xxx xxx
 #
 def collect(context,domain,A,B):

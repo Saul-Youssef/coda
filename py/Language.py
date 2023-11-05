@@ -62,7 +62,6 @@ def language(context,domain,A,B):
 #
 #   A bit of syntactic sugar to make x? -> (?:x) etc.
 #
-#    if s.endswith('?') and len(s)>1: return data(da('?')|da(s[:-1]))
     if s.endswith('?') and len(s)>1: return data(da(s[:-1])|data())
 #
 #   There are no syntax errors.  All byte strings are valid source code.

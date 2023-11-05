@@ -15,11 +15,3 @@ def while : {some (if ((A:B)=B):B) : while A : A : B}
 #
 def kernel : {if (A:B):B}
 def ker : {ap kernel A : B}
-#
-#   Morphism space operation
-#
-#   demo: (mor pass : pass) : a b c
-#   demo: (mor pass : rev) : a b c
-#   demo: (mor rev : count) : a b c
-#
-#def mor : ax {(right:A):B}

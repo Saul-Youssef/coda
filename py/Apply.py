@@ -4,24 +4,15 @@
 #
 from base import *
 #
-#  Apply A to each b in B.
-#
-#  This is one of the most important basic
-#  combinatorial operations.  ap A is guaranteed
-#  to be distributive data for any data A.
-#
-#  ap A : B C -> (ap A:B) (ap A:C)
-#  ap A : B -> A:B if B is atom
-#  ap A : () -> ()
+#  Apply argument to input in various ways.
 #
 #  demo: ap foo : 1 2 3
 #  demo: ap {bin : B} : 1 2 3
 #  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
 #  demo: aq bin bin bin bin : 1 2 3 4
 #  demo: ap aq a b c : 1 2 3
-#  demo: ax bin a b c : 1 2 3
-#  demo: ax first 2 3 : a b c d e f g
-#  demo: ap ax a b c : 1 2 3
+#  demo: aq bin a b c : 1 2 3
+#  demo: aq first 2 3 : a b c d e f g
 #  demo: by 2 foo : a b c d e f g
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
@@ -54,19 +45,3 @@ def aq2_0(context,domain,A,B):
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
 CONTEXT.define('aq',aq2_1,aq2_0)
-
-#def aq_0(context,domain,A,B):
-#    if A.empty(): return data()
-#def aq_1(context,domain,A,B):
-#    if A.atom(context): return data(A|B)
-#def aq_2(context,domain,A,B):
-#    return data(*[(domain+data(a)|B) for a in A])
-#CONTEXT.define('aq',aq_0,aq_1,aq_2)
-
-#def aq_0(context,domain,A,B):
-#    if A.empty(): return data()
-#def aq_1(context,domain,A,B):
-#    if A.atom(context): return data(A|B)
-#def aq_2(context,domain,A,B):
-#    AL,AR = A.split()
-#    if AL.atom(context): return ((domain+AL)|B) + ((domain+AR)|B)

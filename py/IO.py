@@ -38,6 +38,7 @@ def readpath_1(context,domain,A,B):
             bytes = open(path,'r').read()
             return da(bytes) + data((domain+A)|BR)
         except IOError:
+            return
             raise error('Error reading file ['+path+']')
 CONTEXT.define('readpath',readpath_1,readpath_0)
 #
@@ -64,53 +65,8 @@ def Dir(context,domain,A,B):
                 paths2 = paths
             return data(*[co(path) for path in paths2]) + data((da('dir')+A)|BR)
         except IOError:
+            return
             raise
 def Dir_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('dir',Dir,Dir_0)
-#
-#   Serialize input after evaluating to argument specified depth
-#
-#   demo: dir : .
-#
-#def out(context,domain,A,B):
-#    if len(A)>0 and all([a.atom() for a in A]):
-#        path = str(A[0])
-#        import Number,Evaluate
-#        ns = Number.ints(A)
-#        depth = Evaluate.DEPTH
-#        if len(ns)==1 and ns[0]>0: depth = ns[0]
-#        try:
-#            import os
-#            dir = os.path.dirname(path)
-#            if os.path.exists(dir):
-#                with open(path,'wb') as f:
-#                    import pickle
-#                    f.write(pickle.dumps(Evaluate.depth(B,depth)[0]))
-#                    return data()
-#        except Exception as e:
-#            raise error("Error writing to ["+path+"]: ["+str(e)+"]")
-#CONTEXT.define('out',out)...rename me
-
-#def terminal(context,domain,A,B):
-#    BL,BR = B.split()
-#    if BL.empty(): return data()
-#    if BL.atom(context):
-#        OUT(str(BL))
-#        return data(domain|BR)
-#CONTEXT.define('terminal',terminal)
-
-#def In_1(context,domain,A,B):
-#    BL,BR = B.split()
-#    if BL.atom(): return ((domain+A)|BL) + ((domain+A)|BR)
-#def In_2(context,domain,A,B):
-#    if B.atom():
-#        path = str(B[0])
-#        import os
-#        if os.path.exists(path):
-#            with open(path,'rb') as f:
-#                import pickle
-#                return pickle.loads(f.read())
-#def In_0(context,domain,A,B):
-#    if B.empty(): return data()
-#CONTEXT.define('in',In_2,In_0,In_1)...rename me

@@ -5,5 +5,5 @@
 #    demo: down co : home:
 #    demo: dir co : down co : home:
 #
-def down : {ap ax down1 A : B}
+def down : {ap aq down1 A : B}
 def up : {ap up1 : B}

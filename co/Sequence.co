@@ -5,7 +5,7 @@
 #   demo: nth 3 1 : a b c d
 #   demo: nth : a b c
 #
-def nth : {ax nth1 A : B}
+def nth : {aq nth1 A : B}
 #
 #   demo: pre a b : 1 2
 #   demo: post a b : 1 2

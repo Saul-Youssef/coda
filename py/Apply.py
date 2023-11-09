@@ -45,3 +45,22 @@ def aq2_0(context,domain,A,B):
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
 CONTEXT.define('aq',aq2_1,aq2_0)
+#
+#   product and sum
+#
+#   demo: product (:first 3) (:rev) : a b c d e f g
+#   demo: product (:rev) (:first 3) : a b c d e f g
+#   demo: sum (:first 3) (:rev) : a b c d e f g
+#   demo: sum (:rev) (:first 3) : a b c d e f g
+#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
+#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
+#
+def aprod_1(context,domain,A,B):
+    if len(A)>0 and A[-1].atom(context):
+        AL,a = data(*A[:-1]),A[-1]
+        return data((domain+AL)|data(a.right()|B))
+def aprod_0(context,domain,A,B):
+    if A.empty(): return B
+def aprod_2(context,domain,A,B):
+    if A.atom(context): return data(A[0].right()|B)
+CONTEXT.define('product',aprod_1,aprod_0,aprod_2)

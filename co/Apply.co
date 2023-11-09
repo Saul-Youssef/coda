@@ -15,3 +15,14 @@ def while : {some (if ((A:B)=B):B) : while A : A : B}
 #
 def kernel : {if (A:B):B}
 def ker : {ap kernel A : B}
+#
+#   product and sum for the algebra of morphisms 
+#
+#   demo: product (:first 3) (:rev) : a b c d e f g
+#   demo: product (:rev) (:first 3) : a b c d e f g
+#   demo: sum (:first 3) (:rev) : a b c d e f g
+#   demo: sum (:rev) (:first 3) : a b c d e f g
+#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
+#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
+#
+def sum : {aq {(right:A):B} A : B}

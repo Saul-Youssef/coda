@@ -41,4 +41,4 @@ def Dist3 : {get with : eval : cases (dist3:B) : A}
 
 def DIST1 : ap {bin B : int_sum : Dist1 A : B}
 def DIST2 : ap {bin B : int_sum : Dist2 A : B}
-def DIST3 : ap {bin B : int_sum : Dist2 A : B} 
+def DIST3 : ap {bin B : int_sum : Dist3 A : B} 

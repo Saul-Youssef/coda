@@ -1,0 +1,41 @@
+#
+#    Natural numbers 
+#
+#    n.make  
+#    n.type  Distributive space of naturals 
+#    n.ring  Full space of natural numbers 
+#    n.term  Terminal output 
+#
+def n:
+def n.make : ap put n * nats  
+def n.type : has n 
+def n.term : get n
+def n.sum  : put n * int_sum * get n   
+def n.prod : put n * int_prod * get n   
+def n.ring : {n.prod : (n.prod:A) (n.sum:B)} 
+#
+#    Alternative natural numbers a la Connes 
+#
+def m:
+def m.make : ap put m * nats 
+def m.type : has m 
+def m.term : get m
+def m.sum  : put m * int_max * get m
+def m.prod : put m * int_sum * get m
+def m.ring : {m.prod : (m.prod:A) (m.sum:B)} 
+#
+#    Endomorphisms of spaces 
+#
+#    Given a space U, the endomorphisms of U
+#    are data F s.t. F*U = U*F 
+#    Given any data f, U*f*U is an endomorphism
+#    end U 
+#
+def end : 
+def end.make : {put end A : A*B*A} 
+def end.type : {has end A:B}
+def end.term : {ap right : end.term A : B}   
+def end.sum : {put end A : get end A : B}
+def end.prod : {put end A : product : get end A : B} 
+def end.ring : {end.prod : (end.prod:A) (end.sum:B)} 
+

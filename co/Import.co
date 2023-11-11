@@ -3,4 +3,6 @@
 #
 #    demo: import : .
 #
-def import : {use : coda : source : readpath : dir co : B}
+#def import : {use : coda : source : readpath : dir co : B}
+#
+def import : {use : coda : source : readpath : B}

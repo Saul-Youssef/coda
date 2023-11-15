@@ -26,16 +26,19 @@ def m.ring : {m.prod : (m.prod:A) (m.sum:B)}
 #
 #    Endomorphisms of spaces 
 #
-#    Given a space U, the endomorphisms of U
-#    are data F s.t. F*U = U*F 
-#    Given any data f, U*f*U is an endomorphism
-#    end U 
+#    Given a space U.
 #
-def end : 
-def end.make : {put end A : A*B*A} 
-def end.type : {has end A:B}
-def end.term : {ap right : end.term A : B}   
-def end.sum : {put end A : get end A : B}
-def end.prod : {put end A : product : get end A : B} 
+#    end.make U : X 
+#        Makes the endomorphism U*X*U.
+#    end.sum U : (:F) (:G) (:H) 
+#        Makes the endomorphism U * (F+G+H)
+#    end.prod U : (:F) (:G) (:H) 
+#        Makes the endomorphism F*G*H 
+#
+def end.make : {:product (:A) (:B) (:A)}
+def end.sum  : {:product (:A) (:sum B)} 
+def end.prod : {:product:B}
 def end.ring : {end.prod : (end.prod:A) (end.sum:B)} 
+def end.app  : {(get:A):B} 
+
 

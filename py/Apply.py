@@ -76,4 +76,6 @@ def bprod_1(context,domain,A,B):
             b = b.left()|(b.right()+A)
             B2.append(b)
             return da('product')+data(*B2)
+        else:
+            return da('product')
 CONTEXT.define('prod',bprod_1)

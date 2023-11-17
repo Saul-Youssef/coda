@@ -1,44 +1,44 @@
 #
-#   Prepare some samples for testing purposes 
-#   
+#   Prepare some samples for testing purposes
+#
 #   S1: hydrogen atoms
-#   S2: more general atoms mix 
+#   S2: more general atoms mix
 #   S3: pure data mix
 #   S4: mix with operators and language.
 #
 let S1 : sample.atom : 5
 let S2 : permutation 2 : (:) a b 0 1 (bin:a) (bin 1 2:a b) (bin a: bin b:1 2)
-let S3 : sample.pure : 2 2 
-let S4 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2 
+let S3 : sample.pure : 2 2
+let S4 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2
 #
-#    Generalizing Idempotence 
+#    Generalizing Idempotence
 #
-#    1. B is idempotent 
-#    2. B x:B:y = B:B x:y 
+#    1. B is idempotent
+#    2. B x:B:y = B:B x:y
 #    3. B x y:z = B x: B y: z 
 #
 def idemp1 : { count : (B:B:x?) = (B:x?) }
 def idemp2 : { count : (B x?:B:y?) = (B:B x?:y?) }
 def idemp3 : { count : (B x? y?:z?) = (B x?:B y?:z?) }
 #
-#    Generalizing Distributive 
+#    Generalizing Distributive
 #
-def dist1 : { count : (B:x? y?) = ((B:x?) (B:y?)) } 
-def dist2 : { count : (B:x? y?) = (B:(B:x?) (B:y?)) } 
-def dist3 : { count : (B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) } 
+def dist1 : { count : (B:x? y?) = ((B:x?) (B:y?)) }
+def dist2 : { count : (B:x? y?) = (B:(B:x?) (B:y?)) }
+def dist3 : { count : (B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 
 def Idemp1 : {get with : eval : cases (idemp1:B) : A}
-def Idemp2 : {get with : eval : cases (idemp2:B) : A} 
-def Idemp3 : {get with : eval : cases (idemp3:B) : A} 
+def Idemp2 : {get with : eval : cases (idemp2:B) : A}
+def Idemp3 : {get with : eval : cases (idemp3:B) : A}
 
-def IDEMP1 : ap {bin B : int_sum : Idemp1 A : B} 
+def IDEMP1 : ap {bin B : int_sum : Idemp1 A : B}
 def IDEMP2 : ap {bin B : int_sum : Idemp2 A : B}
 def IDEMP3 : ap {bin B : int_sum : Idemp3 A : B}
 
-def Dist1 : {get with : eval : cases (dist1:B) : A} 
+def Dist1 : {get with : eval : cases (dist1:B) : A}
 def Dist2 : {get with : eval : cases (dist2:B) : A}
 def Dist3 : {get with : eval : cases (dist3:B) : A}
 
 def DIST1 : ap {bin B : int_sum : Dist1 A : B}
 def DIST2 : ap {bin B : int_sum : Dist2 A : B}
-def DIST3 : ap {bin B : int_sum : Dist3 A : B} 
+def DIST3 : ap {bin B : int_sum : Dist3 A : B}

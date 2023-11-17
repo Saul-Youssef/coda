@@ -1,0 +1,17 @@
+#
+#    Endomorphisms of spaces
+#
+#    Given a space U.
+#
+#    end.make U : X
+#        Makes the endomorphism U*X*U.
+#    end.sum U : (:F) (:G) (:H)
+#        Makes the endomorphism U * (F+G+H)
+#    end.prod U : (:F) (:G) (:H)
+#        Makes the endomorphism F*G*H
+#
+def end.make : {:prod : (:A) (:B) (:A)}
+def end.ring : {:prod A : (:sum B)}
+def end.sum  : {:sum B}
+def end.prod : {:prod A:B}
+def end.app  : {(get:A):B}

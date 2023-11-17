@@ -35,10 +35,10 @@ def m.ring : {m.prod : (m.prod:A) (m.sum:B)}
 #    end.prod U : (:F) (:G) (:H) 
 #        Makes the endomorphism F*G*H 
 #
-def end.make : {:product (:A) (:B) (:A)}
-def end.sum  : {:product (:A) (:sum B)} 
-def end.prod : {:product:B}
-def end.ring : {end.prod : (end.prod:A) (end.sum:B)} 
+def end.make : {:prod : (:A) (:B) (:A)}
+def end.ring : {:prod A : (:sum B)} 
+def end.sum  : {:sum B} 
+def end.prod : {:prod A:B}
 def end.app  : {(get:A):B} 
 
 

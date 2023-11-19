@@ -112,6 +112,8 @@ def _sort(L): return sorted(L)
 #   demo: float_max : 1 2 a 3.14 -99.9
 #   demo: float_div 2.1 : 1 2 a 3.14 -99.9
 #   demo: code_sort : a b c c b a
+#   demo: int_sort : 4 3 2 a b c -100 99 
+#   demo: float_sort : 1 2 a 3.14 -99.9
 #
 RE('code_sort',str,_sort)
 RE('ints',tryint,lambda L:L)

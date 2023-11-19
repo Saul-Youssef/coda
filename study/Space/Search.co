@@ -11,6 +11,11 @@ let S2 : permutation 2 : (:) a b 0 1 (bin:a) (bin 1 2:a b) (bin a: bin b:1 2)
 let S3 : sample.pure : 2 2
 let S4 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2
 #
+#    Equality theorems 
+#
+def equal1 : {count:((A:x?)=(B:x?))} 
+def equal2 : {count:((A x?:y?)=(B x?:y?))} 
+#
 #    Generalizing Idempotence
 #
 #    1. B is idempotent

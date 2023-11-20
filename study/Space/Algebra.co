@@ -1,0 +1,20 @@
+#
+#   Idempotence 
+#
+def idempotent1 : {(B:B:x?)=(B:x?)} 
+def idempotent2 : {(B x?:B:y?)=(B:B x?:y?)} 
+def idempotent3 : {(B x? y?:z?) = (B x?:B y?:z?)} 
+#
+#   Distributive
+#
+def distributive1 : {(B:x? y?)=((B:x?) (B:y?))}
+def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) } 
+def distributive3 : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) } 
+#
+#   Simple 
+#
+def simple : {(B x?:y?) = (B:y?)} 
+
+
+
+

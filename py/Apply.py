@@ -58,24 +58,24 @@ CONTEXT.define('aq',aq2_1,aq2_0)
 #   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
 #   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
 #
-def aprod_1(context,domain,A,B):
-    if len(A)>0 and A[-1].atom(context):
-        AL,a = data(*A[:-1]),A[-1]
-        return data((domain+AL)|data(a.right()|B))
-def aprod_0(context,domain,A,B):
-    if A.empty(): return B
-def aprod_2(context,domain,A,B):
-    if A.atom(context): return data(A[0].right()|B)
-CONTEXT.define('product',aprod_1,aprod_0,aprod_2)
-
-def bprod_1(context,domain,A,B):
-    if B.atomic(context):
-        if len(B)>0:
-            B2 = [b for b in B]
-            b = B2.pop()
-            b = b.left()|(b.right()+A)
-            B2.append(b)
-            return da('product')+data(*B2)
-        else:
-            return da('product')
-CONTEXT.define('prod',bprod_1)
+#def aprod_1(context,domain,A,B):
+#    if len(A)>0 and A[-1].atom(context):
+#        AL,a = data(*A[:-1]),A[-1]
+#        return data((domain+AL)|data(a.right()|B))
+#def aprod_0(context,domain,A,B):
+#    if A.empty(): return B
+#def aprod_2(context,domain,A,B):
+#    if A.atom(context): return data(A[0].right()|B)
+#CONTEXT.define('product',aprod_1,aprod_0,aprod_2)
+#
+#def bprod_1(context,domain,A,B):
+#    if B.atomic(context):
+#        if len(B)>0:
+#            B2 = [b for b in B]
+#            b = B2.pop()
+#            b = b.left()|(b.right()+A)
+#            B2.append(b)
+#            return da('product')+data(*B2)
+#        else:
+#            return da('product')
+#CONTEXT.define('prod',bprod_1)

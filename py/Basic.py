@@ -12,8 +12,6 @@ def Pass(context,domain,A,B): return B
 def Null(context,domain,A,B): return data()
 CONTEXT.define('pass',Pass)
 CONTEXT.define('null',Null)
-#CONTEXT.define('pass',lambda context,domain,A,B:B)
-#CONTEXT.define('null',lambda context,domain,A,B:data())
 CONTEXT.define('bin') # generic built-in container
 #
 #   put A : B creates A:B, it "puts B into A".
@@ -79,19 +77,6 @@ def left(context,domain,A,B):
     if BL.atom(context): return BL[0].left() + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('left',left)
-#def arg(context,domain,A,B):
-#    BL,BR = B.split()
-#    if BL.atom(context): return BL[0].arg() + data((domain+A)|BR)
-#    if BL.empty(): return data()
-#CONTEXT.define('arg',arg)
-#def left(context,domain,A,B):
-#    BL,BR = B.split()
-#    if BL.atom(context):
-#        L = BL[0].left()
-#        LL,LR = L.split()
-#        return LR + data((domain+A)|BR)
-#    if BL.empty(): return data()
-#CONTEXT.define('left',left)
 #
 #   if and nif return output depending on argument logic.
 #
@@ -137,3 +122,37 @@ def star(context,domain,A,B):
         LL,LR = L.split()
         if LL==da('bin'): return data((LR)|data((R+AR)|B))
 CONTEXT.define('*',star)
+#
+#   product and sum
+#
+#   demo: product (:first 3) (:rev) : a b c d e f g
+#   demo: product (:rev) (:first 3) : a b c d e f g
+#   demo: (prod : (:rev) (:first 3)) : a b c d e f g
+#   demo: (prod : (:rev) (:first)) : a b c d e f g
+#   demo: (prod 3 : (:rev) (:first)) : a b c d e f g
+#   demo: sum (:first 3) (:rev) : a b c d e f g
+#   demo: sum (:rev) (:first 3) : a b c d e f g
+#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
+#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
+#
+def aprod_1(context,domain,A,B):
+    if len(A)>0 and A[-1].atom(context):
+        AL,a = data(*A[:-1]),A[-1]
+        return data((domain+AL)|data(a.right()|B))
+def aprod_0(context,domain,A,B):
+    if A.empty(): return B
+def aprod_2(context,domain,A,B):
+    if A.atom(context): return data(A[0].right()|B)
+CONTEXT.define('product',aprod_1,aprod_0,aprod_2)
+
+def bprod_1(context,domain,A,B):
+    if B.atomic(context):
+        if len(B)>0:
+            B2 = [b for b in B]
+            b = B2.pop()
+            b = b.left()|(b.right()+A)
+            B2.append(b)
+            return da('product')+data(*B2)
+        else:
+            return da('product')
+CONTEXT.define('prod',bprod_1)

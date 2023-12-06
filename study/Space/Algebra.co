@@ -14,7 +14,10 @@ def distributive3 : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #   Simple 
 #
 def simple : {(B x?:y?) = (B:y?)} 
-
-
+#
+#   Commutes 
+#
+def commute1 : { (A*B:x?)=(B*A:x?) }
+def commute2 : { (A*B x?:y?) = (B*A x?:y?) } 
 
 

@@ -15,3 +15,4 @@ def end.ring : {:prod A : (:sum B)}
 def end.sum  : {:sum B}
 def end.prod : {:prod A:B}
 def end.app  : {(get:A):B}
+

@@ -16,7 +16,7 @@ def up_1(context,domain,A,B):
 def up_2(context,domain,A,B):
     if B.atom(context):
         p = str(B[0])
-        path = p
+        path = os.path.realpath(p)
         return da('/'.join(path.split('/')[:-1]))
 def up_3(context,domain,A,B):
     if B.empty(): return data()

@@ -34,6 +34,20 @@ def complement(context,domain,A,B):
     if B.irred(context): return data()
     if B.empty(): return AT
 CONTEXT.define('not',complement)
+
+def equal(context,domain,A,B):
+    if A.empty(): return B
+    if B.empty(): return A
+    if A==B: return data()
+    AL,AR = A.split()
+    BL,BR = B.split()
+    if AL.atom(context) and BL.atom(context):
+        return ((domain+AL)|BL) + ((domain+AR)|BR)
+    AL,AR = data(*A[:-1]),data(*A[-1:])
+    BL,BR = data(*B[:-1]),data(*B[-1:])
+    if AR.atom(context) and BR.atom(context):
+        return ((domain+AL)|BL) + ((domain+AR)|BR)
+
 def eq_L(context,domain,A,B):
     AL,AR = data(*A[:1]),data(*A[1:])
     BL,BR = data(*B[:1]),data(*B[1:])
@@ -47,8 +61,9 @@ def eq_(context,domain,A,B):
     if A.irred(context) and B.empty(): return AT
     if A.empty() and B.irred(context): return AT
     if A.empty() and B.empty(): return data()
-    if A.atom(context) and B.atom(context): return ((domain+(A[0].left ()))|B[0].left ()) + \
-                                       ((domain+(A[0].right()))|B[0].right())
+    if A.atom(context) and B.atom(context):
+        return ((domain+(A[0].left ()))|B[0].left ()) + \
+               ((domain+(A[0].right()))|B[0].right())
 CONTEXT.define('=',eq_,eq_L,eq_R)
 CONTEXT.define('equal',eq_,eq_L,eq_R)
 #

@@ -32,28 +32,19 @@ def language(context,domain,A,B):
         front,back = Colon.parts()
         return data(lang(front,A,B)|lang(back,A,B))
 #
-#   A=B -> (= A:B)
-#
-    Equal = parse('=',s,'left')
-    if Equal():
-        front,back = Equal.parts()
-        return data((da('=')+lang(front,A,B))|lang(back,A,B))
-#
-#   A+B -> (+ A:B)
-#
-    Sum = parse('+',s,'left')
-    if Sum():
-        front,back = Sum.parts()
-        Front = data(data()|lang(front,A,B))
-        Back  = data(data()|lang(back,A,B))
-        return da('sum')+Front+Back
-#
 #   Star is syntactic sugar for A*B, composition of data as functions
 #
     Star = parse('*',s,'left')
     if Star():
         front,back = Star.parts()
         return co('*') + ((da('bin')+lang(front,A,B))|lang(back,A,B))
+#
+#   A=B -> (= A:B)
+#
+    Equal = parse('=',s,'left')
+    if Equal():
+        front,back = Equal.parts()
+        return data((da('=')+lang(front,A,B))|lang(back,A,B))
 #
 #   A B -> A B
 #

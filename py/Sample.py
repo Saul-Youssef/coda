@@ -215,11 +215,13 @@ CONTEXT.define('sample.window',samplewindow_0,samplewindow_1)
 def sampledata_0(context,domain,A,B):
     if B.empty(): return data()
 def sampledata_1(context,domain,A,B):
-    if A.rigid(context) and B.rigid(context) and len(B)>0:
+    AE = CONTEXT.evaluate(1,A)
+    if A==AE and B.rigid(context) and len(B)>0:
+#    if A.rigid(context) and B.rigid(context) and len(B)>0:
         import Number
         ns = Number.ints(B)
         n = 1
         if len(ns)>0: n = abs(ns[0])
-        G = Gen([a for a in A],n)
+        G = Gen([a for a in A],n+1)
         return bin(G.set())
 CONTEXT.define('sample.data',sampledata_0,sampledata_1)

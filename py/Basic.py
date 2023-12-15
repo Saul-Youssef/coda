@@ -115,14 +115,28 @@ CONTEXT.define('nif',nif_1,nif_0)
 #   demo: (pass*first) 2 : 1 2 3
 #   demo: (first * pass) 2 : 1 2 3
 #
-def star(context,domain,A,B):
-    AL,AR = A.split()
-    if AL.atom(context):
-        L,R = AL[0].left(),AL[0].right()
-        LL,LR = L.split()
-        if LL==da('bin'): return data((LR)|data((R+AR)|B))
-CONTEXT.define('*',star)
+#def star(context,domain,A,B):
+#    AL,AR = A.split()
+#    if AL.atom(context):
+#        L,R = AL[0].left(),AL[0].right()
+#        LL,LR = L.split()
+#        if LL==da('bin'): return data((LR)|data((R+AR)|B))
+#CONTEXT.define('*',star)
 
+
+#
+#   product and sum
+#
+#   demo: product (:first 3) (:rev) : a b c d e f g
+#   demo: product (:rev) (:first 3) : a b c d e f g
+#   demo: (prod : (:rev) (:first 3)) : a b c d e f g
+#   demo: (prod : (:rev) (:first)) : a b c d e f g
+#   demo: (prod 3 : (:rev) (:first)) : a b c d e f g
+#   demo: sum (:first 3) (:rev) : a b c d e f g
+#   demo: sum (:rev) (:first 3) : a b c d e f g
+#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
+#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
+#
 def prod(context,domain,A,B):
     AL,AR = A.split()
     if AL.empty(): return B

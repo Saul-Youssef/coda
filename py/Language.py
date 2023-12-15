@@ -46,14 +46,27 @@ def language(context,domain,A,B):
         front,back = Sum.parts()
         Front = data(data()|lang(front,A,B))
         Back  = data(data()|lang(back,A,B))
-        return da('sum')+Front+Back
+        return da('Plus')+Front+Back
 #
-#   Star is syntactic sugar for A*B, composition of data as functions
+#   A+B -> (+ A:B)
 #
     Star = parse('*',s,'left')
     if Star():
         front,back = Star.parts()
-        return co('*') + ((da('bin')+lang(front,A,B))|lang(back,A,B))
+        Front = data(data()|lang(front,A,B))
+        Back  = data(data()|lang(back,A,B))
+        return da('Star')+Front+Back
+#
+#   Star is syntactic sugar for A*B, composition of data as functions
+#
+#    Star = parse('*',s,'left')
+#    if Star():
+#        front,back = Star.parts()
+#        return data((da('star')+lang(front,A,B))|lang(back,A,B))
+#    Star = parse('*',s,'left')
+#    if Star():
+#        front,back = Star.parts()
+#        return co('*') + ((da('bin')+lang(front,A,B))|lang(back,A,B))
 #
 #   A B -> A B
 #

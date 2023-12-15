@@ -1,6 +1,6 @@
 #
 #
 #
-def _argfix : ap {(left:B):(right:B) A}
-
-def hom : {sum (_argfix : A)}
+#def _argfix : ap {(left:B):(right:B) A}
+#
+#def hom : {sum (_argfix : A)}

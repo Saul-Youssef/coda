@@ -1,4 +1,9 @@
 #
+#   * +
+#
+def Star : prod 
+def Plus : sum 
+#
 #   Idempotence 
 #
 def idempotent1 : {(B:B:x?)=(B:x?)} 

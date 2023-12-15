@@ -6,4 +6,5 @@
 #    demo: nchar : abcdefg
 #    demo: nchar : a aa aaa
 #
-def nchar : ap {count * get ((:):(:)):B}
+def nchar : ap {count : get ((:):(:)) : B}
+#def nchar : ap {count * get ((:):(:)):B}

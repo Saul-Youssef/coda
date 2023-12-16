@@ -161,9 +161,7 @@ CONTEXT.define('imply',IMPLY)
 #   some/none define the coarsest data classification
 #
 #   demo: some : a b c
-#   demo: some :
-#   demo: none : a b c
-#   demo: none :
+#   demo: some x y z : a b c
 #
 def some(context,domain,A,B):
     if A.irred(context): return A

@@ -10,7 +10,9 @@
 #    end.prod U : (:F) (:G) (:H)
 #        Makes the endomorphism F*G*H
 #
-def end.make : {:prod : (:A) (:B) (:A)}
+#def end.make : {:prod : (:A) (:B) (:A)}
+
+def end.make : {:B} 
 def end.ring : {:prod A : (:sum B)}
 def end.sum  : {:sum B}
 def end.prod : {:prod A:B}

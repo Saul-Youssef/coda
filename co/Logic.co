@@ -6,4 +6,7 @@
 #    demo: in 55 66 y : x y z
 #
 def in : {not : ap aq {not:A=B} A : B}
+
+
+
 #def in : not * ap aq {not:A=B}

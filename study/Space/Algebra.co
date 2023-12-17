@@ -1,35 +1,31 @@
 #
 #   * +
 #
-def Star : prod 
-def Plus : sum 
-#
-#   Idempotence 
-#
-def idempotent : {(B:B:x?)=(B:x?)} 
-def idempotent1 : {(B:B:x?)=(B:x?)} 
-def idempotent2 : {(B x?:B:y?)=(B:B x?:y?)} 
-def idempotent3 : {(B x? y?:z?) = (B x?:B y?:z?)} 
-def space_b : {(B x? y?:z?) = (B x?:B y?:z?)} 
-#
-#   Distributive
-#
-def distributive : {(B:x? y?)=((B:x?) (B:y?))} 
-def distributive1 : {(B:x? y?)=((B:x?) (B:y?))}
-def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) } 
-def distributive3 : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) } 
-def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
-#
-def nilpotent : {B:x?}
-def commutative : {(B:x? y?)=(B:y? x?)} 
-def involution: {((B:B:x?)=x?)} 
+def Star : {prod : B} 
+def Plus : {sum : B} 
 #
 #   Simple 
 #
 def simple : {(B x?:y?) = (B:y?)} 
 #
+#   Idempotence 
+#
+def idempotent  : {(B:B:x?)=(B:x?)} 
+def idempotent2 : {(B x?:B:y?)=(B:B x?:y?)} 
+def space_b     : {(B x? y?:z?) = (B x?:B y?:z?)} 
+#
+#   Distributive
+#
+def distributive  : {(B:x? y?)=((B:x?) (B:y?))} 
+def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) } 
+def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
+#
+def nilpotent   : {B:x?}
+def commutative : {(B:x? y?)=(B:y? x?)} 
+def involution  : {((B:B:x?)=x?)} 
+#
 #   Commutes 
 #
-def commutingSpaces : { (A*B:x?)=(B*A:x?) }
+def commuting : { (A*B:x?)=(B*A:x?) }
 
 

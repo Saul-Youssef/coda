@@ -7,10 +7,7 @@
 #    n.term  Terminal output 
 #
 def n:
-#def n.make : ap put n * nats  
 def n.type : ap {some (has n:B) : (ap put n : nats :B)} 
-#has n 
-#def n.term : get n
 def n.sum  : put n * int_sum * get n   
 def n.prod : put n * int_prod * get n   
 def n.sort : put n * int_sort * get n 

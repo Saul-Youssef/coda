@@ -11,6 +11,7 @@ from base import *
 #  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
 #  demo: aq bin bin bin bin : 1 2 3 4
 #  demo: ap aq a b c : 1 2 3
+#  demo: pairs a b c : 1 2 3 
 #  demo: aq bin a b c : 1 2 3
 #  demo: aq first 2 3 : a b c d e f g
 #  demo: by 2 foo : a b c d e f g

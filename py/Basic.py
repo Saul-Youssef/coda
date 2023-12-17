@@ -44,22 +44,23 @@ def get(context,domain,A,B):
         back  = data((domain+A)|data(*Bs))
         return front+back
 CONTEXT.define('get',get)
-def arg(context,domain,A,B):
-    if A.rigid(context):
-        if B.empty(): return data()
-        L = []; Bs = [b for b in B]
-        while len(Bs)>0 and Bs[0].atom(context):
-            b = Bs.pop(0)
-            if b.domain()==A:
-                for r in b.arg(): L.append(r)
-        front = data(*L)
-        back = data((domain+A)|data(*Bs))
-        return front+back
-CONTEXT.define('arg',arg)
+#def arg(context,domain,A,B):
+#    if A.rigid(context):
+#        if B.empty(): return data()
+#        L = []; Bs = [b for b in B]
+#        while len(Bs)>0 and Bs[0].atom(context):
+#            b = Bs.pop(0)
+#            if b.domain()==A:
+#                for r in b.arg(): L.append(r)
+#        front = data(*L)
+#        back = data((domain+A)|data(*Bs))
+#        return front+back
+#CONTEXT.define('arg',arg)
 #
 #   demo: left : bin 1 2 3 : a b c
 #   demo: right : bin 1 2 3 : a b c
 #   demo: domain : bin 1 2 3 : a b c
+#   demo: arg : bin 1 2 3 : a b c 
 #
 def domain_0(context,domain,A,B):
     BL,BR = B.split()
@@ -77,6 +78,11 @@ def left(context,domain,A,B):
     if BL.atom(context): return BL[0].left() + data((domain+A)|BR)
     if BL.empty(): return data()
 CONTEXT.define('left',left)
+def arg(context,domain,A,B):
+    BL,BR = B.split()
+    if BL.atom(context): return BL[0].arg() + data((domain+A)|BR)
+    if BL.empty(): return data()
+CONTEXT.define('arg',arg)
 #
 #   if and nif return output depending on argument logic.
 #

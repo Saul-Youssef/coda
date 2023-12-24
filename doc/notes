@@ -1,10 +1,7 @@
 
 
+git clone git@github.com:Saul-Youssef/coda
 
-4. Design and test multiprocessing
-5. Help, logging
-
-================
 
 o Theoretical results re: Category theory.  Analogue of n-Categories, ?
 o Adjoint functor theorem, re-produce Aldor paper

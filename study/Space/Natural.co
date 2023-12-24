@@ -7,19 +7,20 @@
 #    n.term  Terminal output 
 #
 def n:
-def n.type : ap {some (has n:B) : (ap put n : nats :B)} 
-def n.sum  : put n * int_sum * get n   
-def n.prod : put n * int_prod * get n   
-def n.sort : put n * int_sort * get n 
+def n.make : {ap put n : nats : B} 
+def n.type : {has n:B}  
+def n.sum  : {put n : int_sum  : get n : B}   
+def n.prod : {put n : int_prod : get n : B}
+def n.sort : {ap put n : int_sort : get n : B}  
 def n.ring : {n.prod : (n.prod:A) (n.sum:B)} 
 #
 #    Alternative natural numbers a la Connes 
 #
 def m:
-def m.type : ap {some (has m:B) : (ap put m:nats:B)} 
-def m.term : get m
-def m.sum  : put m * int_max * get m
-def m.prod : put m * int_sum * get m
+def m.type : {has m:B}
+def m.sum  : {put m : int_max : get m : B}
+def m.prod : {put m : int_sum : get m : B}
+def m.sort : {ap put m : int_sort : get m : B} 
 def m.ring : {m.prod : (m.prod:A) (m.sum:B)} 
 
 

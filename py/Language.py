@@ -5,7 +5,7 @@ from base import *
 #
 #    The coda language compiler
 #
-special_characters = ' :(){}<>=*/'
+special_characters = ' :(){}<>=*+/'
 #
 #   lang takes unicode string code and data A,B and makes it into
 #   the corresponding data for the compiler.
@@ -37,25 +37,41 @@ def language(context,domain,A,B):
     Equal = parse('=',s,'left')
     if Equal():
         front,back = Equal.parts()
-        return data((da('=')+lang(front,A,B))|lang(back,A,B))
+        return data((da('equal')+lang(front,A,B))|lang(back,A,B))
 #
 #   A+B -> (+ A:B)
 #
     Sum = parse('+',s,'left')
     if Sum():
         front,back = Sum.parts()
-        Front = data(data()|lang(front,A,B))
-        Back  = data(data()|lang(back,A,B))
-        return da('Plus')+Front+Back
+        return data((da('plus')+lang(front,A,B))|lang(back,A,B))
+#        Front = data(data()|lang(front,A,B))
+#        Back  = data(data()|lang(back,A,B))
+#        return da('Plus')+Front+Back
 #
 #   A+B -> (+ A:B)
 #
     Star = parse('*',s,'left')
     if Star():
         front,back = Star.parts()
-        Front = data(data()|lang(front,A,B))
-        Back  = data(data()|lang(back,A,B))
-        return da('Star')+Front+Back
+        return data((da('star')+lang(front,A,B))|lang(back,A,B))
+#
+#   A B -> A B
+#
+    Space = parse(' ',s,'left')
+    if Space():
+        front,back = Space.parts()
+        return lang(front,A,B)+lang(back,A,B)
+#
+#   A/B -> (/ A:B)
+#
+    Slash = parse('/',s,'right')
+    if Slash():
+        front,back = Slash.parts()
+        return data((da('slash')+lang(front,A,B))|lang(back,A,B))
+#        Front = data(data()|lang(front,A,B))
+#        Back  = data(data()|lang(back,A,B))
+#        return da('Star')+Front+Back
 #
 #   Star is syntactic sugar for A*B, composition of data as functions
 #
@@ -67,13 +83,6 @@ def language(context,domain,A,B):
 #    if Star():
 #        front,back = Star.parts()
 #        return co('*') + ((da('bin')+lang(front,A,B))|lang(back,A,B))
-#
-#   A B -> A B
-#
-    Space = parse(' ',s,'left')
-    if Space():
-        front,back = Space.parts()
-        return lang(front,A,B)+lang(back,A,B)
 #
 #   Operations are grouped with parenthesis.  Text within curly brackets is source code.
 #   Text between angle brackets are byte strings.

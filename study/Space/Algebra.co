@@ -1,8 +1,8 @@
 #
 #   * +
 #
-def Star : {prod A : B} 
-def Plus : {sum A : B} 
+def star : {prod (:A) (:B)} 
+def plus : {sum  (:A) (:B)} 
 #
 #   Simple 
 #
@@ -23,6 +23,7 @@ def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 def nilpotent   : {B:x?}
 def commutative : {(B:x? y?)=(B:y? x?)} 
 def involution  : {((B:B:x?)=x?)} 
+def semilattice : {(B:x? x?)=(B:x?)} 
 #
 #   Commutes 
 #

@@ -18,7 +18,7 @@ def n.ring : {n.prod : (n.prod:A) (n.sum:B)}
 #
 def m:
 def m.type : {has m:B}
-def m.sum  : {put m : int_max : get m : B}
+def m.sum  : {put m : int_max : pre 0 : get m : B}
 def m.prod : {put m : int_sum : get m : B}
 def m.sort : {ap put m : int_sort : get m : B} 
 def m.ring : {m.prod : (m.prod:A) (m.sum:B)} 

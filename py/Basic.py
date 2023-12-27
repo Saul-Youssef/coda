@@ -60,7 +60,7 @@ CONTEXT.define('get',get)
 #   demo: left : bin 1 2 3 : a b c
 #   demo: right : bin 1 2 3 : a b c
 #   demo: domain : bin 1 2 3 : a b c
-#   demo: arg : bin 1 2 3 : a b c 
+#   demo: arg : bin 1 2 3 : a b c
 #
 def domain_0(context,domain,A,B):
     BL,BR = B.split()
@@ -133,15 +133,8 @@ CONTEXT.define('nif',nif_1,nif_0)
 #
 #   product and sum
 #
-#   demo: product (:first 3) (:rev) : a b c d e f g
-#   demo: product (:rev) (:first 3) : a b c d e f g
-#   demo: (prod : (:rev) (:first 3)) : a b c d e f g
-#   demo: (prod : (:rev) (:first)) : a b c d e f g
-#   demo: (prod 3 : (:rev) (:first)) : a b c d e f g
-#   demo: sum (:first 3) (:rev) : a b c d e f g
-#   demo: sum (:rev) (:first 3) : a b c d e f g
-#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
-#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
+#   demo: sum (:pass) (:rev) (:first 2) : a b c d
+#   demo: prod (:pass) (:rev) (:first 2) : a b c d
 #
 def prod(context,domain,A,B):
     AL,AR = A.split()

@@ -13,4 +13,4 @@ let S4 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2
 let S5 : (permutation 0 : 0 1 2) 
          (permutation 1 : 0 1 2)
          (permutation 2 : 0 1 2)
-         (permutation 3 : 0 1 ) 
+         (permutation 3 : 0 1 ) (:1 2 a b)

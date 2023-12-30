@@ -16,3 +16,10 @@ def has   : ap {if  (A=(domain:B)):B}
 def hasnt : ap {nif (A=(domain:B)):B}
 def is    : ap {if (in A:B):B}
 def isnt  : ap {if (not:in A:B):B}
+#
+#    co A is the dual of A, co A:X -> A for any X. 
+#
+#    demo: co 6 : a b c 
+#    demo: co 6 : 
+#
+def co    : {A} 

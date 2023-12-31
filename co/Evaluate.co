@@ -9,6 +9,9 @@
 #   demo: get with : eval : with (def first3 : {first 3:B}) : first3 : a b c d e f g
 #   demo: first3 : a b c d e f g
 #   demo: eval : with (let x:a) (let y:b) : (x? y?) = (y? x?)
-#   demo: eval : with (let x:a) (let y:a) : (x? y?) = (y? x?)
+#   demo: eval 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
+#   demo: nat : 0
+#   demo: with : nat : 0
+#   demo: eval 100 : with : nat : 0
 #
 def eval : ap eval1

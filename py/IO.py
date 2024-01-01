@@ -70,3 +70,37 @@ def Dir(context,domain,A,B):
 def Dir_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('dir',Dir,Dir_0)
+#
+#   Serialize input after evaluating to argument specified depth
+#
+#   out file1 : a b c
+#   in : file1
+#   out file2 : (defs:) nat : 0
+#   in : file1 file2 
+#
+def Out(context,domain,A,B):
+    if A.rigid(context) and len(A)==1:
+        path = str(A[0])
+        import os,pickle
+        try:
+            with open(path,'wb') as f:
+                f.write(pickle.dumps(B))
+                return data()
+        except Exception as e:
+            return
+CONTEXT.define('out',Out)
+
+def IN(context,domain,A,B):
+    if B.rigid(context):
+        import os,pickle
+        try:
+            R = []
+            for b in B:
+                path = str(b)
+                with open(path,'rb') as f:
+                    D = pickle.loads(f.read())
+                    for d in D: R.append(d)
+            return data(*R)
+        except Exception as e:
+            return
+CONTEXT.define('in',IN)

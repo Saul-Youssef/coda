@@ -8,6 +8,11 @@ def plus : {sum  (:A) (:B)}
 #
 def simple : {(B x?:y?) = (B:y?)} 
 #
+#   Ring 
+#
+def ring_left:  { (B x? y?:z?) = (B x?:z?) (B y?:z?) }
+def ring_right: { (B x? : y? z?) = (B x?:y?) (B x?:z?) } 
+#
 #   Idempotence 
 #
 def idempotent  : {(B:B:x?)=(B:x?)} 

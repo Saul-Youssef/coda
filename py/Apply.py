@@ -9,11 +9,10 @@ from base import *
 #  demo: ap foo : 1 2 3
 #  demo: ap {bin : B} : 1 2 3
 #  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
-#  demo: aq bin bin bin bin : 1 2 3 4
-#  demo: ap aq a b c : 1 2 3
-#  demo: pairs a b c : 1 2 3 
+#  demo: ap bin a b c : 1 2 3
 #  demo: aq bin a b c : 1 2 3
-#  demo: aq first 2 3 : a b c d e f g
+#  demo: ar bin a b c : 1 2 3
+#  demo: ar {|} a b c : 1 2 3 
 #  demo: by 2 foo : a b c d e f g
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
@@ -46,6 +45,16 @@ def aq2_0(context,domain,A,B):
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
 CONTEXT.define('aq',aq2_1,aq2_0)
+
+def ar_1(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        if len(A)<=1: return data()
+        op,AR = A.split()
+        L = []
+        for a in AR:
+            for b in B: L.append((op+data(a))|data(b))
+        return data(*L)
+CONTEXT.define('ar',ar_1)
 #
 #   product and sum
 #

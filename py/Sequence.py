@@ -101,12 +101,13 @@ CONTEXT.define('skip',skip_0,skip_1)
 #   demo: rep <*> : a b c
 #   demo: rep <*> : first 10 : nat : 0
 #
-def rep_1(context,domain,A,B):
-    BL,BR = B.split()
-    if BL.atom(context): return A + data((domain+A)|BR)
-def rep_0(context,domain,A,B):
-    if B.empty() or A.empty(): return data()
-CONTEXT.define('rep',rep_1,rep_0)
+#def rep_1(context,domain,A,B):
+#    BL,BR = B.split()
+#    if BL.atom(context): return A + data((domain+A)|BR)
+#def rep_0(context,domain,A,B):
+#    if B.empty() or A.empty(): return data()
+#CONTEXT.define('rep',rep_1,rep_0)
+
 #
 #   Select the n'th item(s) from input.
 #

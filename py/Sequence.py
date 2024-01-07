@@ -96,18 +96,21 @@ CONTEXT.define('skip',skip_0,skip_1)
 #
 #   Repeats the arguments for each input.
 #
-#   demo: rep $ : a b c
-#   demo: rep $ # : a b c
-#   demo: rep <*> : a b c
-#   demo: rep <*> : first 10 : nat : 0
+#   demo: rep 5 : x
+#   demo: rep 4 : a (:)
 #
-#def rep_1(context,domain,A,B):
-#    BL,BR = B.split()
-#    if BL.atom(context): return A + data((domain+A)|BR)
-#def rep_0(context,domain,A,B):
-#    if B.empty() or A.empty(): return data()
-#CONTEXT.define('rep',rep_1,rep_0)
-
+def rep_0(context,domain,A,B):
+    if A.atom(context) and B.atomic(context):
+        try:
+            n = int(str(A[0]))
+            Bs = [b for b in B]
+            L = []
+            for i in range(n):
+                for b in Bs: L.append(b)
+            return data(*L)
+        except Exception as e:
+            pass
+CONTEXT.define('rep',rep_0)
 #
 #   Select the n'th item(s) from input.
 #

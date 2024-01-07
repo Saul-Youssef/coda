@@ -12,8 +12,11 @@ from base import *
 #  demo: ap bin a b c : 1 2 3
 #  demo: aq bin a b c : 1 2 3
 #  demo: ar bin a b c : 1 2 3
-#  demo: ar {|} a b c : 1 2 3 
+#  demo: ar {|} a b c : 1 2 3
 #  demo: by 2 foo : a b c d e f g
+#  demo: aps {int_sum : A B} : 1 2 3 4 5
+#  demo: aps {int_prod : A B} : 1 2 3 4 5
+#  demo: aps {int_prod : A B} : 
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
 def ap_0(context,domain,A,B):
@@ -55,6 +58,13 @@ def ar_1(context,domain,A,B):
             for b in B: L.append((op+data(a))|data(b))
         return data(*L)
 CONTEXT.define('ar',ar_1)
+
+def as_1(context,domain,A,B):
+    if B.atomic(context):
+        BL,BR = B.split()
+        if BR.empty(): return BL
+        return data((A+BL)|data((domain+A)|BR))
+CONTEXT.define('aps',as_1)
 #
 #   product and sum
 #

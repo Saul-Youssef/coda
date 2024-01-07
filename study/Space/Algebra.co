@@ -12,6 +12,10 @@ def simple : {(B x?:y?) = (B:y?)}
 #
 def ring_left:  { (B x? y?:z?) = (B x?:z?) (B y?:z?) }
 def ring_right: { (B x? : y? z?) = (B x?:y?) (B x?:z?) } 
+def nilpotent   : {B:x?}
+def nilpotent_left  : {B:x?} 
+def nilpotentz_right : {B x?:} 
+def symmetric : {(B x?:y?)=(B y?:x?)} 
 #
 #   Idempotence 
 #
@@ -25,7 +29,6 @@ def distributive  : {(B:x? y?)=((B:x?) (B:y?))}
 def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) } 
 def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #
-def nilpotent   : {B:x?}
 def commutative : {(B:x? y?)=(B:y? x?)} 
 def involution  : {((B:B:x?)=x?)} 
 def semilattice : {(B:x? x?)=(B:x?)} 

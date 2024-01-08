@@ -36,5 +36,8 @@ def semilattice : {(B:x? x?)=(B:x?)}
 #   Commutes 
 #
 def commuting : { (A*B:x?)=(B*A:x?) }
+#
+#   morphism from A to B 
+#
 
 

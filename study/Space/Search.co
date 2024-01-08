@@ -14,4 +14,7 @@ let S5 : (permutation 0 : 0 1 2)
          (permutation 1 : 0 1 2)
          (permutation 2 : 0 1 2)
          (permutation 3 : 0 1 ) (:1 2 a b)
+         
+let T1 : ap put : defs : Apply Sequence Number Logic Basic Collect 
+let T2 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2
 

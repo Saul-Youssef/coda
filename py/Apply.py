@@ -13,10 +13,9 @@ from base import *
 #  demo: aq bin a b c : 1 2 3
 #  demo: ar bin a b c : 1 2 3
 #  demo: ar {|} a b c : 1 2 3
-#  demo: by 2 foo : a b c d e f g
-#  demo: aps {int_sum : A B} : 1 2 3 4 5
-#  demo: aps {int_prod : A B} : 1 2 3 4 5
-#  demo: aps {int_prod : A B} : 
+#  demo: as {int_sum : A B} : 1 2 3 4 5
+#  demo: as {int_prod : A B} : 1 2 3 4 5
+#  demo: as {int_prod : A B} :
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
 def ap_0(context,domain,A,B):
@@ -26,18 +25,6 @@ def ap_1(context,domain,A,B):
 def ap_2(context,domain,A,B):
     return data(*[(domain+A)|data(b) for b in B])
 CONTEXT.define('ap',ap_0,ap_1,ap_2)
-
-def apby(context,domain,A,B):
-    AL,AR = A.split()
-    import Number
-    if AL.atom(context) and len(Number.ints(AL))==1:
-        n = Number.ints(AL)[0]
-        if n>0:
-            if all([b.atom(context) for b in B[:n]]):
-                return (AR|data(*B[:n])) + ((domain+A)|data(*B[n:]))
-def apby_0(context,domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('by',apby_0,apby)
 
 def aq2_1(context,domain,A,B):
     A0,AR =  A.split()
@@ -64,38 +51,4 @@ def as_1(context,domain,A,B):
         BL,BR = B.split()
         if BR.empty(): return BL
         return data((A+BL)|data((domain+A)|BR))
-CONTEXT.define('aps',as_1)
-#
-#   product and sum
-#
-#   demo: product (:first 3) (:rev) : a b c d e f g
-#   demo: product (:rev) (:first 3) : a b c d e f g
-#   demo: (prod : (:rev) (:first 3)) : a b c d e f g
-#   demo: (prod : (:rev) (:first)) : a b c d e f g
-#   demo: (prod 3 : (:rev) (:first)) : a b c d e f g
-#   demo: sum (:first 3) (:rev) : a b c d e f g
-#   demo: sum (:rev) (:first 3) : a b c d e f g
-#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
-#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
-#
-#def aprod_1(context,domain,A,B):
-#    if len(A)>0 and A[-1].atom(context):
-#        AL,a = data(*A[:-1]),A[-1]
-#        return data((domain+AL)|data(a.right()|B))
-#def aprod_0(context,domain,A,B):
-#    if A.empty(): return B
-#def aprod_2(context,domain,A,B):
-#    if A.atom(context): return data(A[0].right()|B)
-#CONTEXT.define('product',aprod_1,aprod_0,aprod_2)
-#
-#def bprod_1(context,domain,A,B):
-#    if B.atomic(context):
-#        if len(B)>0:
-#            B2 = [b for b in B]
-#            b = B2.pop()
-#            b = b.left()|(b.right()+A)
-#            B2.append(b)
-#            return da('product')+data(*B2)
-#        else:
-#            return da('product')
-#CONTEXT.define('prod',bprod_1)
+CONTEXT.define('as',as_1)

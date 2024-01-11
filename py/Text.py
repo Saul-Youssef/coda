@@ -51,7 +51,7 @@ CONTEXT.define('printable',printable)
 CONTEXT.define('alphabet',alphabet)
 #
 #   A very non-practical data consisting of all codes with input alphabet
-#   FIX ME 
+#   FIX ME
 #   demo: step 5 : allcodes :
 #
 def allcodes(context,domain,A,B):
@@ -182,6 +182,39 @@ def split(context,domain,A,B):
             Bs = T
         return data(*[co(t) for t in T])
 CONTEXT.define('split',split)
+
+def strmax(txt,n):
+    if len(txt)<=n: return txt
+    return txt[:n]+'...'
+def table(context,domain,A,B0):
+    if not A.rigid(context): return
+    if not B0.stable(context): return
+    n = 1000
+    import Number
+    ns = Number.ints(A)
+    if len(ns)>0 and ns[0]>0: n = ns[0]
+    B = B0
+#    B = context.evaluate(n,B0)
+#    if B.stable(context):
+    if True:
+        left,right = [],[]
+        for b in B:
+            left.append(str(b.arg()))
+            right.append(str(b.right()))
+        lmax = 0
+        if len(left)>0:
+            lmax = max(len(l) for l in left)
+        left2 = []
+        for l in left:
+            while len(l)<lmax: l = ' '+l
+            left2.append(l)
+        txts = []
+        while len(left2)>0:
+            l = left2.pop(0)
+            r = right.pop(0)
+            txts.append(l+' '+r)
+        return da('\n'.join(txts))
+CONTEXT.define('table',table)
 
 if __name__=='__main__':
     t = '@@@'

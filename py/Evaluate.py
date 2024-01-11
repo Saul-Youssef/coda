@@ -124,6 +124,7 @@ CONTEXT.define('multi',Multi)
 #   demo: eval 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
 #   demo: nat : 0
 #   demo: with : nat : 0
+#   demo: eval 10 : with : nat : 0
 #   demo: eval 100 : with : nat : 0
 #
 def eval_0(context,domain,A,B):

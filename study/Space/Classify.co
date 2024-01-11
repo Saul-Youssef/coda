@@ -1,0 +1,8 @@
+#
+#   Classifying data w.r.t. given samples 
+#
+#   demo: classify (permutation 3:|) : (:null) (:pass) (:first 100) 
+#
+def _AP : {ap (put*B*get) : A} 
+def _Col : {collect : ap {bin (_AP A : (get:B)):B} A : B}
+def classify : {ap {bin (count:right:B):right:B} : _Col A : B}

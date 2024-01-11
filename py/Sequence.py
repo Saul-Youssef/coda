@@ -43,6 +43,9 @@ CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #   demo: last 2 : a b c
 #   demo: skip : a b c
 #   demo: skip 2 : a b c d e
+#   demo: by 2 : a b c d e
+#   demo: by : a b c d e
+#   demo: by 2 : nat : 0
 #
 def first_1(context,domain,A,B):
     if B.empty(): return data()
@@ -93,6 +96,17 @@ def skip_1(context,domain,A,B):
         BL,BR = B.split()
         if BL.atom(context): return data((domain+da(str(n-1)))|BR)
 CONTEXT.define('skip',skip_0,skip_1)
+
+def By(context,domain,A,B):
+    if A.rigid(context):
+        import Number
+        ns = Number.ints(A)
+        n = 1
+        if len(ns)>0 and ns[0]>1: n = ns[0]
+        if data(*B[:n]).atomic(context): return (data()|data(*B[:n])) + ((domain+A)|data(*B[n:]))
+def By_0(context,domain,A,B):
+    if B.empty(): return data()
+CONTEXT.define('by',By_0,By)
 #
 #   Repeats the arguments for each input.
 #
@@ -100,7 +114,7 @@ CONTEXT.define('skip',skip_0,skip_1)
 #   demo: rep 4 : a (:)
 #
 def rep_0(context,domain,A,B):
-    if A.atom(context) and B.atomic(context):
+    if A.rigid(context) and B.atomic(context):
         try:
             n = int(str(A[0]))
             Bs = [b for b in B]
@@ -109,7 +123,7 @@ def rep_0(context,domain,A,B):
                 for b in Bs: L.append(b)
             return data(*L)
         except Exception as e:
-            pass
+            return B
 CONTEXT.define('rep',rep_0)
 #
 #   Select the n'th item(s) from input.

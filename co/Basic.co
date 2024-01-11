@@ -14,12 +14,17 @@
 #
 def has   : ap {if  (A=(domain:B)):B}
 def hasnt : ap {nif (A=(domain:B)):B}
-def is    : ap {if (in A:B):B}
-def isnt  : ap {if (not:in A:B):B}
+def is    : ap {nif (ar {not:A=B} A:B):B}
+def isnt  : ap { if (ar {not:A=B} A:B):B}
 #
-#    co A is the dual of A, co A:X -> A for any X. 
+#    co A is the dual of A, co A:X -> A for any X.
 #
-#    demo: co 6 : a b c 
-#    demo: co 6 : 
+#    demo: co 6 : a b c
+#    demo: co 6 :
 #
-def co    : {A} 
+def co : {A}
+#
+#   * +
+#
+def star : {prod (:A) (:B)}
+def plus : {sum  (:A) (:B)}

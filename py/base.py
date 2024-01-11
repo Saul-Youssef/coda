@@ -27,7 +27,9 @@ class data(object):
     def atomic(self,context): return all(c.atom(context) for c in self)
     def irred (self,context): return any(c.atom(context) for c in self)
     def atom  (self,context): return len(self)==1 and self.atomic(context)
-    def rigid (self,context): return self.atomic(context) and all(c.left().rigid(context) and c.right().rigid(context) for c in self)
+    def rigid (self,context): return self.atomic(context) and all(c.rigid(context) for c in self)
+    def stable(self,context): return all(c.stable(context) for c in self)
+#    def rigid (self,context): return self.atomic(context) and all(c.left().rigid(context) and c.right().rigid(context) for c in self)
 #
 #   Algebra
 #
@@ -62,7 +64,11 @@ class coda(object):
 #   Atom in context
 #
     def atom(self,context): return self in context and len(context[self])==0
-    def rigid(self,context): return data(self).rigid(context)
+    def rigid(self,context): return self.right().rigid(context) and self.left().rigid(context)
+    def stable(self,context): return \
+        not (self in context and len(context[self])>0) and \
+        self.left().stable(context) and self.right().stable(context)
+#    def rigid(self,context): return data(self).rigid(context)
 
 ATOM = data()|data()
 BIT0 = data(ATOM)|data()

@@ -348,6 +348,9 @@ def Defined(context,domain,A,B):
         for dom,Def in CONTEXT:
             mod = Help(str(dom)).module()
             if mod in modules or modules==[] and len(dom)>0: L.append(dom[0])
+        LL = [(str(l),l) for l in L]
+        LL.sort()
+        L = [b for a,b in LL]
         return data(*L)
 CONTEXT.define('defs',Defined)
 

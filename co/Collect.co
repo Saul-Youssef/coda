@@ -7,5 +7,3 @@
 #   demo: equiv nchar : a b aa bb aaa cccc zz xxx xxx
 #
 def equiv : {collect : ap {put bin (A:B):B} A : B}
-
-#def equiv : collect * ap {put bin (A:B):B}

@@ -44,18 +44,6 @@ def get(context,domain,A,B):
         back  = data((domain+A)|data(*Bs))
         return front+back
 CONTEXT.define('get',get)
-#def arg(context,domain,A,B):
-#    if A.rigid(context):
-#        if B.empty(): return data()
-#        L = []; Bs = [b for b in B]
-#        while len(Bs)>0 and Bs[0].atom(context):
-#            b = Bs.pop(0)
-#            if b.domain()==A:
-#                for r in b.arg(): L.append(r)
-#        front = data(*L)
-#        back = data((domain+A)|data(*Bs))
-#        return front+back
-#CONTEXT.define('arg',arg)
 #
 #   demo: left : bin 1 2 3 : a b c
 #   demo: right : bin 1 2 3 : a b c
@@ -108,29 +96,6 @@ def nif_0(context,domain,A,B):
     if A.irred(context): return B
 CONTEXT.define('nif',nif_1,nif_0)
 #
-#    Star is syntactic sugar with A*B:X defined to be A:B:X
-#    Star is syntactic sugar where A*B X : Y is defined to be A : B X : Y.
-#
-#    If you think of A and B as functions, with action X -> A:X,
-#    this is function composition.
-#
-#   demo: count*first:a b c
-#   demo: first*count:a b c
-#   demo: {first 2:B} * {first 3:B} : 1 2 3 4 5
-#   demo: {first 2:B} * {rev:B} : 1 2 3 4 5
-#   demo: (pass*first) 2 : 1 2 3
-#   demo: (first * pass) 2 : 1 2 3
-#
-#def star(context,domain,A,B):
-#    AL,AR = A.split()
-#    if AL.atom(context):
-#        L,R = AL[0].left(),AL[0].right()
-#        LL,LR = L.split()
-#        if LL==da('bin'): return data((LR)|data((R+AR)|B))
-#CONTEXT.define('*',star)
-
-
-#
 #   product and sum
 #
 #   demo: sum (:pass) (:rev) (:first 2) : a b c d
@@ -146,38 +111,3 @@ def sum(context,domain,A,B):
     if AL.atom(context): return (AL[0].right()|B) + ((domain+AR)|B)
 CONTEXT.define('prod',prod)
 CONTEXT.define('sum',sum)
-
-#
-#   product and sum
-#
-#   demo: product (:first 3) (:rev) : a b c d e f g
-#   demo: product (:rev) (:first 3) : a b c d e f g
-#   demo: (prod : (:rev) (:first 3)) : a b c d e f g
-#   demo: (prod : (:rev) (:first)) : a b c d e f g
-#   demo: (prod 3 : (:rev) (:first)) : a b c d e f g
-#   demo: sum (:first 3) (:rev) : a b c d e f g
-#   demo: sum (:rev) (:first 3) : a b c d e f g
-#   demo: sum (:rev) (:{first 3:B}) : a b c d e f g
-#   demo: sum (bin:rev) (bin:{first 3:B}) : a b c d e f g
-#
-#def aprod_1(context,domain,A,B):
-#    if len(A)>0 and A[-1].atom(context):
-#        AL,a = data(*A[:-1]),A[-1]
-#        return data((domain+AL)|data(a.right()|B))
-#def aprod_0(context,domain,A,B):
-#    if A.empty(): return B
-#def aprod_2(context,domain,A,B):
-#    if A.atom(context): return data(A[0].right()|B)
-#CONTEXT.define('product',aprod_1,aprod_0,aprod_2)
-#
-#def bprod_1(context,domain,A,B):
-#    if B.atomic(context):
-#        if len(B)>0:
-#            B2 = [b for b in B]
-#            b = B2.pop()
-#            b = b.left()|(b.right()+A)
-#            B2.append(b)
-#            return da('product')+data(*B2)
-#        else:
-#            return da('product')
-#CONTEXT.define('prod',bprod_1)

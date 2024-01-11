@@ -1,8 +1,8 @@
 #
 #   * +
 #
-def star : {prod (:A) (:B)} 
-def plus : {sum  (:A) (:B)} 
+#def star : {prod (:A) (:B)} 
+#def plus : {sum  (:A) (:B)} 
 #
 #   Simple 
 #

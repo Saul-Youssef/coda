@@ -90,12 +90,9 @@ def Out(context,domain,A,B):
             return
 CONTEXT.define('out',Out)
 
+def word(text,A): return text in [str(a) for a in A]
 def IN(context,domain,A,B):
     if A.rigid(context) and B.rigid(context):
-        atomic = 'atomic'  in [str(a) for a in A]
-        stable = 'stable'  in [str(a) for a in A]
-        frozen = 'frozen'  in [str(a) for a in A]
-        inspect= 'inspect' in [str(a) for a in A]
         import os,pickle
         try:
             R = []
@@ -103,12 +100,12 @@ def IN(context,domain,A,B):
                 path = str(b)
                 with open(path,'rb') as f:
                     D = pickle.loads(f.read())
-                    if frozen:
+                    if word('with',A):
                         for d in D: R.append(da('with')|data(d))
-                    elif atomic:
+                    elif word('atomic',A):
                         for d in D:
                             if d.atom(context): R.append(d)
-                    elif stable:
+                    elif word('stable',A):
                         for d in D:
                             if d.stable(context): R.append(d)
                     else:

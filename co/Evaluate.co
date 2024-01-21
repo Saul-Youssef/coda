@@ -1,5 +1,9 @@
 #
-#   Evaluate data
+#   Evaluation of data and new contexts with 'with'
+#
+#   eval : evaluates to specified depth
+#   use  : uses input definitions in the current context
+#   with : create a new 'scope' including argument specified definitions
 #
 #   demo: eval : a b c
 #   demo: eval :
@@ -12,6 +16,7 @@
 #   demo: eval 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
 #   demo: nat : 0
 #   demo: with : nat : 0
+#   demo: eval 10 : with : nat : 0
 #   demo: eval 100 : with : nat : 0
 #
 def eval : ap eval1

@@ -122,9 +122,14 @@ class Context(object):
     def __iter__(self):
         for domain,defs in self._defs.items(): yield domain,defs
     def __repr__(self): return ','.join([str(dom) for dom,defs in self])
-    def copy(self): # copy with emptied cache and no xevals
+#    def copy(self,rems): # copy with emptied cache and no xevals
+#        new = Context()
+#        for key,value in self._defs.items() :
+#            if not key in rems: new._defs [key] = value
+#        return new
+    def copy(self):
         new = Context()
-        for key,value in self._defs.items() : new._defs [key] = value
+        for key,value in self._defs.items(): new._defs[key] = value
         return new
     def has(self,dom): return dom in self._defs
     def add(self,domain,*Fs):

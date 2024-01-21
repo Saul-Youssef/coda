@@ -30,6 +30,7 @@ def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) }
 def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #
 def commutative : {(B:x? y?)=(B:y? x?)} 
+def commutative2: {(B x?:y? z?)=(B x?:z? y?)} 
 def involution  : {((B:B:x?)=x?)} 
 def semilattice : {(B:x? x?)=(B:x?)} 
 #
@@ -39,5 +40,3 @@ def commuting : { (A*B:x?)=(B*A:x?) }
 #
 #   morphism from A to B 
 #
-
-

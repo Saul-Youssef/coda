@@ -134,7 +134,9 @@ def eval_with(context,domain,A,B):
         b = B[0]
         if b.domain()==da('with') and b.arg().rigid(context):
             defs  = [c for c in b.arg() if c.domain()==da('def')]
+#            rems  = [c for c in b.arg() if c.domain()==data(BIT1)]
             uses  = [da('use1')|data(de) for de in defs]
+#            new = context.copy([data(c) for c in rems])
             new = context.copy()
             D = new.evaluate(DEFAULT,data(*uses))
             if D.empty(): # evaluate right side of with in new context.

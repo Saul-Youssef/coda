@@ -76,7 +76,7 @@ CONTEXT.define('dir',Dir,Dir_0)
 #   out file1 : a b c
 #   in : file1
 #   out file2 : (defs:) nat : 0
-#   in : file1 file2 
+#   in : file1 file2
 #
 def Out(context,domain,A,B):
     if A.rigid(context) and len(A)==1:
@@ -91,7 +91,11 @@ def Out(context,domain,A,B):
 CONTEXT.define('out',Out)
 
 def IN(context,domain,A,B):
-    if B.rigid(context):
+    if A.rigid(context) and B.rigid(context):
+        atomic = 'atomic'  in [str(a) for a in A]
+        stable = 'stable'  in [str(a) for a in A]
+        frozen = 'frozen'  in [str(a) for a in A]
+        inspect= 'inspect' in [str(a) for a in A]
         import os,pickle
         try:
             R = []
@@ -99,7 +103,16 @@ def IN(context,domain,A,B):
                 path = str(b)
                 with open(path,'rb') as f:
                     D = pickle.loads(f.read())
-                    for d in D: R.append(d)
+                    if frozen:
+                        for d in D: R.append(da('with')|data(d))
+                    elif atomic:
+                        for d in D:
+                            if d.atom(context): R.append(d)
+                    elif stable:
+                        for d in D:
+                            if d.stable(context): R.append(d)
+                    else:
+                        for d in D: R.append(d)
             return data(*R)
         except Exception as e:
             return

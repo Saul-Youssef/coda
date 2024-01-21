@@ -34,7 +34,17 @@ def aq2_0(context,domain,A,B):
     A0,AR = A.split()
     A1,AR = AR.split()
     if A0.empty() or A1.empty(): return data()
-CONTEXT.define('aq',aq2_1,aq2_0)
+CONTEXT.define('aq',aq2_1,aq2_0)        
+
+def ri_1(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        if len(A)<=1: return data()
+        OP,AR = A.split()
+        L = []
+        for a in AR:
+            for b in B: L.append((OP[0].right()+data(a))|data(b))
+        return data(*L)
+CONTEXT.define('ri',ri_1)
 
 def ar_1(context,domain,A,B):
     if A.atomic(context) and B.atomic(context):

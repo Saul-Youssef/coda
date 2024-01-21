@@ -17,6 +17,10 @@ def src(domain):
     if s.startswith('{') and s.endswith('}'): return s[1:-1]
     raise error('Unexpected language input')
 
+def escape(s):
+    if len(s)==2 and s[0]=='\\' and s[1]=='n': return '\n'
+    return s
+
 def language(context,domain,A,B):
     s = src(domain)
     if s.startswith(' '): return lang(s[1:  ],A,B)
@@ -89,7 +93,7 @@ def language(context,domain,A,B):
 #
     if s.startswith('(') and s.endswith(')'): return lang(s[1:-1],A,B)
     if s.startswith('{') and s.endswith('}') and balanced(s[1:-1]): return da(s)
-    if s.startswith('<') and s.endswith('>'): return da(s[1:-1])
+    if s.startswith('<') and s.endswith('>'): return da(escape(s[1:-1]))
 #
 #   A bit of syntactic sugar to make x? -> (?:x) etc.
 #

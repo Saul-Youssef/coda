@@ -156,6 +156,7 @@ CONTEXT.define('endswith',endswith,endswith_0)
 #   demo: join <-> : a b c
 #   demo: count : join < > : a b c
 #   demo: join <> : a b c
+#   demo: join <\n> : a b c
 #   demo: join : a b c
 #   demo: split . : a.b.c.d
 #   demo: join . : split . : a.b.c.d
@@ -186,35 +187,47 @@ CONTEXT.define('split',split)
 def strmax(txt,n):
     if len(txt)<=n: return txt
     return txt[:n]+'...'
-def table(context,domain,A,B0):
-    if not A.rigid(context): return
-    if not B0.stable(context): return
-    n = 1000
-    import Number
-    ns = Number.ints(A)
-    if len(ns)>0 and ns[0]>0: n = ns[0]
-    B = B0
+
+def term(context,domain,A,B):
+    if A.rigid(context):
+        import Number
+        ns = Number.ints(A)
+        n = 80
+        if len(ns)>0 and ns[0]>0: n = ns[0]
+
+        BL,BR = B.split()
+        if BL.empty(): return data()
+        if BL.atom(context): return da(strmax(str(BL[0]),n)) + data((domain+A)|BR)
+CONTEXT.define('term',term)
+
+#def table(context,domain,A,B0):
+#    if not A.rigid(context): return
+#    n = 100
+#    import Number
+#    ns = Number.ints(A)
+#    if len(ns)>0 and ns[0]>0: n = ns[0]
+#    B = B0
 #    B = context.evaluate(n,B0)
-#    if B.stable(context):
-    if True:
-        left,right = [],[]
-        for b in B:
-            left.append(str(b.arg()))
-            right.append(str(b.right()))
-        lmax = 0
-        if len(left)>0:
-            lmax = max(len(l) for l in left)
-        left2 = []
-        for l in left:
-            while len(l)<lmax: l = ' '+l
-            left2.append(l)
-        txts = []
-        while len(left2)>0:
-            l = left2.pop(0)
-            r = right.pop(0)
-            txts.append(l+' '+r)
-        return da('\n'.join(txts))
-CONTEXT.define('table',table)
+#    if True:
+#        left,right = [],[]
+#        for b in B:
+#            left.append(str(b.arg()))
+#            right.append(str(b.right()))
+#        lmax = 0
+#        if len(left)>0:
+#            lmax = max(len(l) for l in left)
+#        left2 = []
+#        for l in left:
+#            while len(l)<lmax: l = ' '+l
+#            left2.append(l)
+#        txts = []
+#        while len(left2)>0:
+#            l = left2.pop(0)
+#            r = right.pop(0)
+#            if len(r)>30: r = r[:30]+'...'
+#            txts.append(l+' '+r)
+#        return da('\n'.join(txts))
+#CONTEXT.define('tab',table)
 
 if __name__=='__main__':
     t = '@@@'

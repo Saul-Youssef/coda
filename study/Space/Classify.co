@@ -1,5 +1,6 @@
 #
-#   Classifying data w.r.t. given samples 
+#   Classify input data (:F1) (:F2)... with respect to 
+#   argument sample (:A1) (:A2)...
 #
 #   demo: classify (permutation 3:|) : (:null) (:pass) (:first 100) 
 #

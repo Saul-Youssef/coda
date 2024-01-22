@@ -100,7 +100,8 @@ def IN(context,domain,A,B):
                 path = str(b)
                 with open(path,'rb') as f:
                     D = pickle.loads(f.read())
-                    if word('with',A):
+                    print(word('with',A),word('atomic',A),word('stable',A),'aaaaa')
+                    if True or word('with',A):
                         for d in D: R.append(da('with')|data(d))
                     elif word('atomic',A):
                         for d in D:

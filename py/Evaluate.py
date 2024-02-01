@@ -2,7 +2,60 @@
 from base import *
 import Number
 
-DEFAULT = 100
+DEFAULT = 20
+STEPS = 100
+EVALS = 10000000
+
+class Eval(object):
+    def __init__(self,steps,evals,context):
+        self.steps = steps
+        self.evals = evals
+        self.context = context
+    def evaluate(self,D):
+        E = D
+        while self.steps>0:
+            self.steps -= 1
+            E2 = self.step(E)
+            if E==E2: break
+            E = E2
+        return E
+    def step(self,D):
+        Ds = []
+        for d in D:
+            if d.domain()==da('with'):
+                Ds.append(d)
+            elif d in self.context and self.evals>0:
+                self.evals -= 1
+                R = self.context(d)
+                if R==data(d):
+                    Ds.append(self.step(d.left())|self.step(d.right()))
+                else:
+                    for r in R: Ds.append(r)
+            else:
+                Ds.append(self.step(d.left())|self.step(d.right()))
+        return data(*Ds)
+
+def evaluate(n,context,D):
+    L = [d for d in D]
+    while len(L)>0 and n>0:
+        d = L.pop(0)
+        if d.stable(context):
+            yield d
+            n = n - 1
+        else:
+            d = evaluate_coda(n-1,context,d)
+            if d in context: L = [c for c in context(d)]+L
+            n = n - 1
+    for d in L:
+        for c in context(d): yield c
+
+def evaluate_coda(n,context,d):
+    left  = data(*[c for c in evaluate(n,context,d.left ())])
+    if (left|data()).domain()==da('with'):
+        right = d.right()
+    else:
+        right = data(*[c for c in evaluate(n,context,d.right())])
+    return left|right
 
 def _split(n,B):
     Bs = [b for b in B]
@@ -138,14 +191,21 @@ def eval_with(context,domain,A,B):
             uses  = [da('use1')|data(de) for de in defs]
 #            new = context.copy([data(c) for c in rems])
             new = context.copy()
-            D = new.evaluate(DEFAULT,data(*uses))
+#            D = new.evaluate(DEFAULT,data(*uses))
+#            D = data(*[d for d in evaluate(DEFAULT,new,data(*uses))])
+            D = Eval(STEPS,EVALS,new).evaluate(data(*uses))
             if D.empty(): # evaluate right side of with in new context.
                 n = Number.intdef(DEFAULT,A)
-                return data((b.domain()+b.arg())|new.evaluate(n,b.right()))
+#                return data((b.domain()+b.arg())|new.evaluate(n,b.right()))
+#                R = data(*[d for d in evaluate(n,new,b.right())])
+                R = Eval(n,EVALS,new).evaluate(b.right())
+                return data((b.domain()+b.arg())|R)
 def eval_1(context,domain,A,B):
     if A.rigid(context) and B.atom(context):
         n = Number.intdef(DEFAULT,A); b = B[0]
-        if not b.domain()==da('with'): return context.evaluate(n,B)
+        if not b.domain()==da('with'):
+            return Eval(n,EVALS,context).evaluate(B)
+#            return context.evaluate(n,B)
 CONTEXT.define('eval1',eval_0,eval_with,eval_1)
 CONTEXT.define('with')
 #
@@ -155,6 +215,30 @@ CONTEXT.define('with')
 #     demo: step : {first A : B} 2 : a b c d e
 #
 def stepEval(context,domain,A,B):
+    if A.rigid(context):
+        import Number
+        steps = STEPS
+        evals = EVALS
+        ns = Number.ints(A)
+        if len(ns)>0: steps = ns.pop(0)
+        if len(ns)>0: evals = ns.pop(0)
+
+        E = Eval(2*steps,evals,context)
+        B2 = B
+        outs = []
+        n = 0
+        while steps>0:
+            s = str(B2)
+            outs.append('['+str(n)+'] '+s); n += 1
+            Bnew = E.step(B2)
+            if B2==Bnew: break
+            B2 = Bnew
+            steps -= 1
+        return da('\n'.join(outs))
+def stepEval_0(domain,A,B):
+    if B.empty(): return data()
+
+def stepEvalOLD(context,domain,A,B):
     if A.rigid(context):
         import Number
         depth = Number.intdef(DEFAULT,A)
@@ -171,6 +255,6 @@ def stepEval(context,domain,A,B):
             while len(num)<width: num = ' '+num
             outs.append('['+num+']'+' '+str(s)); n += 1
         return da('\n'.join(outs))
-def stepEval_0(domain,A,B):
+def stepEval_0OLD(domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('step',stepEval,stepEval_0)

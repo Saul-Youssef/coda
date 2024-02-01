@@ -10,7 +10,10 @@ import base,Language,Evaluate,IO,Source
 IO.OUT.kernel() # set stdout to kernel mode
 #Evaluate.resolve(Language.lang('homecontext:', base.data(),base.data()),1000)
 #D = Evaluate.evaluate(100,base.CONTEXT,Language.lang('ap use1 : localdef:',base.data(),base.data()))
-D = base.CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',base.data(),base.data()))
+#D = base.CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',base.data(),base.data()))
+LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
+#D = base.data(*[d for d in Evaluate.evaluate(100,base.CONTEXT,LANG)])
+D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT).evaluate(LANG)
 if not D.empty(): raise error('Local definition error '+str(D))
 
 class EchoKernel(Kernel):
@@ -35,7 +38,9 @@ class EchoKernel(Kernel):
             for d in Source.language(code):
                 try:
 #                    D = Evaluate.default(d)
-                    D = base.CONTEXT.xeval(base.da('with')).evaluate(100,d)
+#                    D = base.CONTEXT.xeval(base.da('with')).evaluate(100,d)
+#                    D = base.data(*[c for c in Evaluate.evaluate(100,base.CONTEXT,d)])
+                    D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT).evaluate(d)
 #                    D = Evaluate.evaluate(100,base.CONTEXT,d)
                     IO.OUT(str(D))
                     s = IO.OUT.flush()

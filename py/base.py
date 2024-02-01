@@ -65,10 +65,12 @@ class coda(object):
 #
     def atom(self,context): return self in context and len(context[self])==0
     def rigid(self,context): return self.right().rigid(context) and self.left().rigid(context)
+#    def stable(self,context): return \
+#        not (self in context and len(context[self])>0) and \
+#        self.left().stable(context) and self.right().stable(context)
     def stable(self,context): return \
         not (self in context and len(context[self])>0) and \
-        self.left().stable(context) and self.right().stable(context)
-#    def rigid(self,context): return data(self).rigid(context)
+        self.left().stable(context)
 
 ATOM = data()|data()
 BIT0 = data(ATOM)|data()
@@ -140,6 +142,7 @@ class Context(object):
     def __contains__(self,c): return c.domain() in self._defs
     def __getitem__ (self,c): return self._defs[c.domain()]
     def __call__(self,c):  # total function from coda to data
+            if not c in self: return data(c)
             for F in self[c]:
                 domain,A,B = c.triplet()
                 D = F(self,domain,A,B)

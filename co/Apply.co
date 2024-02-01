@@ -1,7 +1,7 @@
 #
 #    while A : B applies A to B until it saturates, thus becoming idempotent
 #
-#    demo: while {(aps int_add:first 2:B) (tail 2:B)} : 1 2 3 4
+#    demo: while {(as int_add:first 2:B) (tail 2:B)} : 1 2 3 4
 #
 def while : {some (if ((A:B)=B):B) : while A : A : B}
 #

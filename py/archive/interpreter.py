@@ -18,10 +18,7 @@ UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 #
 #   import local definitions from .../coda/co
 #
-#D = CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',data(),data()))
-Local = Language.lang('ap use1 : localdef:',data(),data())
-#D = data(*[d for d in Evaluate.evaluate(100,CONTEXT,Local)])
-D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,CONTEXT).evaluate(Local)
+D = CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',data(),data()))
 if not D.empty(): raise error('Local definition error '+str(D))
 
 KI = False
@@ -29,21 +26,12 @@ if len(sys.argv)>1:
     if sys.argv[1]=='-': KI = True
     try:
         n = int(sys.argv[1])
-        if n>1:
-            Evaluate.DEFAULT = n
-            Evaluate.STEPS = n
-    except ValueError:
-        pass
-if len(sys.argv)>2:
-    try:
-        e = int(sys.argv[2])
-        if e>1:
-            Evaluate.EVALS = e
+        if n>1: Evaluate.DEFAULT = n
     except ValueError:
         pass
 
 try:
-#    CONTEXT = CONTEXT.xeval(da('with'))
+    CONTEXT = CONTEXT.xeval(da('with'))
     while True:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
@@ -51,9 +39,7 @@ try:
 
 #            D = Language.lang('eval:'+line,data(),data())
             D = Language.lang(line,data(),data())
-            D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,CONTEXT).evaluate(D)
-#            D = data(*[d for d in Evaluate.evaluate(Evaluate.DEFAULT,CONTEXT,D)])
-#            D = CONTEXT.evaluate(100,D)
+            D = CONTEXT.evaluate(100,D)
 #            D = CONTEXT.xeval(da('with')).evaluate(100,D)
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')

@@ -1,0 +1,16 @@
+#
+#   demo: permutation 2 : a b
+#   demo: permutation 3 : a b
+#   demo: permutation 3 : a
+#   demo: assign (x?=y?) : (:a) (:a)
+#   demo: cases (x?=y?) : (:a) (:b)
+#   demo: eval : cases (x?=y?) : (:a) (:b)
+#   demo: cases (x?=y?) : permutation 2 : a b
+#   demo: eval : cases (x?=y?) : permutation 2 : a b
+#   demo: get with : eval : cases (x?=y?) : permutation 2 : a b
+#   demo: cases (x?=(rev:x?)) : (:a a) (:b b) (:a b)
+#   demo: theorem (x?=(rev:x?)) : (:a a) (:b b) (:a b)
+#   demo: theorem (x?=(rev:x?)) : (:a a) (:b b) (:x x x)
+#
+def cases : {ap {with (right:B):count:A} A : assign A : B}
+def theorem : {ap {if (not:right:B):B} : eval : cases A : B}

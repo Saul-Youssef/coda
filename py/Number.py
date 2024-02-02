@@ -62,7 +62,6 @@ class Reduce(object):
     def __init__(self,name,reduce):
         self._name   = name
         self._reduce = reduce # atoms to atoms
-#        CONTEXT.define(name,lambda context,domain,A,B:self(context,domain,A,B))
         CONTEXT.define(name,self)
     def split(self,context,B):
         atoms,rest = [],[b for b in B]
@@ -117,13 +116,13 @@ def _sort(L): return sorted(L)
 #   demo: int_sort : 4 3 2 a b c -100 99
 #   demo: float_sort : 1 2 a 3.14 -99.9
 #
-RE('code_sort',str,_sort)
-RE('ints',tryint,lambda L:L)
-RE('int_sum',tryint,_sum)
-RE('int_prod',tryint,_prod)
-RE('int_sort',tryint,_sort)
-RE('int_min',tryint,_min)
-RE('int_max',tryint,_max)
+#RE('code_sort',str,_sort)
+#RE('ints',tryint,lambda L:L)
+#RE('int_sum',tryint,_sum)
+#RE('int_prod',tryint,_prod)
+#RE('int_sort',tryint,_sort)
+#RE('int_min',tryint,_min)
+#RE('int_max',tryint,_max)
 def int_inv_0(context,domain,A,B):
     if B.empty(): return data()
 def int_inv_1(context,domain,A,B):
@@ -149,14 +148,14 @@ def int_div_1(context,domain,A,B):
                 return da(str(num//den)) + data((domain+A)|BR)
 CONTEXT.define('int_div',int_div_0,int_div_1,int_div_2)
 
-RE('nats',trynat,lambda L:L)
+#RE('nats',trynat,lambda L:L)
 
-RE('floats',tryfloat,lambda L:L)
-RE('float_sum',tryfloat,_sum)
-RE('float_prod',tryfloat,_prod)
-RE('float_sort',tryfloat,_sort)
-RE('float_min',tryfloat,_min)
-RE('float_max',tryfloat,_max)
+#RE('floats',tryfloat,lambda L:L)
+#RE('float_sum',tryfloat,_sum)
+#RE('float_prod',tryfloat,_prod)
+#RE('float_sort',tryfloat,_sort)
+#RE('float_min',tryfloat,_min)
+#RE('float_max',tryfloat,_max)
 def float_inv_0(context,domain,A,B):
     if B.empty(): return data()
 def float_inv_1(context,domain,A,B):

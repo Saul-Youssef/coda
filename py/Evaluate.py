@@ -5,25 +5,39 @@ import Number
 DEFAULT = 20
 STEPS = 100
 EVALS = 10000000
-
+#
+#    Evaluation of data to a maximum of steps and evals in the supplied context
+#
 class Eval(object):
     def __init__(self,steps,evals,context):
-        self.steps = steps
-        self.evals = evals
+        self.max_steps = steps
+        self.max_evals = evals
         self.context = context
+        self._cache = {}
+    def evaluate(self,D): return self(D)
+    def __call__(self,D):
+        if D in self._cache: return self._cache[D]
+        D2 = self.evaluate(D)
+        if D2.defined(self.context): self._cache[D] = D2
+        return D2
     def evaluate(self,D):
-        E = D
+        self.steps = self.max_steps
+        self.evals = self.max_evals
+        Done = [] # stable leading data does not need evaluation
+        Ds = [d for d in D]
         while self.steps>0:
             self.steps -= 1
-            E2 = self.step(E)
-            if E==E2: break
-            E = E2
-        return E
+            while len(Ds)>0 and Ds[0].stable(self.context): Done.append(Ds.pop(0))
+            D1 = data(*Ds)
+            D2 = self.step(D1)
+            if D1==D2: break
+            Ds = [d for d in D2]
+        return data(*(Done+Ds))
     def step(self,D):
         Ds = []
         for d in D:
             if d.domain()==da('with'):
-                Ds.append(d)
+                Ds.append(self.evaluate(d.left())|d.right())
             elif d in self.context and self.evals>0:
                 self.evals -= 1
                 R = self.context(d)
@@ -34,28 +48,6 @@ class Eval(object):
             else:
                 Ds.append(self.step(d.left())|self.step(d.right()))
         return data(*Ds)
-
-def evaluate(n,context,D):
-    L = [d for d in D]
-    while len(L)>0 and n>0:
-        d = L.pop(0)
-        if d.stable(context):
-            yield d
-            n = n - 1
-        else:
-            d = evaluate_coda(n-1,context,d)
-            if d in context: L = [c for c in context(d)]+L
-            n = n - 1
-    for d in L:
-        for c in context(d): yield c
-
-def evaluate_coda(n,context,d):
-    left  = data(*[c for c in evaluate(n,context,d.left ())])
-    if (left|data()).domain()==da('with'):
-        right = d.right()
-    else:
-        right = data(*[c for c in evaluate(n,context,d.right())])
-    return left|right
 
 def _split(n,B):
     Bs = [b for b in B]
@@ -180,33 +172,27 @@ CONTEXT.define('multi',Multi)
 #   demo: eval 10 : with : nat : 0
 #   demo: eval 100 : with : nat : 0
 #
-def eval_0(context,domain,A,B):
-    if B.empty(): return data()
-def eval_with(context,domain,A,B):
-    if A.rigid(context) and B.atom(context):
+def eval_(context,domain,A,B):
+    if B.empty():
+        return data()
+    elif A.rigid(context) and B.atom(context):
         b = B[0]
-        if b.domain()==da('with') and b.arg().rigid(context):
-            defs  = [c for c in b.arg() if c.domain()==da('def')]
-#            rems  = [c for c in b.arg() if c.domain()==data(BIT1)]
-            uses  = [da('use1')|data(de) for de in defs]
-#            new = context.copy([data(c) for c in rems])
+        ns = Number.ints(A)
+        steps,evals = STEPS,EVALS
+        if len(ns)>0: steps = ns.pop(0)
+        if len(ns)>0: evals = ns.pop(0)
+
+        if b.domain()==da('with'):
+            ARGS = Eval(STEPS,EVALS,context)(b.arg())
+            args = [da('use1')|data(arg) for arg in ARGS if arg.domain()==da('def')]
             new = context.copy()
-#            D = new.evaluate(DEFAULT,data(*uses))
-#            D = data(*[d for d in evaluate(DEFAULT,new,data(*uses))])
-            D = Eval(STEPS,EVALS,new).evaluate(data(*uses))
-            if D.empty(): # evaluate right side of with in new context.
-                n = Number.intdef(DEFAULT,A)
-#                return data((b.domain()+b.arg())|new.evaluate(n,b.right()))
-#                R = data(*[d for d in evaluate(n,new,b.right())])
-                R = Eval(n,EVALS,new).evaluate(b.right())
-                return data((b.domain()+b.arg())|R)
-def eval_1(context,domain,A,B):
-    if A.rigid(context) and B.atom(context):
-        n = Number.intdef(DEFAULT,A); b = B[0]
-        if not b.domain()==da('with'):
-            return Eval(n,EVALS,context).evaluate(B)
-#            return context.evaluate(n,B)
-CONTEXT.define('eval1',eval_0,eval_with,eval_1)
+            DA = Eval(STEPS,EVALS,new)(data(*args))
+            if DA.empty():
+                R = Eval(steps,evals,new)(b.right())
+                return data((b.domain()+ARGS)|R)
+        else:
+            return Eval(n,EVALS,context)(B)
+CONTEXT.define('eval1',eval_)
 CONTEXT.define('with')
 #
 #     step evaluation step-by-step evaluation of it's input
@@ -235,26 +221,6 @@ def stepEval(context,domain,A,B):
             B2 = Bnew
             steps -= 1
         return da('\n'.join(outs))
-def stepEval_0(domain,A,B):
-    if B.empty(): return data()
-
-def stepEvalOLD(context,domain,A,B):
-    if A.rigid(context):
-        import Number
-        depth = Number.intdef(DEFAULT,A)
-        step = [B]
-        B2 = context.evaluate(1,B)
-        while not step[-1]==B2 and len(step)<=depth:
-            step.append(B2)
-            B2 = context.evaluate(1,B2)
-        outs = []
-        n = 0
-        width = len(str(len(step)))
-        for s in step:
-            num = str(n)
-            while len(num)<width: num = ' '+num
-            outs.append('['+num+']'+' '+str(s)); n += 1
-        return da('\n'.join(outs))
-def stepEval_0OLD(domain,A,B):
+def stepEval_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('step',stepEval,stepEval_0)

@@ -18,10 +18,8 @@ UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 #
 #   import local definitions from .../coda/co
 #
-#D = CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',data(),data()))
 Local = Language.lang('ap use1 : localdef:',data(),data())
-#D = data(*[d for d in Evaluate.evaluate(100,CONTEXT,Local)])
-D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,CONTEXT).evaluate(Local)
+D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,CONTEXT).evaluate(Local)
 if not D.empty(): raise error('Local definition error '+str(D))
 
 KI = False
@@ -43,18 +41,14 @@ if len(sys.argv)>2:
         pass
 
 try:
-#    CONTEXT = CONTEXT.xeval(da('with'))
+    EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,CONTEXT)
     while True:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
 
-#            D = Language.lang('eval:'+line,data(),data())
             D = Language.lang(line,data(),data())
-            D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,CONTEXT).evaluate(D)
-#            D = data(*[d for d in Evaluate.evaluate(Evaluate.DEFAULT,CONTEXT,D)])
-#            D = CONTEXT.evaluate(100,D)
-#            D = CONTEXT.xeval(da('with')).evaluate(100,D)
+            D = EV(D)
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:

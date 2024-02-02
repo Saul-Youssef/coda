@@ -29,7 +29,7 @@ class data(object):
     def atom  (self,context): return len(self)==1 and self.atomic(context)
     def rigid (self,context): return self.atomic(context) and all(c.rigid(context) for c in self)
     def stable(self,context): return all(c.stable(context) for c in self)
-#    def rigid (self,context): return self.atomic(context) and all(c.left().rigid(context) and c.right().rigid(context) for c in self)
+    def defined(self,context): return all(c.defined(context) for c in self)
 #
 #   Algebra
 #
@@ -65,70 +65,21 @@ class coda(object):
 #
     def atom(self,context): return self in context and len(context[self])==0
     def rigid(self,context): return self.right().rigid(context) and self.left().rigid(context)
-#    def stable(self,context): return \
-#        not (self in context and len(context[self])>0) and \
-#        self.left().stable(context) and self.right().stable(context)
-    def stable(self,context): return \
-        not (self in context and len(context[self])>0) and \
-        self.left().stable(context)
+    def stable(self,context): return not (self in context and len(context[self])>0) and self.left().stable(context)
+    def defined(self,context): return self in context and self.left().defined(context) and self.right().defined(context)
 
 ATOM = data()|data()
 BIT0 = data(ATOM)|data()
 BIT1 = data(ATOM)|data(ATOM)
 #
-#   A simple cache used within Context
-#
-class Cache(object):
-    def __init__(self):
-        self._ndata = {}
-        self._edata = {}
-        self._ecoda = {}
-    def copy(self):
-        c = Cache()
-        for key,value in self._ndata.items(): c._ndata[key] = value
-        for key,value in self._edata.items(): c._edata[key] = value
-        for key,value in self._ecoda.items(): c._ecoda[key] = value
-        return c
-    def evaluate(self,context,n,D):
-        if (n,D) in self._ndata:
-            return self._ndata[(n,D)]
-        else:
-            D2 = context._evaluate(n,D)
-            self._ndata[(n,D)] = D2
-            return D2
-    def edata(self,context,D):
-        if D in self._edata:
-            return self._edata[D]
-        else:
-            D2 = context._edata(D)
-            self._edata[D] = D2
-            return D2
-    def ecoda(self,context,c):
-        if c in self._ecoda:
-            return self._ecoda[c]
-        else:
-            D = context._ecoda(c)
-            self._ecoda[c] = D
-            return D
-#
 #   A context is a function from coda to data
 #
 class Context(object):
-    def __init__(self,*doms):
-        self._defs = {dom:[] for dom in doms}
-        self._cache = Cache()
-        self._xeval = set([])
-    def xeval(self,*doms):
-        self._xeval = set([dom for dom in doms])
-        return self
+    def __init__(self,*doms): self._defs = {dom:[] for dom in doms}
     def __iter__(self):
         for domain,defs in self._defs.items(): yield domain,defs
     def __repr__(self): return ','.join([str(dom) for dom,defs in self])
-#    def copy(self,rems): # copy with emptied cache and no xevals
-#        new = Context()
-#        for key,value in self._defs.items() :
-#            if not key in rems: new._defs [key] = value
-#        return new
+    def __len__(self): return len(self._defs)
     def copy(self):
         new = Context()
         for key,value in self._defs.items(): new._defs[key] = value
@@ -136,9 +87,9 @@ class Context(object):
     def has(self,dom): return dom in self._defs
     def add(self,domain,*Fs):
         if domain in self._defs: raise error(str(domain)+' is already defined')
-        self._defs[domain] = Fs; self._cache = Cache(); return self
+        self._defs[domain] = Fs
+        return self
     def define(self,name,*Fs): return self.add(da(name),*Fs)
-
     def __contains__(self,c): return c.domain() in self._defs
     def __getitem__ (self,c): return self._defs[c.domain()]
     def __call__(self,c):  # total function from coda to data
@@ -148,28 +99,6 @@ class Context(object):
                 D = F(self,domain,A,B)
                 if not D is None: return D
             return data(c)
-#
-#   Data evaluation within the context excluding domains in
-#   the set Exclude repeating up to n times or until saturation
-#
-    def evaluate(self,n,D): return self._cache.evaluate(self,n,D)
-    def _evaluate(self,n,D):
-        D2 = self.edata(D)
-        if n<=0 or D==D2: return D2
-        else            : return self.evaluate(n-1,D2)
-    def edata(self,D): return self._cache.edata(self,D)
-    def _edata(self,D):
-        L = []
-        for d in D:
-            for c in self.ecoda(d): L.append(c)
-        return data(*L)
-    def ecoda(self,c): return self._cache.ecoda(self,c)
-    def _ecoda(self,c):
-        if c in self:
-            if c.domain() in self._xeval: return self(self.edata(c.left())|c.right())
-            else                        : return self(self.edata(c.left())|self.edata(c.right()))
-        else:
-            return data(self.edata(c.left())|self.edata(c.right()))
 
 CONTEXT = Context(data(),data(ATOM),data(BIT0),data(BIT1))
 #

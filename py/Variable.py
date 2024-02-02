@@ -5,11 +5,6 @@ from base import *
 #
 #   Get undefined codas from input data
 #
-#   demo: undefined :
-#   demo: undefined : a b c
-#   demo: undefined : (foo:bar) x? y? z?
-#   demo: undefined : (bin: bin: bin : x? y? z?)
-#
 def undefined(context,A):
     us = set([])
     for a in A:
@@ -29,6 +24,8 @@ def invariant(context,A):
 #def Invariant(context,domain,A,B):
 #    if context.evaluate(1,B)==B: return B
 #CONTEXT.define('invariant',Invariant)
+
+
 #
 #   demo: permutation 2 : a b
 #   demo: permutation 3 : a b
@@ -49,9 +46,14 @@ def permutation_0(context,domain,A,B):
         return data(*[data()|D for D in permutation(n,B)])
 CONTEXT.define('permutation',permutation_0)
 
+def stable(A,context):
+    import Evaluate
+    return Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,context).evaluate(A)==A
+
 def assign(context,domain,A,B):
     AS = da('let')
-    if A==context.evaluate(1,A) and B.atomic(context):
+#    if B.atomic(context) and A.stable(context):
+    if B.atomic(context) and stable(A,context):
         vars = [v.left() for v in undefined(context,A) if v.right()==data()]  # coda variables
         n = len(vars)
         L = []
@@ -62,3 +64,4 @@ def assign(context,domain,A,B):
             L.append(data()|data(*T))
         return data(*L)
 CONTEXT.define('assign',assign)
+#    if A==context.evaluate(1,A) and B.atomic(context):

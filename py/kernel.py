@@ -13,8 +13,9 @@ IO.OUT.kernel() # set stdout to kernel mode
 #D = base.CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',base.data(),base.data()))
 LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
 #D = base.data(*[d for d in Evaluate.evaluate(100,base.CONTEXT,LANG)])
-D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT).evaluate(LANG)
-if not D.empty(): raise error('Local definition error '+str(D))
+D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,base.CONTEXT)(LANG)
+#if not D.empty(): raise error('Local definition error '+str(D))
+EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT)
 
 class EchoKernel(Kernel):
     implementation = 'Echo'
@@ -32,16 +33,12 @@ class EchoKernel(Kernel):
 #                   allow_stdin=False):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=True):
+#        EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT)
         if not silent:
             L = []
-#            for d in Compile.coda(code):
             for d in Source.language(code):
                 try:
-#                    D = Evaluate.default(d)
-#                    D = base.CONTEXT.xeval(base.da('with')).evaluate(100,d)
-#                    D = base.data(*[c for c in Evaluate.evaluate(100,base.CONTEXT,d)])
-                    D = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT).evaluate(d)
-#                    D = Evaluate.evaluate(100,base.CONTEXT,d)
+                    D = EV(d)
                     IO.OUT(str(D))
                     s = IO.OUT.flush()
                     if len(s)>0: L.append(s)

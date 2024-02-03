@@ -65,7 +65,7 @@ class coda(object):
 #
     def atom(self,context): return self in context and len(context[self])==0
     def rigid(self,context): return self.right().rigid(context) and self.left().rigid(context)
-    def stable(self,context): return not (self in context and len(context[self])>0) and self.left().stable(context)
+    def stable(self,context): return not (self in context and len(context[self])>0) and self.left().stable(context) and self.right().stable(context)
     def defined(self,context): return self in context and self.left().defined(context) and self.right().defined(context)
 
 ATOM = data()|data()

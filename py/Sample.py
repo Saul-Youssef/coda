@@ -215,9 +215,7 @@ CONTEXT.define('sample.window',samplewindow_0,samplewindow_1)
 def sampledata_0(context,domain,A,B):
     if B.empty(): return data()
 def sampledata_1(context,domain,A,B):
-    AE = CONTEXT.evaluate(1,A)
-    if A==AE and B.rigid(context) and len(B)>0:
-#    if A.rigid(context) and B.rigid(context) and len(B)>0:
+    if A.stable(context) and B.rigid(context) and len(B)>0:
         import Number
         ns = Number.ints(B)
         n = 1

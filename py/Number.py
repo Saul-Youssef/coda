@@ -30,6 +30,15 @@ def trynat(x):
 #   Try to get the integers from data D, ignoring colons and non-integer codes
 #
 def   ints(D): return [tryint  (d) for d in D if not tryint  (d) is None]
+def   nats(D):
+    L = []
+    for d in D:
+        try:
+            i = int(str(d))
+            if i>=0: L.append(i)
+        except ValueError:
+            pass
+    return L
 def floats(D): return [tryfloat(d) for d in D if not tryfloat(d) is None]
 def  codes(D): return [str(c) for c in D]
 def intdef(n,D):
@@ -93,36 +102,161 @@ def _max(L):
     return [max(L)]
 def _sort(L): return sorted(L)
 #
-#   demo: ints : a b c 1 2 -45
-#   demo: nats : a b c 1 2 -45
-#   demo: int_sum : 1 2 3 -10
-#   demo: int_prod: 1 2 3 -10
-#   demo: int_max: 1 2 3 -10
-#   demo: int_max:
-#   demo: int_min: 1 2 3 -10
-#   demo: int_inv: 1 2 3 -10
-#   demo: int_div 2 : 1 2 3 4 5 6
-#   demo: int_div 1 : 1 2 3 4 5 6
-#   demo: int_div 0 : 1 2 3 4 5 6
-#   demo: int_div : 1 2 3 4 5 6
-#   demo: floats : 1 2 a 3.14 -99.9
-#   demo: float_sum : 1 2 a 3.14 -99.9
-#   demo: float_prod : 1 2 a 3.14 -99.9
-#   demo: float_min : 1 2 a 3.14 -99.9
-#   demo: float_min :
-#   demo: float_max : 1 2 a 3.14 -99.9
-#   demo: float_div 2.1 : 1 2 a 3.14 -99.9
-#   demo: code_sort : a b c c b a
-#   demo: int_sort : 4 3 2 a b c -100 99
-#   demo: float_sort : 1 2 a 3.14 -99.9
+#   demo: nats : a b 3.14 2 3 -45
+#   demo: nat_sum : a b 3.14 2 3 -45
+#   demo: nat_prod : a b 3.14 2 3 -45
+#   demo: nat_min : a b 3.14 2 3 -45
+#   demo: nat_max : a b 3.14 2 3 -45
+#   demo: nat_sort : a b 3.14 2 3 -45
 #
-#RE('code_sort',str,_sort)
-#RE('ints',tryint,lambda L:L)
-#RE('int_sum',tryint,_sum)
-#RE('int_prod',tryint,_prod)
-#RE('int_sort',tryint,_sort)
-#RE('int_min',tryint,_min)
-#RE('int_max',tryint,_max)
+#   demo: ints : a b 3.14 2 3 -45
+#   demo: int_sum : a b 3.14 2 3 -45
+#   demo: int_prod : a b 3.14 2 3 -45
+#   demo: int_min : a b 3.14 2 3 -45
+#   demo: int_max : a b 3.14 2 3 -45
+#   demo: int_sort : a b 3.14 2 3 -45
+#   demo: int_inv : a b 3.14 2 3 -45
+#   demo: int_div 2 : 1 2 3 4 5 6
+#
+#   demo: floats : a b 3.14 2 3 -45
+#   demo: float_sum : a b 3.14 2 3 -45
+#   demo: float_prod : a b 3.14 2 3 -45
+#   demo: float_min : a b 3.14 2 3 -45
+#   demo: float_max : a b 3.14 2 3 -45
+#   demo: float_sort : a b 3.14 2 3 -45
+#   demo: float_inv : a b 3.14 2 3 -45
+#   demo: float_div 2 : 1 2 3 4 5 6
+#
+def ints_(context,domain,A,B):
+    if B.empty(): return data()
+    BL,BR = B.split()
+    if BL.atom(context):
+        try:
+            n = int(str(BL[0]))
+            return da(str(n)) + data(domain|BR)
+        except ValueError:
+            return data(domain|BR)
+CONTEXT.define('ints',ints_)
+def nats_(context,domain,A,B):
+    if B.empty(): return data()
+    BL,BR = B.split()
+    if BL.atom(context):
+        try:
+            n = int(str(BL[0]))
+            if n>=0:
+                return da(str(n)) + data(domain|BR)
+            else:
+                return data(domain|BR)
+        except ValueError:
+            return data(domain|BR)
+CONTEXT.define('nats',nats_)
+def floats_(context,domain,A,B):
+    if B.empty(): return data()
+    BL,BR = B.split()
+    if BL.atom(context):
+        try:
+            x = float(str(BL[0]))
+            return da(str(x)) + data(domain|BR)
+        except ValueError:
+            return data(domain|BR)
+CONTEXT.define('floats',floats_)
+def int_sum(context,domain,A,B):
+    if B.atomic(context):
+        ns = ints(B)
+        sum = 0
+        for n in ns: sum += n
+        return da(str(sum))
+CONTEXT.define('int_sum',int_sum)
+def nat_sum(context,domain,A,B):
+    if B.atomic(context):
+        ns = nats(B)
+        sum = 0
+        for n in ns: sum += n
+        return da(str(sum))
+CONTEXT.define('nat_sum',nat_sum)
+def float_sum(context,domain,A,B):
+    if B.atomic(context):
+        fs = floats(B)
+        sum = 0.0
+        for f in fs: sum += f
+        return da(str(sum))
+CONTEXT.define('float_sum',float_sum)
+def int_prod(context,domain,A,B):
+    if B.atomic(context):
+        ns = ints(B)
+        prod = 1
+        for i in ns: prod = prod * i
+        return da(str(prod))
+CONTEXT.define('int_prod',int_prod)
+def nat_prod(context,domain,A,B):
+    if B.atomic(context):
+        ns = nats(B)
+        prod = 1
+        for i in ns: prod = prod * i
+        return da(str(prod))
+CONTEXT.define('nat_prod',nat_prod)
+def float_prod(context,domain,A,B):
+    if B.atomic(context):
+        fs = floats(B)
+        prod = 1.0
+        for f in fs: prod = prod * f
+        return da(str(prod))
+CONTEXT.define('float_prod',float_prod)
+def int_sort(context,domain,A,B):
+    if B.atomic(context):
+        ns = ints(B)
+        ns.sort()
+        return data(*[co(str(i)) for i in ns])
+CONTEXT.define('int_sort',int_sort)
+def nat_sort(context,domain,A,B):
+    if B.atomic(context):
+        ns = nats(B)
+        ns.sort()
+        return data(*[co(str(n)) for n in ns])
+CONTEXT.define('nat_sort',nat_sort)
+def float_sort(context,domain,A,B):
+    if B.atomic(context):
+        fs = floats(B)
+        fs.sort()
+        return data(*[co(str(f)) for f in fs])
+CONTEXT.define('float_sort',float_sort)
+def text_sort(context,domain,A,B):
+    if B.atomic(context):
+        txts = [str(b) for b in B]
+        txts.sort()
+        return data(*[co(txt) for txt in txts])
+CONTEXT.define('text_sort',text_sort)
+def int_max(context,domain,A,B):
+    if B.atomic(context):
+        L = _max(ints(B))
+        return data(*[co(str(l)) for l in L])
+CONTEXT.define('int_max',int_max)
+def int_min(context,domain,A,B):
+    if B.atomic(context):
+        L = _min(ints(B))
+        return data(*[co(str(l)) for l in L])
+CONTEXT.define('int_min',int_min)
+def nat_max(context,domain,A,B):
+    if B.atomic(context):
+        L = _max(nats(B))
+        return data(*[co(str(l)) for l in L])
+CONTEXT.define('nat_max',nat_max)
+def nat_min(context,domain,A,B):
+    if B.atomic(context):
+        L = _min(nats(B))
+        return data(*[co(str(l)) for l in L])
+CONTEXT.define('nat_min',nat_min)
+def float_max(context,domain,A,B):
+    if B.atomic(context):
+        L = _max(floats(B))
+        return data(*[co(str(l)) for l in L])
+CONTEXT.define('float_max',float_max)
+def float_min(context,domain,A,B):
+    if B.atomic(context):
+        L = _min(floats(B))
+        return data(*[co(str(l)) for l in L])
+CONTEXT.define('float_min',float_min)
+
 def int_inv_0(context,domain,A,B):
     if B.empty(): return data()
 def int_inv_1(context,domain,A,B):
@@ -148,14 +282,6 @@ def int_div_1(context,domain,A,B):
                 return da(str(num//den)) + data((domain+A)|BR)
 CONTEXT.define('int_div',int_div_0,int_div_1,int_div_2)
 
-#RE('nats',trynat,lambda L:L)
-
-#RE('floats',tryfloat,lambda L:L)
-#RE('float_sum',tryfloat,_sum)
-#RE('float_prod',tryfloat,_prod)
-#RE('float_sort',tryfloat,_sort)
-#RE('float_min',tryfloat,_min)
-#RE('float_max',tryfloat,_max)
 def float_inv_0(context,domain,A,B):
     if B.empty(): return data()
 def float_inv_1(context,domain,A,B):
@@ -164,7 +290,7 @@ def float_inv_1(context,domain,A,B):
         L  = floats(BL)
         Li = [co(str(-l)) for l in L]
         return data(*Li)+data((domain+A)|BR)
-CONTEXT.define('float_inv',int_inv_0,int_inv_1)
+CONTEXT.define('float_inv',float_inv_0,float_inv_1)
 def float_div_0(context,domain,A,B):
     if B.empty(): return data()
 def float_div_2(context,domain,A,B):

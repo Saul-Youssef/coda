@@ -5,4 +5,4 @@
 #
 #def import : {use : coda : source : readpath : dir co : B}
 #
-def import : {use : coda : source : readpath : B}
+def import : {evalx 1000 : use : coda : source : readpath : B}

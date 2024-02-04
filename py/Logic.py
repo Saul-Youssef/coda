@@ -38,39 +38,33 @@ CONTEXT.define('not',complement)
 #   See notes for definition of equality
 #
 def equal(context,domain,A,B):
+    if A==B: return data()
+    if A.atom(context) and B.atom(context): return ((domain+A[0].left())|B[0].left()) + ((domain+A[0].right())|B[0].right())
     if A.empty(): return B
     if B.empty(): return A
     AL,AR = A.split()
     BL,BR = B.split()
-    if AL.atom(context) and BL.atom(context):
-        if AR.empty() and BR.empty():
-            return ((domain+AL[0].left())|BL[0].left()) + ((domain+AL[0].right())|BL[0].right())
-        else:
-            return ((domain+AL)|BL) + ((domain+AR)|BR)
-    AL,AR = data(*A[:-1]),data(*A[-1:])
-    BL,BR = data(*B[:-1]),data(*B[-1:])
-    if AR.atom(context) and BR.atom(context):
-        if AL.empty() and BL.empty():
-            return ((domain+AR[0].left())|BR[0].left()) + ((domain+AR[0].right())|BR[0].right())
-        else:
-            return ((domain+AL)|BL) + ((domain+AR)|BR)
-
-def eq_L(context,domain,A,B):
-    AL,AR = data(*A[:1]),data(*A[1:])
-    BL,BR = data(*B[:1]),data(*B[1:])
     if AL.atom(context) and BL.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
-def eq_R(context,domain,A,B):
     AL,AR = data(*A[:-1]),data(*A[-1:])
     BL,BR = data(*B[:-1]),data(*B[-1:])
     if AR.atom(context) and BR.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
-def eq_(context,domain,A,B):
-    if A==B: return data()
-    if A.irred(context) and B.empty(): return AT
-    if A.empty() and B.irred(context): return AT
-    if A.empty() and B.empty(): return data()
-    if A.atom(context) and B.atom(context):
-        return ((domain+(A[0].left ()))|B[0].left ()) + \
-               ((domain+(A[0].right()))|B[0].right())
+
+#def eq_L(context,domain,A,B):
+#    AL,AR = data(*A[:1]),data(*A[1:])
+#    BL,BR = data(*B[:1]),data(*B[1:])
+#    if AL.atom(context) and BL.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
+#def eq_R(context,domain,A,B):
+#    AL,AR = data(*A[:-1]),data(*A[-1:])
+#    BL,BR = data(*B[:-1]),data(*B[-1:])
+#    if AR.atom(context) and BR.atom(context): return ((domain+AL)|BL) + ((domain+AR)|BR)
+#def eq_(context,domain,A,B):
+#    if A==B: return data()
+#    if A.irred(context) and B.empty(): return AT
+#    if A.empty() and B.irred(context): return AT
+#    if A.empty() and B.empty(): return data()
+#    if A.atom(context) and B.atom(context):
+#        return ((domain+(A[0].left ()))|B[0].left ()) + \
+#               ((domain+(A[0].right()))|B[0].right())
 #CONTEXT.define('=',eq_,eq_L,eq_R)
 #CONTEXT.define('equal',eq_,eq_L,eq_R)
 CONTEXT.define('=',equal)

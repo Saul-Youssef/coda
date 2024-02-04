@@ -13,4 +13,4 @@
 #   demo: theorem (x?=(rev:x?)) : (:a a) (:b b) (:x x x)
 #
 def cases : {ap {with (right:B):count:A} A : assign A : B}
-def theorem : {ap {if (not:right:B):B} : eval : cases A : B}
+def theorem : {ap {if (not:right:B):B} : multi : cases A : B}

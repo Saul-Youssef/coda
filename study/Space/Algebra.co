@@ -1,9 +1,4 @@
 #
-#   * +
-#
-#def star : {prod (:A) (:B)} 
-#def plus : {sum  (:A) (:B)} 
-#
 #   Simple 
 #
 def simple : {(B x?:y?) = (B:y?)} 
@@ -14,7 +9,7 @@ def ring_left:  { (B x? y?:z?) = (B x?:z?) (B y?:z?) }
 def ring_right: { (B x? : y? z?) = (B x?:y?) (B x?:z?) } 
 def nilpotent   : {B:x?}
 def nilpotent_left  : {B:x?} 
-def nilpotentz_right : {B x?:} 
+def nilpotent_right : {B x?:} 
 def symmetric : {(B x?:y?)=(B y?:x?)} 
 #
 #   Idempotence 

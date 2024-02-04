@@ -16,7 +16,7 @@ class Eval(object):
         self.evals     = evals
         self.context = context
         self._cache = {}
-        self.cache_on = True 
+        self.cache_on = True
     def __call__(self,D):
         if not self.cache_on: return self.evaluate(D)
         if D in self._cache: return self._cache[D]
@@ -68,7 +68,7 @@ def Multi(context,domain,A,B):
         IN = []
         for b in B: IN.append((context,A,data(b),))
         results = []
-        for result in pool.imap_unordered(MULTI,IN): results.append(result)
+        for result in pool.imap(MULTI,IN): results.append(result)
         def f(s,t): return s+t
         from functools import reduce
         return reduce(f,results)
@@ -113,9 +113,18 @@ def eval_(context,domain,A,B):
                 R = Eval(steps,evals,new)(b.right())
                 return data((b.domain()+ARGS)|R)
         else:
-            return Eval(n,EVALS,context)(B)
+            return Eval(steps,evals,context)(B)
 CONTEXT.define('eval1',eval_)
 CONTEXT.define('with')
+
+def evaluate(context,domain,A,B):
+    if A.rigid(context):
+        ns = Number.ints(A)
+        steps,evals = STEPS,EVALS
+        if len(ns)>0: steps = ns.pop(0)
+        if len(ns)>0: evals = ns.pop(0)
+        return Eval(steps,evals,context)(B)
+CONTEXT.define('evalx',evaluate)
 #
 #     step evaluation step-by-step evaluation of it's input
 #
@@ -131,7 +140,6 @@ def stepEval(context,domain,A,B):
         if len(ns)>0: steps = ns.pop(0)
         if len(ns)>0: evals = ns.pop(0)
 
-#        E = Eval(steps,evals,context)
         E = Eval(10000,1000000,context)
         B2 = B
         outs = []

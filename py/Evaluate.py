@@ -21,7 +21,7 @@ class Eval(object):
         if not self.cache_on: return self.evaluate(D)
         if D in self._cache: return self._cache[D]
         D2 = self.evaluate(D)
-        if D2.defined(self.context): self._cache[D] = D2
+        if D2.stable(self.context): self._cache[D] = D2
         return D2
     def evaluate(self,D):
         self.steps = self.max_steps

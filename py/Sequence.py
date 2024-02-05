@@ -133,11 +133,12 @@ def nth1_0(context,domain,A,B):
     B0,BR = B.split()
     if A0.empty(): return data()
     elif A0.atom(context) and B0.atom(context):
-        ns = Number.ints(A0)
+        ns = Number.nats(A0)
         if len(ns)>0:
             n = ns[0]
-            if   n==1: return B0
-            elif n> 1: return data(domain+da(str(n-1))|BR)
+            if n==0: return data()
+            if n==1: return B0
+            if n> 1: return data(domain+da(str(n-1))|BR)
         else:
             return data()
 def nth1_1(context,domain,A,B):

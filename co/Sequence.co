@@ -3,6 +3,7 @@
 #
 #   demo: nth 3 : a b c d
 #   demo: nth 3 1 : a b c d
+#   demo: nth 3 0 1 : a b c d
 #   demo: nth : a b c
 #
 def nth : {aq nth1 A : B}

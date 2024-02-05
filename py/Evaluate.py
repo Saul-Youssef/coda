@@ -1,19 +1,21 @@
 
 from base import *
 import Number
+import time
 
-DEFAULT = 20
-STEPS = 100
-EVALS = 10000000
+#DEFAULT = 20
+STEPS = 1000000
+#EVALS = 10000000
+SECONDS = 1000000000
 #
 #    Evaluation of data to a maximum of steps and evals in the supplied context
 #
 class Eval(object):
-    def __init__(self,steps,evals,context):
+    def __init__(self,steps,seconds,context):
         self.max_steps = steps
-        self.steps     = steps
-        self.max_evals = evals
-        self.evals     = evals
+        self.steps     = 0
+        self.max_seconds = seconds
+        self.seconds   = 0.0
         self.context = context
         self._cache = {}
         self.cache_on = True
@@ -21,18 +23,20 @@ class Eval(object):
         if not self.cache_on: return self.evaluate(D)
         if D in self._cache: return self._cache[D]
         D2 = self.evaluate(D)
-        if D2.stable(self.context): self._cache[D] = D2
+        if D2.defined(self.context): self._cache[D] = D2
         return D2
     def evaluate(self,D):
-        self.steps = self.max_steps
-        self.evals = self.max_evals
+        self.steps   = self.max_steps
+        self.seconds = self.max_seconds
         Done = [] # stable leading data does not need evaluation
         Ds = [d for d in D]
-        while self.steps>0:
+        while self.steps>0 and self.seconds>0:
             self.steps -= 1
             while len(Ds)>0 and Ds[0].stable(self.context): Done.append(Ds.pop(0))
             D1 = data(*Ds)
+            t = time.time()
             D2 = self.step(D1)
+            self.seconds -= time.time()-t
             if D1==D2: break
             Ds = [d for d in D2]
         return data(*(Done+Ds))
@@ -41,8 +45,7 @@ class Eval(object):
         for d in D:
             if d.domain()==da('with'):
                 Ds.append(self.evaluate(d.left())|d.right())
-            elif d in self.context and self.evals>0:
-                self.evals -= 1
+            elif d in self.context:
                 R = self.context(d)
                 if R==data(d):
                     Ds.append(self.step(d.left())|self.step(d.right()))
@@ -51,11 +54,58 @@ class Eval(object):
             else:
                 Ds.append(self.step(d.left())|self.step(d.right()))
         return data(*Ds)
+#
+#    Evaluation of data to a maximum of steps and evals in the supplied context
+#
+#class EvalOLD(object):
+#    def __init__(self,steps,evals,context):
+#        self.max_steps = steps
+#        self.steps     = steps
+#        self.max_evals = evals
+#        self.evals     = evals
+#        self.context = context
+#        self._cache = {}
+#        self.cache_on = True
+#    def __call__(self,D):
+#        if not self.cache_on: return self.evaluate(D)
+#        if D in self._cache: return self._cache[D]
+#        D2 = self.evaluate(D)
+#        if D2.defined(self.context): self._cache[D] = D2
+#        return D2
+#    def evaluate(self,D):
+#        self.steps = self.max_steps
+#        self.evals = self.max_evals
+#        Done = [] # stable leading data does not need evaluation
+#        Ds = [d for d in D]
+#        while self.steps>0:
+#            self.steps -= 1
+#            while len(Ds)>0 and Ds[0].stable(self.context): Done.append(Ds.pop(0))
+#            D1 = data(*Ds)
+#            D2 = self.step(D1)
+#            if D1==D2: break
+#            Ds = [d for d in D2]
+#        return data(*(Done+Ds))
+#    def step(self,D):
+#        Ds = []
+#        for d in D:
+#            if d.domain()==da('with'):
+#                Ds.append(self.evaluate(d.left())|d.right())
+#            elif d in self.context and self.evals>0:
+#                self.evals -= 1
+#                R = self.context(d)
+#                if R==data(d):
+#                    Ds.append(self.step(d.left())|self.step(d.right()))
+#                else:
+#                    for r in R: Ds.append(r)
+#            else:
+#                Ds.append(self.step(d.left())|self.step(d.right()))
+#        return data(*Ds)
 
 def MULTI(W):
     context,A,D = W
     MD = data((da('eval')+A)|D)
-    EV = Eval(STEPS,EVALS,context)
+#    EV = Eval(STEPS,EVALS,context)
+    EV = Eval(STEPS,SECONDS,context)
     return EV(MD)
 
 def Multi(context,domain,A,B):
@@ -99,32 +149,32 @@ def eval_(context,domain,A,B):
         return data()
     elif A.rigid(context) and B.atom(context):
         b = B[0]
-        ns = Number.ints(A)
-        steps,evals = STEPS,EVALS
-        if len(ns)>0: steps = ns.pop(0)
-        if len(ns)>0: evals = ns.pop(0)
+        ns = Number.floats(A)
+        steps,seconds = STEPS,SECONDS
+        if len(ns)>0: steps   = ns.pop(0).__floor__()
+        if len(ns)>0: seconds = ns.pop(0)
 
         if b.domain()==da('with'):
-            ARGS = Eval(STEPS,EVALS,context)(b.arg())
+            ARGS = Eval(STEPS,SECONDS,context)(b.arg())
             args = [da('use1')|data(arg) for arg in ARGS if arg.domain()==da('def')]
             new = context.copy()
-            DA = Eval(STEPS,EVALS,new)(data(*args))
+            DA = Eval(STEPS,SECONDS,new)(data(*args))
             if DA.empty():
-                R = Eval(steps,evals,new)(b.right())
+                R = Eval(steps,seconds,new)(b.right())
                 return data((b.domain()+ARGS)|R)
         else:
-            return Eval(steps,evals,context)(B)
+            return Eval(steps,seconds,context)(B)
 CONTEXT.define('eval1',eval_)
 CONTEXT.define('with')
 
-def evaluate(context,domain,A,B):
+def evaluate_more(context,domain,A,B):
     if A.rigid(context):
-        ns = Number.ints(A)
-        steps,evals = STEPS,EVALS
-        if len(ns)>0: steps = ns.pop(0)
-        if len(ns)>0: evals = ns.pop(0)
-        return Eval(steps,evals,context)(B)
-CONTEXT.define('evalx',evaluate)
+        ns = Number.floats(A)
+        steps,seconds = STEPS,SECONDS
+        if len(ns)>0: steps = ns.pop(0).__floor__()
+        if len(ns)>0: seconds = ns.pop(0)
+        return Eval(steps,seconds,context)(B)
+CONTEXT.define('more',evaluate_more)
 #
 #     step evaluation step-by-step evaluation of it's input
 #
@@ -135,12 +185,10 @@ def stepEval(context,domain,A,B):
     if A.rigid(context):
         import Number
         steps = STEPS
-        evals = EVALS
         ns = Number.ints(A)
         if len(ns)>0: steps = ns.pop(0)
-        if len(ns)>0: evals = ns.pop(0)
 
-        E = Eval(10000,1000000,context)
+        E = Eval(STEPS,SECONDS,context)
         B2 = B
         outs = []
         n = 0

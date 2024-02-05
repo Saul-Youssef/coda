@@ -13,9 +13,11 @@ IO.OUT.kernel() # set stdout to kernel mode
 #D = base.CONTEXT.evaluate(100,Language.lang('ap use1 : localdef:',base.data(),base.data()))
 LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
 #D = base.data(*[d for d in Evaluate.evaluate(100,base.CONTEXT,LANG)])
-D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,base.CONTEXT)(LANG)
+#D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,base.CONTEXT)(LANG)
 #if not D.empty(): raise error('Local definition error '+str(D))
-EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT)
+D = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,base.CONTEXT)(LANG)
+EV = Evaluate.Eval(100,Evaluate.SECONDS,base.CONTEXT)
+if not D.empty(): raise error('Local definition error '+str(D))
 
 class EchoKernel(Kernel):
     implementation = 'Echo'

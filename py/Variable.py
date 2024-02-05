@@ -48,7 +48,7 @@ CONTEXT.define('permutation',permutation_0)
 
 def stable(A,context):
     import Evaluate
-    return Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,context).evaluate(A)==A
+    return Evaluate.Eval(100,Evaluate.SECONDS,context).evaluate(A)==A
 
 def assign(context,domain,A,B):
     AS = da('let')

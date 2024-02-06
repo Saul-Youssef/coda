@@ -15,8 +15,5 @@
 def let : {def A : {A} B}
 def use : ap use1
 
-#def Let : use * {let A : B}
-#def Def : use * def
-
 def Let : {use : {let A:B} A : B}
 def Def : {use : def A : B}

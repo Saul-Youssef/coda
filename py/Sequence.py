@@ -153,7 +153,15 @@ CONTEXT.define('nth1',nth1_0,nth1_1)
 def Once_1(context,domain,A,B):
     if B.rigid(context):
         S = set([b for b in B])
-        return data(*[s for s in S])
+        L = []
+        for b in B:
+            if not b in L:
+                L.append(b)
+                S.add(b)
+        return data(*L)
+#    if B.rigid(context):
+#        S = set([b for b in B])
+#        return data(*[s for s in S])
 CONTEXT.define('once',Once_1)
 #
 #   demo: count : a b c d

@@ -25,6 +25,8 @@ from base import *
 #  demo: not: 1 2 3 4
 #  demo: not: (foo:bar)
 #
+# OPTIMIZE ME!
+#
 AT = data(coda(data(),data()))
 def bool(context,domain,A,B):
     if B.irred(context): return AT

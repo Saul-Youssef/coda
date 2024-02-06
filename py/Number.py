@@ -59,12 +59,13 @@ def floatdef(x,D):
 #    demo: rev : rev : nat : 0
 #
 def nat(context,domain,A,B):
-    ns = ints(B)
-    if len(ns)==1:
-        n = ns.pop()
-        return co(str(n)) + (domain|da(str(n+1)))
-    else:
-        return data()
+    if B.rigid(context):
+        ns = ints(B)
+        if len(ns)>=1:
+            n = ns.pop(0)
+            return co(str(n)) + (domain|da(str(n+1)))
+        else:
+            return data()
 CONTEXT.define('nat',nat)
 
 class Reduce(object):

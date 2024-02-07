@@ -80,14 +80,17 @@ CONTEXT.define('dir',Dir,Dir_0)
 #
 def Out(context,domain,A,B):
     if A.rigid(context) and len(A)==1:
-        path = str(A[0])
-        import os,pickle
-        try:
-            with open(path,'wb') as f:
-                f.write(pickle.dumps(B))
-                return data()
-        except Exception as e:
-            return
+        import Evaluate
+        Bnext = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,context).step(B)
+        if B==Bnext:
+            path = str(A[0])
+            import os,pickle
+            try:
+                with open(path,'wb') as f:
+                    f.write(pickle.dumps(B))
+                    return data()
+            except Exception as e:
+                    return
 CONTEXT.define('out',Out)
 
 def word(text,A): return text in [str(a) for a in A]
@@ -100,6 +103,9 @@ def IN(context,domain,A,B):
                 path = str(b)
                 with open(path,'rb') as f:
                     D = pickle.loads(f.read())
+                    i = 0
+                    for d in D:
+                        i += 1
                     if word('with',A):
                         for d in D: R.append(da('with')|data(d))
                     elif word('atomic',A):

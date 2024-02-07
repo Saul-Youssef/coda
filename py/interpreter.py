@@ -54,7 +54,8 @@ try:
 
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
-            if KI: raise
-            print('')
+            import traceback
+            if KI: print(traceback.format_exc())
+            sys.stdout.write('\n')
 except EOFError:
     pass

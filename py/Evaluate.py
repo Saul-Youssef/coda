@@ -4,9 +4,9 @@ import Number
 import time
 
 #DEFAULT = 20
-STEPS = 1000000
+STEPS = 1000
 #EVALS = 10000000
-SECONDS = 1000000000
+SECONDS = 1
 #
 #    Evaluation of data to a maximum of steps and evals in the supplied context
 #
@@ -54,57 +54,10 @@ class Eval(object):
             else:
                 Ds.append(self.step(d.left())|self.step(d.right()))
         return data(*Ds)
-#
-#    Evaluation of data to a maximum of steps and evals in the supplied context
-#
-#class EvalOLD(object):
-#    def __init__(self,steps,evals,context):
-#        self.max_steps = steps
-#        self.steps     = steps
-#        self.max_evals = evals
-#        self.evals     = evals
-#        self.context = context
-#        self._cache = {}
-#        self.cache_on = True
-#    def __call__(self,D):
-#        if not self.cache_on: return self.evaluate(D)
-#        if D in self._cache: return self._cache[D]
-#        D2 = self.evaluate(D)
-#        if D2.defined(self.context): self._cache[D] = D2
-#        return D2
-#    def evaluate(self,D):
-#        self.steps = self.max_steps
-#        self.evals = self.max_evals
-#        Done = [] # stable leading data does not need evaluation
-#        Ds = [d for d in D]
-#        while self.steps>0:
-#            self.steps -= 1
-#            while len(Ds)>0 and Ds[0].stable(self.context): Done.append(Ds.pop(0))
-#            D1 = data(*Ds)
-#            D2 = self.step(D1)
-#            if D1==D2: break
-#            Ds = [d for d in D2]
-#        return data(*(Done+Ds))
-#    def step(self,D):
-#        Ds = []
-#        for d in D:
-#            if d.domain()==da('with'):
-#                Ds.append(self.evaluate(d.left())|d.right())
-#            elif d in self.context and self.evals>0:
-#                self.evals -= 1
-#                R = self.context(d)
-#                if R==data(d):
-#                    Ds.append(self.step(d.left())|self.step(d.right()))
-#                else:
-#                    for r in R: Ds.append(r)
-#            else:
-#                Ds.append(self.step(d.left())|self.step(d.right()))
-#        return data(*Ds)
 
 def MULTI(W):
     context,A,D = W
     MD = data((da('eval')+A)|D)
-#    EV = Eval(STEPS,EVALS,context)
     EV = Eval(STEPS,SECONDS,context)
     return EV(MD)
 

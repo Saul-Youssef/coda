@@ -8,8 +8,11 @@
 #
 def nth : {aq nth1 A : B}
 #
+#   pre and post-fixing data
+#
 #   demo: pre a b : 1 2
 #   demo: post a b : 1 2
+#   demo: ap pre <\n> : first 10 : nat : 0
 #
 def pre  : {A B}
 def post : {B A}

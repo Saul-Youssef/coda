@@ -159,12 +159,13 @@ def Once_1(context,domain,A,B):
                 L.append(b)
                 S.add(b)
         return data(*L)
-#    if B.rigid(context):
-#        S = set([b for b in B])
-#        return data(*[s for s in S])
 CONTEXT.define('once',Once_1)
 #
+#   Count counts the number of atoms
+#
 #   demo: count : a b c d
+#   demo: int_sum : ap const 1 : a b c d
+#   demo: count : nat : 0 
 #
 def count(context,domain,A,B):
     if all([b.atom(context) for b in B]): return da(str(len(B)))

@@ -42,7 +42,7 @@ if len(sys.argv)>2:
         pass
 
 try:
-    EV = Evaluate.Eval(100,Evaluate.SECONDS,CONTEXT)
+    EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,CONTEXT)
 #    EV = Evaluate.Eval(CONTEXT).steps()
     while True:
         try:

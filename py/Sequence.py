@@ -47,6 +47,20 @@ CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #   demo: by : a b c d e
 #   demo: by 2 : nat : 0
 #
+def first_(context,domain,A,B):
+    if B.empty(): return data()
+    if A.rigid(context):
+        ns = Number.nats(A)
+        if len(ns)==0: n = 1
+        else: n = ns.pop(0)
+        if n==0: return data()
+        Bs = [b for b in B]
+        front = []
+        while n>0 and len(Bs)>0 and Bs[0].atom(context):
+           front.append(Bs.pop(0))
+           n -= 1
+        return data(*front) + data((domain+da(str(n)))|data(*Bs))
+
 def first_1(context,domain,A,B):
     if B.empty(): return data()
 def first_2(context,domain,A,B):
@@ -59,7 +73,8 @@ def first_4(context,domain,A,B):
         n = ns.pop()
         if n>=1 and len(B)>0 and B[0].atom(context):
             return B[0] + ((domain+da(str(n-1))) | data(*B[1:]))
-CONTEXT.define('first',first_1,first_2,first_3,first_4)
+CONTEXT.define('first',first_)
+#CONTEXT.define('first',first_1,first_2,first_3,first_4)
 def tail_0(context,domain,A,B):
     L,R = B.split()
     ns = Number.ints(A)
@@ -165,7 +180,7 @@ CONTEXT.define('once',Once_1)
 #
 #   demo: count : a b c d
 #   demo: int_sum : ap const 1 : a b c d
-#   demo: count : nat : 0 
+#   demo: count : nat : 0
 #
 def count(context,domain,A,B):
     if all([b.atom(context) for b in B]): return da(str(len(B)))

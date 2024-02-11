@@ -18,11 +18,6 @@ UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 #
 #   import local definitions from .../coda/co
 #
-Local = Language.lang('ap use1 : localdef:',data(),data())
-#D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,CONTEXT)(Local)
-D = Evaluate.Eval(1000.0,Evaluate.STEPS,CONTEXT)(Local)
-if not D.empty(): raise error('Local definition error '+str(D))
-
 KI = False
 if len(sys.argv)>1:
     if sys.argv[1]=='-': KI = True
@@ -40,6 +35,11 @@ if len(sys.argv)>2:
             Evaluate.SECONDS = e
     except ValueError:
         pass
+
+if not KI:
+    Local = Language.lang('ap use1 : localdef:',data(),data())
+    D = Evaluate.Eval(1000.0,Evaluate.STEPS,CONTEXT)(Local)
+    if not D.empty(): raise error('Local definition error '+str(D))
 
 try:
     EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,CONTEXT)

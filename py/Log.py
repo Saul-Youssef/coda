@@ -4,9 +4,15 @@
 from base import *
 
 class Log(object):
-    def __init__(self): self._status = {}  # name->On/Off
+    def __init__(self):
+        self._status = {}      # name -> On/Off
+        self._description = {} # name -> description
     def __repr__(self): return ', '.join(['/'.join([key,str(value)]) for key,value in self._status.items()])
-    def register(self,name): self.off(name); return self
+    def register(self,name,description):
+        self._description[name] = description
+        self.off(name); return self
+    def names(self):
+        for name,status in self: yield name
     def on(self,*names):
         for name in names: self._status[name] = True
         return self
@@ -18,37 +24,43 @@ class Log(object):
     def __iter__(self):
         for name,status in self._status.items(): yield name,status
     def __call__(self,name,*msgs):
-        import IO
-        message = 'log>'+name+': '+' '.join(msgs)
-        if name in self and self[name]: IO.OUT(message+'\n')
+        if name in self and self[name]: message(name,', '.join(msgs))
         return self
+    def logging(self,*names):
+        return all(name in self and self[name] for name in names)
     def logs(self):
-        for name in self._status.keys(): yield name
+        names = [name for name in self._status.keys()]
+        names.sort()
+        return names
+#        for name in self._status.keys(): yield name
 
 LOG = Log()
 
-CONTEXT.define('log')  # logging option
+def message(name,msg):
+    import IO
+    IO.OUT(name+'> '+msg+'\n')
 
-def logs(domain,A,B):
-    def stat(l):
-        if l: return 'on'
-        else: return 'off'
-    L = [(co('log')+co(name))|da(stat(status)) for name,status in LOG]
-    return data(*L)
+def logs(context,domain,A,B):
+    message('',' '.join(LOG.names()))
+    return data()
+def logging(context,domain,A,B):
+    message('',' '.join([name for name,status in LOG if status]))
+    return data()
+CONTEXT.define('logging',logging)
 CONTEXT.define('logs',logs)
 
-def log_on(domain,A,B):
-    if B.rigid():
-        for b in B:
-            if str(b) in LOG: LOG.on(str(b))
+def log_(context,domain,A,B):
+    if B.empty(): return data()
+    if A.rigid(context) and len(A)<=1 and B.rigid(context):
+        logs = [str(b) for b in B]
+        if len(A)==1 and str(A[0])=='off':
+            for l in logs:
+                if l in LOG: LOG.off(l)
+        else:
+            for l in logs:
+                if l in LOG: LOG.on(l)
         return data()
-def log_off(domain,A,B):
-    if B.rigid():
-        for b in B:
-            if str(b) in LOG: LOG.off(str(b))
-        return data()
-CONTEXT.define('log+',log_on)
-CONTEXT.define('log-',log_off)
+CONTEXT.define('log',log_)
 
 if __name__=='__main__':
     LOG.register('test').on('test')

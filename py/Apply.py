@@ -25,7 +25,7 @@ def ap_1(context,domain,A,B):
 def ap_2(context,domain,A,B):
     return data(*[(domain+A)|data(b) for b in B])
 def ap_(context,domain,A,B):
-    if B.empty(): return data()
+#    if B.empty(): return data()
     if B.atom(context): return data(A|B)
     return data(*[(domain+A)|data(b) for b in B])
 CONTEXT.define('ap',ap_)

@@ -2,11 +2,14 @@
 from base import *
 import Number
 import time
+from Log import LOG
+
+LOG.register('step','Evaluation step')
 
 #DEFAULT = 20
-STEPS = 1000
+STEPS = 100
 #EVALS = 10000000
-SECONDS = 1
+SECONDS = 36000
 #
 #    Evaluation of data to a maximum of steps and evals in the supplied context
 #
@@ -23,7 +26,6 @@ class Eval(object):
         if not self.cache_on: return self.evaluate(D)
         if D in self._cache: return self._cache[D]
         D2 = self.evaluate(D)
-        if D2.defined(self.context): self._cache[D] = D2
         return D2
     def evaluate(self,D):
         self.steps   = self.max_steps
@@ -39,6 +41,12 @@ class Eval(object):
             self.seconds -= time.time()-t
             if D1==D2: break
             Ds = [d for d in D2]
+        if LOG.logging('step'):
+            LOG('step','saturated: '+str(D1==D2),
+                'steps used: '+str(self.max_steps-self.steps)+'/'+str(self.max_steps),
+                'time used: '+'{:.3f}'.format(self.max_seconds-self.seconds)+'/'+'{:.3f}'.format(self.max_seconds),
+                'context: '+str(len(self.context)),
+                'cache: '+str(len(self._cache)))
         return data(*(Done+Ds))
     def step(self,D):
         Ds = []
@@ -119,15 +127,6 @@ def eval_(context,domain,A,B):
             return Eval(steps,seconds,context)(B)
 CONTEXT.define('eval1',eval_)
 CONTEXT.define('with')
-
-def evaluate_more(context,domain,A,B):
-    if A.rigid(context):
-        ns = Number.floats(A)
-        steps,seconds = STEPS,SECONDS
-        if len(ns)>0: steps = ns.pop(0).__floor__()
-        if len(ns)>0: seconds = ns.pop(0)
-        return Eval(steps,seconds,context)(B)
-CONTEXT.define('more',evaluate_more)
 #
 #     step evaluation step-by-step evaluation of it's input
 #

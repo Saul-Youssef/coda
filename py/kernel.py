@@ -16,7 +16,7 @@ LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
 #D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,base.CONTEXT)(LANG)
 #if not D.empty(): raise error('Local definition error '+str(D))
 D = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,base.CONTEXT)(LANG)
-EV = Evaluate.Eval(100,Evaluate.SECONDS,base.CONTEXT)
+EV = Evaluate.Eval(500,Evaluate.SECONDS,base.CONTEXT)
 if not D.empty(): raise error('Local definition error '+str(D))
 
 class EchoKernel(Kernel):

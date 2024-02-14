@@ -1,13 +1,13 @@
 
 from base import *
 import Number
-import time
+import time,os,psutil
 from Log import LOG
 
 LOG.register('step','Evaluation step')
 
 #DEFAULT = 20
-STEPS = 100
+STEPS = 500
 #EVALS = 10000000
 SECONDS = 36000
 #

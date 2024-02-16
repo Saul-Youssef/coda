@@ -27,9 +27,11 @@ OUT = Stdout()
 #
 #   readpath : path B -> <bytes in path> (readpath : B)
 #
-def readpath_0(context,domain,A,B):
-    if B.empty(): return data()
+#def readpath_0(context,domain,A,B):
+#    if B.empty(): return data()
+#
 def readpath_1(context,domain,A,B):
+    if B.empty(): return data()
     BL,BR = B.split()
     if BL.atom(context):
         try:
@@ -40,7 +42,7 @@ def readpath_1(context,domain,A,B):
         except IOError:
             return
             raise error('Error reading file ['+path+']')
-CONTEXT.define('readpath',readpath_1,readpath_0)
+CONTEXT.define('readpath',readpath_1)
 #
 #   dir selects paths from it's input.  The argument
 #   filters for file extensions.
@@ -75,22 +77,20 @@ CONTEXT.define('dir',Dir,Dir_0)
 #
 #   out file1 : a b c
 #   in : file1
-#   out file2 : (defs:) nat : 0
+#   out file2 : nat : 0
 #   in : file1 file2
 #
 def Out(context,domain,A,B):
-    if A.rigid(context) and len(A)==1:
-        import Evaluate
-        Bnext = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,context).step(B)
-        if B==Bnext:
-            path = str(A[0])
-            import os,pickle
-            try:
-                with open(path,'wb') as f:
-                    f.write(pickle.dumps(B))
-                    return data()
-            except Exception as e:
-                    return
+    import Define
+    if A.rigid(context) and len(A)==1 and Define._Outfriendly(context,B):
+        path = str(A[0])
+        import os,pickle
+        try:
+            with open(path,'wb') as f:
+                f.write(pickle.dumps(B))
+                return data()
+        except Exception as e:
+                return
 CONTEXT.define('out',Out)
 
 def word(text,A): return text in [str(a) for a in A]

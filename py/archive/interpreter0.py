@@ -7,51 +7,52 @@
 import rlcompleter
 import readline,sys
 readline.parse_and_bind("tab: complete")
-sys.setrecursionlimit(10000)
 #
 #    System
 #
 from base import *
-import Text,Language
-import Evaluation
+import Text,Language,Evaluate
 
 EXIT = ['exit','quit']
 UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 #
 #   import local definitions from .../coda/co
 #
-KI = '--' in sys.argv
-args = []
-for a in sys.argv:
-    try    : args.append(float(a))
-    except : pass
-SECONDS = 2.0
-if len(args)>0: SECONDS = args.pop(0)
-GB = 2.0
-if len(args)>0: GB = args.pop(0)
+KI = False
+if len(sys.argv)>1:
+    if sys.argv[1]=='-': KI = True
+    try:
+        n = int(sys.argv[1])
+        if n>1:
+#            Evaluate.DEFAULT = n
+            Evaluate.STEPS = n
+    except ValueError:
+        pass
+if len(sys.argv)>2:
+    try:
+        e = int(sys.argv[2])
+        if e>1:
+            Evaluate.SECONDS = e
+    except ValueError:
+        pass
 
 if not KI:
     Local = Language.lang('ap use1 : localdef:',data(),data())
-    D = Evaluation.Evaluate(CONTEXT,100,2)(Local)
+    D = Evaluate.Eval(1000.0,Evaluate.STEPS,CONTEXT)(Local)
     if not D.empty(): raise error('Local definition error '+str(D))
 
 try:
-    EV = Evaluation.Evaluate(CONTEXT,SECONDS,GB)
+    EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,CONTEXT)
+#    EV = Evaluate.Eval(CONTEXT).steps()
     while True:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
-            if line.startswith('++time'):
-                try:
-                    tlimit = float(line.split('++time')[-1])
-                    EV.setTimeLimit(tlimit)
-                except ValueError:
-                    pass
-            else:
-                D = Language.lang(line,data(),data())
-                D = EV(D)
 
-                if not D.empty(): sys.stdout.write(str(D)+'\n')
+            D = Language.lang(line,data(),data())
+            D = EV(D)
+
+            if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
             import traceback
             if KI: print(traceback.format_exc())

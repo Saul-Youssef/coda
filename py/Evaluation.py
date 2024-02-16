@@ -3,80 +3,218 @@
 #   remember use : def might happen during execution
 #
 from base import *
+import Number
 import time
-from Log import LOG 
+from Log import LOG
 
-class evaluator(object):
-    def __init__(self,context,seconds,bytes):
-        self.seconds = seconds
-        self.bytes   = bytes
-        self.max_seconds = None
-        self.max_bytes   = None
+LOG.register('step','Evaluation step')
+
+class Evaluate(object):
+    def __init__(self,context,seconds,GB):
+        self.context   = context
+        self.seconds   = seconds
+        self.bytes     = GB*1000000000
+        self.max_time  = None
+        self.max_bytes = None
+        self.step = 0
         import psutil
         self.process = psutil.Process()
         self.cache = {}
+    def setTimeLimit(self,tlimit):
+        self.seconds = tlimit
+        return self 
     def __call__(self,D):  # saturate definitions if necessary
-        self.max_seconds = time.time()+self.seconds
-        self.max_bytes   = self.bytes
+        self.max_time  = time.time()+self.seconds
+        self.max_bytes = self.bytes
+        self.step = 0
         ndefinitions = len(self.context)
 
-        D2 = self.evaluate(D)
-        while (not ndefinitions==len(self.context)) and self.time() and self.memory():
-            self.cache = {}  # can preserve some cache at some point this is a bit lazy
+        D2 = data(*[d for d in D])
+        while True:
+            self.cache = {}
             D2 = self.evaluate(D2)
+            if not self.time() or not self.memory(): break
+            if ndefinitions==len(self.context): break
+        self.log()
         return D2
     def evaluate(self,D):
-        DE = eval_data(self.context,self.cache,D)
-        while not DE.done() and self.time() and self.memory(): DE.step()
+        DE = data_evaluator(self.context,self.cache,D)
+        while not DE.done() and self.time() and self.memory():
+            self.log()
+            DE.step()
+            self.step += 1
         return DE.value()
-    def time(self):
-        return time.time()<self.max_time
-    def memory(self):
-        return self.process.memory_info().rss<self.max_rss
+    def time(self): return time.time()<self.max_time
+    def memory(self): return self.rss()<self.max_bytes
+    def rss(self): return self.process.memory_info().rss
+    def log(self):
+        if LOG.logging('step'):
+            LOG('step','step: '+str(self.step),
+                'time: '+'{:.2f}'.format(self.max_time-time.time())+'/'+
+                         '{:.2f}'.format(self.seconds),
+                'GB: '+'{:.2f}'.format(float(self.rss())/1000000000)+'/'+
+                        '{:.2f}'.format(float(self.max_bytes)/1000000000),
+                'context: '+str(len(self.context)),
+                'cache: '+str(len(self.cache)))
 
-class eval_data(object):
+def pr(L): return '['+','.join([str(l.value()) for l in L])+']'
+class data_evaluator(object):
     def __init__(self,context,cache,D):
-        self._sequence = [eval_coda(context,cache,d) for d in D]
+        self._work = [coda_evaluator(context,cache,d) for d in D]
+        self._done = []
+        while len(self._work)>0 and self._work[0].done(): self._done.append(self._work.pop(0))
     def step(self):
-        self._sequence = [d.step() for d in self._sequence]
+        self._work = [d.step() for d in self._work]
+        while len(self._work)>0 and self._work[0].done(): self._done.append(self._work.pop(0))
         return self
-    def done(self):
-        return all(d.done() for d in self._sequence)
+    def done(self): return self._work==[]
     def value(self):
         L = []
-        for d in self._sequence:
+        for d in self._done+self._work:
             for dd in d.value(): L.append(dd)
         return data(*L)
 
-class eval_coda(object):
+class coda_evaluator(object):
     def __init__(self,context,cache,c):
         self.context = context
         self.cache   = cache
-        self.orig = c
-        if c in cache:
-            self.data = cache[c]
-            self.done = True
-        else:
-            self.left  = eval_data(context,cache,c.left())
-            self.right = eval_data(context,cache,c.right())
-            self.data = None
-            self.done = False
+        self.origin  = c
+        self.left    = data_evaluator(context,cache,c.left())
+        self.right   = data_evaluator(context,cache,c.right())
+        self.data_eval = None
+        self.data      = None
+    def done(self): return not self.data is None
     def step(self):
-        if self.data is None and not self.done:
-            self.left = []
-            self.left.step()
-            self.right.step()
-            c = self.left.value()|c.right.value()
-            D = self.context(c)
-            self.done = D==data(c)
-            if not len(D)==1: self.data = eval_data(self.context,self.cache,D)
+        if self.data_eval is None:
+            self.step_coda()
         else:
-            self.data.step()
-            self.done = all(d.done() for d in self.data)
+            self.data_eval.step()
+            if self.data_eval.done(): self.data = self.data_eval.value()
         return self
-    def done(self): return self.done
+    def step_coda(self):
+        c = self.left.step().value()|self.right.value()
+        D = self.context(c)
+        if data(c)==D:
+            if self.left.done() and self.right.done():
+                self.data = D
+            elif c.domain()==da('with'):
+                self.left.step()
+                if self.left.done():
+                    self.data = data(self.left.value()|self.right.value())
+            else:
+                self.left.step()
+                self.right.step()
+        else:
+            if    len(D)==0:
+                self.data = D
+            elif  len(D) >1:
+                self.data_eval = data_evaluator(self.context,self.cache,D)
+            else:
+                self.left  = data_evaluator(self.context,self.cache,D[0].left ())
+                self.right = data_evaluator(self.context,self.cache,D[0].right())
+        return self
     def value(self):
-        if self.data is None: D = data(self.left.value()|self.right.value())
-        else                : D = self.data.value()
-        self.cache[self.orig] = D
-        return D
+        if self.data is None:
+            if self.data_eval is None:
+                return data(self.left.value()|self.right.value())
+            else:
+                return self.data_eval.value()
+        return self.data
+#
+#def MULTI(W):
+#    context,A,D = W
+#    MD = data((da('eval')+A)|D)
+#    EV = Eval(STEPS,SECONDS,context)
+#    return EV(MD)
+#
+#def Multi(context,domain,A,B):
+#    if A.rigid(context) and B.atomic(context) and all(b.domain()==da('with') for b in B):
+#        import multiprocessing
+#        nproc = min(len(B)+1,multiprocessing.cpu_count()-4) # always leave at least 4 procs for other tasks
+#
+#        from multiprocessing.pool import Pool
+#        pool = Pool(nproc)
+#        IN = []
+#        for b in B: IN.append((context,A,data(b),))
+#        results = []
+#        for result in pool.imap(MULTI,IN): results.append(result)
+#        def f(s,t): return s+t
+#        from functools import reduce
+#        return reduce(f,results)
+#CONTEXT.define('multi',Multi)
+#
+#   evaluation of data and new contexts with 'with'
+#
+#   eval : evaluates to specified depth
+#   use  : uses input definitions in the current context
+#   with : create a new 'scope' including argument specified definitions
+#
+#   demo: eval : a b c
+#   demo: eval :
+#   demo: eval : with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: x? y?
+#   demo: eval : with (def first3 : {first 3:B}) : first3 : a b c d e f g
+#   demo: get with : eval : with (def first3 : {first 3:B}) : first3 : a b c d e f g
+#   demo: first3 : a b c d e f g
+#   demo: eval : with (let x:a) (let y:b) : (x? y?) = (y? x?)
+#   demo: eval 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
+#   demo: nat : 0
+#   demo: with : nat : 0
+#   demo: eval 10 : with : nat : 0
+#   demo: eval 100 : with : nat : 0
+#
+def available_GB():
+    import psutil
+    mem = psutil.virtual_memory().available
+    return mem/1000000000.0
+
+def eval_(context,domain,A,B):
+    if B.empty():
+        return data()
+    elif A.rigid(context) and B.atom(context):
+        b = B[0]
+        ns = Number.floats(A)
+        steps,seconds = 2,available_GB()/2.0
+        if len(ns)>0: steps   = ns.pop(0).__floor__()
+        if len(ns)>0: seconds = ns.pop(0)
+
+        if b.domain()==da('with'):
+            ARGS = Evaluate(context,100,2)(b.arg())
+            args = [da('use1')|data(arg) for arg in ARGS if arg.domain()==da('def')]
+            new = context.copy()
+            DA = Evaluate(new,steps,seconds)(data(*args))
+            if DA.empty():
+                R = Evaluate(new,steps,seconds)(b.right())
+                return data((b.domain()+ARGS)|R)
+        else:
+            return Evaluate(context,steps,seconds)(B)
+CONTEXT.define('eval1',eval_)
+CONTEXT.define('with')
+#
+#     step evaluation step-by-step evaluation of it's input
+#
+#     demo: step 10 : nat : 0
+#     demo: step : {first A : B} 2 : a b c d e
+#
+#def stepEval(context,domain,A,B):
+#    if A.rigid(context):
+#        import Number
+#        steps = STEPS
+#        ns = Number.ints(A)
+#        if len(ns)>0: steps = ns.pop(0)
+#
+#        E = Eval(STEPS,SECONDS,context)
+#        B2 = B
+#        outs = []
+#        n = 0
+#        while steps>0:
+#            s = str(B2)
+#            outs.append('['+str(n)+'] '+s); n += 1
+#            Bnew = E.step(B2)
+#            if B2==Bnew: break
+#            B2 = Bnew
+#            steps -= 1
+#        return da('\n'.join(outs))
+#def stepEval_0(context,domain,A,B):
+#    if B.empty(): return data()
+#CONTEXT.define('step',stepEval,stepEval_0)

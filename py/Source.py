@@ -41,14 +41,15 @@ def language(txt):
 #   demo: wrap [] : source : readpath : first 2 : dir co : endswith </co> : dir : home :
 #
 def source(context,domain,A,B):
+    if B.empty(): return data()
     BL,BR = B.split()
     if BL.atom(context):
         txt = str(BL)
         import Help
         return data(*([co(t) for t in Help.blocks(Help.comments(txt))] + [(domain+A)|BR]))
-def source_0(context,domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('source',source,source_0)
+#def source_0(context,domain,A,B):
+#    if B.empty(): return data()
+CONTEXT.define('source',source)
 #
 #   The home directory of the currently running software
 #

@@ -15,9 +15,15 @@ LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
 #D = base.data(*[d for d in Evaluate.evaluate(100,base.CONTEXT,LANG)])
 #D = Evaluate.Eval(10*Evaluate.STEPS,10*Evaluate.EVALS,base.CONTEXT)(LANG)
 #if not D.empty(): raise error('Local definition error '+str(D))
-D = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,base.CONTEXT)(LANG)
-EV = Evaluate.Eval(500,Evaluate.SECONDS,base.CONTEXT)
-if not D.empty(): raise error('Local definition error '+str(D))
+
+#D = Evaluate.Eval(Evaluate.STEPS,Evaluate.SECONDS,base.CONTEXT)(LANG)
+#EV = Evaluate.Eval(500,Evaluate.SECONDS,base.CONTEXT)
+#if not D.empty(): raise error('Local definition error '+str(D))
+
+import Evaluation
+D = Evaluation.Evaluate(base.CONTEXT,100,2)(LANG)
+if not D.empty(): raise error('Local definition startup failure'+str(D))
+EV = Evaluation.Evaluate(base.CONTEXT,2,2)
 
 class EchoKernel(Kernel):
     implementation = 'Echo'

@@ -215,11 +215,11 @@ def available_GB():
 def eval_(context,domain,A,B):
     if B.empty():
         return data()
-    elif A.rigid(context) and B.atom(context):
+    elif A.rigid(context) and B.atom(context) and B[0].domain()==da('with'):
         b = B[0]
         ns = Number.floats(A)
         steps,seconds = 2,available_GB()/2.0
-        if len(ns)>0: steps   = ns.pop(0).__floor__()
+        if len(ns)>0: steps   = ns.pop(0)
         if len(ns)>0: seconds = ns.pop(0)
 
         if b.domain()==da('with'):
@@ -230,8 +230,17 @@ def eval_(context,domain,A,B):
             if DA.empty():
                 R = Evaluate(new,steps,seconds)(b.right())
                 return data((b.domain()+ARGS)|R)
-        else:
-            return Evaluate(context,steps,seconds)(B)
+#        else:
+#            return Evaluate(context,steps,seconds)(B)
+def eval_2(context,domain,A,B):
+    if B.empty(): return data()
+    if A.rigid(context) and B.atom(context) and not B[0].domain()==da('with'):
+        b = B[0]
+        ns = Number.floats(A)
+        seconds,memory = SECONDS,MEMORY
+        if len(ns)>0: seconds = ns.pop(0)
+        if len(ns)>0: memory = ns.pop(0)
+        if b
 CONTEXT.define('eval1',eval_)
 CONTEXT.define('with')
 #

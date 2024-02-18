@@ -5,8 +5,10 @@
 #    jupyter kernelspec list
 #
 from ipykernel.kernelbase import Kernel
+import sys
+sys.setrecursionlimit(10000)
 
-import base,Language,Evaluate,IO,Source
+import base,Language,Evaluation,IO,Source
 IO.OUT.kernel() # set stdout to kernel mode
 #Evaluate.resolve(Language.lang('homecontext:', base.data(),base.data()),1000)
 #D = Evaluate.evaluate(100,base.CONTEXT,Language.lang('ap use1 : localdef:',base.data(),base.data()))
@@ -20,10 +22,13 @@ LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
 #EV = Evaluate.Eval(500,Evaluate.SECONDS,base.CONTEXT)
 #if not D.empty(): raise error('Local definition error '+str(D))
 
-import Evaluation
-D = Evaluation.Evaluate(base.CONTEXT,100,2)(LANG)
+#import Evaluation
+#D = Evaluation.Evaluate(base.CONTEXT,200,2)(LANG)
+#if not D.empty(): IO.OUT('aaaaaaaa'+str(D))
+#if not D.empty(): raise error('Local definition startup failure'+str(D))
+D = Evaluation.Evaluate(base.CONTEXT,10,2)(LANG)
 if not D.empty(): raise error('Local definition startup failure'+str(D))
-EV = Evaluation.Evaluate(base.CONTEXT,2,2)
+EV = Evaluation.Evaluate(base.CONTEXT,2.0,Evaluation.MEMORY)
 
 class EchoKernel(Kernel):
     implementation = 'Echo'
@@ -41,12 +46,17 @@ class EchoKernel(Kernel):
 #                   allow_stdin=False):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=True):
-#        EV = Evaluate.Eval(Evaluate.STEPS,Evaluate.EVALS,base.CONTEXT)
         if not silent:
             L = []
             for d in Source.language(code):
                 try:
                     D = EV(d)
+                    if len(D)==1 and D[0].domain()==base.da('defaultTime'):
+                        try:
+                            t = float(str(D[0].right()))
+                            EV.setTimeLimit(t)
+                        except ValueError:
+                            pass
                     IO.OUT(str(D))
                     s = IO.OUT.flush()
                     if len(s)>0: L.append(s)

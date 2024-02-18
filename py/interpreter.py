@@ -21,6 +21,7 @@ UNICODE.setatoms('(:)','0','1') # non-unicode for CLI
 #   import local definitions from .../coda/co
 #
 KI = '--' in sys.argv
+TR = '-'  in sys.argv
 args = []
 for a in sys.argv:
     try    : args.append(float(a))
@@ -32,7 +33,7 @@ if len(args)>0: GB = args.pop(0)
 
 if not KI:
     Local = Language.lang('ap use1 : localdef:',data(),data())
-    D = Evaluation.Evaluate(CONTEXT,100,2)(Local)
+    D = Evaluation.Evaluate(CONTEXT,5,2)(Local)
     if not D.empty(): raise error('Local definition error '+str(D))
 
 try:
@@ -41,20 +42,19 @@ try:
         try:
             line = input(Text.decorate('@','blue','reversevideo')+' ')
             if line in EXIT: break
-            if line.startswith('++time'):
-                try:
-                    tlimit = float(line.split('++time')[-1])
-                    EV.setTimeLimit(tlimit)
-                except ValueError:
-                    pass
-            else:
-                D = Language.lang(line,data(),data())
-                D = EV(D)
+            D = Language.lang(line,data(),data())
+            D = EV(D)
 
-                if not D.empty(): sys.stdout.write(str(D)+'\n')
+            if len(D)==1 and D[0].domain()==da('defaultTime'):
+                try:
+                    t = float(str(D[0].right()))
+                    EV.setTimeLimit(t)
+                except ValueError:
+                    pass 
+            if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
             import traceback
-            if KI: print(traceback.format_exc())
+            if TR: print(traceback.format_exc())
             sys.stdout.write('\n')
 except EOFError:
     pass

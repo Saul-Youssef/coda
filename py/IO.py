@@ -73,7 +73,7 @@ def Dir_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('dir',Dir,Dir_0)
 #
-#   Serialize input after evaluating to argument specified depth
+#   Write input to argument specified file
 #
 #   out file1 : a b c
 #   in : file1
@@ -81,17 +81,86 @@ CONTEXT.define('dir',Dir,Dir_0)
 #   in : file1 file2
 #
 def Out(context,domain,A,B):
-    import Define
-    if A.rigid(context) and len(A)==1 and Define._Outfriendly(context,B):
-        path = str(A[0])
+    if A.rigid(context) and len(A)>=1:
+        As = [str(a) for a in A]
+        path = As.pop(0)
+        import Evaluation
+        seconds = Evaluation.SECONDS
+        memory  = Evaluation.MEMORY
+        if len(As)>0:
+            try:
+                seconds = float(As.pop(0))
+            except ValueError:
+                pass
+        if len(As)>0:
+            try:
+                memory = float(As.pop(0))
+            except ValueError:
+                pass
+        EV = Evaluation.Evaluate(context,seconds,memory)
+        BE = EV(B)
+        import Define
+        if Define._Outfriendly(context,BE):
+            import os,pickle
+            try:
+                with open(path,'wb') as f:
+                    f.write(pickle.dumps(BE))
+                    return data()
+            except Exception as e:
+                return
+#
+#def OutOLD(context,domain,A,B):
+#    import Define
+#    if A.rigid(context) and len(A)==1 and Define._Outfriendly(context,B):
+#        import Evaluation
+#        EV = Evaluation.Evaluate(context,Evaluation.SECONDS,Evaluation.MEMORY)
+#        BE = EV(B)
+##    if A.rigid(context) and len(A)==1 and B.stable(context):
+#        print('aaaaa',B)
+#        print('aaaaa',Define._Outfriendly(context,B))
+#        path = str(A[0])
+#        import os,pickle
+#        try:
+#            with open(path,'wb') as f:
+#                f.write(pickle.dumps(B))
+#                return data()
+#        except Exception as e:
+#                return
+CONTEXT.define('out',Out)
+
+class stat(object):
+    def __init__(self,context):
+        self._context = context
+        self._stat = {}
+    def update(self,D):
+        for d in D: self.update_coda(d)
+        return self
+    def update_coda(self,d):
+        if not d.domain() in self._stat: self._stat[d.domain()] = 0
+        self._stat[d.domain()] += 1
+        self.update(d.left()).update(d.right())
+        return self
+    def data(self):
+        L = []
+        for key,value in self._stat.items(): L.append([str(key),key,value])
+        L.sort()
+        return data(*[((da('bin')+da(str(n)))|dom) for s,dom,n in L])
+
+def Stat(context,domain,A,B):
+    if A.rigid(context) and B.rigid(context):
         import os,pickle
         try:
-            with open(path,'wb') as f:
-                f.write(pickle.dumps(B))
-                return data()
+            L = []
+            S = stat(context)
+            for b in B:
+                path = str(b)
+                with open(path,'rb') as f:
+                    D = pickle.loads(f.read())
+                    S.update(D)
+            return S.data()
         except Exception as e:
-                return
-CONTEXT.define('out',Out)
+            return
+CONTEXT.define('stat',Stat)
 
 def word(text,A): return text in [str(a) for a in A]
 def IN(context,domain,A,B):

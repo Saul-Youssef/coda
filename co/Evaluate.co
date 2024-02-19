@@ -19,4 +19,4 @@
 #   demo: eval 10 : with : nat : 0
 #   demo: eval 100 : with : nat : 0
 #
-def eval : ap eval1
+def do : ap do1

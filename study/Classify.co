@@ -2,7 +2,7 @@
 #   Classify input data (:F1) (:F2)... with respect to 
 #   argument sample (:A1) (:A2)...
 #
-#   demo: classify (permutation 3:|) : (:null) (:pass) (:first 100) 
+#   demo: classify (:a) (:b) : (:null) (:pass) (:first 100) 
 #
 def _AP : {ap (put*B*get) : A} 
 def _Col : {collect : ap {bin (_AP A : (get:B)):B} A : B}

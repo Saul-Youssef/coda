@@ -33,7 +33,7 @@ if len(args)>0: GB = args.pop(0)
 
 if not KI:
     Local = Language.lang('ap use1 : localdef:',data(),data())
-    D = Evaluation.Evaluate(CONTEXT,5,2)(Local)
+    D = Evaluation.Evaluate(CONTEXT,60,2)(Local)
     if not D.empty(): raise error('Local definition error '+str(D))
 
 try:
@@ -50,7 +50,7 @@ try:
                     t = float(str(D[0].right()))
                     EV.setTimeLimit(t)
                 except ValueError:
-                    pass 
+                    pass
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
             import traceback

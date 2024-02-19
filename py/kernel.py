@@ -6,7 +6,7 @@
 #
 from ipykernel.kernelbase import Kernel
 import sys
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(100000)
 
 import base,Language,Evaluation,IO,Source
 IO.OUT.kernel() # set stdout to kernel mode

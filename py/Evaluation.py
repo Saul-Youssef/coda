@@ -15,6 +15,7 @@ LOG.register('cache.miss','Cache miss')
 LOG.register('cache.hit','Cache hit')
 LOG.register('cache','New cach creation')
 LOG.register('cache','Reset cache')
+LOG.register('multi','Multiprocessing operations')
 
 CONTEXT.define('defaultTime')
 
@@ -175,6 +176,7 @@ def Multi(context,domain,A,B):
     if A.rigid(context) and B.atomic(context) and all(b.domain()==da('with') for b in B):
         import multiprocessing
         nproc = min(len(B)+1,multiprocessing.cpu_count()-4) # always leave at least 4 procs for other tasks
+        LOG('multi','Using '+str(nproc)+' processors for '+str(len(B))+' inputs')
 
         from multiprocessing.pool import Pool
         pool = Pool(nproc)
@@ -184,6 +186,7 @@ def Multi(context,domain,A,B):
         for result in pool.imap(MULTI,IN): results.append(result)
         def f(s,t): return s+t
         from functools import reduce
+        LOG('multi','Collecting results')
         return reduce(f,results)
 CONTEXT.define('multi',Multi)
 #

@@ -189,6 +189,7 @@ def Multi(context,domain,A,B):
         LOG('multi','Collecting results')
         return reduce(f,results)
 CONTEXT.define('multi',Multi)
+CONTEXT.define('domulti',Multi)
 #
 #   evaluation of data and new contexts with 'with'
 #

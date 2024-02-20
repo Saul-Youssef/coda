@@ -26,7 +26,7 @@ LANG = Language.lang('ap use1 : localdef:',base.data(),base.data())
 #D = Evaluation.Evaluate(base.CONTEXT,200,2)(LANG)
 #if not D.empty(): IO.OUT('aaaaaaaa'+str(D))
 #if not D.empty(): raise error('Local definition startup failure'+str(D))
-D = Evaluation.Evaluate(base.CONTEXT,10,2)(LANG)
+D = Evaluation.Evaluate(base.CONTEXT,100,2)(LANG)
 if not D.empty(): raise error('Local definition startup failure'+str(D))
 EV = Evaluation.Evaluate(base.CONTEXT,2.0,Evaluation.MEMORY)
 

@@ -9,13 +9,18 @@ from Log import LOG
 
 SECONDS = 2.0
 MEMORY  = 2.0 # GB
+MULTI_SECONDS = 1000.0
+MULTI_MEMORY = 2.0
 
-LOG.register('step','Evaluation step')
 LOG.register('cache.miss','Cache miss')
 LOG.register('cache.hit','Cache hit')
 LOG.register('cache','New cach creation')
 LOG.register('cache','Reset cache')
+
 LOG.register('multi','Multiprocessing operations')
+
+LOG.register('eval','Default time and memory')
+LOG.register('eval.step','Evaluation step')
 
 CONTEXT.define('defaultTime')
 
@@ -53,6 +58,7 @@ class Evaluate(object):
         import psutil
         self.process = psutil.Process()
         self.cache = Cache()
+        LOG('eval','creation','max seconds:'+str(seconds),'max GB:'+str(GB))
     def setTimeLimit(self,tlimit):
         self.seconds = tlimit
         return self
@@ -85,8 +91,8 @@ class Evaluate(object):
         return self.rss()<self.max_bytes
     def rss(self): return self.process.memory_info().rss
     def log(self):
-        if LOG.logging('step'):
-            LOG('step','step:'+str(self.step),
+        if LOG.logging('eval.step'):
+            LOG('eval.step','step'+str(self.step),
                 'time:'+'{:.2f}'.format(self.max_time-time.time())+'/'+
                          '{:.2f}'.format(self.seconds),
                 'GB:'+'{:.2f}'.format(float(self.rss())/1000000000)+'/'+
@@ -169,8 +175,16 @@ class coda_evaluator(object):
 def MULTI(W):
     context,A,D = W
     MD = data((da('do')+A)|D)
-    EV = Evaluate(context,100,4)
+    EV = Evaluate(context,MULTI_SECONDS,available_GB()/4.0)
     return EV(MD)
+
+def limits(A):
+    import Number
+    seconds,GB = SECONDS,available_GB()/4.0
+    fs = Number.floats(A)
+    if len(fs)>0: seconds = fs.pop(0)
+    if len(fs)>0: memory  = fs.pop(0)
+    return seconds,GB
 
 def Multi(context,domain,A,B):
     if A.rigid(context) and B.atomic(context) and all(b.domain()==da('with') for b in B):

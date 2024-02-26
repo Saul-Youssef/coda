@@ -92,7 +92,7 @@ class Evaluate(object):
     def rss(self): return self.process.memory_info().rss
     def log(self):
         if LOG.logging('eval.step'):
-            LOG('eval.step','step'+str(self.step),
+            LOG('eval.step','step '+str(self.step),
                 'time:'+'{:.2f}'.format(self.max_time-time.time())+'/'+
                          '{:.2f}'.format(self.seconds),
                 'GB:'+'{:.2f}'.format(float(self.rss())/1000000000)+'/'+

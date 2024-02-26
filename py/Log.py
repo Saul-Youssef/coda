@@ -41,7 +41,7 @@ def message(name,msg):
     IO.OUT(name+'> '+msg+'\n')
 
 def logs(context,domain,A,B):
-    message('logs avialable',' '.join(LOG.names()))
+    message('logs available',' '.join(LOG.names()))
     return data()
 def logging(context,domain,A,B):
     message('logging',' '.join([name for name,status in LOG if status]))

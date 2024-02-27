@@ -51,42 +51,77 @@ def first_(context,domain,A,B):
     if B.empty(): return data()
     if A.rigid(context):
         ns = Number.nats(A)
-        if len(ns)==0: n = 1
-        else: n = ns.pop(0)
+        n = sum(ns)
+#        n = 0
+#        if len(ns)>0: n = ns.pop(0)
         if n==0: return data()
         Bs = [b for b in B]
+        if not Bs[0].atom(context): return
         front = []
         while n>0 and len(Bs)>0 and Bs[0].atom(context):
-           front.append(Bs.pop(0))
-           n -= 1
+            front.append(Bs.pop(0))
+            n -= 1
         return data(*front) + data((domain+da(str(n)))|data(*Bs))
-
-def first_1(context,domain,A,B):
-    if B.empty(): return data()
-def first_2(context,domain,A,B):
-    if A.empty(): return data(domain+da('1')|B)
-def first_3(context,domain,A,B):
-    if Number.ints(A)==[0]: return data()
-def first_4(context,domain,A,B):
-    ns = Number.ints(A)
-    if len(ns)==1:
-        n = ns.pop()
-        if n>=1 and len(B)>0 and B[0].atom(context):
-            return B[0] + ((domain+da(str(n-1))) | data(*B[1:]))
 CONTEXT.define('first',first_)
+#def tail_(context,domain,A,B):
+#    if B.empty(): return data()
+#    if A.rigid(context):
+#        ns = Number.nats(A)
+#        n = 0
+#        if len(ns)>0: n = ns.pop(0)
+#        if n==0: return B
+#        Bs = [b for b in B]
+#        if not Bs[-1].atom(context): return
+#        back = []
+#        while n>0 and len(Bs)>0 and Bs[-1].atom(context):
+#            back.insert(0,Bs.pop())
+#            n -= 1
+#        return data((domain+da(str(n)))|data(*Bs)) + data(*back)
+#CONTEXT.define('last',tail_)
+
+#def OLDfirst_(context,domain,A,B):
+#    if B.empty(): return data()
+#    if A.rigid(context):
+#        ns = Number.nats(A)
+#        if len(ns)==0: n = 1
+#        else: n = ns.pop(0)
+#        if n==0: return data()
+#        Bs = [b for b in B]
+#        front = []
+#        while n>0 and len(Bs)>0 and Bs[0].atom(context):
+#           front.append(Bs.pop(0))
+#           n -= 1
+#        return data(*front) + data((domain+da(str(n)))|data(*Bs))
+#
+#def first_1(context,domain,A,B):
+#    if B.empty(): return data()
+#def first_2(context,domain,A,B):
+#    if A.empty(): return data(domain+da('1')|B)
+#def first_3(context,domain,A,B):
+#    if Number.ints(A)==[0]: return data()
+#def first_4(context,domain,A,B):
+#    ns = Number.ints(A)
+#    if len(ns)==1:
+#        n = ns.pop()
+##        if n>=1 and len(B)>0 and B[0].atom(context):
+#            return B[0] + ((domain+da(str(n-1))) | data(*B[1:]))
 #CONTEXT.define('first',first_1,first_2,first_3,first_4)
 def tail_0(context,domain,A,B):
-    L,R = B.split()
-    ns = Number.ints(A)
-    if len(ns)==1 and L.atom(context) and ns[0]>=0:
-        n = ns[0]
-        if n>0: return     data((domain+da(str(n-1)))|R)
-        else  : return L + data((domain+da(str(  0)))|R)
-def tail_1(context,domain,A,B):
     if B.empty(): return data()
-def tail_2(context,domain,A,B):
-    if A.empty(): return data((domain+da('1'))|B)
-CONTEXT.define('tail',tail_0,tail_1,tail_2)
+    if A.rigid(context):
+        L,R = B.split()
+        ns = Number.ints(A)
+        n = sum(ns)
+#    if len(ns)==0: return B
+        if n==0: return B
+        if L.atom(context):
+            if n>0: return     data((domain+da(str(n-1)))|R)
+            else  : return L + data((domain+da(str(  0)))|R)
+#def tail_1(context,domain,A,B):
+#    if B.empty(): return data()
+#def tail_2(context,domain,A,B):
+#    if A.empty(): return data((domain+da('1'))|B)
+CONTEXT.define('last',tail_0)
 def last_0(context,domain,A,B):
     if B.empty(): return data()
 def last_1(context,domain,A,B):
@@ -101,7 +136,7 @@ def last_3(context,domain,A,B):
         if n>=1:
             L,R = data(*B[:-1]),data(*B[-1:])
             if R.atom(context): return data((domain+da(str(n-1)))|L) + R
-CONTEXT.define('last',last_0,last_1,last_2,last_3)
+#CONTEXT.define('last',last_0,last_1,last_2,last_3)
 def skip_0(context,domain,A,B):
     if B.empty(): return data()
 def skip_1(context,domain,A,B):

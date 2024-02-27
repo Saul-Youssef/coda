@@ -15,3 +15,16 @@
 #
 def kernel : {if (A:B):B}
 def ker : {ap kernel A : B}
+#
+#    demo: ab 2 : a b c d e f g
+#    demo: ab 1 : a b c d e f g
+#    demo: ab 0 : a b c d e f g
+#    demo: ab   : a b c d e f g
+#
+def ab : {ap (first A:B):(last A:B)}
+#
+#    demo: co 2 : a b c d e f g
+#    demo: co 3 : a b c d e f g
+#    demo:
+#
+def co : {ap {(:(arg:B) (right:B))} : ab A 1 : pre bin :B}

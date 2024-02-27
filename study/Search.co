@@ -1,10 +1,13 @@
 #
 #   Prepare some samples for testing purposes
 #
+#   S0: Basic numbers 
 #   S1: hydrogen atoms
 #   S2: more general atoms mix
 #   S3: pure data mix
 #   S4: mix with operators and language.
+#   S5: Permutations 
+#   S6: Selected for distinguishing power in commutative2 tests. 
 #
 let S0 : (:0) (:1) (:) (:0 1) 
 let S1 : sample.atom : 5
@@ -19,10 +22,6 @@ let S5 : (permutation 0 : 0 1 2)
 #   Selected for data useful in commutative2 tests.
 #
 let S6 : (:a) (:b) (:a b) (:) (:1) (:2) (:bin) (:(bin a:x)) (:(bin b:y))
-         
-#let T0 : by : defs : Number Sequence Basic Collect 
-#let T1 : by : defs : Apply Sequence Number Logic Basic Collect 
-#let T2 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2
 
 
 let C0 : {by : defs : Number Sequence Basic Collect} 

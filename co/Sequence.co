@@ -16,3 +16,23 @@ def nth : {aq nth1 A : B}
 #
 def pre  : {A B}
 def post : {B A}
+#
+#   Basic sequence operations
+#
+#   demo: head 2 : a b c d e f g
+#   demo: tail 2 : a b c d e f g
+#   demo: first 2 : a b c d e f g
+#   demo: last 2 : a b c d e f g
+#   demo: head : a b c d e f g
+#   demo: tail :  a b c d e f g
+#   demo: first : a b c d e f g
+#   demo: last : a b c d e f g
+#   demo: head 2 1 : a b c d e f g
+#   demo: tail 2 1 : a b c d e f g
+#   demo: skip : a b c
+#   demo: skip 2 : a b c d e
+#   demo: by 2 : a b c d e
+#   demo: by : a b c d e
+#   demo: by 2 : nat : 0
+#
+def first : {head (some A:1) : B}

@@ -3,6 +3,7 @@
 #
 from base import *
 import Help
+from Log import LOG 
 
 class Stdout(object):
     def __init__(self):
@@ -159,7 +160,7 @@ def Stat(context,domain,A,B):
                     S.update(D)
             return S.data()
         except Exception as e:
-            return
+            LOG('error',str(e))
 CONTEXT.define('stat',Stat)
 
 def word(text,A): return text in [str(a) for a in A]

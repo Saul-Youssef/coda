@@ -27,3 +27,4 @@ let S6 : (:a) (:b) (:a b) (:) (:1) (:2) (:bin) (:(bin a:x)) (:(bin b:y))
 let C0 : {by : defs : Number Sequence Basic Collect} 
 let C1 : {by : defs : Apply Sequence Number Logic Basic Collect}
 let C2 : {sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2}
+

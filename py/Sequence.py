@@ -24,7 +24,7 @@ def rev_3(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #
-#   Basic sequence operations 
+#   Basic sequence operations
 #
 #   demo: head 2 : a b c d e f g
 #   demo: tail 2 : a b c d e f g
@@ -90,15 +90,20 @@ def skip_1(context,domain,A,B):
 CONTEXT.define('skip',skip_1)
 
 def By(context,domain,A,B):
+    if B.empty(): return data()
     if A.rigid(context):
         import Number
         ns = Number.ints(A)
         n = 1
         if len(ns)>0 and ns[0]>1: n = ns[0]
-        if data(*B[:n]).atomic(context): return (data()|data(*B[:n])) + ((domain+A)|data(*B[n:]))
-def By_0(context,domain,A,B):
-    if B.empty(): return data()
-CONTEXT.define('by',By_0,By)
+        L = []
+        Bs = [b for b in B]
+        while len(Bs)>0 and data(*Bs[:n]).atomic(context):
+            L.append(data()|data(*Bs[:n]))
+            Bs = Bs[n:]
+        L.append((domain+A)|data(*Bs))
+        return data(*L)
+CONTEXT.define('by',By)
 #
 #   Repeats the arguments for each input.
 #
@@ -121,6 +126,7 @@ CONTEXT.define('rep',rep_0)
 #   Select the n'th item(s) from input.
 #
 def nth1_0(context,domain,A,B):
+    if B.empty(): return data()
     A0,AR = A.split()
     B0,BR = B.split()
     if A0.empty(): return data()

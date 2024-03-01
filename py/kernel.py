@@ -51,12 +51,8 @@ class EchoKernel(Kernel):
             for d in Source.language(code):
                 try:
                     D = EV(d)
-                    if len(D)==1 and D[0].domain()==base.da('defaultTime'):
-                        try:
-                            t = float(str(D[0].right()))
-                            EV.setTimeLimit(t)
-                        except ValueError:
-                            pass
+                    EV.settings(D)
+#                    Evaluation.settings(EV,D)
                     IO.OUT(str(D))
                     s = IO.OUT.flush()
                     if len(s)>0: L.append(s)

@@ -23,25 +23,34 @@ LOG.register('eval','Default time and memory')
 LOG.register('eval.step','Evaluation step')
 
 CONTEXT.define('defaultTime')
+CONTEXT.define('cache.reset')
+CONTEXT.define('cache.clear')
 
 class Cache(object):
     def __init__(self):
         LOG('cache','Create new cache')
         self._cache = {}
-    def __repr__(self): return str(len(self))
+        self._done = set([])  # done data
+    def __repr__(self): return str(len(self))+'/'+str(len(self._done))
     def __len__(self): return len(self._cache)
     def reset(self,context):
-        # This is a somewhat lazy solution which might be improved upon
         LOG('cache','before cache reset: '+str(len(self._cache)))
         keys = [key for key in self._cache.keys()]
         for key in keys:
             if not self._cache[key].rigid(context): del self._cache[key]
+        self._done = set([])
         LOG('cache','after cache reset: '+str(len(self._cache)))
+        return self
+    def clear(self):
+        self._cache = {}
+        self._done = set([])
         return self
     def set(self,c,D):
         if LOG.logging('cache.miss'): LOG('cache.miss',str(c),'->',str(D),str(len(self)))
         self._cache[c] = D
         return self
+    def setdone(self,D): self._done.add(D); return self
+    def done(self,D): return D in self._done
     def __contains__(self,c): return c in self._cache
     def __call__(self,c):
         if LOG.logging('cache.hit'): LOG('cache.hit',str(c),'->',str(self._cache[c]))
@@ -59,6 +68,16 @@ class Evaluate(object):
         self.process = psutil.Process()
         self.cache = Cache()
         LOG('eval','creation','max seconds:'+str(seconds),'max GB:'+str(GB))
+    def settings(self,D):
+        for d in D:
+            if d.domain()==da('defaultTime'):
+                fs = Number.floats(d.right())
+                if len(fs)==1: self.setTimeLimit(fs[0])
+            if d.domain()==da('cache.reset'):
+                self.cache.reset(self.context)
+            if d.domain()==da('cache.clear'):
+                self.cache.clear()
+        return self
     def setTimeLimit(self,tlimit):
         self.seconds = tlimit
         return self
@@ -93,16 +112,33 @@ class Evaluate(object):
     def log(self):
         if LOG.logging('eval.step'):
             LOG('eval.step','step '+str(self.step),
-                'time:'+'{:.2f}'.format(self.max_time-time.time())+'/'+
+                'time:'+'{:.2f}'.format(self.seconds - (self.max_time-time.time()))+'/'+
                          '{:.2f}'.format(self.seconds),
                 'GB:'+'{:.2f}'.format(float(self.rss())/1000000000)+'/'+
                         '{:.2f}'.format(float(self.max_bytes)/1000000000),
                 'context:'+str(len(self.context)),
-                'cache:'+str(len(self.cache)))
+                'cache:'+str(self.cache))
 
 def pr(L): return '['+','.join([str(l.value()) for l in L])+']'
+
 class data_evaluator(object):
     def __init__(self,context,cache,D):
+        self.cache = cache
+        if cache.done(D):
+            if LOG.logging('cache.hit'): LOG('cache.hit','data',str(D))
+            self._obj = data_done(D)
+        else:
+            if LOG.logging('cache.miss'): LOG('cache.miss','data',str(D))
+            self._obj = data_evaluator_(context,cache,D)
+    def step(self):
+        self._obj.step()
+        return self
+    def done(self): return self._obj.done()
+    def value(self): return self._obj.value()
+
+class data_evaluator_(object):
+    def __init__(self,context,cache,D):
+        self.cache = cache
         self._work = [coda_evaluator(context,cache,d) for d in D]
         self._done = []
         while len(self._work)>0 and self._work[0].done(): self._done.append(self._work.pop(0))
@@ -115,7 +151,15 @@ class data_evaluator(object):
         L = []
         for d in self._done+self._work:
             for dd in d.value(): L.append(dd)
-        return data(*L)
+        D = data(*L)
+        if self._work==[]: self.cache.setdone(D)
+        return D
+
+class data_done(object):
+    def __init__(self,D): self._data = D
+    def step(self): return self
+    def done(self): return True
+    def value(self): return self._data
 
 class coda_evaluator(object):
     def __init__(self,context,cache,c):
@@ -124,6 +168,7 @@ class coda_evaluator(object):
         if c in cache:
             self.cached    = True
             self.data      = cache(c)
+            if LOG.logging('cache.hit'): LOG('cache.hit','coda',str(c))
         else:
             self.cached    = False
             self.origin    = c
@@ -131,6 +176,7 @@ class coda_evaluator(object):
             self.right     = data_evaluator(context,cache,c.right())
             self.data_eval = None
             self.data      = None
+            if LOG.logging('cache.miss'): LOG('cache.miss','coda',str(c))
     def done(self): return not self.data is None
     def step(self):
         if self.done():

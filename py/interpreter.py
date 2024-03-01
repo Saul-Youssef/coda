@@ -44,13 +44,8 @@ try:
             if line in EXIT: break
             D = Language.lang(line,data(),data())
             D = EV(D)
-
-            if len(D)==1 and D[0].domain()==da('defaultTime'):
-                try:
-                    t = float(str(D[0].right()))
-                    EV.setTimeLimit(t)
-                except ValueError:
-                    pass
+            EV = EV.settings(D)
+#            Evaluation.settings(EV,D)
             if not D.empty(): sys.stdout.write(str(D)+'\n')
         except KeyboardInterrupt:
             import traceback

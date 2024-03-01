@@ -1,57 +1,52 @@
 #
-#   Simple 
+#   Simple
 #
-def simple : {(B x?:y?) = (B:y?)} 
+def simple : {(B x?:y?) = (B:y?)}
 #
-#   Ring 
+#   Ring
 #
 def ring_left:  { (B x? y?:z?) = (B x?:z?) (B y?:z?) }
-def ring_right: { (B x? : y? z?) = (B x?:y?) (B x?:z?) } 
+def ring_right: { (B x? : y? z?) = (B x?:y?) (B x?:z?) }
 def nilpotent   : {B:x?}
-def nilpotent_left  : {B:x?} 
-def nilpotent_right : {B x?:} 
-def symmetric : {(B x?:y?)=(B y?:x?)} 
+def nilpotent_left  : {B:x?}
+def nilpotent_right : {B x?:}
+def symmetric : {(B x?:y?)=(B y?:x?)}
 #
-#   Idempotence 
+#   Idempotence
 #
-def idempotent  : {(B:B:x?)=(B:x?)} 
-def idempotent2 : {(B x?:B:y?)=(B:B x?:y?)} 
-def space_b     : {(B x? y?:z?) = (B x?:B y?:z?)} 
+def idempotent  : {(B:B:x?)=(B:x?)}
+def idempotent2 : {(B x?:B:y?)=(B:B x?:y?)}
+def space_b     : {(B x? y?:z?) = (B x?:B y?:z?)}
 #
 #   Distributive
 #
-def distributive  : {(B:x? y?)=((B:x?) (B:y?))} 
-def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) } 
+def distributive  : {(B:x? y?)=((B:x?) (B:y?))}
+def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) }
 def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #
-def commutative : {(B:x? y?)=(B:y? x?)} 
-def commutative2: {(B x?:y? z?)=(B x?:z? y?)} 
-def involution  : {((B:B:x?)=x?)} 
-def semilattice : {(B:x? x?)=(B:x?)} 
+def commutative : {(B:x? y?)=(B:y? x?)}
+def commutative2: {(B x?:y? z?)=(B x?:z? y?)}
+def involution  : {((B:B:x?)=x?)}
+def semilattice : {(B:x? x?)=(B:x?)}
 #
-#   Commutes 
+#   Commutes
 #
 def commuting : { (A*B:x?)=(B*A:x?) }
 #
-#   morphism from A to B 
+#   morphism from A to B
 #
 #
 #   demo: property idempotent {rev:B} : S5?
-#   demo: property idempotent {first:B} : S5? 
+#   demo: property idempotent {first:B} : S5?
 #
-#def property : {count : get with : multi : cases ((first:A):(tail:A)) : B} 
+#def property : {count : get with : multi : cases ((first:A):(tail:A)) : B}
 
-#def property : {count : get with : do : cases ((first:A):(tail:A)) : B} 
+#def property : {count : get with : do : cases ((first:A):(tail:A)) : B}
 
-#def property : {bool : get with : do : cases ((first:A):(tail:A)) : B} 
+#def property : {bool : get with : do : cases ((first:A):(tail:A)) : B}
 
-#def property : {bool : get with : do : cases ((first:A):(get:tail:A)) : B} 
+#def property : {bool : get with : do : cases ((first:A):(get:tail:A)) : B}
 
-def _property.1 : {put with (tail 1:A) : bool : get with : do : cases ((head 1:A):(tail 1:A)) : B} 
-def _property.2 : {_property.1 (head 1:A) (get:tail 1:A) : B} 
-def property : {sum (co 2 : _property.2 A ) : B} 
-#
-#    demo: wap 10 int_sum : first 100 : nat : 0 
-#    demo: do : wap 10 int_sum : first 100 : nat : 0 
-#
-def wap : {ap {with:A:get:B} (tail 1:A) : by (head 1:A) : B} 
+def _property.1 : {put with (tail 1:A) : bool : get with : do : cases ((head 1:A):(tail 1:A)) : B}
+def _property.2 : {_property.1 (head 1:A) (get:tail 1:A) : B}
+def property : {sum (co 2 : _property.2 A ) : B}

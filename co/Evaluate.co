@@ -20,3 +20,4 @@
 #   demo: eval 100 : with : nat : 0
 #
 def do : ap do1
+def dom : {multi A:B}

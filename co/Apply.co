@@ -29,7 +29,9 @@ def ab : {ap (head A:B):(tail A:B)}
 #
 def co : {ap {(:(arg:B) (right:B))} : ab A 1 : pre bin :B}
 #
-#    demo: wap 10 int_sum : first 100 : nat : 0 
-#    demo: do : wap 10 int_sum : first 100 : nat : 0
+#    demo: wap int_sum : by 10 : rep 100 : 1
+#    demo: do : wap int_sum : by 10 : rep 100 : 1
+#    demo: do 100 : wap int_sum : by 10 : rep 100 : 1 
 #
-def wap : {ap {with:A:get:B} (tail 1:A) : by (head 1:A) : B}
+def wap : ap {with:A:get:B}
+#def wap : {ap {with:A:get:B} (tail 1:A) : by (head 1:A) : B}

@@ -18,18 +18,10 @@ from base import *
 #  demo: as {int_prod : A B} :
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
-def ap_0(context,domain,A,B):
-    if B.empty(): return data()
-def ap_1(context,domain,A,B):
-    if B.atom(context): return data(A|B)
-def ap_2(context,domain,A,B):
-    return data(*[(domain+A)|data(b) for b in B])
 def ap_(context,domain,A,B):
     if B.atom(context): return data(A|B)
     return data(*[(domain+A)|data(b) for b in B])
 CONTEXT.define('ap',ap_)
-#    if B.empty(): return data()
-#CONTEXT.define('ap',ap_0,ap_1,ap_2)
 
 def aq2_1(context,domain,A,B):
     A0,AR =  A.split()

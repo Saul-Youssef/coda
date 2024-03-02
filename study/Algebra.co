@@ -35,18 +35,15 @@ def commuting : { (A*B:x?)=(B*A:x?) }
 #
 #   morphism from A to B
 #
+#   demo: do 100 : property nilpotent (:pass) (:null) : (:a) (:b)
 #
-#   demo: property idempotent {rev:B} : S5?
-#   demo: property idempotent {first:B} : S5?
-#
+def property : ap {put with (get:B) : bool : get with : do : cases ((head 1:A):(get:B)) : (tail 1:A)}
+
 #def property : {count : get with : multi : cases ((first:A):(tail:A)) : B}
-
 #def property : {count : get with : do : cases ((first:A):(tail:A)) : B}
-
 #def property : {bool : get with : do : cases ((first:A):(tail:A)) : B}
-
 #def property : {bool : get with : do : cases ((first:A):(get:tail:A)) : B}
 
-def _property.1 : {put with (tail 1:A) : bool : get with : do : cases ((head 1:A):(tail 1:A)) : B}
-def _property.2 : {_property.1 (head 1:A) (get:tail 1:A) : B}
-def property : {sum (co 2 : _property.2 A ) : B}
+#def _property.1 : {put with (tail 1:A) : bool : get with : do : cases ((head 1:A):(tail 1:A)) : B}
+#def _property.2 : {_property.1 (head 1:A) (get:tail 1:A) : B}
+#def property : {sum (co 2 : _property.2 A ) : B}

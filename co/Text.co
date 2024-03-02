@@ -2,9 +2,11 @@
 #
 #    Count the number of characters
 #
+#    demo: tab : a b c 
 #    demo: nchar : abcde
 #    demo: nchar : abcdefg
 #    demo: nchar : a aa aaa
 #
 def nchar : ap {count : get ((:):(:)) : B}
+def tab : ap post <\n>
 #def nchar : ap {count * get ((:):(:)):B}

@@ -3,7 +3,9 @@
 #
 from base import *
 import Help
-from Log import LOG 
+from Log import LOG
+
+LOG.register('pickle','Python pickle operation')
 
 class Stdout(object):
     def __init__(self):
@@ -109,24 +111,6 @@ def Out(context,domain,A,B):
                     return data()
             except Exception as e:
                 return
-#
-#def OutOLD(context,domain,A,B):
-#    import Define
-#    if A.rigid(context) and len(A)==1 and Define._Outfriendly(context,B):
-#        import Evaluation
-#        EV = Evaluation.Evaluate(context,Evaluation.SECONDS,Evaluation.MEMORY)
-#        BE = EV(B)
-##    if A.rigid(context) and len(A)==1 and B.stable(context):
-#        print('aaaaa',B)
-#        print('aaaaa',Define._Outfriendly(context,B))
-#        path = str(A[0])
-#        import os,pickle
-#        try:
-#            with open(path,'wb') as f:
-#                f.write(pickle.dumps(B))
-#                return data()
-#        except Exception as e:
-#                return
 CONTEXT.define('out',Out)
 
 class stat(object):
@@ -156,7 +140,9 @@ def Stat(context,domain,A,B):
             for b in B:
                 path = str(b)
                 with open(path,'rb') as f:
+                    LOG('pickle','start',path)
                     D = pickle.loads(f.read())
+                    LOG('pickle','end',path)
                     S.update(D)
             return S.data()
         except Exception as e:

@@ -35,6 +35,7 @@ class Log(object):
 #        for name in self._status.keys(): yield name
 
 LOG = Log()
+LOG.register('error','Error message')
 
 def message(name,msg):
     import IO

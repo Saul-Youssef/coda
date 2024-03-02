@@ -110,7 +110,7 @@ def Out(context,domain,A,B):
                     f.write(pickle.dumps(BE))
                     return data()
             except Exception as e:
-                return
+                LOG('error','error writing to pickle file',str(e))
 CONTEXT.define('out',Out)
 
 class stat(object):
@@ -128,7 +128,8 @@ class stat(object):
     def data(self):
         L = []
         for key,value in self._stat.items(): L.append([str(key),key,value])
-        L.sort()
+        def f(M): return M[0]
+        L.sort(key=f)
         return data(*[((da('bin')+da(str(n)))|dom) for s,dom,n in L])
 
 def Stat(context,domain,A,B):
@@ -146,7 +147,8 @@ def Stat(context,domain,A,B):
                     S.update(D)
             return S.data()
         except Exception as e:
-            LOG('error',str(e))
+            raise
+            LOG('error','Error reading from pickle file',str(e))
 CONTEXT.define('stat',Stat)
 
 def word(text,A): return text in [str(a) for a in A]
@@ -177,5 +179,5 @@ def IN(context,domain,A,B):
                         for d in D: R.append(d)
             return data(*R)
         except Exception as e:
-            return
+            LOG('error','Error reading from pickle file',str(e))
 CONTEXT.define('in',IN)

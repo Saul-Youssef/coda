@@ -147,7 +147,6 @@ def Stat(context,domain,A,B):
                     S.update(D)
             return S.data()
         except Exception as e:
-            raise
             LOG('error','Error reading from pickle file',str(e))
 CONTEXT.define('stat',Stat)
 
@@ -169,7 +168,7 @@ def IN(context,domain,A,B):
                     elif word('atomic',A):
                         for d in D:
                             if d.atom(context): R.append(d)
-                    elif word('stable',A):
+                    elif word('stable',A) or word('invariant',A):
                         for d in D:
                             if d.stable(context): R.append(d)
                     elif word('rigid',A):

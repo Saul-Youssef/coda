@@ -2,6 +2,9 @@
 #    Definition
 #
 from base import *
+from Log import LOG
+
+LOG.register('context','Context operations')
 #
 #    use input definitions
 #
@@ -14,9 +17,11 @@ from base import *
 #    demo: use : (let x:55) (def first2 : {first 2:B}) (def first3 : {first 3:B})
 #
 def Use1(context,domain,A,B):
-    if B.atom(context) and B[0].domain()==da('def') and B[0].stable(context):
+    if B.atom(context) and B[0].domain()==da('def') and B[0].left().rigid(context):
         b = B[0]
         if not context.has(b.arg()):
+            LOG('context','Number of definitions:'+str(len(context)))
+            LOG('context','Adding '+str(b.arg())+'->'+str(b.right()))
             if b.right().empty():
                 context.add(b.arg())
             else:
@@ -24,6 +29,7 @@ def Use1(context,domain,A,B):
             return data()
 CONTEXT.define('use1',Use1)
 CONTEXT.define('def')
+#    if B.atom(context) and B[0].domain()==da('def') and B[0].stable(context):
 
 class PartialFunction(object):
     def __init__(self,left): self._left = left

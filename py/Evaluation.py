@@ -8,7 +8,7 @@ import time
 from Log import LOG
 
 SECONDS = 2.0
-MEMORY  = 5.0 # GB
+MEMORY  = 2.0 # GB
 MULTI_SECONDS = 1000.0
 MULTI_MEMORY = 2.0
 

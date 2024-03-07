@@ -12,6 +12,10 @@ def nilpotent_left  : {B:x?}
 def nilpotent_right : {B x?:}
 def symmetric : {(B x?:y?)=(B y?:x?)}
 #
+#   Constant 
+#
+
+#
 #   Idempotence
 #
 def idempotent  : {(B:B:x?)=(B:x?)}

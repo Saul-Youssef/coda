@@ -103,7 +103,7 @@ def Out(context,domain,A,B):
         EV = Evaluation.Evaluate(context,seconds,memory)
         BE = EV(B)
         import Define
-        if Define._Outfriendly(context,BE):
+        if True or Define._Outfriendly(context,BE):
             import os,pickle
             try:
                 with open(path,'wb') as f:

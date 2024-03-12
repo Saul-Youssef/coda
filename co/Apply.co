@@ -25,13 +25,17 @@ def ab : {ap (head A:B):(tail A:B)}
 #
 #    demo: co 2 : a b c d e f g
 #    demo: co 3 : a b c d e f g
-#    demo:
 #
 def co : {ap {(:(arg:B) (right:B))} : ab A 1 : pre bin :B}
 #
+#    demo: apby 2 count : a b c d e f g
+#    demo: apby 2 last  : a b c d e f g
+#
+def apby : {ap {A:get:B} (tail 1:A) : by (head 1:A) : B}
+#
 #    demo: wap int_sum : by 10 : rep 100 : 1
 #    demo: do : wap int_sum : by 10 : rep 100 : 1
-#    demo: do 100 : wap int_sum : by 10 : rep 100 : 1 
+#    demo: do 100 : wap int_sum : by 10 : rep 100 : 1
 #
 def wap : ap {with:A:get:B}
 #def wap : {ap {with:A:get:B} (tail 1:A) : by (head 1:A) : B}

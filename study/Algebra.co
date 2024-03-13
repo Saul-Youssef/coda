@@ -12,9 +12,13 @@ def nilpotent_left  : {B:x?}
 def nilpotent_right : {B x?:}
 def symmetric : {(B x?:y?)=(B y?:x?)}
 #
+#   Measure 
+#
+def measure : {(symmetric:B) (distributive:B)} 
+#
 #   Constant 
 #
-
+def constant : {(B x?:y?)=(B w?:z?)}
 #
 #   Idempotence
 #

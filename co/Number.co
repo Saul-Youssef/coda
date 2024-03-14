@@ -1,0 +1,5 @@
+#
+#   Primitive counting
+#
+def stick : ap {|}
+def ring  : ar {|}

@@ -8,5 +8,4 @@
 #    demo: nchar : a aa aaa
 #
 def nchar : ap {count : get ((:):(:)) : B}
-def tab : { pre <> : ap post <\n> : B } 
-#def nchar : ap {count * get ((:):(:)):B}
+def tab : { pre <> : ap post <\n> : B }

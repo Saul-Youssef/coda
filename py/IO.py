@@ -71,7 +71,6 @@ def Dir(context,domain,A,B):
             return data(*[co(path) for path in paths2]) + data((da('dir')+A)|BR)
         except IOError:
             return
-            raise
 def Dir_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('dir',Dir,Dir_0)
@@ -105,12 +104,14 @@ def Out(context,domain,A,B):
         import Define
         if True or Define._Outfriendly(context,BE):
             import os,pickle
+            if os.path.exists(path): return # never overwrite anything
             try:
                 with open(path,'wb') as f:
                     f.write(pickle.dumps(BE))
                     return data()
             except Exception as e:
                 LOG('error','error writing to pickle file',str(e))
+                return 
 CONTEXT.define('out',Out)
 
 class stat(object):

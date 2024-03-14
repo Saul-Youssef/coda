@@ -251,25 +251,26 @@ def Multi(context,domain,A,B):
 CONTEXT.define('multi',Multi)
 CONTEXT.define('domulti',Multi)
 #
-#   evaluation of data and new contexts with 'with'
-#
-#   eval : evaluates to specified depth
-#   use  : uses input definitions in the current context
+#   more : evaluate more with specified max seconds
 #   with : create a new 'scope' including argument specified definitions
+#   do   : pairs with 'with' to evaluate in new context
+#   dom  : same as do but using multiprocessing
 #
-#   demo: eval : a b c
-#   demo: eval :
-#   demo: eval : with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: more : a b c
+#   demo: more :
+#   demo: with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: do : with (let x:5) (let y:6) : int_sum : x? y?
+#   demo: right : do : with (let x:5) (let y:6) : int_sum : x? y?
 #   demo: x? y?
-#   demo: eval : with (def first3 : {first 3:B}) : first3 : a b c d e f g
-#   demo: get with : eval : with (def first3 : {first 3:B}) : first3 : a b c d e f g
+#   demo: do 10 : with (def first3 : {first 3:B}) : first3 : a b c d e f g
+#   demo: get with : do 10 : with (def first3 : {first 3:B}) : first3 : a b c d e f g
 #   demo: first3 : a b c d e f g
-#   demo: eval : with (let x:a) (let y:b) : (x? y?) = (y? x?)
-#   demo: eval 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
-#   demo: nat : 0
+#   demo: do : with (let x:a) (let y:b) : (x? y?) = (y? x?)
+#   demo: do 100 : with (let x:a) (let y:a) : (x? y?) = (y? x?)
 #   demo: with : nat : 0
-#   demo: eval 10 : with : nat : 0
-#   demo: eval 100 : with : nat : 0
+#   demo: do 0.1 : with : nat : 0
+#   demo: do 1 : with : nat : 0
+#   demo: do 10 : (with:int_sum : first 10 : nat :0) (with:int_sum:first 20:nat:0)
 #
 def available_GB():
     import psutil
@@ -306,6 +307,7 @@ def more(context,domain,A,B):
         if len(ns)>0: memory = ns.pop(0)
         return Evaluate(context,seconds,memory)(B)
 CONTEXT.define('eval',more)
+CONTEXT.define('more',more)
 #
 #     step evaluation step-by-step evaluation of it's input
 #

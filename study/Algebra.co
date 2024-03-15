@@ -12,10 +12,6 @@ def nilpotent_left  : {B:x?}
 def nilpotent_right : {B x?:}
 def symmetric : {(B x?:y?)=(B y?:x?)}
 #
-#   Measure 
-#
-def measure : {(symmetric:B) (distributive:B)} 
-#
 #   Constant 
 #
 def constant : {(B x?:y?)=(B w?:z?)}
@@ -32,10 +28,22 @@ def distributive  : {(B:x? y?)=((B:x?) (B:y?))}
 def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) }
 def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #
+#   Commutative 
+#
 def commutative : {(B:x? y?)=(B:y? x?)}
 def commutative2: {(B x?:y? z?)=(B x?:z? y?)}
 def involution  : {((B:B:x?)=x?)}
 def semilattice : {(B:x? x?)=(B:x?)}
+#
+#    Algebraic 
+#
+def algebraic_L1 : {(B:x?)=(B:rev:x?)} 
+def algebraic_L2 : {(B:x? y?)=(B:y? x?)} 
+def algebraic_L3 : {(B x?:y? z?)=(B x?:z? y?)} 
+
+def algebraic_R1 : {(B (rev:x?):)=(B x?:)} 
+def algebraic_R2 : {(B x? y?:)=(B y? x?:)} 
+def algebraic_R3 : {(B x? y?:z?)=(B y? x?:z?)} 
 #
 #   Commutes
 #

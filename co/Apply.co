@@ -37,5 +37,5 @@ def apby : {ap {A:get:B} (tail 1:A) : by (head 1:A) : B}
 #    demo: do : wap int_sum : by 10 : rep 100 : 1
 #    demo: do 100 : wap int_sum : by 10 : rep 100 : 1
 #
-def wap : ap {with:A:get:B}
+#def wap : ap {with:A:get:B}
 #def wap : {ap {with:A:get:B} (tail 1:A) : by (head 1:A) : B}

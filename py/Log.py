@@ -19,6 +19,8 @@ class Log(object):
     def off(self,*names):
         for name in names: self._status[name] = False
         return self
+    def clear(self):
+        for key in self._status.keys(): self._status[key] = False 
     def __contains__(self,name): return name in self._status
     def __getitem__(self,name): return self._status[name]
     def __iter__(self):
@@ -57,6 +59,8 @@ def log_(context,domain,A,B):
         if len(A)==1 and str(A[0])=='off':
             for l in logs:
                 if l in LOG: LOG.off(l)
+        if len(A)==1 and str(A[0])=='clear' and '*' in logs:
+            LOG.clear()
         else:
             for l in logs:
                 if l in LOG: LOG.on(l)

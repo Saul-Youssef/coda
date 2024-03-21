@@ -28,6 +28,10 @@ def distributive  : {(B:x? y?)=((B:x?) (B:y?))}
 def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) }
 def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #
+#   Space 
+#
+def space : {(space_a:B) (space_b:B)} 
+#
 #   Commutative 
 #
 def commutative : {(B:x? y?)=(B:y? x?)}
@@ -44,6 +48,8 @@ def algebraic_L3 : {(B x?:y? z?)=(B x?:z? y?)}
 def algebraic_R1 : {(B (rev:x?):)=(B x?:)} 
 def algebraic_R2 : {(B x? y?:)=(B y? x?:)} 
 def algebraic_R3 : {(B x? y?:z?)=(B y? x?:z?)} 
+
+def algebraic : {(algebraic_L3:B) (algebraic_R3:B)} 
 #
 #   Commutes
 #
@@ -51,6 +57,21 @@ def commuting : { (A*B:x?)=(B*A:x?) }
 #
 #   morphism from A to B
 #
-#   demo: do 100 : property nilpotent (:pass) (:null) : (:a) (:b)
+#   demo: do 100 : property2 nilpotent (:a) (:b) : null 
+#   demo: do 100 : property2 nilpotent (:a) (:b) : pass 
 #
 def property : ap {put with (get:B) : bool : get with : do : cases ((head 1:A):(get:B)) : (tail 1:A)}
+
+def spec : ap {put with (first:A) : bool : get with : do : cases ((head 1:A):B) : (tail 1:A)} 
+
+def spectrum : {
+    (spec nilpotent A:B)
+    (spec constant A:B) 
+    (spec symmetric A:B)
+    (spec idempotent A:B)
+    (spec algebraic A:B) 
+    (spec space A:B) 
+    (spec distributive A:B) 
+    (spec commutative A:B) 
+    (spec involution A:B)
+    (spec semilattice A:B) } 

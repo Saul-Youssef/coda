@@ -170,3 +170,27 @@ def count(context,domain,A,B):
 def count_0(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('count',count,count_0)
+#
+#   Swap transposes two elements of a sequence
+#
+#   demo: swap 1 3 : a b c d e
+#   demo: swap 1 3 : swap 1 2 : a b c d e 
+#
+def swap(context,domain,A,B):
+    if A.rigid(context):
+        ns = Number.nats(A)
+        ns = [n for n in ns if n>0]
+        if len(ns)==2:
+            i,j = ns[0]-1,ns[1]-1
+            m = max(i,j)
+            Bs = [b for b in B]
+            if all(b.atom(context) for b in Bs[:m]):
+                if len(Bs)<m: return B
+                x = Bs[i]
+                y = Bs[j]
+                Bs[i] = y
+                Bs[j] = x
+                return data(*Bs)
+        else:
+            return B
+CONTEXT.define('swap',swap)

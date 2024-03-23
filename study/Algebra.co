@@ -12,9 +12,9 @@ def nilpotent_left  : {B:x?}
 def nilpotent_right : {B x?:}
 def symmetric : {(B x?:y?)=(B y?:x?)}
 #
-#   Constant 
+#   Constant
 #
-def constant : {(B x?:y?)=(B w?:z?)}
+def constant : {(B:x?)=(B:)}
 #
 #   Idempotence
 #
@@ -28,28 +28,28 @@ def distributive  : {(B:x? y?)=((B:x?) (B:y?))}
 def distributive2 : {(B:x? y?)=(B:(B:x?) (B:y?)) }
 def space_a : {(B x?:y? z?) = (B: (B x?:y?) (B x?:z?)) }
 #
-#   Space 
+#   Space
 #
-def space : {(space_a:B) (space_b:B)} 
+def space : {(space_a:B) (space_b:B)}
 #
-#   Commutative 
+#   Commutative
 #
 def commutative : {(B:x? y?)=(B:y? x?)}
 def commutative2: {(B x?:y? z?)=(B x?:z? y?)}
 def involution  : {((B:B:x?)=x?)}
 def semilattice : {(B:x? x?)=(B:x?)}
 #
-#    Algebraic 
+#    Algebraic
 #
-def algebraic_L1 : {(B:x?)=(B:rev:x?)} 
-def algebraic_L2 : {(B:x? y?)=(B:y? x?)} 
-def algebraic_L3 : {(B x?:y? z?)=(B x?:z? y?)} 
+def algebraic_L1 : {(B:x?)=(B:rev:x?)}
+def algebraic_L2 : {(B:x? y?)=(B:y? x?)}
+def algebraic_L3 : {(B x?:y? z?)=(B x?:z? y?)}
 
-def algebraic_R1 : {(B (rev:x?):)=(B x?:)} 
-def algebraic_R2 : {(B x? y?:)=(B y? x?:)} 
-def algebraic_R3 : {(B x? y?:z?)=(B y? x?:z?)} 
+def algebraic_R1 : {(B (rev:x?):)=(B x?:)}
+def algebraic_R2 : {(B x? y?:)=(B y? x?:)}
+def algebraic_R3 : {(B x? y?:z?)=(B y? x?:z?)}
 
-def algebraic : {(algebraic_L3:B) (algebraic_R3:B)} 
+def algebraic : {(algebraic_L3:B) (algebraic_R3:B)}
 #
 #   Commutes
 #
@@ -57,21 +57,38 @@ def commuting : { (A*B:x?)=(B*A:x?) }
 #
 #   morphism from A to B
 #
-#   demo: do 100 : property2 nilpotent (:a) (:b) : null 
-#   demo: do 100 : property2 nilpotent (:a) (:b) : pass 
+#   demo: do 100 : property2 nilpotent (:a) (:b) : null
+#   demo: do 100 : property2 nilpotent (:a) (:b) : pass
 #
 def property : ap {put with (get:B) : bool : get with : do : cases ((head 1:A):(get:B)) : (tail 1:A)}
 
-def spec : ap {put with (first:A) : bool : get with : do : cases ((head 1:A):B) : (tail 1:A)} 
+def spec : ap {put with (first:A) : bool : get with : do : cases ((head 1:A):B) : (tail 1:A)}
 
-def spectrum : {
-    (spec nilpotent A:B)
-    (spec constant A:B) 
-    (spec symmetric A:B)
+def spectrum1 : {
+    (spec constant A:B)
+    (spec nilpotent_left  A:B)
+    (spec nilpotent_right A:B)
     (spec idempotent A:B)
-    (spec algebraic A:B) 
-    (spec space A:B) 
-    (spec distributive A:B) 
-    (spec commutative A:B) 
     (spec involution A:B)
-    (spec semilattice A:B) } 
+    (spec semilattice A:B)
+    (spec algebraic_L1 A:B)
+    (spec algebraic_R1 A:B) }
+
+def spectrum2 : {
+    (spec simple A:B)
+    (spec symmetric A:B)
+    (spec idempotent2 A:B)
+    (spec distributive A:B)
+    (spec distributive2 A:B)
+    (spec commutative A:B)
+    (spec algebraic_L2 A:B)
+    (spec algebraic_R2 A:B) }
+
+def spectrum3 : {
+    (spec ring_left A:B)
+    (spec ring_right A:B)
+    (spec space_a A:B)
+    (spec space_b A:B)
+    (spec commutative2 A:B)
+    (spec algebraic_L3 A:B)
+    (spec algebraic_R3 A:B) }

@@ -1,4 +1,27 @@
 #
+#   General function accelerator if the domain of F
+#   has a length.
+#
+import sys
+
+class Turbo(object):
+    def __init__(self,name,maxbytes):
+        self._name = name
+        self._domain   = {}
+        self._maxbytes = maxbytes
+        self._bytes    = sys.getsizeof(self._domain)
+    def __str__(self): return self._name+':'+'/'.join([str(self._maxbytes),str(self._bytes),str(len(self._domain))])
+    def __call__(self,F,X):
+        if X in self._domain:
+            return self._domain[X]
+        else:
+#            print('aaaaaa',str(self))
+            Y = F(X)
+            if self._bytes<self._maxbytes:
+                self._domain[X] = Y
+                self._bytes += sys.getsizeof(X)+sys.getsizeof(Y)
+            return Y
+#
 #   Simple cache used in contexts.
 #
 #   A definition is a partial function from coda to data.
@@ -37,3 +60,9 @@ class Cache(object):
             D = context._ecoda(c)
             self._ecoda[c] = D
             return D
+
+if __name__=='__main__':
+    def f(x): return x*x
+    T = Turbo('test',1000)
+    print(T(f,2))
+    print(T)

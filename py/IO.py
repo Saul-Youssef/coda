@@ -5,7 +5,9 @@ from base import *
 import Help
 from Log import LOG
 
-LOG.register('pickle','Python pickle operation')
+#LOG.register('pickle','Python pickle operation')
+LOG.register('turbo','Function acceleration')
+LOG.register('io','I/O operations')
 #
 #   These have to be removed as they are not functions
 #
@@ -60,14 +62,12 @@ def bytes2data(t):
     L = []
     while len(t)>0:
         n,front,t = _split(t)
-#        L.append(bytes2coda(front))
         L.append(B2C(bytes2coda,front))
     return data(*L)
 def bytes2coda(t):
     n,front,t = _split(t)
     m,back,t  = _split(t)
     if not len(t)==0: raise error('corrupted data')
-#    return bytes2data(front)|bytes2data(back)
     return B2D(bytes2data,front)|B2D(bytes2data,back)
 
 def str2data(t):
@@ -154,75 +154,75 @@ CONTEXT.define('dir',Dir,Dir_0)
 #   out file2 : nat : 0
 #   in : file1 file2
 #
-def Out(context,domain,A,B):
-    if A.rigid(context) and len(A)>=1:
-        As = [str(a) for a in A]
-        path = As.pop(0)
-        import Evaluation
-        seconds = Evaluation.SECONDS
-        memory  = Evaluation.MEMORY
-        if len(As)>0:
-            try:
-                seconds = float(As.pop(0))
-            except ValueError:
-                pass
-        if len(As)>0:
-            try:
-                memory = float(As.pop(0))
-            except ValueError:
-                pass
-        EV = Evaluation.Evaluate(context,seconds,memory)
-        BE = EV(B)
-        import Define
-        if True or Define._Outfriendly(context,BE):
-            import os,pickle
-            if os.path.exists(path): return # never overwrite anything
-            try:
-                with open(path,'wb') as f:
-                    f.write(pickle.dumps(BE))
-                    return data()
-            except Exception as e:
-                LOG('error','error writing to pickle file',str(e))
-                return
-CONTEXT.define('out',Out)
+#def Out(context,domain,A,B):
+#    if A.rigid(context) and len(A)>=1:
+#        As = [str(a) for a in A]
+#        path = As.pop(0)
+#        import Evaluation
+#        seconds = Evaluation.SECONDS
+#        memory  = Evaluation.MEMORY
+#        if len(As)>0:
+#            try:
+#                seconds = float(As.pop(0))
+#            except ValueError:
+#                pass
+#        if len(As)>0:
+#            try:
+#                memory = float(As.pop(0))
+#            except ValueError:
+#                pass
+#        EV = Evaluation.Evaluate(context,seconds,memory)
+#        BE = EV(B)
+#        import Define
+#        if True or Define._Outfriendly(context,BE):
+#            import os,pickle
+#            if os.path.exists(path): return # never overwrite anything
+#            try:
+#                with open(path,'wb') as f:
+#                    f.write(pickle.dumps(BE))
+#                    return data()
+#            except Exception as e:
+#                LOG('error','error writing to pickle file',str(e))
+#CONTEXT.define('out',Out)
 
 def word(text,A): return text in [str(a) for a in A]
-def IN(context,domain,A,B):
-    if A.rigid(context) and B.rigid(context):
-        import os,pickle
-        try:
-            R = []
-            for b in B:
-                path = str(b)
-                with open(path,'rb') as f:
-                    D = pickle.loads(f.read())
-                    i = 0
-                    for d in D:
-                        i += 1
-                    if word('with',A):
-                        for d in D: R.append(da('with')|data(d))
-                    elif word('atomic',A):
-                        for d in D:
-                            if d.atom(context): R.append(d)
-                    elif word('stable',A) or word('invariant',A):
-                        for d in D:
-                            if d.stable(context): R.append(d)
-                    elif word('rigid',A):
-                        for d in D:
-                            if d.rigid(context): R.append(d)
-                    else:
-                        for d in D: R.append(d)
-            return data(*R)
-        except Exception as e:
-            LOG('error','Error reading from pickle file',str(e))
-CONTEXT.define('in',IN)
+#def IN(context,domain,A,B):
+#    if A.rigid(context) and B.rigid(context):
+#        import os,pickle
+#        try:
+#            R = []
+#            for b in B:
+#                path = str(b)
+#                with open(path,'rb') as f:
+#                    D = pickle.loads(f.read())
+#                    i = 0
+#                    for d in D:
+#                        i += 1
+#                    if word('with',A):
+#                        for d in D: R.append(da('with')|data(d))
+#                    elif word('atomic',A):
+#                        for d in D:
+#                            if d.atom(context): R.append(d)
+#                    elif word('stable',A) or word('invariant',A):
+#                        for d in D:
+#                            if d.stable(context): R.append(d)
+#                    elif word('rigid',A):
+#                        for d in D:
+#                            if d.rigid(context): R.append(d)
+#                    else:
+#                        for d in D: R.append(d)
+#            return data(*R)
+#        except Exception as e:
+#            LOG('error','Error reading from pickle file',str(e))
+#CONTEXT.define('in',IN)
+
 #
 #   Write input to argument specified file
 #
-#   out file1 : a b c
-#   in : file1
-#   out file2 : nat : 0
-#   in : file1 file2
+#   write file1 : a b c
+#   read : file1
+#   write file2 : nat : 0
+#   read : file1 file2
 #
 def _Out(context,domain,A,B):
     if A.rigid(context) and len(A)>=1:
@@ -249,7 +249,9 @@ def _Out(context,domain,A,B):
         try:
             with open(path,'wb') as f:
                 import zlib
+                LOG('io','Start reading '+path+'...')
                 f.write(zlib.compress(data2bytes(BE)))
+                LOG('io','Finished reading '+path)
                 return data()
         except Exception as e:
             LOG('error','error writing to pickle file',str(e))
@@ -264,7 +266,11 @@ def _IN(context,domain,A,B):
                 path = str(b)
                 with open(path,'rb') as f:
                     import zlib
+                    LOG('io','Start reading '+path+'...')
                     D = bytes2data(zlib.decompress(f.read()))
+                    LOG('io','Finished reading '+path)
+                    LOG('turbo',str(B2D))
+                    LOG('turbo',str(B2C))
                     i = 0
                     for d in D:
                         i += 1
@@ -296,31 +302,85 @@ class stat(object):
     def update_coda(self,d):
         if not d.domain() in self._stat: self._stat[d.domain()] = 0
         self._stat[d.domain()] += 1
-        self.update(d.left()).update(d.right())
+        if not (d.domain()==co('a').domain()): self.update(d.left()).update(d.right())
         return self
     def data(self):
         L = []
         for key,value in self._stat.items(): L.append([str(key),key,value])
         def f(M): return M[0]
         L.sort(key=f)
-        return data(*[((da('bin')+da(str(n)))|dom) for s,dom,n in L])
+        return data(*[((da('with')+da(str(n)))|dom) for s,dom,n in L])
+    def __str__(self):
+        L = []
+        for key,value in self._stat.items(): L.append([str(key),key,value])
+        def f(M): return M[0]
+        L.sort(key=f)
+        return ', '.join([str(dom)+'/'+str(n) for s,dom,n in L])
+#
+#class statNEW(object):
+#    def __init__(self,context):
+#        self._context = context
+#        self._stat = {}
+#    def context(self): return self._context
+#    def update(self,D):
+#        for d in D: self.update_coda(d)
+#        return self
+#    def update_coda(self,d):
+#        if not d.domain() in self._stat: self._stat[d.domain()] = 0
+#        self._stat[d.domain()] += 1
+#        if not d.domain()==da('a').domain(): self.update(d.left()).update(d.right())
+#        return self
+#    def data(self):
+#        L = []
+#        for key,value in self._stat.items(): L.append([str(key),key,value])
+#        def f(M): return M[0]
+#        L.sort(key=f)
+#        return data(*[((da('with')+da(str(n)))|dom) for s,dom,n in L])
+#    def __str__(self):
+#        L = []
+#        for key,value in self._stat.items(): L.append([str(key),key,value])
+#        def f(M): return M[0]
+#        L.sort(key=f)
+#        return ', '.join([str(dom)+'/'+str(n) for s,dom,n in L])
+
+def countdata(dom,D): return sum([countcoda(dom,d) for d in D])
+def countcoda(dom,d):
+    n = 0
+    if d.domain()==dom: n = 1
+    LOG('stata',str(n))
+    return n + countdata(dom,d.left()) + countdata(dom,d.right())
+
+def Stata(context,domain,A,B):
+    if A.rigid(context) and B.rigid(context):
+        try:
+            for b in B:
+                path = str(b)
+                with open(path,'rb') as f:
+                    import zlib
+                    LOG('io','Start reading '+path+'...')
+                    D = bytes2data(zlib.decompress(f.read()))
+                    LOG('io','Finished reading '+path)
+                    return da(str(countdata(A,D)))
+        except Exception as e:
+            LOG('error','Error reading from file',str(e))
+CONTEXT.define('stata',Stata)
 
 def Stat(context,domain,A,B):
     if A.rigid(context) and B.rigid(context):
-        import os,pickle
         try:
             L = []
             S = stat(context)
             for b in B:
                 path = str(b)
                 with open(path,'rb') as f:
-                    import zlib 
+                    import zlib
+                    LOG('io','Start reading '+path+'...')
                     D = bytes2data(zlib.decompress(f.read()))
-#                    LOG('pickle','start',path)
-#                    D = pickle.loads(f.read())
-#                    LOG('pickle','end',path)
+                    LOG('io','Finished reading '+path)
+                    LOG('turbo',str(B2D))
+                    LOG('turbo',str(B2C))
                     S.update(D)
             return S.data()
         except Exception as e:
-            LOG('error','Error reading from pickle file',str(e))
+            LOG('error','Error reading from file',str(e))
 CONTEXT.define('stat',Stat)

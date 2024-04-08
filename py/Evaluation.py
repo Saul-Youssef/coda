@@ -234,6 +234,7 @@ def limits(A):
 
 def Multi(context,domain,A,B):
     if A.rigid(context) and B.atomic(context) and all(b.domain()==da('with') for b in B):
+        if B.empty(): return data()
         import multiprocessing
         nproc = min(len(B)+1,multiprocessing.cpu_count()-4) # always leave at least 4 procs for other tasks
         LOG('multi','Using '+str(nproc)+' processors for '+str(len(B))+' inputs')

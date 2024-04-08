@@ -10,12 +10,17 @@ class Turbo(object):
         self._domain   = {}
         self._maxbytes = maxbytes
         self._bytes    = sys.getsizeof(self._domain)
-    def __str__(self): return self._name+':'+'/'.join([str(self._maxbytes),str(self._bytes),str(len(self._domain))])
+        self._hit      = 0
+        self._miss     = 0
+    def __str__(self):
+        d = {'name':self._name,'hit':self._hit,'miss':self._miss,'size':self._bytes,'limit':self._maxbytes}
+        return ', '.join([key+':'+str(value) for key,value in d.items()])
     def __call__(self,F,X):
         if X in self._domain:
+            self._hit += 1
             return self._domain[X]
         else:
-#            print('aaaaaa',str(self))
+            self._miss += 1
             Y = F(X)
             if self._bytes<self._maxbytes:
                 self._domain[X] = Y

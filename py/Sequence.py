@@ -31,7 +31,7 @@ CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #   demo: first 2 : a b c d e f g
 #   demo: last 2 : a b c d e f g
 #   demo: head : a b c d e f g
-#   demo: tail :  a b c d e f g
+#   demo: tail : a b c d e f g
 #   demo: first : a b c d e f g
 #   demo: last : a b c d e f g
 #   demo: head 2 1 : a b c d e f g
@@ -83,11 +83,21 @@ CONTEXT.define('last',last)
 def skip_1(context,domain,A,B):
     if B.empty(): return data()
     if A.rigid(context):
-        n = Number.intdef(1,A)
-        if n==0: return B
-        BL,BR = B.split()
-        if BL.atom(context): return data((domain+da(str(n-1)))|BR)
+        n = sum(Number.nats(A))
+        Bs = [b for b in B]
+        Sk = []
+        while len(Bs)>0 and len(Sk)<n and Bs[0].atom(context): Sk.append(Bs.pop(0))
+        if len(Sk)==n: return data(*Bs)
+        return data((domain+da(str(n-len(Sk))))|data(*Bs))
 CONTEXT.define('skip',skip_1)
+
+#def skip_1OLD(context,domain,A,B):
+#    if B.empty(): return data()
+#    if A.rigid(context):
+#        n = Number.intdef(1,A)
+#        if n==0: return B
+#        BL,BR = B.split()
+#        if BL.atom(context): return data((domain+da(str(n-1)))|BR)
 
 def By(context,domain,A,B):
     if B.empty(): return data()
@@ -174,7 +184,7 @@ CONTEXT.define('count',count,count_0)
 #   Swap transposes two elements of a sequence
 #
 #   demo: swap 1 3 : a b c d e
-#   demo: swap 1 3 : swap 1 2 : a b c d e 
+#   demo: swap 1 3 : swap 1 2 : a b c d e
 #
 def swap(context,domain,A,B):
     if A.rigid(context):

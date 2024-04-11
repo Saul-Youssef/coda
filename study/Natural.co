@@ -17,6 +17,7 @@ def n.ring : {n.prod : (n.prod:A) (n.sum:B)}
 #    Alternative natural numbers a la Connes 
 #
 def m:
+def m.make : {ap put m : nats : B} 
 def m.type : {has m:B}
 def m.sum  : {put m : int_max : pre 0 : get m : B}
 def m.prod : {put m : int_sum : get m : B}

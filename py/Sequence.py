@@ -195,6 +195,8 @@ def swap(context,domain,A,B):
             m = max(i,j)
             Bs = [b for b in B]
             if all(b.atom(context) for b in Bs[:m]):
+                if i<0 or i>=len(Bs): return B
+                if j<0 or j>=len(Bs): return B
                 if len(Bs)<m: return B
                 x = Bs[i]
                 y = Bs[j]

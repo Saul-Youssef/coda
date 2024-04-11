@@ -244,7 +244,9 @@ def Multi(context,domain,A,B):
         IN = []
         for b in B: IN.append((context,A,data(b),))
         results = []
-        for result in pool.imap(MULTI,IN): results.append(result)
+        for result in pool.imap(MULTI,IN):
+            results.append(result)
+            LOG('multi','Multiprocessing '+str(len(results))+'/'+str(len(IN))+'...')
         def f(s,t): return s+t
         from functools import reduce
         LOG('multi','Collecting results')

@@ -4,10 +4,15 @@
 from base import *
 import Sample
 
+SH = []
+for D in Sample.pure(2,2): SH.append(data(ATOM)|D)
 
-
-#SH = []
-#for D in Sample.pure(2,2): SH.append(data(ATOM)|D)
+n = 0
+SH.pop(0)
+SH.pop(0)
+for D in SH:
+    n += 1
+    print(n,repr(D))
 
 #UNICODE.setatom(SH[2],'bool')
 #UNICODE.setatom(SH[3],'=')

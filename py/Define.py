@@ -29,7 +29,6 @@ def Use1(context,domain,A,B):
             return data()
 CONTEXT.define('use1',Use1)
 CONTEXT.define('def')
-#    if B.atom(context) and B[0].domain()==da('def') and B[0].stable(context):
 
 class PartialFunction(object):
     def __init__(self,left): self._left = left

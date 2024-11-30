@@ -200,6 +200,12 @@ def term(context,domain,A,B):
         if BL.atom(context): return da(strmax(str(BL[0]),n)) + data((domain+A)|BR)
 CONTEXT.define('term',term)
 
+def unicode(context,domain,A,B):
+    if A.rigid(context) and len(A)==1 and B.rigid(context):
+        UNICODE.setatom(A[0],str(B))
+        return data()
+CONTEXT.define('uni',unicode)
+
 #def table(context,domain,A,B0):
 #    if not A.rigid(context): return
 #    n = 100

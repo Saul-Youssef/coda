@@ -76,6 +76,58 @@ class Gen(object):
             else: p2.append(pp)
         return p2
 
+#
+#    pureData(w,d) is a list containing each data
+#    with width<=w and depth<=d with no duplicates.
+#
+def pure(w,d):
+    if d==0:
+        return [data()]
+    else:
+        CODAS = []
+        for L in pure(w,d-1):
+            for R in pure(w,d-1): CODAS.append(L|R)
+        return _purecoda(w,CODAS)
+
+def _purecoda(w,CODAS):
+    Ds = []
+    for n in range(w+1):
+        import itertools
+        for T in itertools.product(CODAS,repeat=n): Ds.append(data(*T))
+    S = set([])
+    outs = []
+    for D in Ds:
+        if not D in S:
+            outs.append(D)
+            S.add(D)
+    return outs
+
+#
+#    pureData(w,d) is a list containing each data
+#    with width<=w and depth<=d with no duplicates.
+#
+#def pure(w,d):
+#    if d==0:
+#        return [data()]
+#    else:
+#        CODAS = []
+#        for L in pure(w,d-1):
+#            for R in pure(w,d-1): CODAS.append(L|R)
+#        return _purecoda(w,CODAS)
+#
+#def _purecoda(w,CODAS):
+#    Ds = []
+#    for n in range(w+1):
+#        import itertools
+#        for T in itertools.product(CODAS,repeat=n): Ds.append(data(*T))
+#    S = set([])
+#    outs = []
+#    for D in Ds:
+#        if not D in S:
+#            outs.append(D)
+#            S.add(D)
+#    return outs
+
 def alldata(width,depth):  # all data leq specified width and depth
     datas = []
     if depth==0:
@@ -95,9 +147,8 @@ def allcoda(width,depth):
         for T in itertools.product(datas,repeat=2): codas.append(coda(T[0],T[1]))
     return codas
 
-def pure(width,depth): return alldata(width,depth)
-#return Set.Set(*[d for d in alldata(width,depth)])
-
+#def pure(width,depth): return alldata(width,depth)
+#def pure(width,depth): return pureData(width,depth)
 def evenAtoms(n):
     at = data()|data()
     atoms = [data()]
@@ -197,7 +248,7 @@ def purewindow_1(context,domain,A,B):
         ns = Number.ints(B)
         if len(ns)==2:
             width,depth = ns[0],ns[1]
-            return bin(pure(width,depth))
+            if width>=0 and depth>=0: return bin(pure(width,depth))
 CONTEXT.define('sample.pure',purewindow_0,purewindow_1)
 
 def samplewindow_0(context,domain,A,B):

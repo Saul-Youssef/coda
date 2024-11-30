@@ -17,3 +17,12 @@ def use : ap use1
 
 def Let : {use : {let A:B} A : B}
 def Def : {use : def A : B}
+#
+#   Short names for searching
+#
+#   name ((:):(:(:))) : bool
+#
+def name : {(Def A : B) (uni A:B)}
+
+#def ((:):(:(:))) : rev
+#uni ((:):(:(:))) : yyyy

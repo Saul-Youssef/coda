@@ -139,7 +139,8 @@ class Unicode(object):
     def data(self,D,sep=' '): return sep.join([self.coda(c) for c in D])
     def coda(self,c):
         if c in self: return self[c]
-        if c.domain() in [data(ATOM),data(BIT0),data(BIT1)]: return self.data(c.right(),'')
+#        if c.domain() in [data(ATOM),data(BIT0),data(BIT1)]: return self.data(c.right(),'')
+        if c.domain() in [data(BIT1)]: return self.data(c.right(),'') # words
         return '('+self.data(c.left())+':'+self.data(c.right())+')'
 UNICODE = Unicode()
 #

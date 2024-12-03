@@ -55,8 +55,8 @@ def commuting : { (A*B:x?)=(B*A:x?) }
 #
 #   morphism from A to B
 #
-#   demo: do 100 : property2 nilpotent (:a) (:b) : null
-#   demo: do 100 : property2 nilpotent (:a) (:b) : pass
+#   demo: do 100 : property nilpotent (:a) (:b) : null
+#   demo: do 100 : property nilpotent (:a) (:b) : pass
 #
 def property : ap {put with (get:B) : bool : get with : do : cases ((head 1:A):(get:B)) : (tail 1:A)}
 

@@ -1,4 +1,9 @@
 #
+#   Pure sample 
+#
+#let P0 : (sample.pure : 1 4) (sample.pure : 3 2) 
+
+#
 #   Prepare some samples for testing purposes
 #
 #   S0: Basic numbers 

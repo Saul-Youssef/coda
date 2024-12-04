@@ -20,6 +20,7 @@ class data(object):
         for c in self._sequence: yield c
     def __getitem__(self,i): return self._sequence[i]
     def __len__(self): return len(self._sequence)
+    def depth(self): return max([0]+[c.depth() for c in self])
     def split(self): return data(*self[:1]),data(*self[1:])
 #
 #   Context dependent properties
@@ -45,6 +46,7 @@ class coda(object):
     def __hash__(self): return hash((self._left,self._right,))
     def __str__ (self): return UNICODE.coda(self)
     def __eq__(self,c): return self.left()==c.left() and self.right()==c.right()
+    def depth(self): return 1 + max(self.left().depth(),self.right().depth())
 #
 #   Components
 #

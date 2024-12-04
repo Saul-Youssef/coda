@@ -111,3 +111,11 @@ def sum(context,domain,A,B):
     if AL.atom(context): return (AL[0].right()|B) + ((domain+AR)|B)
 CONTEXT.define('prod',prod)
 CONTEXT.define('sum',sum)
+#
+#   demo: depth :
+#   demo: depth : (:)
+#   demo: depth : (:):(:)
+#
+def depth(context,domain,A,B):
+    if B.rigid(context): return da(str(B.depth()))
+CONTEXT.define('depth',depth)

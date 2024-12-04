@@ -22,7 +22,8 @@ def Def : {use : def A : B}
 #
 #   name ((:):(:(:))) : bool
 #
-def name : {(Def A : B) (uni A:B)}
+#def name : {(Def A : B) (uni A:B)}
+def name : {(Def A : B) (uni A:(join:. B))}
 
 #def ((:):(:(:))) : rev
 #uni ((:):(:(:))) : yyyy

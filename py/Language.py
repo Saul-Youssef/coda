@@ -15,7 +15,8 @@ def lang(code,A,B): return data((da('{'+code+'}')+A)|B)
 def src(domain):
     s = str(domain)
     if s.startswith('{') and s.endswith('}'): return s[1:-1]
-    raise error('Unexpected language input')
+    return ''
+    raise error('Unexpected language input ['+s+']')
 
 def escape(s):
     if len(s)==2 and s[0]=='\\' and s[1]=='n': return '\n'
@@ -49,9 +50,6 @@ def language(context,domain,A,B):
     if Sum():
         front,back = Sum.parts()
         return data((da('plus')+lang(front,A,B))|lang(back,A,B))
-#        Front = data(data()|lang(front,A,B))
-#        Back  = data(data()|lang(back,A,B))
-#        return da('Plus')+Front+Back
 #
 #   A+B -> (+ A:B)
 #
@@ -73,20 +71,6 @@ def language(context,domain,A,B):
     if Slash():
         front,back = Slash.parts()
         return data((da('slash')+lang(front,A,B))|lang(back,A,B))
-#        Front = data(data()|lang(front,A,B))
-#        Back  = data(data()|lang(back,A,B))
-#        return da('Star')+Front+Back
-#
-#   Star is syntactic sugar for A*B, composition of data as functions
-#
-#    Star = parse('*',s,'left')
-#    if Star():
-#        front,back = Star.parts()
-#        return data((da('star')+lang(front,A,B))|lang(back,A,B))
-#    Star = parse('*',s,'left')
-#    if Star():
-#        front,back = Star.parts()
-#        return co('*') + ((da('bin')+lang(front,A,B))|lang(back,A,B))
 #
 #   Operations are grouped with parenthesis.  Text within curly brackets is source code.
 #   Text between angle brackets are byte strings.

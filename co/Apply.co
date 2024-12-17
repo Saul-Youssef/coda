@@ -26,7 +26,8 @@ def ab : {ap (head A:B):(tail A:B)}
 #    demo: co 2 : a b c d e f g
 #    demo: co 3 : a b c d e f g
 #
-def co : {ap {(:(arg:B) (right:B))} : ab A 1 : pre bin :B}
+#def co : {ap {(:(arg:B) (right:B))} : ab A 1 : pre bin :B}
+
 #
 #    demo: apby 2 count : a b c d e f g
 #    demo: apby 2 last  : a b c d e f g

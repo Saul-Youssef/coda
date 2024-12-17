@@ -1,0 +1,5 @@
+#
+#    Ladder
+#
+def in : {(put A) * B * (get A)} 
+

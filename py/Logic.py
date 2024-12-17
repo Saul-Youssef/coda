@@ -114,50 +114,50 @@ def OR(context,domain,A,B):
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('or',OR)
+#CONTEXT.define('or',OR)
 def AND(context,domain,A,B):
     op = 'and'
     if A.empty()  and B.empty() : return T.tt(op)
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('and',AND)
+#CONTEXT.define('and',AND)
 def NOR(context,domain,A,B):
     op = 'nor'
     if A.empty()  and B.empty() : return T.tt(op)
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('nor',NOR)
+#CONTEXT.define('nor',NOR)
 def XOR(context,domain,A,B):
     op = 'xor'
     if A.empty()  and B.empty() : return T.tt(op)
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('xor',XOR)
+#CONTEXT.define('xor',XOR)
 def NAND(context,domain,A,B):
     op = 'nand'
     if A.empty()  and B.empty() : return T.tt(op)
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('nand',NAND)
+#CONTEXT.define('nand',NAND)
 def XNOR(context,domain,A,B):
     op = 'xnor'
     if A.empty()  and B.empty() : return T.tt(op)
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('xnor',XNOR)
-CONTEXT.define('iff',XNOR)
+#CONTEXT.define('xnor',XNOR)
+#CONTEXT.define('iff',XNOR)
 def IMPLY(context,domain,A,B):
     op = 'imply'
     if A.empty()  and B.empty() : return T.tt(op)
     if A.empty()  and B.irred(context): return T.tf(op)
     if A.irred(context) and B.empty() : return T.ft(op)
     if A.irred(context) and B.irred(context): return T.ff(op)
-CONTEXT.define('imply',IMPLY)
+#CONTEXT.define('imply',IMPLY)
 #
 #   some/none define the coarsest data classification
 #

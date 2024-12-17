@@ -213,7 +213,7 @@ class Domain(object):
 #   demo: sample.data a : 5
 #   demo: sample.data a b : 5
 #   demo: sample.data <A> <B> <{$}> a : 3
-#   demo: sample.data <A> <B> <{$}> (defs:Apply Basic Logic Number Sequence) : 2
+#   demo: sample.data <A> <B> <{$}> (defs:Basic) : 2
 #
 def even_0(context,domain,A,B):
     if B.empty(): return data()

@@ -137,7 +137,7 @@ def ints_(context,domain,A,B):
             return da(str(n)) + data(domain|BR)
         except ValueError:
             return data(domain|BR)
-CONTEXT.define('ints',ints_)
+#CONTEXT.define('ints',ints_)
 def nats_(context,domain,A,B):
     if B.empty(): return data()
     BL,BR = B.split()
@@ -160,14 +160,14 @@ def floats_(context,domain,A,B):
             return da(str(x)) + data(domain|BR)
         except ValueError:
             return data(domain|BR)
-CONTEXT.define('floats',floats_)
+#CONTEXT.define('floats',floats_)
 def int_sum(context,domain,A,B):
     if B.atomic(context):
         ns = ints(B)
         sum = 0
         for n in ns: sum += n
         return da(str(sum))
-CONTEXT.define('int_sum',int_sum)
+#CONTEXT.define('int_sum',int_sum)
 def nat_sum(context,domain,A,B):
     if B.atomic(context):
         ns = nats(B)
@@ -181,14 +181,14 @@ def float_sum(context,domain,A,B):
         sum = 0.0
         for f in fs: sum += f
         return da(str(sum))
-CONTEXT.define('float_sum',float_sum)
+#CONTEXT.define('float_sum',float_sum)
 def int_prod(context,domain,A,B):
     if B.atomic(context):
         ns = ints(B)
         prod = 1
         for i in ns: prod = prod * i
         return da(str(prod))
-CONTEXT.define('int_prod',int_prod)
+#CONTEXT.define('int_prod',int_prod)
 def nat_prod(context,domain,A,B):
     if B.atomic(context):
         ns = nats(B)
@@ -202,13 +202,13 @@ def float_prod(context,domain,A,B):
         prod = 1.0
         for f in fs: prod = prod * f
         return da(str(prod))
-CONTEXT.define('float_prod',float_prod)
+#CONTEXT.define('float_prod',float_prod)
 def int_sort(context,domain,A,B):
     if B.atomic(context):
         ns = ints(B)
         ns.sort()
         return data(*[co(str(i)) for i in ns])
-CONTEXT.define('int_sort',int_sort)
+#CONTEXT.define('int_sort',int_sort)
 def nat_sort(context,domain,A,B):
     if B.atomic(context):
         ns = nats(B)
@@ -220,7 +220,7 @@ def float_sort(context,domain,A,B):
         fs = floats(B)
         fs.sort()
         return data(*[co(str(f)) for f in fs])
-CONTEXT.define('float_sort',float_sort)
+#CONTEXT.define('float_sort',float_sort)
 def text_sort(context,domain,A,B):
     if B.atomic(context):
         txts = [str(b) for b in B]
@@ -231,12 +231,12 @@ def int_max(context,domain,A,B):
     if B.atomic(context):
         L = _max(ints(B))
         return data(*[co(str(l)) for l in L])
-CONTEXT.define('int_max',int_max)
+#CONTEXT.define('int_max',int_max)
 def int_min(context,domain,A,B):
     if B.atomic(context):
         L = _min(ints(B))
         return data(*[co(str(l)) for l in L])
-CONTEXT.define('int_min',int_min)
+#CONTEXT.define('int_min',int_min)
 def nat_max(context,domain,A,B):
     if B.atomic(context):
         L = _max(nats(B))
@@ -251,12 +251,12 @@ def float_max(context,domain,A,B):
     if B.atomic(context):
         L = _max(floats(B))
         return data(*[co(str(l)) for l in L])
-CONTEXT.define('float_max',float_max)
+#CONTEXT.define('float_max',float_max)
 def float_min(context,domain,A,B):
     if B.atomic(context):
         L = _min(floats(B))
         return data(*[co(str(l)) for l in L])
-CONTEXT.define('float_min',float_min)
+#CONTEXT.define('float_min',float_min)
 
 def int_inv_0(context,domain,A,B):
     if B.empty(): return data()
@@ -266,7 +266,7 @@ def int_inv_1(context,domain,A,B):
         L  = ints(BL)
         Li = [co(str(-l)) for l in L]
         return data(*Li)+data((domain+A)|BR)
-CONTEXT.define('int_inv',int_inv_0,int_inv_1)
+#CONTEXT.define('int_inv',int_inv_0,int_inv_1)
 def int_div_0(context,domain,A,B):
     if B.empty(): return data()
 def int_div_2(context,domain,A,B):
@@ -281,7 +281,7 @@ def int_div_1(context,domain,A,B):
             if num is None: return data((domain+A)|BR)
             if not den==0:
                 return da(str(num//den)) + data((domain+A)|BR)
-CONTEXT.define('int_div',int_div_0,int_div_1,int_div_2)
+#CONTEXT.define('int_div',int_div_0,int_div_1,int_div_2)
 
 def float_inv_0(context,domain,A,B):
     if B.empty(): return data()
@@ -291,7 +291,7 @@ def float_inv_1(context,domain,A,B):
         L  = floats(BL)
         Li = [co(str(-l)) for l in L]
         return data(*Li)+data((domain+A)|BR)
-CONTEXT.define('float_inv',float_inv_0,float_inv_1)
+#CONTEXT.define('float_inv',float_inv_0,float_inv_1)
 def float_div_0(context,domain,A,B):
     if B.empty(): return data()
 def float_div_2(context,domain,A,B):
@@ -306,4 +306,4 @@ def float_div_1(context,domain,A,B):
             if num is None: return data((domain+A)|BR)
             if not den==0:
                 return da(str(num/den)) + data((domain+A)|BR)
-CONTEXT.define('float_div',float_div_0,float_div_1,float_div_2)
+#CONTEXT.define('float_div',float_div_0,float_div_1,float_div_2)

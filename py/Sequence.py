@@ -118,8 +118,22 @@ CONTEXT.define('by',By)
 #   Repeats the arguments for each input.
 #
 #   demo: rep 5 : x
-#   demo: rep 4 : a (:)
+#   demo: rep 4 : a b
+#   demo: rep 0 : x
+#   demo: rep : x 
 #
+def rep(context,domain,A,B):
+    if A.rigid(context):
+        ns = Number.nats(A)
+        if len(ns)==1:
+            B2 = []
+            n = ns[0]
+            while n>0:
+                for b in B: B2.append(b)
+                n = n-1
+            return data(*B2)
+CONTEXT.define('rep',rep)
+
 def rep_0(context,domain,A,B):
     if A.rigid(context) and B.atomic(context):
         try:
@@ -131,7 +145,7 @@ def rep_0(context,domain,A,B):
             return data(*L)
         except Exception as e:
             return B
-CONTEXT.define('rep',rep_0)
+#CONTEXT.define('rep',rep_0)
 #
 #   Select the n'th item(s) from input.
 #

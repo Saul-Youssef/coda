@@ -48,4 +48,4 @@ def as_1(context,domain,A,B):
         BL,BR = B.split()
         if BR.empty(): return BL
         return data((A+BL)|data((domain+A)|BR))
-CONTEXT.define('as',as_1)
+#CONTEXT.define('as',as_1)

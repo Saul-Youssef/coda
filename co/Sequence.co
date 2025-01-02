@@ -36,3 +36,13 @@ def post : {B A}
 #   demo: by 2 : nat : 0
 #
 def first : {head (some A:1) : B}
+#
+#   Repetition
+#
+#   demo: rep 3 : x
+#   demo: rep 3 2 : x
+#   demo: rep 1 : x
+#   demo: rep 0 : x
+#   demo: rep : x
+#
+#def rep : {ai rep_ A : B}

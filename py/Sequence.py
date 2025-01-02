@@ -115,12 +115,16 @@ def By(context,domain,A,B):
         return data(*L)
 CONTEXT.define('by',By)
 #
-#   Repeats the arguments for each input.
+#   Input repetition
+#
+#   rep n A : B -> rep n : rep A : B
+#   rep n : B -> B repeated n times
+#   rep : B -> B
 #
 #   demo: rep 5 : x
 #   demo: rep 4 : a b
 #   demo: rep 0 : x
-#   demo: rep : x 
+#   demo: rep : x
 #
 def rep(context,domain,A,B):
     if A.rigid(context):
@@ -132,20 +136,51 @@ def rep(context,domain,A,B):
                 for b in B: B2.append(b)
                 n = n-1
             return data(*B2)
-CONTEXT.define('rep',rep)
-
-def rep_0(context,domain,A,B):
-    if A.rigid(context) and B.atomic(context):
-        try:
-            n = int(str(A[0]))
-            Bs = [b for b in B]
-            L = []
-            for i in range(n):
-                for b in Bs: L.append(b)
-            return data(*L)
-        except Exception as e:
+        elif len(ns)==0:
             return B
-#CONTEXT.define('rep',rep_0)
+#CONTEXT.define('rep_',rep)
+
+#
+#   Input repetition
+#
+#   demo: dup | | | : x y
+#   demo: dup | | : x y
+#   demo: dup | : x y
+#   demo: dup : x y
+#
+def dup(context,domain,A,B):
+    if len(A)==1:
+        if A.atom(context): return B
+    if len(A)==0:
+        return data()
+    if len(A)>1:
+        return data(*[((domain+data(a))|B) for a in A])
+CONTEXT.define('dup',dup)
+#
+#   Maximum common data starting A and B
+#
+#   demo: common 1 2 3 4 : 1 2 3
+#   demo: common 1 2 3 : 1 2 3 4 5
+#   demo: common : 1 2
+#   demo: common :
+#
+def common(context,domain,A,B):
+    AL,AR = A.split()
+    BL,BR = B.split()
+    if AL.empty() or BL.empty(): return data()
+    if AL.rigid(context) and BL.rigid(context):
+        if AL==BL: return AL + data((domain+AR)|BR)
+        else     : return data()
+CONTEXT.define('common',common)
+
+#def dup___(context,domain,A,B):
+#    if len(B)==1:
+#        if B.atom(context): return A
+#    if len(B)==0:
+#        return data()
+#    if len(B)>0:
+#        return data(*[(domain+A)|data(b) for b in B])
+#CONTEXT.define('dup',dup)
 #
 #   Select the n'th item(s) from input.
 #

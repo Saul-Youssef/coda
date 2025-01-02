@@ -6,16 +6,16 @@ from base import *
 #
 #  Apply argument to input in various ways.
 #
-#  demo: ap foo : 1 2 3
-#  demo: ap {bin : B} : 1 2 3
-#  demo: ap {first A : get bin : B} 2 : (bin:a b c d e) (bin:x y z)
-#  demo: ap bin a b c : 1 2 3
-#  demo: aq bin a b c : 1 2 3
-#  demo: ar bin a b c : 1 2 3
-#  demo: ar {|} a b c : 1 2 3
-#  demo: as {int_sum : A B} : 1 2 3 4 5
-#  demo: as {int_prod : A B} : 1 2 3 4 5
-#  demo: as {int_prod : A B} :
+#  demo: ap bin a b c : 1 2 3 4
+#  demo: aq bin a b c : 1 2 3 4
+#  demo: ar bin a b c : 1 2 3 4
+#  demo: ai bin a b c : 1 2 3 4
+#  demo: aj bin a : 1 2 3 4
+#  demo: aj {bin A:B} : 1 2 3 4
+#  demo: aj {nat_sum : A B} : 1 2 3 4 5
+#  demo: apby 2 bin a b c : 1 2 3 4 5 6
+#  demo: apby 2 count : a b c d e f g
+#  demo: apby 2 last  : a b c d e f g
 #  demo: ap {if (count:get bin:B)=2:B} : (bin:a b) (bin:a b c) (bin:x y) (bin:a b c d)
 #
 def ap_(context,domain,A,B):
@@ -43,9 +43,19 @@ def ar_1(context,domain,A,B):
         return data(*L)
 CONTEXT.define('ar',ar_1)
 
+def ari_1(context,domain,A,B):
+    A0,AR =  A.split()
+    A1,AR = AR.split()
+    if A0.atom(context) and A1.atom(context):
+        return data((A0+A1)|data((domain+A0+AR)|B))
+def ari_0(context,domain,A,B):
+    A0,AR = A.split()
+    if A0.atom(context) and AR.empty(): return B
+CONTEXT.define('ai',ari_0,ari_1)
+
 def as_1(context,domain,A,B):
     if B.atomic(context):
         BL,BR = B.split()
         if BR.empty(): return BL
         return data((A+BL)|data((domain+A)|BR))
-#CONTEXT.define('as',as_1)
+CONTEXT.define('aj',as_1)

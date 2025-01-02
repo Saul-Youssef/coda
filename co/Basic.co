@@ -29,9 +29,9 @@ def const : {A}
 def star : {prod (:A) (:B)}
 def plus : {sum  (:A) (:B)}
 #
-#   Apply data n-times 
+#   Apply data n-times
 #
 #   demo: pow 3 {B x} : 6
-#   demo: pow 5 next {nat_sum:last 2:B} : 1 1
+#   demo: pow 3 next {nat_sum:last 2:B} : 1 1
 #
 def pow : {prod (rep (head 1:A):(:tail 1:A)):B}

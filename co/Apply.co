@@ -7,28 +7,27 @@
 #
 #   ker A is the kernel of A defined by A:X=().
 #
-#   demo: kernel null : a b c
-#   demo: kernel pass : a b c
-#   demo: kernel {3=(count:B)} : a b c d
-#   demo: kernel {3=(count:B)} : a b c
-#   demo: ker {B=2} : 1 2 3 1 2 3
+#   demo: ker null : a b c
+#   demo: ker pass : a b c
+#   demo: ker {3=(count:B)} : a b c d
 #
-def kernel : {if (A:B):B}
-def ker : {ap kernel A : B}
+def ker : {if (A:B):B}
+#def ker : {ap kernel A : B}
+#
 #
 #    demo: ab 2 : a b c d e f g
 #    demo: ab 1 : a b c d e f g
 #    demo: ab 0 : a b c d e f g
 #    demo: ab   : a b c d e f g
 #
-def ab : {ap (head A:B):(tail A:B)}
+#def ab : {ap (head A:B):(tail A:B)}
 #
 #    next is typically for sequences
 #
 #    demo: next {nat_sum:1 (last:B)} : 1 2 3
 #    demo: next {nat_sum:last 2:B} : 1 1 2 3
 #
-def next : {B (A:B)}
+#def next : {B (A:B)}
 #
 #    demo: co 2 : a b c d e f g
 #    demo: co 3 : a b c d e f g

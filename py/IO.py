@@ -287,8 +287,8 @@ def Write(context,domain,A,B):
         DECIDED   = []
         UNDECIDED = []
         for b in BE:
-            if b.rigid(): DECIDED.append(b)
-            else        : UNDECIDED.append(b)
+            if b.rigid(context): DECIDED.append(b)
+            else               : UNDECIDED.append(b)
 
         try:
             with open(path,'wb') as f:

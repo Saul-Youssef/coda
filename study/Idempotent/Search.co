@@ -1,0 +1,33 @@
+#
+#   Prepare some samples for testing purposes
+#
+#   S0: Basic numbers 
+#   S1: hydrogen atoms
+#   S2: more general atoms mix
+#   S3: pure data mix
+#   S4: mix with operators and language.
+#   S5: Permutations 
+#   S6: Selected for distinguishing power in commutative2 tests. 
+#
+let S0 : (:0) (:1) (:) (:0 1) 
+let S1 : sample.atom : 5
+let S2 : permutation 2 : (:) a b 0 1 (bin:a) (bin 1 2:a b) (bin a: bin b:1 2)
+let S3 : sample.pure : 2 2
+let S4 : sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2 
+let S5 : (permutation 0 : 0 1 2) 
+         (permutation 1 : 0 1 2)
+         (permutation 2 : 0 1 2)
+         (permutation 3 : 0 1 ) (:1 2 a b)
+#
+#   Selected for data useful in commutative2 tests.
+#
+let S6 : (:a) (:b) (:1 2) (:-1 2) (:) (:1) (:2) (:bin) (:(bin a:x)) (:(bin b:y))
+let S7 : (:a) (:b) (:1 2) (:-1 2) (:(:-1) (:1)) (:(:1) (:-1)) (:) (:1) (:2) (:bin) (:(bin a:x)) (:(bin b:y))
+
+let C1 : {by : defs : Apply Sequence Number Logic Basic Collect}
+let C2 : {sample.data <A> <B> <{$}> 0 1 a b (defs:Basic) : 2 2}
+let C3 : {sample.data <A> <B> <{$}> 0 1 a (:-1 1) (get:C1?:) : 2 2} 
+let C12 : {(C1?:) (C2?:)} 
+let C13 : {(C1?:) (C3?:)} 
+
+

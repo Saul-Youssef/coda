@@ -254,9 +254,63 @@ def _Out(context,domain,A,B):
                 LOG('io','Finished reading '+path)
                 return data()
         except Exception as e:
-            LOG('error','error writing to pickle file',str(e))
+            LOG('error','error writing to file',str(e))
             return
-CONTEXT.define('write',_Out)
+#CONTEXT.define('write',_Out)
+
+def Write(context,domain,A,B):
+    if A.rigid(context) and len(A)>=1:
+        As = [str(a) for a in A]
+        path = As.pop(0)
+        import Evaluation
+        seconds = Evaluation.SECONDS
+        memory  = Evaluation.MEMORY
+        if len(As)>0:
+            try:
+                seconds = float(As.pop(0))
+            except ValueError:
+                pass
+        if len(As)>0:
+            try:
+                memory = float(As.pop(0))
+            except ValueError:
+                pass
+
+        path_undecided = path+'.undecided'
+        import os
+        if os.path.exists(path): return # never overwrite anything
+        if os.path.exists(path_undecided): return
+
+        EV = Evaluation.Evaluate(context,seconds,memory)
+        BE = EV(B)
+
+        DECIDED   = []
+        UNDECIDED = []
+        for b in BE:
+            if b.rigid(): DECIDED.append(b)
+            else        : UNDECIDED.append(b)
+
+        try:
+            with open(path,'wb') as f:
+                import zlib
+                LOG('io','Start writing '+path+'...')
+                f.write(zlib.compress(data2bytes(data(*DECIDED))))
+                LOG('io','Finished writing '+path)
+                return data()
+        except Exception as e:
+            LOG('error','error writing to file ',str(e))
+            return
+        try:
+            with open(path_undecided,'wb') as f:
+                import zlib
+                LOG('io','Start writing '+path_undecided+'...')
+                f.write(zlib.compress(data2bytes(data(*UNDECIDED))))
+                LOG('io','Finished writing '+path_undecided)
+                return data()
+        except Exception as e:
+            LOG('error','error writing to file ',str(e))
+            return
+CONTEXT.define('write',Write)
 
 def _IN(context,domain,A,B):
     if A.rigid(context) and B.rigid(context):

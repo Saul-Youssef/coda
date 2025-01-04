@@ -37,6 +37,22 @@ def post : {B A}
 #
 def first : {head (some A:1) : B}
 #
+#   front/back organically removes an argument specified number of
+#   items from the front/back of the input.
+#
+#   front a A : b B -> b (front A:B)
+#   front A : B -> () if A or B are empty
+#
+#   back a A : B b -> (back A:B) b
+#   back A : B -> () if A or B are empty
+#
+#   demo: front | | : a b c d e f g
+#   demo: back  | | : a b c d e f g
+#   demo: item  | | : a b c d e f g
+#
+def item : {back | : front A : B}
+
+#
 #   Repetition
 #
 #   demo: rep 3 : x

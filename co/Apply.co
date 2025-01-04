@@ -1,9 +1,12 @@
 #
 #    while A : B applies A to B until it saturates, thus becoming idempotent
 #
-#    demo: while {(as int_add:first 2:B) (tail 2:B)} : 1 2 3 4
+#    demo: by 2 : 1 2 3 4 5
+#    demo: ap {nat_sum:get:B} : by 2 : 1 2 3 4 5
+#    demo: while {ap {nat_sum:get:B} : by 2 : B} : 1 2 3 4 5
+#    demo: nat_sum : 1 2 3 4 5
 #
-#def while : {some (if ((A:B)=B):B) : while A : A : B}
+def while : {some (if ((A:B)=B):B) : while A : A : B}
 #
 #   ker A is the kernel of A defined by A:X=().
 #
@@ -38,7 +41,7 @@ def ker : {if (A:B):B}
 #    demo: apby 2 count : a b c d e f g
 #    demo: apby 2 last  : a b c d e f g
 #
-def apby : {ap {A:get:B} (tail 1:A) : by (head 1:A) : B}
+#def apby : {ap {A:get:B} (tail 1:A) : by (head 1:A) : B}
 #
 #    demo: wap int_sum : by 10 : rep 100 : 1
 #    demo: do : wap int_sum : by 10 : rep 100 : 1

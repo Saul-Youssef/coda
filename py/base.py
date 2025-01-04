@@ -21,7 +21,8 @@ class data(object):
     def __getitem__(self,i): return self._sequence[i]
     def __len__(self): return len(self._sequence)
     def depth(self): return max([0]+[c.depth() for c in self])
-    def split(self): return data(*self[:1]),data(*self[1:])
+    def split (self): return data(*self[: 1]),data(*self[ 1:])
+    def splitr(self): return data(*self[:-1]),data(*self[-1:])
 #
 #   Context dependent properties
 #

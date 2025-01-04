@@ -24,6 +24,32 @@ def rev_3(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #
+#   front/back organically removes an argument specified number of
+#   items from the front/back of the input.
+#
+#   front a A : b B -> b (front A:B)
+#   front A : B -> () if A or B are empty
+#
+#   back a A : B b -> (back A:B) b
+#   back A : B -> () if A or B are empty
+#
+#   demo: front | | : a b c d e f g
+#   demo: back  | | : a b c d e f g
+#   demo: item  | | : a b c d e f g
+#
+def front(context,domain,A,B):
+    if A.empty() or B.empty(): return data()
+    AL,AR = A.split()
+    BL,BR = B.split()
+    if AL.atom(context) and BL.atom(context): return BL + data((domain+AR)|BR)
+CONTEXT.define('front',front)
+def back(context,domain,A,B):
+    if A.empty() or B.empty(): return data()
+    AL,AR = A.split()
+    BL,BR = B.splitr()
+    if AL.atom(context) and BR.atom(context): return data((domain+AR)|BL) + BR
+CONTEXT.define('back',back)
+#
 #   Basic sequence operations
 #
 #   demo: head 2 : a b c d e f g
@@ -89,15 +115,20 @@ def skip_1(context,domain,A,B):
         while len(Bs)>0 and len(Sk)<n and Bs[0].atom(context): Sk.append(Bs.pop(0))
         if len(Sk)==n: return data(*Bs)
         return data((domain+da(str(n-len(Sk))))|data(*Bs))
-CONTEXT.define('skip',skip_1)
+#CONTEXT.define('skip',skip_1)
 
-#def skip_1OLD(context,domain,A,B):
-#    if B.empty(): return data()
-#    if A.rigid(context):
-#        n = Number.intdef(1,A)
-#        if n==0: return B
-#        BL,BR = B.split()
-#        if BL.atom(context): return data((domain+da(str(n-1)))|BR)
+#
+#
+def BY(context,domain,A,B):
+    if A.atomic(context):
+        Bfront = data(*B[:len(A)])
+        Bback  = data(*B[len(A):])
+        if Bfront.atomic(context):
+            if   len(Bfront)==0:
+                return data()
+            else:
+                return data(data()|Bfront) + data((domain+A)|Bback)
+CONTEXT.define('by',BY)
 
 def By(context,domain,A,B):
     if B.empty(): return data()
@@ -113,7 +144,7 @@ def By(context,domain,A,B):
             Bs = Bs[n:]
         L.append((domain+A)|data(*Bs))
         return data(*L)
-CONTEXT.define('by',By)
+#CONTEXT.define('by',By)
 #
 #   Input repetition
 #

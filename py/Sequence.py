@@ -105,31 +105,95 @@ def last(context,domain,A,B):
         else:
             return data()
 CONTEXT.define('last',last)
-
-def skip_1(context,domain,A,B):
-    if B.empty(): return data()
+#
+#   starts, ends
+#
+#   demo: starts a b c : a b c d e f g
+#   demo: starts a b c : a x b c d
+#   demo: starts a b c : a
+#   demo: starts : a b c
+#
+def Starts(context,domain,A,B):
     if A.rigid(context):
-        n = sum(Number.nats(A))
-        Bs = [b for b in B]
-        Sk = []
-        while len(Bs)>0 and len(Sk)<n and Bs[0].atom(context): Sk.append(Bs.pop(0))
-        if len(Sk)==n: return data(*Bs)
-        return data((domain+da(str(n-len(Sk))))|data(*Bs))
-#CONTEXT.define('skip',skip_1)
+        n = len(A)
+        Front = data(*B[:n])
+        if Front.rigid(context):
+            if A==Front: return B
+            return data()
+CONTEXT.define('starts',Starts)
+def Ends(context,domain,A,B):
+    if A.rigid(context):
+        n = len(A)
+        Back = data(*B[-n:])
+        if A==Back: return B
+        return data()
+CONTEXT.define('ends',Ends)
+#
+#   frontstrip, backstrip
+#
+#   demo: stripFront a b : a b c d
+#   demo: stripFront c d : a b c d
+#   demo: stripFront a b : x y z
+#   demo: while stripFront a b : a b a b x y
+#   demo: stripBack c d : a b c d
+#   demo: stripBack a b : a b c d
+#   demo: stripBack a b : x y z
+#   demo: while stripBack a b : x y a b a b 
+#
+def FrontStrip(context,domain,A,B):
+    if A.rigid(context):
+        n = len(A)
+        Front = data(*B[:n])
+        if Front.rigid(context):
+            if A==Front: return data(*B[n:])
+            return B
+CONTEXT.define('stripFront',FrontStrip)
+def BackStrip(context,domain,A,B):
+    if A.rigid(context):
+        n = len(A)
+        Back = data(*B[-n:])
+        if Back.rigid(context):
+            if A==Back: return data(*B[:-n])
+            return B
+CONTEXT.define('stripBack',BackStrip)
 
+#def skip_1(context,domain,A,B):
+#    if B.empty(): return data()
+#    if A.rigid(context):
+#        n = sum(Number.nats(A))
+#        Bs = [b for b in B]
+#        Sk = []
+#        while len(Bs)>0 and len(Sk)<n and Bs[0].atom(context): Sk.append(Bs.pop(0))
+#        if len(Sk)==n: return data(*Bs)
+#        return data((domain+da(str(n-len(Sk))))|data(*Bs))
+#CONTEXT.define('skip',skip_1)
 #
+#   grp batches the input into packets with the same
+#   size as the size of the argument.  grp is an inverse
+#   of get, so (get * grp A) is always the identity.
 #
-def BY(context,domain,A,B):
+#   demo: grp x x : a b c d
+#   demo: grp x x : a b c d e
+#   demo: grp x : a b c d e
+#   demo: grp : a b c d e
+#   demo: get : grp x x : a b c
+#   demo: get : grp : a b c
+#   demo: grp :
+#   demo: get : grp :
+#
+def Grp(context,domain,A,B):
     if A.atomic(context):
+        if len(A)==0: return data(data()|B)
         Bfront = data(*B[:len(A)])
         Bback  = data(*B[len(A):])
         if Bfront.atomic(context):
-            if   len(Bfront)==0:
-                return data()
-            else:
-                return data(data()|Bfront) + data((domain+A)|Bback)
-CONTEXT.define('by',BY)
-
+            if Bfront.empty(): return data()
+            return data(data()|Bfront) + data((domain+A)|Bback)
+CONTEXT.define('grp',Grp)
+#
+#   demo: by 2 : a b c d
+#   demo: by 2 : a b c d e
+#
 def By(context,domain,A,B):
     if B.empty(): return data()
     if A.rigid(context):
@@ -144,7 +208,7 @@ def By(context,domain,A,B):
             Bs = Bs[n:]
         L.append((domain+A)|data(*Bs))
         return data(*L)
-#CONTEXT.define('by',By)
+CONTEXT.define('by',By)
 #
 #   Input repetition
 #
@@ -157,18 +221,18 @@ def By(context,domain,A,B):
 #   demo: rep 0 : x
 #   demo: rep : x
 #
-def rep(context,domain,A,B):
-    if A.rigid(context):
-        ns = Number.nats(A)
-        if len(ns)==1:
-            B2 = []
-            n = ns[0]
-            while n>0:
-                for b in B: B2.append(b)
-                n = n-1
-            return data(*B2)
-        elif len(ns)==0:
-            return B
+#def rep(context,domain,A,B):
+#    if A.rigid(context):
+#        ns = Number.nats(A)
+#        if len(ns)==1:
+#            B2 = []
+#            n = ns[0]
+#            while n>0:
+#                for b in B: B2.append(b)
+#                n = n-1
+#            return data(*B2)
+#        elif len(ns)==0:
+#            return B
 #CONTEXT.define('rep_',rep)
 
 #
@@ -203,15 +267,6 @@ def common(context,domain,A,B):
         if AL==BL: return AL + data((domain+AR)|BR)
         else     : return data()
 CONTEXT.define('common',common)
-
-#def dup___(context,domain,A,B):
-#    if len(B)==1:
-#        if B.atom(context): return A
-#    if len(B)==0:
-#        return data()
-#    if len(B)>0:
-#        return data(*[(domain+A)|data(b) for b in B])
-#CONTEXT.define('dup',dup)
 #
 #   Select the n'th item(s) from input.
 #
@@ -232,6 +287,8 @@ def nth1_0(context,domain,A,B):
 def nth1_1(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('nth1',nth1_0,nth1_1)
+
+
 #
 #   once returns input with duplicates removed.
 #

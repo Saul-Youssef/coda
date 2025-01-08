@@ -138,7 +138,7 @@ CONTEXT.define('ends',Ends)
 #   demo: stripBack c d : a b c d
 #   demo: stripBack a b : a b c d
 #   demo: stripBack a b : x y z
-#   demo: while stripBack a b : x y a b a b 
+#   demo: while stripBack a b : x y a b a b
 #
 def FrontStrip(context,domain,A,B):
     if A.rigid(context):
@@ -221,7 +221,18 @@ CONTEXT.define('by',By)
 #   demo: rep 0 : x
 #   demo: rep : x
 #
-#def rep(context,domain,A,B):
+def rep(context,domain,A,B):
+    if A.rigid(context) and B.rigid(context):
+        ns = Number.nats(A)
+        if len(ns)>0:
+            n = ns[0]
+            R = []
+            for i in range(n):
+                for b in B: R.append(b)
+            return data(*R)
+CONTEXT.define('rep',rep)
+
+#   def rep(context,domain,A,B):
 #    if A.rigid(context):
 #        ns = Number.nats(A)
 #        if len(ns)==1:

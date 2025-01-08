@@ -1,0 +1,10 @@
+#
+#     Search spaces 
+#
+Let SEARCH0 : Organic? 
+
+#
+#     Sample spaces
+#
+Let S0 : permutation 2 : a b 
+Let S1 : permutation 2 : a b bin (:bin a:b) (:) (:(:)) 

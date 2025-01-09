@@ -7,7 +7,6 @@ import Number
 #   Reverse the order of it's input sequence.
 #
 #   rev : () -> ()
-#   rev : b  -> b            ...if b is an atom
 #   rev : b B -> (rev:B) b   ...if b is an atom
 #
 #   demo: rev : a b c

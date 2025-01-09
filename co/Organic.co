@@ -5,5 +5,6 @@ let Organic : text_sort : ai aj ap aq ar ker while
     arg bin const domain get has hasnt if is isnt left
     nif null pass plus prod put right star sum
     back grp common dup front grp item once post pre rev starts ends
+    stripFront stripBack 
     collect equiv
     equal bool some nats ints nat

@@ -277,9 +277,9 @@ def Write(context,domain,A,B):
                 pass
 
         path_undecided = path+'.undecided'
-        import os
-        if os.path.exists(path): return # never overwrite anything
-        if os.path.exists(path_undecided): return
+#        import os
+#        if os.path.exists(path): return # never overwrite anything
+#        if os.path.exists(path_undecided): return
 
         EV = Evaluation.Evaluate(context,seconds,memory)
         BE = EV(B)

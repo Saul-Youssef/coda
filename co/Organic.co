@@ -7,4 +7,5 @@ let Organic : text_sort : ai aj ap aq ar ker while
     back grp common dup front grp item once post pre rev starts ends
     stripFront stripBack 
     collect equiv
-    equal bool some nats ints nat
+    equal bool some 
+    count nats ints

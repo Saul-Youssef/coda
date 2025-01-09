@@ -1,0 +1,6 @@
+#
+#     Sample spaces
+#
+let S0 : permutation 2 : a b 
+let S1 : permutation 2 : a b bin (:bin a:b) (:) (:(:)) 
+let S2 : permutation 2 : a b bin (bin a:1) (bin b:2) (:) (:(:)) 1 2 

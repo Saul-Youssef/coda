@@ -4,3 +4,8 @@
 let S0 : permutation 2 : a b 
 let S1 : permutation 2 : a b bin (:bin a:b) (:) (:(:)) 
 let S2 : permutation 2 : a b bin (bin a:1) (bin b:2) (:) (:(:)) 1 2 
+#
+#     Organic search spaces 
+#
+let ORG1: ap Organic?
+let ORG2: sample.data Organic? a b (:) : 2 

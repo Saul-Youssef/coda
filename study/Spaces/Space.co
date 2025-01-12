@@ -1,0 +1,8 @@
+#
+#   Up is a "functor" making a space from a space 
+#
+#   demo: (Up bin : bool) : (bin:a b c) (bin:) (bin:c d) 
+#  
+def Up :   {ap prod (:put A) (:B) (:get A)} 
+def End :  {prod (:A) (:B) (:A)}
+def Down : {prod (:put A) (:B) (:get A) }

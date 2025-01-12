@@ -310,7 +310,7 @@ def more(context,domain,A,B):
         if len(ns)>0: memory = ns.pop(0)
         return Evaluate(context,seconds,memory)(B)
 CONTEXT.define('eval',more)
-CONTEXT.define('more',more)
+#CONTEXT.define('more',more)
 #
 #     step evaluation step-by-step evaluation of it's input
 #

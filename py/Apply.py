@@ -53,6 +53,9 @@ def ari_0(context,domain,A,B):
     if A0.atom(context) and AR.empty(): return B
 CONTEXT.define('ai',ari_0,ari_1)
 
+#def aj_1(context,domain,A,B):
+
+
 def as_1(context,domain,A,B):
     if B.atomic(context):
         BL,BR = B.split()

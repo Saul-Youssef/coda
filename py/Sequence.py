@@ -128,6 +128,27 @@ def Ends(context,domain,A,B):
         return data()
 CONTEXT.define('ends',Ends)
 #
+#   shorter/longer
+#
+#   demo: less a b : x y z
+#   demo: less a b c d : x y
+#   demo: more a b : x y z
+#   demo: more a b c d : x y
+#   demo: aj {put : less (get:A) : (get:B)} : (:x x x x) (:x x) (:x x x)
+#   demo: aj {put : more (get:A) : (get:B)} : (:x x x x) (:x x) (:x x x)
+#
+def less(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        if len(A)<=len(B): return A
+        return B
+def more(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        if len(A)>=len(B): return A
+        return B
+CONTEXT.define('less',less)
+CONTEXT.define('more',more)
+
+#
 #   frontstrip, backstrip
 #
 #   demo: stripFront a b : a b c d
@@ -146,7 +167,7 @@ def FrontStrip(context,domain,A,B):
         if Front.rigid(context):
             if A==Front: return data(*B[n:])
             return B
-CONTEXT.define('stripFront',FrontStrip)
+CONTEXT.define('frontstrip',FrontStrip)
 def BackStrip(context,domain,A,B):
     if A.rigid(context):
         n = len(A)
@@ -154,7 +175,7 @@ def BackStrip(context,domain,A,B):
         if Back.rigid(context):
             if A==Back: return data(*B[:-n])
             return B
-CONTEXT.define('stripBack',BackStrip)
+CONTEXT.define('backstrip',BackStrip)
 
 #def skip_1(context,domain,A,B):
 #    if B.empty(): return data()
@@ -262,12 +283,12 @@ def dup(context,domain,A,B):
         return data(*[((domain+data(a))|B) for a in A])
 CONTEXT.define('dup',dup)
 #
-#   Maximum common data starting A and B
+#   Maximum same data starting A and B
 #
-#   demo: common 1 2 3 4 : 1 2 3
-#   demo: common 1 2 3 : 1 2 3 4 5
-#   demo: common : 1 2
-#   demo: common :
+#   demo: same 1 2 3 4 : 1 2 3
+#   demo: same 1 2 3 : 1 2 3 4 5
+#   demo: same : 1 2
+#   demo: same :
 #
 def common(context,domain,A,B):
     AL,AR = A.split()
@@ -276,7 +297,7 @@ def common(context,domain,A,B):
     if AL.rigid(context) and BL.rigid(context):
         if AL==BL: return AL + data((domain+AR)|BR)
         else     : return data()
-CONTEXT.define('common',common)
+CONTEXT.define('same',common)
 #
 #   Select the n'th item(s) from input.
 #

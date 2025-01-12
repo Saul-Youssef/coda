@@ -4,8 +4,8 @@
 let Organic : text_sort : ai aj ap aq ar ker while
     arg bin const domain get has hasnt if is isnt left
     nif null pass plus prod put right star sum
-    back grp common dup front grp item once post pre rev starts ends
-    stripFront stripBack 
+    back grp same dup front grp item once post pre rev starts ends
+    frontstrip backstrip less more 
     collect equiv
-    equal bool some 
+    equal bool some
     count nats ints

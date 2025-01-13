@@ -1,8 +1,25 @@
 #
 #   Up is a "functor" making a space from a space 
 #
-#   demo: (Up bin : bool) : (bin:a b c) (bin:) (bin:c d) 
+#
+#
+#   The Demo notebook has demonstrations 
 #  
+#   If U is a space and n is an atom, (Up n:U) is a new 
+#   space containing sequences of atoms (n:U:X) for some X.
+#
 def Up :   {ap prod (:put A) (:B) (:get A)} 
+#
+#   If U is a space and F is any data, (End U:F) is the 
+#   endomorphism U*F*U. 
+#
 def End :  {prod (:A) (:B) (:A)}
-def Down : {prod (:put A) (:B) (:get A) }
+def Down : {prod (:put A) (:B) (:get A)}
+#
+#   If U is a space and n is an atom, (Pair n:U) is the 
+#   space of pairs (n:u1) (n:u2) where u1 and u2 are in U.
+#
+def Pair : {(ap prod (:put A) (:B) (:get A)) * (front | |) } 
+
+
+

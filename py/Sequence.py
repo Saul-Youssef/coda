@@ -283,12 +283,12 @@ def dup(context,domain,A,B):
         return data(*[((domain+data(a))|B) for a in A])
 CONTEXT.define('dup',dup)
 #
-#   Maximum same data starting A and B
+#   Maximum common data starting A and B
 #
-#   demo: same 1 2 3 4 : 1 2 3
-#   demo: same 1 2 3 : 1 2 3 4 5
-#   demo: same : 1 2
-#   demo: same :
+#   demo: common 1 2 3 4 : 1 2 3
+#   demo: common 1 2 3 : 1 2 3 4 5
+#   demo: common : 1 2
+#   demo: common :
 #
 def common(context,domain,A,B):
     AL,AR = A.split()
@@ -297,7 +297,19 @@ def common(context,domain,A,B):
     if AL.rigid(context) and BL.rigid(context):
         if AL==BL: return AL + data((domain+AR)|BR)
         else     : return data()
-CONTEXT.define('same',common)
+CONTEXT.define('common',common)
+#
+#   width A : B gives B if B has the same width as A,
+#   () otherwise.
+#
+#   demo: width | | : a b
+#   demo: width | | : a b c 
+#
+def width(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        if len(A)==len(B): return B
+        return data()
+CONTEXT.define('width',width)
 #
 #   Select the n'th item(s) from input.
 #

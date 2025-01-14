@@ -35,7 +35,8 @@ def post : {B A}
 #   demo: by : a b c d e
 #   demo: by 2 : nat : 0
 #
-def first : {head (some A:1) : B}
+def first : {head (if A:1) A : B}
+#def first : {head (some A:1) : B}
 #
 #   front/back organically removes an argument specified number of
 #   items from the front/back of the input.

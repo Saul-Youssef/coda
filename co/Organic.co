@@ -5,7 +5,7 @@ let Organic : text_sort : ai aj ap aq ar ker while
     arg bin const domain get has hasnt if is isnt left
     nif null pass plus prod put right star sum
     back backstrip count dup ends front frontstrip grp item 
-    less more once post pre rev same starts 
+    less more once post pre rev common width starts 
     collect equiv
-    equal bool not some
+    equal bool not 
     nats ints

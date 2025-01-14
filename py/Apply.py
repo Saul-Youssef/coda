@@ -10,7 +10,8 @@ from base import *
 #  demo: aq bin a b c : 1 2 3 4
 #  demo: ar bin a b c : 1 2 3 4
 #  demo: ai bin a b c : 1 2 3 4
-#  demo: aj bin a : 1 2 3 4
+#  demo: aj bin : a b c d
+#  demo: ak bin a : b c d e f
 #  demo: aj {bin A:B} : 1 2 3 4
 #  demo: aj {nat_sum : A B} : 1 2 3 4 5
 #  demo: apby 2 bin a b c : 1 2 3 4 5 6
@@ -53,12 +54,9 @@ def ari_0(context,domain,A,B):
     if A0.atom(context) and AR.empty(): return B
 CONTEXT.define('ai',ari_0,ari_1)
 
-#def aj_1(context,domain,A,B):
-
-
-def as_1(context,domain,A,B):
+def aj_1(context,domain,A,B):
     if B.atomic(context):
         BL,BR = B.split()
         if BR.empty(): return BL
         return data((A+BL)|data((domain+A)|BR))
-CONTEXT.define('aj',as_1)
+CONTEXT.define('aj',aj_1)

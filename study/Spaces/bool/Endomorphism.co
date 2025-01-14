@@ -1,0 +1,16 @@
+#
+#   E : X is a "big" endomorphism L*X*L 
+#   e : X is a "small" endomorphism L*(put b)*X*(get b)*L 
+#
+def b : 
+Def L : Up b : bool 
+def E : End L 
+def e : {End L : Down b : B}
+#
+#   Let's give these small endomorphisms names
+#
+def ALL   : (e:pass)
+def TRUE  : (e:const ( ))
+def FALSE : (e:const (:))
+def ANY   : (e:not)
+

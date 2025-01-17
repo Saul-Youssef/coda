@@ -1,8 +1,0 @@
-#
-#   E : X is a "big" endomorphism L*X*L 
-#   e : X is a "small" endomorphism L*(put b)*X*(get b)*L 
-#
-#def b : 
-#Def L : Up b : bool 
-#def E : End L 
-#def e : {End L : Down b : B}

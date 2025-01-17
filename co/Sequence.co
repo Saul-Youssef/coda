@@ -51,8 +51,14 @@ def first : {head (if A:1) A : B}
 #   demo: back  | | : a b c d e f g
 #   demo: item  | | : a b c d e f g
 #
-def item : {back | : front A : B}
-
+#def item : {back | : front A : B}
+#
+#   Replace all atoms with (:)
+#
+#   demo: atoms : a b c
+#   demo: atoms :
+#
+def atoms : ap const (:)
 #
 #   Repetition
 #

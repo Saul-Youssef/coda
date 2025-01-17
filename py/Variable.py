@@ -17,14 +17,22 @@ def invariant(context,A):
         if a.invar(context): ins.add(a)
         ins = ins.union(invariant(context,a.left())).union(invariant(context,a.right()))
     return ins
-
-#def Undefined(context,domain,A,B):
-#    if context.evaluate(1,B)==B: return data(*[u for u in undefined(context,B)])
-#CONTEXT.define('undefined',Undefined)
-#def Invariant(context,domain,A,B):
-#    if context.evaluate(1,B)==B: return B
-#CONTEXT.define('invariant',Invariant)
-
+#
+#   Tests if input data is invariant
+#
+#   demo: invariant : a b c
+#   demo: invariant : a b? c
+#   demo: invariant : a b (bin:c?)
+#   demo: atomic : a b c
+#   demo: atomic : a b? c
+#   demo: atomic : nat : 0
+#
+def Invariant(context,domain,A,B):
+    if B.rigid(context): return B
+CONTEXT.define('invariant',Invariant)
+def Atomic(context,domain,A,B):
+    if B.irred(context): return B
+CONTEXT.define('atomic',Atomic)
 
 #
 #   demo: permutation 2 : a b

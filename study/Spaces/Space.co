@@ -1,25 +1,26 @@
 #
-#   Up is a "functor" making a space from a space 
-#
-#
+#   Various "functors" making spaces from existing spaces 
 #
 #   The Demo notebook has demonstrations 
 #  
-#   If U is a space and n is an atom, (Up n:U) is a new 
-#   space containing sequences of atoms (n:U:X) for some X.
+#   If U is a space, and n is an atom, then 
 #
-def Up :   {ap prod (:put A) (:B) (:get A)} 
+#   (One n : U) is the space of (n:u) for u in U.
+#   (Seq n : U) is the space of sequences of (b:u).
+#   (Two n : U) is the space of pairs 
+#   (End U : X) is an endomorphism of U for any X
 #
-#   If U is a space and F is any data, (End U:F) is the 
-#   endomorphism U*F*U. 
+def One : {prod (:put A) (:B) (:get A)} 
+def Seq : {ap  prod (:put A) (:B) (:get A)} 
 #
 def End :  {prod (:A) (:B) (:A)}
 def Down : {prod (:put A) (:B) (:get A)}
 #
-#   If U is a space and n is an atom, (Pair n:U) is the 
-#   space of pairs (n:u1) (n:u2) where u1 and u2 are in U.
+#  
 #
-def Pair : {(ap prod (:put A) (:B) (:get A)) * (front | |) } 
-
-
-
+def _Slice : {prod (:put) (:B) (:get) (:nth A)} 
+def _Pair : {sum (:_Slice 1:get:nth 1:B) (:_Slice 2:get:nth 2:B)}
+def Product : { Down A : (_Pair:B) }
+#
+#
+def Two : {Product A : (:B) (:B)}

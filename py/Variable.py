@@ -38,6 +38,7 @@ CONTEXT.define('atomic',Atomic)
 #   demo: permutation 2 : a b
 #   demo: permutation 3 : a b
 #   demo: permutation 3 : a
+#   demo: combination 2 : a b c d 
 #   demo: assign (x?=y?) : ap put : a b
 #   demo: assign (x?=y?) : permutation 3 : a b
 #   demo: eval : theorem (bool:(x?=y?)) : permutation 2 : a b
@@ -53,6 +54,16 @@ def permutation_0(context,domain,A,B):
         n = Number.intdef(1,A)
         return data(*[data()|D for D in permutation(n,B)])
 CONTEXT.define('permutation',permutation_0)
+
+def combination(n,B):
+    import itertools
+    for P in itertools.combinations([b for b in B],n): yield data(*[p for p in P])
+def combination_0(context,domain,A,B):
+    if A.rigid(context) and B.atomic(context):
+        import Number
+        n = Number.intdef(1,A)
+        return data(*[data()|D for D in combination(n,B)])
+CONTEXT.define('combination',combination_0)
 
 def stable(A,context):
     import Evaluation

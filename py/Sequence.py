@@ -177,16 +177,16 @@ def BackStrip(context,domain,A,B):
             return B
 CONTEXT.define('backstrip',BackStrip)
 
-#def skip_1(context,domain,A,B):
-#    if B.empty(): return data()
-#    if A.rigid(context):
-#        n = sum(Number.nats(A))
-#        Bs = [b for b in B]
-#        Sk = []
-#        while len(Bs)>0 and len(Sk)<n and Bs[0].atom(context): Sk.append(Bs.pop(0))
-#        if len(Sk)==n: return data(*Bs)
-#        return data((domain+da(str(n-len(Sk))))|data(*Bs))
-#CONTEXT.define('skip',skip_1)
+def skip_1(context,domain,A,B):
+    if B.empty(): return data()
+    if A.rigid(context):
+        n = sum(Number.nats(A))
+        Bs = [b for b in B]
+        Sk = []
+        while len(Bs)>0 and len(Sk)<n and Bs[0].atom(context): Sk.append(Bs.pop(0))
+        if len(Sk)==n: return data(*Bs)
+        return data((domain+da(str(n-len(Sk))))|data(*Bs))
+CONTEXT.define('skip',skip_1)
 #
 #   grp batches the input into packets with the same
 #   size as the size of the argument.  grp is an inverse
@@ -303,7 +303,7 @@ CONTEXT.define('common',common)
 #   () otherwise.
 #
 #   demo: width | | : a b
-#   demo: width | | : a b c 
+#   demo: width | | : a b c
 #
 def width(context,domain,A,B):
     if A.atomic(context) and B.atomic(context):

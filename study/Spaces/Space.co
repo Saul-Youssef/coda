@@ -24,3 +24,7 @@ def Product : { Down A : (_Pair:B) }
 #
 #
 def Two : {Product A : (:B) (:B)}
+#
+#   General commutator with two co-args and co-inputs 
+#
+def commutator : ap {bool:((get:first:A)*(get:last:A):get:B)=((get:last:A)*(get:first:A):get:B)}

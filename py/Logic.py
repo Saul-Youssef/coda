@@ -145,7 +145,7 @@ CONTEXT.define('imply',IMPLY)
 #   demo: some : a b c
 #   demo: some x y z : a b c
 #
-#def some(context,domain,A,B):
-#    if A.irred(context): return A
-#    if A.empty(): return B
-#CONTEXT.define('some',some)
+def some(context,domain,A,B):
+    if A.irred(context): return A
+    if A.empty(): return B
+CONTEXT.define('some',some)

@@ -1,12 +1,20 @@
 #
 #    while A : B applies A to B until it saturates, thus becoming idempotent
 #
-#    demo: by 2 : 1 2 3 4 5
-#    demo: ap {nat_sum:get:B} : by 2 : 1 2 3 4 5
-#    demo: while {ap {nat_sum:get:B} : by 2 : B} : 1 2 3 4 5
-#    demo: nat_sum : 1 2 3 4 5
+#    demo: while nat_sum : 1 2 3 4
+#    demo: frontstrip | | : | | | | |
+#    demo: while frontstrip | | : | | | | |
 #
-def while : {some (if ((A:B)=B):B) : while A : A : B}
+def while : {_loop A : _LOOP : B}
+#
+#def while : {sat : seq A : B}
+#def seq : {(A:B) (seq A : (A:B)) }
+#
+#
+#
+#def while : {some (if ((A:B)=B):B) : while A : A : B}
+
+
 #
 #   ker A is the kernel of A defined by A:X=().
 #
@@ -43,9 +51,9 @@ def ker : {if (A:B):B}
 #
 #def apby : {ap {A:get:B} (tail 1:A) : by (head 1:A) : B}
 #
-#    demo: wap int_sum : by 10 : rep 100 : 1
-#    demo: do : wap int_sum : by 10 : rep 100 : 1
-#    demo: do 100 : wap int_sum : by 10 : rep 100 : 1
+#   Apply data n-times
 #
-#def wap : ap {with:A:get:B}
-#def wap : {ap {with:A:get:B} (tail 1:A) : by (head 1:A) : B}
+#   demo: pow 3 {B x} : 6
+#   demo: pow 3 next {nat_sum:last 2:B} : 1 1
+#
+#def pow : {prod (rep (head 1:A):(:tail 1:A)):B}

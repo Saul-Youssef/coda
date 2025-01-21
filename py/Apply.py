@@ -11,7 +11,6 @@ from base import *
 #  demo: ar bin a b c : 1 2 3 4
 #  demo: ai bin a b c : 1 2 3 4
 #  demo: aj bin : a b c d
-#  demo: ak bin a : b c d e f
 #  demo: aj {bin A:B} : 1 2 3 4
 #  demo: aj {nat_sum : A B} : 1 2 3 4 5
 #  demo: apby 2 bin a b c : 1 2 3 4 5 6
@@ -60,3 +59,14 @@ def aj_1(context,domain,A,B):
         if BR.empty(): return BL
         return data((A+BL)|data((domain+A)|BR))
 CONTEXT.define('aj',aj_1)
+
+CONTEXT.define('_LOOP')
+def loop(context,domain,A,B):
+    for b in B:
+        if b.domain()==da('_LOOP') and b.arg().rigid(context) and b.right().rigid(context):
+            if b.arg()==b.right():
+                return b.arg()
+            else:
+                body = data((da('_LOOP')+b.right())|data(A|b.right()))
+                return data((domain+A)|body)
+CONTEXT.define('_loop',loop)

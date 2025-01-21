@@ -251,21 +251,23 @@ def rep(context,domain,A,B):
                 for b in B: R.append(b)
             return data(*R)
 CONTEXT.define('rep',rep)
-
-#   def rep(context,domain,A,B):
-#    if A.rigid(context):
-#        ns = Number.nats(A)
-#        if len(ns)==1:
-#            B2 = []
-#            n = ns[0]
-#            while n>0:
-#                for b in B: B2.append(b)
-#                n = n-1
-#            return data(*B2)
-#        elif len(ns)==0:
-#            return B
-#CONTEXT.define('rep_',rep)
-
+#
+#   Gets first saturation point of a sequence
+#
+#   demo: sat :
+#   demo: sat : a
+#   demo: sat : a b c
+#   demo: sat : a b c c
+#   demo: sat : a b c c d d
+#
+def sat(context,domain,A,B):
+    B1,BR = B.split()
+    if B1.rigid(context) and B1.atom(context):
+        B2,BRR = BR.split()
+        if B2.rigid(context) and B2.atom(context):
+            if B1==B2: return B2
+            return data(domain|(B2+BRR))
+#CONTEXT.define('sat',sat)
 #
 #   Input repetition
 #

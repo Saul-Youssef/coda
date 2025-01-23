@@ -7,15 +7,6 @@
 #
 def while : {_loop A : _LOOP : B}
 #
-#def while : {sat : seq A : B}
-#def seq : {(A:B) (seq A : (A:B)) }
-#
-#
-#
-#def while : {some (if ((A:B)=B):B) : while A : A : B}
-
-
-#
 #   ker A is the kernel of A defined by A:X=().
 #
 #   demo: ker null : a b c
@@ -32,19 +23,14 @@ def ker : {if (A:B):B}
 #    demo: ab   : a b c d e f g
 #
 #def ab : {ap (head A:B):(tail A:B)}
+
 #
 #    next is typically for sequences
 #
 #    demo: next {nat_sum:1 (last:B)} : 1 2 3
 #    demo: next {nat_sum:last 2:B} : 1 1 2 3
 #
-#def next : {B (A:B)}
-#
-#    demo: co 2 : a b c d e f g
-#    demo: co 3 : a b c d e f g
-#
-#def co : {ap {(:(arg:B) (right:B))} : ab A 1 : pre bin :B}
-
+def next : {B (A:B)}
 #
 #    demo: apby 2 count : a b c d e f g
 #    demo: apby 2 last  : a b c d e f g
@@ -57,3 +43,11 @@ def ker : {if (A:B):B}
 #   demo: pow 3 next {nat_sum:last 2:B} : 1 1
 #
 #def pow : {prod (rep (head 1:A):(:tail 1:A)):B}
+
+#
+#   (pow | | | : B):X does B:B:B:X three times, etc.
+#
+#   demo: (pow | | | : {B x}) : 6
+#   demo: (pow | | | | : next {nat_sum : back | | : B}) : 1 1
+#
+def pow : {prod (dup A : (:B))}

@@ -147,7 +147,6 @@ def more(context,domain,A,B):
         return B
 CONTEXT.define('less',less)
 CONTEXT.define('more',more)
-
 #
 #   frontstrip, backstrip
 #
@@ -388,3 +387,32 @@ def swap(context,domain,A,B):
         else:
             return B
 CONTEXT.define('swap',swap)
+#
+#   Matrix is a general product of two data a(i) b(j)
+#   producing a sequence (bin i j,a(i) b(j))
+#
+#   demo: freesum a b c : x y z
+#   demo: freesum a : x y z 
+#   demo: freeprod a b c : x y z
+#   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : freeprod a b c : x y z
+#
+def freeprod(context,domain,A,B):
+    if A.atomic(context) and B.atomic(context):
+        sum = []
+        for i in range(len(A)):
+            for j in range(len(B)): sum.append((da('bin')+da(str(i))+da(str(j)))|data(A[i],B[j]))
+        return data(*sum)
+CONTEXT.define('freeprod',freeprod)
+
+def freesum(context,domain,A,B):
+    AL,AR = A.split()
+    BL,BR = B.split()
+    if AL.empty() and BL.empty():
+        return data()
+    elif AL.atom(context) and BL.empty():
+        return data(data()|AL) + data((domain+AR)|BR)
+    elif AL.empty() and BL.atom(context):
+        return data(data()|BL) + data((domain+AR)|BR)
+    elif AL.atom(context) and BL.atom(context):
+        return data(data()|(AL+BL)) + data((domain+AR)|BR)
+CONTEXT.define('freesum',freesum)

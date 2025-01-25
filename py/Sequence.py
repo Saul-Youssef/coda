@@ -43,11 +43,17 @@ def front(context,domain,A,B):
     if AL.atom(context) and BL.atom(context): return BL + data((domain+AR)|BR)
 CONTEXT.define('front',front)
 def back(context,domain,A,B):
-    if A.empty() or B.empty(): return data()
+    if A.empty(): return B
     AL,AR = A.split()
-    BL,BR = B.splitr()
-    if AL.atom(context) and BR.atom(context): return data((domain+AR)|BL) + BR
+    BL,BR = B.split()
+    if AL.atom(context) and BL.atom(context): return data((domain+AR)|BR)
 CONTEXT.define('back',back)
+#def back(context,domain,A,B):
+#    if A.empty() or B.empty(): return data()
+#    AL,AR = A.split()
+#    BL,BR = B.splitr()
+#    if AL.atom(context) and BR.atom(context): return data((domain+AR)|BL) + BR
+#CONTEXT.define('back',back)
 #
 #   Basic sequence operations
 #
@@ -130,23 +136,23 @@ CONTEXT.define('ends',Ends)
 #
 #   shorter/longer
 #
-#   demo: less a b : x y z
-#   demo: less a b c d : x y
-#   demo: more a b : x y z
-#   demo: more a b c d : x y
-#   demo: aj {put : less (get:A) : (get:B)} : (:x x x x) (:x x) (:x x x)
-#   demo: aj {put : more (get:A) : (get:B)} : (:x x x x) (:x x) (:x x x)
+#   demo: minwidth a b : x y z
+#   demo: minwidth a b c d : x y
+#   demo: maxwidth a b : x y z
+#   demo: maxwidth a b c d : x y
+#   demo: aj {put : minwidth (get:A) : (get:B)} : (:x x x x) (:x x) (:x x x)
+#   demo: aj {put : maxwidth (get:A) : (get:B)} : (:x x x x) (:x x) (:x x x)
 #
-def less(context,domain,A,B):
+def minwidth(context,domain,A,B):
     if A.atomic(context) and B.atomic(context):
         if len(A)<=len(B): return A
         return B
-def more(context,domain,A,B):
+def maxwidth(context,domain,A,B):
     if A.atomic(context) and B.atomic(context):
         if len(A)>=len(B): return A
         return B
-CONTEXT.define('less',less)
-CONTEXT.define('more',more)
+CONTEXT.define('minwidth',minwidth)
+CONTEXT.define('maxwidth',maxwidth)
 #
 #   frontstrip, backstrip
 #
@@ -392,7 +398,7 @@ CONTEXT.define('swap',swap)
 #   producing a sequence (bin i j,a(i) b(j))
 #
 #   demo: freesum a b c : x y z
-#   demo: freesum a : x y z 
+#   demo: freesum a : x y z
 #   demo: freeprod a b c : x y z
 #   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : freeprod a b c : x y z
 #

@@ -4,8 +4,9 @@
 let Organic : text_sort : ai aj ap aq ar ker while
     arg bin const domain get has hasnt if is isnt left
     nif null pass plus prod put right star sum
-    back backstrip count dup ends front frontstrip grp seq
+    back backstrip count dup ends front frontstrip grp
     less more once post pre rev common width starts atoms
+    minwidth maxwidth 
     collect equiv
     equal bool not
     nats ints

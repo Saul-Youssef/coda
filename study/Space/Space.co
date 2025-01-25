@@ -16,15 +16,6 @@ def Seq : {ap  prod (:put A) (:B) (:get A)}
 def End :  {prod (:A) (:B) (:A)}
 def Down : {prod (:put A) (:B) (:get A)}
 #
-#  
-#
-def _Slice : {prod (:put bin) (:B) (:get bin) (:nth A)} 
-def _Pair : {sum (:_Slice 1:get bin:nth 1:B) (:_Slice 2:get bin:nth 2:B)}
-def Product : { Down A : (_Pair:B) }
-#
-#
-def Two : {Product A : (:B) (:B)}
-#
 #   General commutator with two co-args and co-inputs 
 #
 #    U*V = V*U, U:V:X = V:U:X for all X
@@ -39,6 +30,11 @@ Def idempotent : ap {bool:(A:get:B)=(A:A:get:B)}
 #
 Def involution : ap {bool:(get:B)=(A:A:get:B)} 
 #
-#   Spaces must be idempotent as well as satisfying space 
+#   Spaces must be idempotent as well as satisfying SP  
 #
-Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) (A:tail 1:get:B)))}  
+#Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) #(A:tail 1:get:B)))}  
+#
+#   SP pass : (:(:aaa) (:bbb)) 
+#
+Def SP : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 
+#Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) (A:tail 1:get:B)))}  

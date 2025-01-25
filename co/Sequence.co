@@ -51,7 +51,7 @@ def first : {head (if A:1) A : B}
 #   demo: back  | | : a b c d e f g
 #   demo: item  | | : a b c d e f g
 #
-#def item : {back | : front A : B}
+def item : {front | : rev : front A : B}
 #
 #   Replace all atoms with (:)
 #

@@ -14,16 +14,13 @@ def while : {_loop A : _LOOP : B}
 #   demo: ker {3=(count:B)} : a b c d
 #
 def ker : {if (A:B):B}
-#def ker : {ap kernel A : B}
 #
+#   in A:B applies B to each A-atom contents
 #
-#    demo: ab 2 : a b c d e f g
-#    demo: ab 1 : a b c d e f g
-#    demo: ab 0 : a b c d e f g
-#    demo: ab   : a b c d e f g
+#   demo: (in bin : {B B}) : (bin:x) (bin:y)
+#   demo: ap (in bin : {B B}) : (bin:x) (bin:y)
 #
-#def ab : {ap (head A:B):(tail A:B)}
-
+def in : {(put A) * B * (get A)}
 #
 #    next is typically for sequences
 #
@@ -31,19 +28,6 @@ def ker : {if (A:B):B}
 #    demo: next {nat_sum:last 2:B} : 1 1 2 3
 #
 def next : {B (A:B)}
-#
-#    demo: apby 2 count : a b c d e f g
-#    demo: apby 2 last  : a b c d e f g
-#
-#def apby : {ap {A:get:B} (tail 1:A) : by (head 1:A) : B}
-#
-#   Apply data n-times
-#
-#   demo: pow 3 {B x} : 6
-#   demo: pow 3 next {nat_sum:last 2:B} : 1 1
-#
-#def pow : {prod (rep (head 1:A):(:tail 1:A)):B}
-
 #
 #   (pow | | | : B):X does B:B:B:X three times, etc.
 #

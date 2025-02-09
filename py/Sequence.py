@@ -34,6 +34,7 @@ CONTEXT.define('rev',rev_3,rev_2,rev_1)
 #
 #   demo: front | | : a b c d e f g
 #   demo: back  | | : a b c d e f g
+#   demo: tail  | | : a b c d e f g
 #   demo: item  | | : a b c d e f g
 #
 def front(context,domain,A,B):
@@ -42,18 +43,18 @@ def front(context,domain,A,B):
     BL,BR = B.split()
     if AL.atom(context) and BL.atom(context): return BL + data((domain+AR)|BR)
 CONTEXT.define('front',front)
-def back(context,domain,A,B):
+def tail(context,domain,A,B):
     if A.empty(): return B
     AL,AR = A.split()
     BL,BR = B.split()
     if AL.atom(context) and BL.atom(context): return data((domain+AR)|BR)
+CONTEXT.define('tail',tail)
+def back(context,domain,A,B):
+    if A.empty() or B.empty(): return data()
+    AL,AR = A.split()
+    BL,BR = B.splitr()
+    if AL.atom(context) and BR.atom(context): return data((domain+AR)|BL) + BR
 CONTEXT.define('back',back)
-#def back(context,domain,A,B):
-#    if A.empty() or B.empty(): return data()
-#    AL,AR = A.split()
-#    BL,BR = B.splitr()
-#    if AL.atom(context) and BR.atom(context): return data((domain+AR)|BL) + BR
-#CONTEXT.define('back',back)
 #
 #   Basic sequence operations
 #
@@ -87,17 +88,17 @@ def head_(context,domain,A,B):
             n -= 1
         return data(*front) + data((domain+da(str(n)))|data(*Bs))
 CONTEXT.define('head',head_)
-def tail_0(context,domain,A,B):
-    if B.empty(): return data()
-    if A.rigid(context):
-        L,R = B.split()
-        ns = Number.ints(A)
-        n = sum(ns)
-        if n==0: return B
-        if L.atom(context):
-            if n>0: return     data((domain+da(str(n-1)))|R)
-            else  : return L + data((domain+da(str(  0)))|R)
-CONTEXT.define('tail',tail_0)
+#def tail_0(context,domain,A,B):
+#    if B.empty(): return data()
+#    if A.rigid(context):
+#        L,R = B.split()
+#        ns = Number.ints(A)
+#        n = sum(ns)
+#        if n==0: return B
+#        if L.atom(context):
+#            if n>0: return     data((domain+da(str(n-1)))|R)
+#            else  : return L + data((domain+da(str(  0)))|R)
+#CONTEXT.define('tail',tail_0)
 
 def last(context,domain,A,B):
     if A.rigid(context):
@@ -337,8 +338,6 @@ def nth1_0(context,domain,A,B):
 def nth1_1(context,domain,A,B):
     if B.empty(): return data()
 CONTEXT.define('nth1',nth1_0,nth1_1)
-
-
 #
 #   once returns input with duplicates removed.
 #
@@ -394,13 +393,13 @@ def swap(context,domain,A,B):
             return B
 CONTEXT.define('swap',swap)
 #
-#   Matrix is a general product of two data a(i) b(j)
-#   producing a sequence (bin i j,a(i) b(j))
+#   Some combinatorics
 #
-#   demo: freesum a b c : x y z
-#   demo: freesum a : x y z
-#   demo: freeprod a b c : x y z
-#   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : freeprod a b c : x y z
+#   demo: presum a b c : x y z
+#   demo: presum a : x y z
+#   demo: preprod a b c : x y z
+#   demo: polyprod a b c : x y z
+#   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : preprod a b c : x y z
 #
 def freeprod(context,domain,A,B):
     if A.atomic(context) and B.atomic(context):
@@ -408,7 +407,37 @@ def freeprod(context,domain,A,B):
         for i in range(len(A)):
             for j in range(len(B)): sum.append((da('bin')+da(str(i))+da(str(j)))|data(A[i],B[j]))
         return data(*sum)
-CONTEXT.define('freeprod',freeprod)
+CONTEXT.define('preprod',freeprod)
+
+def poly_1(context,domain,A,B):
+    AL,AR = A.split()
+    if AL.atom(context) and B.atom(context) and len(Number.nats(AL))==1:
+        n = Number.nats(AL)[0]
+        if AR.atom(context) : return data ( ( da('bin')+da(str(n)) ) | (AR+B) )
+def poly_2(context,domain,A,B):
+    AL,AR = A.split()
+    if AL.atom(context) and AR.empty(): return data()
+def poly_3(context,domain,A,B):
+    if B.empty(): return data()
+def poly_4(context,domain,A,B):
+    AL,AR = A.split()
+    if AL.atom(context) and len(Number.nats(AL))==1:
+        n = Number.nats(AL)[0]
+        ARL,ARR = AR.split()
+        if ARL.atom(context) and not ARR.empty():
+            R = [(domain+da(str(n  ))+ARL) | B]
+            if not B.empty(): R.append((domain+da(str(n+1))+ARR)|B)
+            return data(*R)
+def poly_5(context,domain,A,B):
+    AL,AR = A.split()
+    if AL.atom(context) and len(Number.nats(AL))==1:
+        n = Number.nats(AL)[0]
+        BL,BR = B.split()
+        if BL.atom(context):
+            R = [(domain+da(str(n  ))+AR) | BL]
+            if not AR.empty() and not BR.empty(): R.append((domain+da(str(n+1))+AR) | BR)
+            return data(*R)
+CONTEXT.define('prepoly_',poly_1,poly_2,poly_3,poly_4,poly_5)
 
 def freesum(context,domain,A,B):
     AL,AR = A.split()
@@ -421,4 +450,4 @@ def freesum(context,domain,A,B):
         return data(data()|BL) + data((domain+AR)|BR)
     elif AL.atom(context) and BL.atom(context):
         return data(data()|(AL+BL)) + data((domain+AR)|BR)
-CONTEXT.define('freesum',freesum)
+CONTEXT.define('presum',freesum)

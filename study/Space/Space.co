@@ -3,6 +3,11 @@
 #
 #   The Demo notebook has demonstrations 
 #  
+def Seq : {ap (in A:B)} 
+def inner : in 
+def series : {B (A:B)} 
+def end : {A * B * A} 
+
 #   If U is a space, and n is an atom, then 
 #
 #   (One n : U) is the space of (n:u) for u in U.
@@ -10,11 +15,11 @@
 #   (Two n : U) is the space of pairs 
 #   (End U : X) is an endomorphism of U for any X
 #
-def One : {prod (:put A) (:B) (:get A)} 
-def Seq : {ap  prod (:put A) (:B) (:get A)} 
+#def One : {prod (:put A) (:B) (:get A)} 
+#def Seq : ap {prod (:put A) (:B) (:get A)} 
 #
-def End :  {prod (:A) (:B) (:A)}
-def Down : {prod (:put A) (:B) (:get A)}
+#def End :  {prod (:A) (:B) (:A)}
+#def Down : {prod (:put A) (:B) (:get A)}
 #
 #   General commutator with two co-args and co-inputs 
 #

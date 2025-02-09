@@ -36,7 +36,7 @@ def post : {B A}
 #   demo: by 2 : nat : 0
 #
 def first : {head (if A:1) A : B}
-#def first : {head (some A:1) : B}
+
 #
 #   front/back organically removes an argument specified number of
 #   items from the front/back of the input.
@@ -60,12 +60,12 @@ def item : {front | : rev : front A : B}
 #
 def atoms : ap const (:)
 #
-#   Repetition
+#   Some combinatorics
 #
-#   demo: rep 3 : x
-#   demo: rep 3 2 : x
-#   demo: rep 1 : x
-#   demo: rep 0 : x
-#   demo: rep : x
+#   demo: presum a b c : x y z
+#   demo: presum a : x y z
+#   demo: preprod a b c : x y z
+#   demo: prepoly a b c : x y z
+#   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : preprod a b c : x y z
 #
-#def rep : {ai rep_ A : B}
+def prepoly : {prepoly_ 0 A : B}

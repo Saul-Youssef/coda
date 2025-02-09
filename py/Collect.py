@@ -13,8 +13,8 @@ from base import *
 #   demo: collect : (bin:a) (bin:b) (bin:c) (bin:d)
 #   demo: collect : ap {put bin (nchar:B):B} : a b aa bb aaa cccc zz xxx xxx
 #   demo: collect : (bin 1:c) (bin 1:a b) (bin 2:aa bb zz) (:a) (:b) a b c
-#   demo: sameLeft : (bin:a) (bin:b) (bin:c) (bin:d)
-#   demo: sameRight: (bin 1:a) (bin 2:a) (bin 3:a) (bin 4:b) (bin 5:b)
+#   demo: sameleft : (bin:a) (bin:b) (bin:c) (bin:d)
+#   demo: sameright: (bin 1:a) (bin 2:a) (bin 3:a) (bin 4:b) (bin 5:b)
 #   demo: equiv nchar : a b aa bb aaa cccc zz xxx xxx
 #
 def collect(context,domain,A,B):
@@ -27,7 +27,7 @@ def collect(context,domain,A,B):
         for left,rights in lefts.items(): L.append(left|data(*rights))
         return data(*L)
 CONTEXT.define('collect',collect)
-CONTEXT.define('sameLeft',collect)
+CONTEXT.define('sameleft',collect)
 def collectRight(context,domain,A,B):
     if B.rigid(context):
         Swap = [(b.domain()+b.right())|b.arg() for b in B]
@@ -35,6 +35,6 @@ def collectRight(context,domain,A,B):
         if not R is None:
             Swap = [(r.domain()+r.right())|r.arg() for r in R]
             return data(*Swap)
-CONTEXT.define('sameRight',collectRight)
+CONTEXT.define('sameright',collectRight)
 
 #    if all([b.atom(context) and b.left().rigid(context) for b in B]):

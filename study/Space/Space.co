@@ -31,6 +31,10 @@ def commutator : ap {bool:((get:first:A)*(get:last:A):get:B)=((get:last:A)*(get:
 #
 Def idempotent : ap {bool:(A:get:B)=(A:A:get:B)}
 #
+#    U:X = U:rev:X for all X.  Algebraic
+#
+Def algebraic : ap {bool:(A:get:B)=(A:rev:get:B)} 
+#
 #    U:U:X = X for all X.
 #
 Def involution : ap {bool:(get:B)=(A:A:get:B)} 
@@ -46,4 +50,5 @@ Def identity : ap {bool:(get:B)=(A:get:B)}
 #   SP pass : (:(:aaa) (:bbb)) 
 #
 Def SP : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 
-#Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) (A:tail 1:get:B)))}  
+#Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) (A:tail 1:get:B)))}
+Def preSpace : SP 

@@ -451,3 +451,41 @@ def freesum(context,domain,A,B):
     elif AL.atom(context) and BL.atom(context):
         return data(data()|(AL+BL)) + data((domain+AR)|BR)
 CONTEXT.define('presum',freesum)
+
+#
+#   demo: permutation 2 : a b
+#   demo: permutation 3 : a b
+#   demo: permutation 3 : a
+#   demo: combination 2 : a b c d
+#   demo: tuple 2 : a b c d
+#
+def permutation(n,B):
+    import itertools
+    for P in itertools.product([b for b in B],repeat=n): yield data(*[p for p in P])
+
+def permutation_0(context,domain,A,B):
+    if A.rigid(context) and B.atomic(context):
+        import Number
+        n = Number.intdef(1,A)
+        return data(*[data()|D for D in permutation(n,B)])
+CONTEXT.define('permutation',permutation_0)
+
+def combination(n,B):
+    import itertools
+    for P in itertools.combinations([b for b in B],n): yield data(*[p for p in P])
+def combination_0(context,domain,A,B):
+    if A.rigid(context) and B.atomic(context):
+        import Number
+        n = Number.intdef(1,A)
+        return data(*[data()|D for D in combination(n,B)])
+CONTEXT.define('combination',combination_0)
+
+def ntuples(n,B):
+    import itertools
+    for P in itertools.product([b for b in B],repeat=n): yield data(*[p for p in P])
+def ntuples_0(context,domain,A,B):
+    if A.rigid(context) and B.atomic(context):
+        import Number
+        n = Number.intdef(1,A)
+        return data(*[data()|D for D in ntuples(n,B)])
+CONTEXT.define('tuple',ntuples_0)

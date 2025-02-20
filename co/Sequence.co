@@ -69,3 +69,9 @@ def atoms : ap const (:)
 #   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : preprod a b c : x y z
 #
 def prepoly : {prepoly_ 0 A : B}
+#
+#   pair arguments with inputs
+#
+#   demo: pair a b c : 1 2 3
+#
+def pair : {ap {:(arg:B) (right:B)} : ar bin A : B}

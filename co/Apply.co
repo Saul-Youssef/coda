@@ -35,3 +35,10 @@ def next : {B (A:B)}
 #   demo: (pow | | | | : next {nat_sum : back | | : B}) : 1 1
 #
 def pow : {prod (dup A : (:B))}
+#
+#   Apply argument specified map.
+#
+#   demo: map (bin a:11) (bin b:22) (bin c:45) : b
+#   demo: ap map (bin a:11) (bin b:22) (bin c:45) : a b c
+#
+def map : aq {if ((arg:A)=B):right:A}

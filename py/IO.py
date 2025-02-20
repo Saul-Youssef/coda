@@ -296,7 +296,7 @@ def Write(context,domain,A,B):
                 LOG('io','Start writing '+path+'...')
                 f.write(zlib.compress(data2bytes(data(*DECIDED))))
                 LOG('io','Finished writing '+path)
-#                return data()
+                if len(UNDECIDED)==0: return data()
         except Exception as e:
             LOG('error','error writing to file ',str(e))
             return

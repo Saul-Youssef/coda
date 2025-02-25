@@ -13,7 +13,16 @@ def while : {_loop A : _LOOP : B}
 #   demo: ker pass : a b c
 #   demo: ker {3=(count:B)} : a b c d
 #
-def ker : {if (A:B):B}
+#def ker : {if (A:B):B}
+
+
+#
+#   apif A:B returns the atoms in b where (A:b) is true.
+#
+#   demo: apif {has bin:B} : a b (bin:c) d e 
+#   demo: apif {B=5} : 1 2 3 4 5 6 5 6
+#
+def apif : ap {if (A:B):B} 
 #
 #   in A:B applies B to each A-atom contents
 #

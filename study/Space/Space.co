@@ -35,6 +35,10 @@ Def idempotent : ap {bool:(A:get:B)=(A:A:get:B)}
 #
 Def algebraic : ap {bool:(A:get:B)=(A:rev:get:B)} 
 #
+#    U:X X = U:X 
+#
+Def semilattice : ap {bool:(A:B)=(A:B B)}
+#
 #    U:U:X = X for all X.
 #
 Def involution : ap {bool:(get:B)=(A:A:get:B)} 

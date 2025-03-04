@@ -53,6 +53,6 @@ Def identity : ap {bool:(get:B)=(A:get:B)}
 #
 #   SP pass : (:(:aaa) (:bbb)) 
 #
-Def SP : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 
+#Def SP : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 
 #Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) (A:tail 1:get:B)))}
-Def preSpace : SP 
+Def preSpace : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 

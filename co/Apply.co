@@ -31,6 +31,11 @@ def apif : ap {if (A:B):B}
 #
 def in : {(put A) * B * (get A)}
 #
+#   demo: apin count : (bin a:1 2 3) (:d e f)
+#   demo: apin pass : (bin a:1 2 3) (:d e f) 
+#
+def apin : ap {A:right:B} 
+#
 #    next is typically for sequences
 #
 #    demo: next {nat_sum:1 (last:B)} : 1 2 3

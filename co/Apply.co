@@ -13,7 +13,7 @@ def while : {_loop A : _LOOP : B}
 #   demo: ker pass : a b c
 #   demo: ker {3=(count:B)} : a b c d
 #
-#def ker : {if (A:B):B}
+#def ker : {if ((A:B)=(A:)
 
 
 #

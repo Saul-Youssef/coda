@@ -1,7 +1,11 @@
 #
 #   Various "functors" making spaces from existing spaces 
 #
-#   The Demo notebook has demonstrations 
+#   The kernel of a space
+#
+#   demo: Ker is a b : a x y a b z z 
+#
+def Ker : {if ((A:B)=(A:)):B} 
 #  
 def Seq : {ap (in A:B)} 
 def inner : in 

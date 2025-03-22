@@ -217,6 +217,23 @@ def Grp(context,domain,A,B):
             return data(data()|Bfront) + data((domain+A)|Bback)
 CONTEXT.define('grp',Grp)
 #
+#   rem removes argument specified data from input
+#
+#   demo: rem x y : a b x y a x y x
+#
+def Rem(context,domain,A,B):
+    if A.rigid(context) and B.rigid(context):
+        As = [a for a in A]
+        Bs = [b for b in B]
+        R = []
+        while len(Bs)>0:
+            if len(As)>0 and As==Bs[:len(As)]:
+                Bs = Bs[len(As):]
+            else:
+                R.append(Bs.pop(0))
+        return data(*R)
+CONTEXT.define('rem',Rem)
+#
 #   demo: by 2 : a b c d
 #   demo: by 2 : a b c d e
 #

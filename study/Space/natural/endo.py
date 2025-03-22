@@ -32,6 +32,9 @@ class End(object):
     def space(self):
         for e in self:
             if e.space(): yield e 
+    def distributive(self):
+        for e in self:
+            if e.distributive(): yield e 
     def involution(self):
         for e in self:
             if e.involution(): yield e 
@@ -85,6 +88,11 @@ class endo(object):
                 r = self(x+y)==self(self(x)+self(y))
                 if not r: return r 
         return r 
+    def distributive(self):
+        for x,y in itertools.product(range(len(self)),repeat=2):
+#           print(x,y,self(x+y),self(x)+self(y),self(x+y)==self(x)+self(y))
+            if not self(x+y)==self.bound(self(x)+self(y)): return False
+        return True 
     def involution(self): return all([self(self(i))==i for i in self.domain()])
     def commute(self,f):
         return all(f(self(i))==self(f(i)) for i in range(len(self._values))) 

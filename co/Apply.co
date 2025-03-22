@@ -19,10 +19,10 @@ def while : {_loop A : _LOOP : B}
 #
 #   apif A:B returns the atoms in b where (A:b) is true.
 #
-#   demo: apif {has bin:B} : a b (bin:c) d e 
+#   demo: apif {has bin:B} : a b (bin:c) d e
 #   demo: apif {B=5} : 1 2 3 4 5 6 5 6
 #
-def apif : ap {if (A:B):B} 
+def apif : ap {if (A:B):B}
 #
 #   in A:B applies B to each A-atom contents
 #
@@ -32,9 +32,9 @@ def apif : ap {if (A:B):B}
 def in : {(put A) * B * (get A)}
 #
 #   demo: apin count : (bin a:1 2 3) (:d e f)
-#   demo: apin pass : (bin a:1 2 3) (:d e f) 
+#   demo: apin pass : (bin a:1 2 3) (:d e f)
 #
-def apin : ap {A:right:B} 
+def apin : ap {A:right:B}
 #
 #    next is typically for sequences
 #
@@ -50,9 +50,17 @@ def next : {B (A:B)}
 #
 def pow : {prod (dup A : (:B))}
 #
-#   Apply argument specified map.
+#   fun is a partial function specified by argument pairs.
+#   map is a similar generalization where (bin f:g) means if f:B is true
+#   return g:B.
 #
-#   demo: map (bin a:11) (bin b:22) (bin c:45) : b
-#   demo: ap map (bin a:11) (bin b:22) (bin c:45) : a b c
+#   demo: fun (bin a b c:x y z) : a b c
+#   demo: fun (bin a:11) (bin b:22) (bin c:45) : b
+#   demo: ap fun (bin a:11) (bin b:22) (bin c:45) : a b c
+#   demo: map (bin {a=(first:B)}:{45}) : a b c
+#   demo: map (bin {a=(first:B)}:{45}) : x a b c
+#   demo: map (bin {a=(first:B)}:{45}) (bin {not:a=(first:B)}:pass) : a b c
+#   demo: map (bin {a=(first:B)}:{45}) (bin {not:a=(first:B)}:pass) : x a b c
 #
-def map : aq {if ((arg:A)=B):right:A}
+def fun : aq {if ((arg:A)=B):right:A}
+def map : aq {if ((arg:A):B):(right:A):B}

@@ -10,12 +10,12 @@
 #    sameLeft sameRight equiv
 #    equal bool not
 
-let Organic : text_sort :
+let Organic : srt :
     arg bin const depth domain get has hasnt if is isnt
     left nif null pass prod put right sum
     ai aj ap aq ar ker pow while
     atoms back backstrip common count dup ends front frontstrip
-    grp item presum preprod prepoly 
+    grp item presum preprod prepoly
     maxwidth minwidth once post pre rev starts tail width
     equal bool not
     sameleft sameright equiv

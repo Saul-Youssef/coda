@@ -1,4 +1,4 @@
-| Space | Elements | Operation | Space | Simple | Idempotent | Dist. | Dist2 | Commutative | Involution | Nilpotent | Semilattice |
+n| Space | Elements | Operation | Space | Simple | Idempotent | Dist. | Dist2 | Commutative | Involution | Nilpotent | Semilattice |
 |-------|----------|-----------|-----:|-------:|-----------:|-------------:|--------:|------------:|-----------:|----------:|-------:|
 | pass | all data | do nothing | Y | Y | Y | Y | Y | N | Y | N | N |
 | null | () | empty | Y | Y | Y | Y | Y | Y | N | Y | Y |

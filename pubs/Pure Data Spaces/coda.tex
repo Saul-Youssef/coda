@@ -13,7 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeindex
 \begin{document}
-\title{\bf {PURE DATA FOUNDATIONS OF MATHEMATICS}}
+\title{\bf {PURE DATA SPACES....DRAFT...DRAFT...DRAFT}}
 \author{%
   SAUL YOUSSEF%
   \hfil \\
@@ -22,567 +22,353 @@
 }
 \maketitle
 \begin{abstract}
-We propose an axiomatic foundation of mathematics based on the {\it finite sequence} as the foundational concept, rather than based 
-on {\it logic} and {\it set}, as in set theory, or based on {\it type} as in dependent type theories.  Finite sequences lead to a concept of {\it pure data} which is
-used to represent all mathematical objects.  As an axiomatic system, the foundation has only one axiom which
-defines what constitutes a valid definition.  Using the axiom, an internal {\it true/false/undecided} valued logic and an internal language are defined, making 
-logic and language-related axioms unnecessary.  Valid proof and valid computation are defined in terms of equality of pure data.  An algebra of pure data
-leads to a rich theory of {\it spaces} and {\it morphisms} which play a role similar to the role of Category Theory in modern Mathematics.  As applications, 
-we explore Mathematical Machine Learning, the consistency of Mathematics and address paradoxes due to G\"odel, Berry, Curry and Yablo.
+All about spaces.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Foundation}
 
-     Any system of reasoning must necessarily have foundational concepts which are intrinsically understood, even before a first definition.
-In the case of type theories\cite{Type,Type2,HOTT,aldor}, for example, there is no definition of `type' and in Zermelo-Fraenkel Set Theory\cite{ZFC} (ZFC), there is no definition of `true', `false' or `set.'
-In our case, we have one foundational undefined concept:
-the {\it finite sequence}.  We assume that finite sequences and obvious statements about finite sequences are understood.  
-Logic, logical values and the analogue of propositions, on the other hand, will appear as varieties of `data.'  Data is defined in terms of finite sequences as follows:
+\newtheorem*{fact}{Fact}
+
+\newtheorem{definition}{Definition}
+
+\newtheorem*{remark}{}
+
+\section{Overview}
+
+In Reference 1, we introduced a tiny axiomatic framework, based on the {\bf finite sequence} as a foundational concept.  
+With finite sequences understood, we had 
 \begin{itemize}
-\item {\it data} is a finite sequence of {\it codas}, and a {\it coda} is a pair of {\it data}.
+\item[1 ]{\it ``Data" is a finite sequence of ``codas,'' where each coda is a pair of data.}
 \end{itemize}
-If $A$ and $B$ are data, there is a natural {\it algebra of data} where $A\ B$ is the concatenation of data $A$ and data $B$ and $A:B$ is
-the data formed by pairing $A$ and $B$ into a single coda.  For example, by the definition, the empty sequence of codas (written `$()$') is data.  Therefore,
-the pairing of two empty sequences (written `$(:)$') is also data, and, therefore, the following sequence of three codas (:(:)(:)(:)) (:(:)) ((:):((:):)) is also data.
-We refer to this as `pure data' since it is data `made from finite sequences of nothing.'
-Both data in the ordinary sense (bits, bytes, language expressions) and mathematical concepts naturally appear as varieties
-of pure data with simple definitions expressed in the algebra of data.  Notationally speaking, the colon operation binds from the right first and binds
-less strongly than concatenation, so that $A:B:C$ means $(A:(B:C))$ and $A:B\ C$ means $(A:(B\ C))$.  We use the name `coda' both to refer 
-to the pairing of two data as defined, and as the name of the axiomatic system that we are defining\cite{github}.
-
-     In coda, answers to mathematical questions are determined by an equivalence relation `=' which is defined via a partial function from codas to data
-called a `context.'  Given a context $\delta$, equality is defined by
-\begin{equation}
-	A\ B = \delta(A)\ B = A\ \delta(B)
-\end{equation}
-\begin{equation}
-	A:B = \delta(A):B = A:\delta(B)
-\end{equation}
-for data $A$ and $B$, where the partial function $\delta$ has been extended to a function from data to data with identities.
-Conceptually, $\delta$ is forced to have the same properties as the identity function on data.  Within a given context,
-data $A$ is {\it empty} if $A=()$ and is {\it invariant} if $\delta(A)=A$.
-
-     In coda, new definitions are added to a context as partial functions from codas to data.  We use a convention to guarantee that each such partial
-function has it's own disjoint domain.  Let the {\it domain} of a coda $A:B$ be the data consisting of the first coda in the sequence $A$, or the empty
-sequence if $A$ is empty.  A partial function mapping codas with a particular invariant domain to data is called a {\it definition}.  Definitions
-can be added to a `valid' context if they do not clash, as guaranteed by the following.
-\newtheorem*{remark}{THE AXIOM OF DEFINITION}
-\begin{remark}  The empty context is valid.  If $\delta$ is a valid context and $d$ is a definition, and if no coda is in
-the domain of both $\delta$ and $d$, then the union of $\delta$ and $d$ is a valid context.
-\end{remark}
-\noindent As an axiomatic system, coda is complete at this point.  This is quite a contrast from, for instance, ZFC which has ten axioms
-even assuming predicate logic\cite{ZFC}.  The reason for the simplification will become clear in the sections which follow.  In Section 3, we show
-that coda contains an internal logic implicit in the structure as defined.  We adopt this logic for reasoning within coda, so we do not
-need axioms related to propositional or predicate logic.  In Section 4, we show that coda also contains an internal language which is introduced 
-as a definition like any other.  The language has the unusual property that all byte sequences are valid syntax,
-so additional language and language syntax axioms are also not necessary.  Axioms specifying valid `rules of deduction' are also not needed
-because deduction, proof, and computation in coda are all determined by the above data equality.  Each of these is a merely a data sequence $A_0=A_1=A_2=\dots=A_n$,
-deducing $A_n$ from $A_0$, computing $A_n$ starting with $A_0$ or proving that $A_0=A_n$, depending on one's point of view.
-Unlike type systems with a Curry-Howard correspondence, proof and computation are the same thing in coda.
-
-In the sections that follow,
-`data' and `pure data' are interchangeable terms and `sequence' will always mean a finite sequence unless otherwise indicated.  Since coda
-only has one axiom, we can refer to the Axiom of Definition as just `the axiom.'
-
-\section{Atoms}
-
-     Given fixed invariant data $D$ with length less than or equal to 1, the partial identity function 
-$i_D:(D A:B)\mapsto (D A:B)$ is a definition.  By the axiom, if the domain of the current context $\delta$ is disjoint 
-from the domain of $i_D$, $i_D$ can be added to the current context.  In this case, a coda $(D A:B)$ is called an {\it atom} 
-since no current or future definition can remove $(D A:B)$ from a data sequence.  
-Data with at least one atom in it's sequence is called {\it atomic} data, and data which is equal to $()$ is called {\it empty} data.
-Equations (1) and (2) imply that empty data can not be equal to atomic data and the axiom implies that this fact remains
-true independent of future definitions.  We shall use the words `always' and `never' to refer to properties that are independent of
-future definition, so atomic data is `always' atomic, empty data is `always' empty and atomic data and empty data are `never' equal.
-
-    As we shall see in Section 3, the classification of empty and atomic data is the basis for the internal logic of coda.
-Atoms are also the mechanism for defining permanent data such as bits, bytes and byte strings.
-Starting with an empty context, a first definition is suggested by the pure data examples above where pure data
-appears to be `made of $()$ and $(:)$.'
-It is clear that if we were to define $(:)\mapsto()$ all pure data would collapse to $()$.  This suggests that $(:)$ should be
-mapped to $(:)$ instead.  Since $(:)$ has invariant domain $()$ we can do that by defining (:$B$)$\mapsto$(:$B$) for any coda with
-domain $()$.  This makes $(:)$ both an atom and invariant, making it available as a domain for new definitions.
-Continuing in this fashion, we define an invariant `0-bit' to be ((:):), and an invariant `1-bit' to be ((:):(:)).
-Atoms with a 0-bit domain are conventionally bit sequences and atoms with 1-bit domains are conventionally byte sequences.
-This makes ordinary byte sequences available as invariant names for new definitions.  For example, the definition `pass' maps
-all domains $({\rm pass}\ A:B)$ to $B$.  Depending on the situation,
-it is sometimes convenient to think of `pass' as a `command,' thinking of $B$ as
-`input' and $A$ as `argument'.  Alternatively, `pass' can be thought of as a binary operator taking data $A$ and data $B$ and producing data (pass $A$:$B$).
-Typical examples of definitions are shown in Tables 1 and 2.
-\begin{table}
-\begin{tabular}{ | l | l | l | }
-Domain & Description & Action \\
-\hline
-pass & Pass input unchanged & (pass $A$:$B$)$\mapsto$ $B$ \\
-\hline
-null & Empty data for any input & (null $A$:$B$)$\mapsto$ () \\
-\hline
-rev & Reverse the order of data & (rev : $B$)$\mapsto$ (), if $B$ is empty \\
- &  & (rev : b)$\mapsto$ b, if b is an atom \\
- & & (rev : $B$ $C$)$\mapsto$ (rev:$B$) (rev:$A$) \\
- \hline
- if & Conditional $B$ & (if $A$:$B$) $\mapsto$ $B$, if $B$ is empty \\
- & & (if $A$:$B$) $\mapsto$ (), if $B$ is atomic. \\
- \hline
- ap & Apply argument $A$ to each input & (ap $A$ : $B$)$\mapsto$ (), if $B$ is empty \\
-  & & (ap $A$ : b)$\mapsto$ $A$:b, if b is an atom \\
-  & & (ap $A$ : $B$\ $C$)$\mapsto$ (ap $A$:$B$) (ap $A$:$C$) \\
-\hline
-nat & The natural numbers & (nat : $n$)$\mapsto$ $n$ (nat\ :\ $n+1$) \\
-\hline
-= & Equality & $(=A:B)\mapsto$ (), if $A=B$, atomic if $A\neq B$ \\
-\hline
-def & Make a new definition & (def $A$:$B$)$\mapsto$ add definition ($A$ $A'$:$B'$)$\mapsto$ $B$. \\
-\hline
-\end{tabular}
-\caption{\label{ }{\it Typical definitions in coda.  Each definition is a partial function from codas to data defined on
-codas with a specified domain.  When multiple actions are listed, the total action is defined by the first action
-where the left hand side pattern applies.}}
-\end{table}
-In addition to the approximately 50 simple pre-defined definitions, coda includes a definition for (def $A$:$B$) which lets one
-add new definitions to a context provided that $A$ is invariant and not already used in the context, according to the Axiom of Definition.
-An important and typical family of definitions are the {\it applications} such as `ap' in Table 2.  These
-are simple combinatorial operations on sequences.  Since finite sequences are foundationally understood, we presume that descriptions
-such as those in Table 2 are sufficient.  Further description and built in examples are available with the software\cite{github}.
-\begin{table}
-\begin{tabular}{| l  l  l | }
-Schematic Coda & $\mapsto$ & Schematic Result \\
-\hline
-ap $A$:$b_1$ $b_2$ $b_3$ & $\mapsto$ & ($A$:$b_1$) ($A$:$b_2$) ($A$:$b_3$) \\
-app $a_1$ $a_2$ $a_3$:$B$ &  $\mapsto$ & ($a_1$:$B$) ($a_2$:$B$) ($a_3$:$B$) \\
-ap2 $a$ $a_1$ $a_2$ $a_3$:$B$ & $\mapsto$ & ($a$ $a_1$:$b_1$) ($a$ $a_2$:$b_2$) ($a$ $a_3$:$b_3$) \\
-aps $A$:$b_1$ $b_2$ $b_3$ $b_4$ $b_5$ $b_6$ & $\mapsto$ & ($A$ $b_1$:($A$ $b_2$:($A$ $b_3$:$b_4$($A$ $b_5$:$b_6$))) \\
-apif $A$:$b_1$ $b_2$\dots & $\mapsto$ & $b_1$ (\dots if ($A$:$b_1$) is empty) $b_2$ (\dots if ($A$:$b_2$) is empty) \dots \\
-\hline
-\end{tabular}
-\caption{\label{ }{\it Built in definitions are typically combinatoric operations on data as finite sequences.  The `ap' series are variations on the
-idea of applying the `argument' A to `input' B, done in various ways.}}
-\end{table}
-
-\section{Logic}
-
-    In the framework of coda, objects with mathematical meaning are represented by pure data.  This means that mathematical
-questions will generally appear in the form
+\noindent This kind of data, such as (:)\ (:(:))\ ((:):(:)\ (:)), is ``pure data'' in the sense that it is ''made of nothing.'' Such data has two natural operations: 
+{\it concatenation} of data A with data B, written (A\ B), and {\it pairing} data A and data B as a {\it coda}, written (A:B).  
 \begin{itemize}
-\item Is data $A$ equal to data $B$?
+\item[2 ]{\it Definitions are embodied by a chosen partial function $\delta$ from codas to data called a context.}
 \end{itemize}
-Since data equality itself is available as a definition, the answers to such questions should be 
-deducible from the concrete data $(=A:B)$.
-This suggests that `logic' in coda should be a suitable coarse classification of data in general.  Of course, one would 
-expect that a logical classification of some particular data should not change when new definitions are added via the axiom. 
-The disjoint categories of empty and atomic data already meet this criteria, which suggests the definition:  
+As modest as it is, 1 and 2 appear to be able to capture Mathematics in general.  Consequences include:   
 \begin{itemize}
-\item data is {\it true} if it is empty, {\it false} if it is atomic and {\it undecided} otherwise.
+\item[-]{Fixed points of $\delta$ ({\it atoms}), represent fixed data such as bits, bytes and text;}
+\item[-]{Data outside the domain of $\delta$ are {\it variables}, which might become defined over time as {\it definitions} are added to $\delta$;} 
+\item[-]{$\delta$ contains it's own {\it language}, allowing user specification of data and adding definitions to $\delta$;} 
+\item[-]{Equality of data A=B is determined by $c\sim\delta(c)$ and by compatibility with finite sequences. Proof and computation are then defined by the equality.  A sequence $A_1=A_2=\dots=A_n$ is both a proof of $A_n$ given $A_1$ and a computation $A_1\mapsto A_n$.  Proof and computation are essentially the same thing;}
+\item[-]{Data is {\it true} if it is empty, {\it false} if it is atomic, and {\it undecided} otherwise.  Undecided data may also be {\it undecidable}, as in the Godel phenomena or other seeming paradoxes.  Data which is {\it never false} as definitions are added is a {\it theorem}.}
 \end{itemize}
-Table 3 shows examples of this classification, including familiar binary operations from classical logic.
-For instance, if data $A$ and $B$ are both either true or false, then $({\rm xor}\ A:B)$ is $()$ for {\it true} and $(:)$ for {\it false} according to the standard truth
- table for the exclusive or operation in classical logic.  On the other hand, if either $A$ or $B$ are
-undecided, then the data $({\rm xor}\ A:B)$ has no definitions that apply.  In effect, $({\rm xor}\ A:B)$ `waits until both $A$ and $B$ become defined
-enough' to have logical values.  A definition `bool' is available so that (bool:$A$) is () if $A$ is true, $(:)$ if $A$ is false and 
-undecided otherwise. 
-Although true data is always true and false data is always false, undecided data may become true or false with added definitions.
-This suggests that we are defining a two valued logic where undecided data are, in a sense, variables.  This is 
-not quite the complete picture because some undecided data must remain undecided independent of any added definitions.
-Such {\it undecidable} data turns out to be useful in multiple ways as discussed in Sections 7 and 8. 
-\begin{table}
-\begin{center}
-\begin{tabular}{ | c | c | }
-\hline
- {\it True} & (), ({\bf pass}:), {\bf null} : a b c, ({\bf and}:), ({\bf or} a:), ({\bf xor} : a)  \\
- \hline
- {\it False} & a b c, {\bf first} 3 : a b (foo:bar), ({\bf and} a:b), ({\bf or} a:b)  \\
- \hline
- {\it Undecided} & foo:bar, {\bf pass}:foo:bar, {\bf last}:a b (foo:bar)  \\
- \hline
-\end{tabular}
-\end{center}
-\caption{\label{ }{\it Examples of true/false/undecided data in a context where defined domains are shown with bold text.}}
-\end{table}
 
-There may be an understandable disorientation when re-defining something
-as fundamental as Classical Logic.  We have found that this disorientation is only temporary once one realizes that the familiar binary logical operations remain,
- and the seemingly odd class of `undecided' data fits in perfectly as `logic valued variables' and as `answers to questions when there are no answers.'  Confidence may
- be gained in Sections 7 and 8 where we examine G\"{o}del phenomena and test the proposed logic against well known paradoxes.
-
-\section{Language}
-
-Both predicate logic with ZFC and dependent type theories are formal languages.  They have alphabets with special symbols
-and axiomatic syntax rules which distinguish meaningful sentences from nonsense sentences such as ${\bf xx\forall yy\exists\exists}$.
-The situation with coda is simpler in the sense that the language appears just as one more definition like any other.
-The basic idea is to give textual control over the operations $A\ B$ and $A:B$ from the algebra of data.
-Thus, if $x$ and $y$ are language expressions, partial functions
-\begin{equation} \label{eqn}
-( \{x\ \ y\} \ A : B ) \mapsto (\{x\}\ A : B)\ (\{y\}\ A : B)
-\end{equation}
-\begin{equation} \label{eqn}
-( \{x : y\} \ A : B ) \mapsto (\{x\}\ A : B):(\{y\}\ A : B)
-\end{equation}
-allow specification of the two operations.  Language literals `A' and `B'
-\begin{equation}\label{eqn}
-(\{A\} A:B)\mapsto A
-\end{equation}
-\begin{equation}\label{eqn}
-(\{B\} A:B)\mapsto B
-\end{equation}
-allow language specification of the left and right components of a coda.  There is more to the language, but not much more.  Additional partial functions
-define grouping operations with parenthesis, allowing string literals with angle brackets, removing extraneous spaces and adding a bit of syntactic
-sugar so that $A=B$ is interpreted as $(=A:B)$, $A*B:X$ is interpreted as $A:B:X$ and $X?$ is interpreted as $(?,X)$, making $X?$ behave like
-a `variable.'  All of these partial functions are fused into a single partial function acting on all codas starting with text in curly braces.  The order of
-the fusing determines the precedence of the operations.  Figure 1 shows an example of the language in use in a coda notebook\cite{github}.
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.6\textwidth]{fig1.png}
-\caption{{\it Excerpt from a coda notebook session.  The top cell shows the `first' command selecting the first two items from the `input'
-sequence of four codas.  The middle cell shows the same operation using `step' to  show the individual steps evaluating the
-data `\{first 2 : a b c d\}:' which is the coda definition of the language expression `first 2 : a b c d'.  Since the language is a definition
-in context like any other, language operations mix with other definitions as evaluation proceeds.  The third cell shows a typical definition added within the language.}}
-\end{figure}
-
-     The language is an intentionally minimalist wrapping of the algebra of data.
-Only the characters `{\bf():\{\}=*/\ }' have language significance.  There are no reserved keywords or
-special syntax for variables, functions, classes or exceptions.  Any finite byte sequence $s$ can be `compiled' into pure data via $s \mapsto$ ($\{s\}$:).  
-The language is unusual in that any finite byte sequence is a valid language expression.
-This means that we do not have to specify an alphabet or even define valid and invalid syntax.  There is no such thing
-as invalid syntax.  The source code for the compiler and parser is small enough to be easily read and understood by
-humans \cite{github}.
-
-\section{Proof and Computation}
-
-     As noted in Section 2, coda is both a formal system and a computational system.  As a formal system, the `sentences' of the formal system
-are the pure data, and the valid `rules of deduction' are that a context $\delta$ may be applied to any data according to equations (1) and (2).
-Given some starting data $A_0$, for instance, any chosen coda $c$ within $A_0$ can be replaced by $\delta(c)$.  This can be repeated
-as desired resulting in some sequence $A_0,A_1,\dots,A_n$.  The sequence depends on the choices, but (1) and (2) guarantee 
-$A_0=A_1=\dots=A_n$ for any choice.  In this framework, the difference between a proof and a computation is merely in the strategy of where and
-when to apply $\delta$.  The process of applying $\delta$ as described is called {\it evaluation}.  Most of the results in this paper
-are computed with the very simple evaluation strategy of applying $\delta$ everywhere possible and then repeating until the sequence 
-$A_0,A_1,\dots$ repeats or reaches a maximum chosen length. 
-Figures 1 and 2 show examples of this strategy.  In Figure 1, the sequence converges to an atomic answer.  This does
-not always happen, of course, as shown in the evaluation of the natural numbers in Figure 2.  Note what happens in Figure 2 when we compute
-`the last natural number' (last:nat:0).  A similar result would come from computing the first of the reverse of the natural numbers (first:rev:nat:0) or the sum of all
-the natural numbers (sum n:nat:0).  All these cases result in undecided data which is also undecidable.  Undecidable data is serving the
-essential role of being the `answer to questions when there is no answer.'
+In this work, we investigate the concept of a {\it space}, introduced in Reference 1.  
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.45\textwidth]{nat.png}
-\caption{{\it An excerpt from a coda notebook session\cite{github}.  Each cell is evaluated with the simple strategy explained in the text for up to ten
-steps.  The top cell uses `step :' so each step in the strategy is displayed, showing how (nat:0) is lazily representing the natural numbers.  Note the language
-elements mixing with other data in the early steps. The lower two cells show that if one computes something that has no answer, like the last natural number (last:nat:0), coda reacts by providing undecidable data as an answer.}}
+\includegraphics[width=0.7\textwidth]{garden.png}
+\caption{{\it Growing spaces ``organically'' from pure data.}}
 \end{figure}
 
-    The results obtained here mostly come from the above simple evaluation strategy.
-We expect that there is much to be gained from a more sophisticated approach 
-where one optimizes where and when $\delta$ is applied and where the equally valid $\delta(A)\mapsto A$ moves are included as well
-as $A\mapsto\delta(A)$.  This is mostly unexplored territory as of this writing.  Coda has a couple of unusual and attractive computational properties.
-Since $\delta$ is a partial function, it cannot `loop', by definition.  This means that an evaluation sequence $A_0,A_1,\dots$ may continue forever,
-but each step in the sequence is guaranteed to terminate.  
+
+...SEARCHING....ORGANICS....
+
+\section{Foundation}  
+
+In \cite{PDF}, we argue that Mathematics and Computing as a whole can be captured within a tiny framework, based only on {\bf finite sequence} as the foundational undefined concept.  Assuming that finite sequences are understood, we define {\it data} and {\it coda} as follows.   
+
+\begin{definition} {Data is a finite sequence of {\bf codas}, where each {\bf coda} is a pair of {\bf data}.}
+\end{definition}
+
+\noindent Concatenation of data A and data B as finite sequences is denoted by ``A\ B" and the pairing of data A and data B as a coda is written as ``A:B" with a colon indicating 
+the pairing from the definition.  
+By the definition, the empty sequence ``written ()" qualifies as data and, therefore, () paired with itself is a coda (written ``(:)").  Any finite sequence of codas is data, so, for example (:)\ (:(:))\ ((:):(:(:))) is  
+data consisting of a sequence of three codas.  We call this {\it pure data} because it is {\it data made of nothing.}  By convention, the colon binds from the right first and binds less strongly than concatenation, so that A:B:C is defined to mean (A:(B:C)) and A:B\ C is defined to mean (A:(B\ C)).  Data is typically written with upper case, and codas are typically written in lower case.  To indicate the left and right data of a coda, we sometimes use L/R superscripts so that $c=(c^L:c^R)$. 
+
+     All meaning within the system is determined by a single chosen partial function from coda to data called a {\bf context}. 
+Contexts are partially ordered by inclusion, so if $\delta$ and $\delta'$ are contexts, $\delta\le\delta'$ if $\delta$ and $\delta'$ are equal on the domain of $\delta$.  
+Given a context $\delta$, equality of data is determined by $c\sim \delta(c)$ for any coda $c$, and by compatibility with concatenation and colon: if A$\sim$B, then (A\ X)$\sim$(B\ X), (X\ A)$\sim$(X\ B), (A:X)$\sim$(B:X) and (X:A)$\sim$(X:B) for any data X.
+Thus, if A${\overset \delta =}$B and $\delta\leq\delta'$, then A${\overset {\delta'} =}$B.  We may say that if A and B are equal then they are {\it always equal}, thinking of $\delta\rightarrow\delta'$ as the passage of time.  Note that any fixed point c of $\delta$ is stable in the sense that any ``later'' $\delta'$ must be identical to $\delta$ on c.  The fixed points of a given context $\delta$ are called {\it atoms}.  
+
+\begin{definition}
+{Within a given context $\delta$, coda $c$ is an {\bf atom} if $\delta:c\mapsto c$.  If data A contains an atom, A is {\bf atomic} data. 
+Data A is {\bf invariant} if every coda $a$ in the sequence of $A$ is an atom and if $a^L$ and $a^R$ are both {\bf invariant}. }
+\end{definition}
+\noindent Note that empty data is invariant.  If $a$ and $b$ are atoms in context $\delta$ and if A and B are data, we have: 
+1) $a$ and $b$ remain atoms in any context greater than or equal to $\delta$; 2) $a=b$ if and only if $a^L=b^L$ and $a^R=b^R$; 3) If ($a$\ A)=($b$\ B), then $a=b$ and A=B; 
+4) If (A\ $a$)=(B\ $b$), then A=B and $a=b$; 5) If A and B are invariant and equal, then A and B are identical as pure data. 
+
+Given a context $\delta$, we may write the corresponding equality as ${\overset \delta =}$ or, when not ambiguous, as $=$. 
+If data A and B satisfy A:X${\overset \delta =}$B:X for all X, this equivalence is also often written simply as ``=" if is clear in context, as in the following definitions. 
+
+\begin{definition}
+Data A is 
+\begin{itemize}
+\item[-]{a {\bf constant} if (A:X) = (A:) for all X};
+\item[-]{{\bf idempotent} if (A:A:X) = (A:X) for all X}; 
+\item[-]{an {\bf involution} if (A:A:X) = X for all X}; 
+\item[-]{{\bf commutative} if (A:X\ Y) = (A:Y\ X) for all X,Y}; 
+\item[-]{{\bf distributive} if (A:X\ Y) = (A:X) (A:Y) for all X,Y};
+\item[-]{{\bf associative} if (A:X\ Y) = (A:(A:X)\ Y) = (A:X\ (A:Y)) for all X,Y.}
+\end{itemize}
+\end{definition}
+\noindent 
+If one thinks of A:X\ Y as an A-specified product X${\overset A *}$Y, then associativity of A guarantees 
+(X${\overset A *}$Y)${\overset A *}Z$ = X${\overset A *}$(Y${\overset A *}Z)$ for all X,Y,Z.  
+It is also convenient to define a product and sum of data in general, corresponding to the two foundational finite sequence operations: concatenation and colon.
+For data A and data B, let (A$\cdot$B):X = A:B:X and let (A$\oplus$B):X = (A:X)\ (B:X).  As binary operators on data, $\cdot$ and $\oplus$ are both associative, but 
+neither is generally commutative. 
+
+\section{Genesis}
+
+    The mathematical objects that we are used to will all be represented as pure data, and all meaning about mathematical objects, including what constitutes a valid proof or a valid computation, is determined by an assumed context embodying a chosen collection of definitions.  For instance, a valid proof in $\delta$ is just a sequence 
+A$_1{\overset \delta =}$ A$_2 {\overset \delta =} \dots {\overset \delta =} $A$_n$, 
+ which can be viewed either as proving A$_1{\overset \delta =}$A$_n$ or as computing A$_1\mapsto$A$_n$.
+This is discussed in \cite{PDF} and will gradually become clearer as we go.  The immediate issue is to understand what constitutes a ``valid'' definition and how to choose an initial context.     
+    
+     In the beginning, there are no definitions, and the corresponding context is uniquely the empty partial function from coda to data, $\delta_0$.
+ Within $\delta_0$, data are equal only if they are identical as 
+ pure data, the only valid proofs are $X{\overset \delta =}X$ for any $X$ and the only valid computations do nothing $X\mapsto X$ for any X. 
+To define a non-empty context $\delta_0\le\delta$, we need a way to specify the domain of $\delta$ which is unchanged by any later  
+later definition.  Since the empty sequence is the only invariant, the way to specify if a coda (A:B) is in the domain of $\delta$ is 
+to require either A or B or both to be the empty sequence. In each of these cases, the coda (:) is within the domain of $\delta$, and so we must decide on what (:) maps to.  
+There are three possibilities; 
+\begin{enumerate}
+\item{$\delta: (:) \mapsto ()$},
+\item{$\delta: (:) \mapsto (:)$}, or 
+\item{$\delta: (:) \mapsto \ anything\ other\ than\ ()\ or\ (:)$}. 
+\end{enumerate}
+Since pure data is {\it made of (:)}, choice 1 trivially causes all data to be equal to the empty sequence. On the other hand, choice 3 means that for any data A the number of (:) atoms in A grows without limit.  Choice 3 is degenerate in the sense that no computation could produce a final answer.  Thus, we are constrained to choice 2, meaning that (:) must be an atom in $\delta$ and, therefore, is an atom for any $\delta'\ge\delta$.  
+It is convenient to generalize choice 2 and let $\delta:$(:X)$\mapsto$(:X) for all data X, so that every coda (:X) is an atom.
+
+A context of the form 
+\begin{equation}
+	\delta_a: (a\ A:B) \mapsto \delta_a(A,B)
+\end{equation}
+for some invariant atom $a$ is called a {\bf definition}.  We conventionally restrict ourselves to 
+contexts $\delta\cup\delta_a\cup\delta_b\cup\dots$ where $a$ is an invariant atom in $\delta$, $b$ is an invariant atom in $\delta\cup\delta_a$, $c$ is an invariant atom in $\delta\cup\delta_a\cup\delta_b$ and so forth.  By requiring $a$, $b$,\dots to be disjoint, we maintain the required context partial ordering.  If one thinks of our framework as an axiomatic system, the one axiom asserting that the empty context $\delta_0$ is {\it valid}, and any context greater than or equal to a valid context is also {\it valid}. 
 
 \section{Spaces}
 
-     Since the algebra of data is a structure common to all pure data, we might expect that the algebra plays a role analogous to the 
-role that Category Theory plays in modern Mathematics\cite{Mazur}.
- Here we take a few steps towards developing this idea, aiming first at the most natural
- way of specifying collections of data of interest called `spaces' and their associated `morphisms.'  First, a few
- preliminary definitions.
- \begin{itemize}
- \item data $A$ is {\it idempotent} if $A:A:X=A:X$ for all $X$.
- \item data $A$ is {\it distributive} if $A:X\ Y=(A:X)\ (A:Y)$ for all $X$, $Y$.
- \item data $A$ is {\it abelian} if $A:X\ Y=A:Y\ X$ for all $X$, $Y$.
- \end{itemize}
- With the algebra of data in mind, any fixed data $A$ defines a collection
-\begin{equation}\label{eqn}
-A:X
-\end{equation}
-where $X$ can be any data.  We say that $(A:X)$ {\it belongs to} $A$.  Naturally,
-if $(A:X)$ and $(A:Y)$ belong to $A$, we want $(A:X)\ (A:Y)$ to also belong to $A$.  This is guaranteed if
-we require
-\begin{equation}\label{eqn}
-A : (A : X)\ ( A: Y) = A : X\ Y
-\end{equation}
-for all data $X$ and $Y$.  Thus, we have the definition of a {\it space}.  Given two spaces $A$ and $B$, if
-distributive data $F$ satisfies
-\begin{equation}\label{eqn}
-F : A : X = B : F : X,
-\end{equation}
-then $F$ is a mapping from $A$ to $B$ where the distributivity of $F$ guarantees that $F$ respects sequences.
-In this situation, we say that $F$ is a {\it morphism} from space $A$ to space $B$.  In the case where $F$
-is a morphism from space $A$ to $A$, we just say that $F$ is a `morphism of $A$.'  With abuse of pure data
-equality, we say that $F$ is a morphism from $A$ to $B$ if $F*A=B*F$ where $A*B:X$ is defined to be $A:B:X$.
-Each space has a special element $(A:)$ which we call the {\it neutral data} or the {\it neutral element} of a space.
-If $A$ is a space and if space $B$ neutralizes each $A:X$ in the sense that
-\begin{equation}\label{eqn}
-A : (A:X)\ (B:X) = A : (B:X)\ (A:X) =  (A:)
-\end{equation}
-then we call $B$ an {\it anti-space} of $A$.  A distributive space is called a {\it type}.  
-Data $F$ where $F:X$ is a space is called a {\it functor}.
-
-Table 4 shows examples of spaces and their corresponding morphisms.
-\begin{table}
-\begin{tabular}{| l | l | l | l | l |  }
-Space & Action & Data &  $F*Space=Space*F$ \\
-\hline
-pass & A$\mapsto$A & All data & F distributive \\
-null & A$\mapsto$ () & () only & F such that F:X=() \\
-first & a A$\mapsto$ a & Single atoms &  F(a) for atom a \\
-bool & A$\mapsto$() $or$ (:) & () or (:) &  F preserving logic \\
-type n & A$\mapsto$ (n:3) (n:5) & Natural numbers &  (type n)$*$F$*$(type n) for any F \\
-sum n & (n:5) (n:3)$\mapsto$ (n:8) & Natural numbers &  $F(n_1+n_2)=F(n_1)+F(n_2)$ \\
-prod n & (n:5) (n:3)$\mapsto$ (n:15) & Natural numbers &  $F(n_1*n_2)=F(n_1)*F(n_2)$ \\
-sort n & (n:5) (n:3)$\mapsto$ (n:3) (n:5) & Natural numbers & $n_1\le n_2 \implies F(n_1)\le F(n_2)$ \\
-set n & (n:5) (n:3)$\mapsto$ equiv. classes & equiv. classes & F preserving classes \\
-Sum n & $F_1\ F_2\dots F_n\mapsto F_1*\dots *F_n$ & Linear maps $n\mapsto n$ & Functorial \\
-Sum & $F_1\ F_2\dots F_n\mapsto F_1*\dots *F_n$ & Linear maps  & Functorial \\
-Space & $A\mapsto S_1 S_2\dots S_n$ & Spaces & ${\rm Space}*F*{\rm Space}$ for any $F$\\
-Mor & $F_1\ F_2\dots F_n\mapsto F_1*\dots *F_n$ & Morphisms & Functorial \\
-\hline
-\end{tabular}
-\caption{{\it Examples of spaces and their morphisms.  Of the spaces listed, only pass, null, type n and Space are types.
-The neutral elements are (n:0) for sum n, (n:1) for prod n, the empty equivalence class for set n and pass for Sum n, Sum and Mor.  All others have neutral element ().}}
-\end{table}
-It is helpful to think of a space as doing two things:  1) selecting or constructing data of interest and 2) defining how
-a finite sequence of selected data are combined to make new data in the space.
-The situation with (type n) is typical.  The space (type n) constructs natural numbers from it's `input' if possible,
-discarding anything that can't be converted to natural numbers represented as codas like (n:5).  The space (type n) is
-distributive and, therefore, idempotent, so natural numbers in it's input are preserved.
-Since (type n) is distributive, the morphisms of (type n) are just sequence preserving arbitrary functions from naturals to naturals.
-The data (sum n) is also a space, selecting the same sequences of  natural numbers as (type n), but combining
-sequences with addition so that sum n : (n:3) (n:5) is equal to (n:8).  Note that a space determines it's morphisms.
-A morphism of (sum n) must satisfy $({\rm sum\ n}):F:X = F:({\rm sum\ n}):X$ meaning that $F$ must be linear.
-Morphisms of (sort n), on the other hand, must satisfy $({\rm sort\ n}):F:X=F:({\rm sort\ n}):X$ meaning that
-morphisms of (sort n) must be order preserving functions.
-
-     It seems promising to create an abstract theory of spaces with different additional properties.  For
- example,
+    Mathematics requires a way to make abstract collections of other mathematical objects.  Since data as defined is the only available material, the collection must 
+``contain" data and the collection itself must be specified by some data, say S.  Given data S, there are a couple of plausible ways for S to define a collection.  
 \begin{itemize}
-\item A space with an anti-space is a {\it pure group}.
+\item[-]{The data in the collection is S:X for any data X;}
+\item[-]{The data in the collection are the fixed points of S.}
 \end{itemize}
-The name is justified because the set $\{G:X | $X$\ is\ pure\ data\}$
-is a group in the ordinary sense where composition, defined to be $(G:X)\times(G:Y)\rightarrow G:(G:X)\ (G:Y)$, is associative, making 
-($G$:) the identity, and where ($G^{-1}$:$X$) is the inverse of ($G$:$X$), assuming that $G^{-1}$ is the promised anti-space of $G$.
+These options can be made to coincide if we require S to be idempotent, so that S:X is always a fixed point.  For a collection S to be compatible with concatenation, we might expect that if S:X and S:Y are in the collection, then so is (S:X)\ (S:Y).  This is guaranteed if 
+\begin{equation}
+{\rm S : X\ Y = S : (S: X)\ (S:Y)}
+\end{equation}
+which follows if S is both idempotent and associative.  Thus we come to the concept of a {\it pure data space} or just {\it a space}.  
+\begin{definition} Data S is a {\bf space} if S is idempotent and associative.
+\end{definition}
+\noindent Notice that idempotence guarantees compatibility with the colon and associativity guarantees compatibility with concatenation.  
 
-     An interesting possibility with spaces might be called `mathematical machine learning.'  A simple
-example is illustrated in Figure 3 where we imagine that we have become interested in two different
-collections of mathematical objects each just consisting of finite sequences of the atom (:).
+The data (S:) is called the {\bf neutral data} of S.  
+It is easy to check that idempotent distributive data is also associative and is thus also a space. 
+Distributive spaces have the empty sequence as their neutral data [since (S:)=(S:()\ ())=(S:)\ (S:)=()].  A distributive space can be thought of as acting independently on each atom of ``input'' since if data 
+X is a sequence x$_1$\ x$_2\dots$x$_n$ of atoms, S:X = (S:x$_1$) (S:x$_2$)$\dots$(S:x$_n$).  
+
+\subsection{Plan} 
+
+\subsection{Algebraic Data} 
+
+\subsection{Growing Spaces Organically} 
+
+\section{The theory of Spaces}
+
+\subsection{Commuting spaces}
+If spaces S and T commute, then S$\cdot$T is a space.  To see this, note that S commuting with T means that S$\cdot$T is idempotent, and for any data X and Y, 
+(S$\cdot$T):X\ Y = S:T:X\ Y = S:T:(T:X)\ (T:Y) = T:S:(T:X)\ (T:Y) = S:T:(S:T:X)\ (S:T:Y) = (S$\cdot$T):((S$\cdot$T):X) ((S$\cdot$T):Y).
+
+\subsection{Compatible Spaces}
+
+We say that data A {\bf absorbs} data B if A$\cdot$B=A.  If A absorbs B and B absorbs A, we say that A and B are {\bf compatible}.  {\it Absorbs} is transitive in general, reflexive for idempotent data such as spaces, but is not symmetric.  Compatiblity, however, is an equivalence relation.  For examples:
+\begin{itemize}
+\item[-]{Idempotent data is compatible with itself.}
+\item[-]{{\bf null} absorbs any data}.
+\item[-]{Any data absorbs {\bf pass}}.
+\item[-]{The constant spaces \{a\} and \{b\} are compatible, but are not equal.}
+\end{itemize}
+Any data that is compatible with a space is a space itself.  To prove this, let S be a space and A be any data where S$\cdot$A=S and A$\cdot$S=A.
+Then A$\cdot$A=A$\cdot$S$\cdot$A$\cdot$S=A$\cdot$S=A, so A is idempotent, and A:X\ Y = (A$\cdot$S):X\ Y = A:S:(S:X)\ (S:Y) = A:S:(S:A:X)\ (S:A:Y) = A:S:(A:X)\ (A:Y) = 
+A:(A:X)\ (A:Y), so A is a space. 
+
+\subsection{Kernels, Positive Spaces, and Complementary Spaces}
+
+Data X is {\bf in the kernel} of space S if (S:X)=(S:), and we denote this by X$\in $Ker(S).  For any space S, if X$\in $Ker(S) and Y$\in $Ker(S), then X\ Y$\in$Ker(S).  
+If the converse is true, we say that $S$ is a {\bf positive} space.  Simple facts and examples follow.  
+\begin{enumerate}
+\item[-]{Every distributive space is positive, since if S:X\ Y=(S:)=(), so (S:X)\ (S:Y)=(), and, thus (S:X) and (S:Y) are both empty}.
+\item[-]{However, not all positive spaces are distributive, for example, ({\bf front} $\vert\ \vert$) is a positive space, but not a distributive space}.
+\item[-]{If S is positive and a sequence of atoms $x_1\ x_2\dots x_n\in$ Ker(S), then $x_i\in$ Ker(S) for each atom}.
+\item[-]{If S is positive, the kernel of S is the distributive space {\bf apif} \{(S:B)=(S:)\}.}
+\end{enumerate} 
+Spaces S and T are {\bf complementary} if they are contained in each other's kernels, that is, if S:T:X=S: and T:S:X=T: for all data X.  For instance, {\bf pass} and {\bf null} are complementary spaces.  In fact {\bf null} is the only space complementary to {\bf pass}.  On the other hand, every space is complementary to {\bf null}.  
+
+\subsection{Morphisms}
+
+Given spaces S and T, data F is a morphism from S to T if F is equal to T$\cdot$f$\cdot$S for some data f, and this may be denoted by S${\overset F\rightarrow}$T.   Note that F$\cdot$S=F=T$\cdot$F, and, in particular, any endomorphism of a space S commutes with S.  
+As an example, F = T$\cdot${\bf pass}$\cdot$S = T$\cdot$S, so T$\cdot$S is a morphism from S to T and every space S is an endomorphism of itself, S${\overset S\rightarrow}$S.  An endomorphism (like S), which happens to be a space as well as an endomorphism is called a {\it space endomorphism}.  As defined, a morphism can be thought of as an ordinary function mapping data S:X in S to data F:S:X in T.  In order to 
+restrict ourselves to morphisms `repecting a structure', we say that a {\it space with structure} is a space with one distinguished space endomorphism.  
+\begin{itemize}
+\item[]{\it A {\bf space with structure} is a space with a distinguished space endomorphism.  A {\bf morphism} from space S with structure $s$ to space T with structure $t$ is a morphism F from S to T where $t$$\cdot$F = F$\cdot$$s$.}
+\end{itemize}
+\noindent As an example, consider the space $\mathbf N$ of natural numbers stored in n-atoms, with typical data (n:2) (n:6) (n:0) (n:4).  As with all spaces, $\mathbf N$ is a space endomorphism of itself.  There is also an endomorphism that sums such data: {\bf sum}:(n:2) (n:6) (n:0) (n:4) = (n:12); and an endomorphism that sorts such data {\bf sort}:(n:2) (n:6) (n:0) (n:4) = (n:0) (n:2) (n:4) (n:6).  Both {\bf sum} and {\bf sort} are spaces as well as morphisms and therefore are potential structure endomorphisms.  Endomorphisms of the space $\mathbf N$ with structure $\mathbf N$ are just ordinary functions from $\mathbf N$ to $\mathbf N$.  Endomorphism of $\mathbf N$ with structure {\bf sum} are the linear maps from $\mathbf N$ to $\mathbf N$, and endomorphisms of $\mathbf N$ with structure {\bf sort} are the order-preserving maps from $\mathbf N$ to $\mathbf N$.  Since {\bf sum} and {\bf sort} commute, 
+$\mathbf N$  with structure {\bf sum}$\cdot${\bf sort} is also a space, and the resulting structure morphisms preserve both sums and order. 
+Since space S with structure S is just our original definition, we don't have to distinguish {\it spaces} from {\it spaces with structure}, and we will refer to both as just {\it spaces}, where the structure of a space S is understood to be S unless another choice is specified. 
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=1.0\textwidth]{machine_learning.png}
-\caption{{\it Excerpt from a coda notebook session showing a first demonstration of a situation where one is 
-attempting to classify some mathematical objects of interest.  In this case, searching for a data that distinguishes a sample of
-data with odd numbers of (:) atoms (displayed as circles with a small circle inside) from a sample of data with even numbers of (:) atoms.  
-A search of 14,098 arbitrarily generated data (some shown), yields three successes including `aps not' as discussed in the text.}}
+\includegraphics[width=0.7\textwidth]{Morphisms.png}
+\caption{{\it The diagram on the left demonstrates that S${\overset F\longrightarrow}$T and T${\overset G\longrightarrow}$U implies $S{\overset {G\cdot F} \longrightarrow}$U, where space S has structure $s$, space T has structure $t$, and space U has structure $u$.  Spaces S and T are said to be isomorphic, if the diagram on the right commutes for some morphisms $\alpha$ and $\alpha'$.}}
 \end{figure}
-The difference between the two collections is that one has an odd number of atoms in each sequence and
-the other has an even number.  We proceed by searching for data $A$ that succeeds in classifying
-the two samples in the sense that $A:X$ have different logical values for the two collections.   A first search attempt
-finds three solutions out of 14,098 data, including the data  `aps not' which turns out to be true for
-even numbers of (:) and false for odd numbers of (:).
-Some features of the solution are interesting.
+
+Figure 2 illustrates these definitions and demonstrates that composition of morphisms is associative.  If S${\overset F\longrightarrow}$T and T${\overset G\longrightarrow}$U, then S${\overset {G\cdot F} \longrightarrow}$U, where S, T and U are spaces (with structure).  Figure 2 also illustrates how 
+definitions can be adopted from Category Theory.  For example, we say that spaces S and T are {\bf isomorphic} if the diagram of Figure 2(c) commutes for some morphisms $\alpha$ and $\alpha'$, denoted by S${\overset \alpha \cong}$T.  
+
+Given S${\overset F\longrightarrow}$T, data F:X for any X is said to be in the {\it image} of F and data (S:X) is said to be in the {\it kernel} of F if (F:X)=(F:).  F may happen to be a space as well as a morphism.  In this case, the image of F is the same as the contents of F as a space.  
+If F and G are morphisms from space S with structure $s$ to space T with structure $t$, we can define the {\it sum} of F and G by 
 \begin{itemize}
-\item The solution is clever.  It combines a combinatorial operator `aps' with a logical operator `not'
-in a way that the author did not think of before doing the search.
-\item The solution generalizes, since `aps not' selects data with an even number of atoms in all cases,
-not just when applied to sequences of (:) atoms.
-\item Although `aps not' is not quite a space, the minor modification `bool$*$(aps not)' is a space
-in the above sense.
-\item The morphisms of the space `bool$*$(aps not)' are interesting.  They are the functions
-which preserve atomic parity of data.
+\item[] F+G = $t\cdot$(F$\oplus$G)
 \end{itemize}
-Thus, just by picking out some mathematical items of interest, we have found both a way to
-select similar items and an associated new mathematical structure.
-Although this is merely a first toy example, this appears to be a strategy of general interest.
+Note the fact that F+G is a morphism relies on $t$ being a space, so that (F+G)$\cdot s$=$t\cdot$(F+G).  This addition is associative and is commutative 
+if T is an algebraic space. If S and T are the same space, the composition F$\cdot$G is also a morphism since 
+F$\cdot$G$\cdot$$s$=F$\cdot$$s$$\cdot$G=$s\cdot$F$\cdot$G, so the endomorphisms of a space form an algebraic structure.
 
-    Although the theory of spaces and morphisms clearly has something of the flavor of category theory, there are
-also drastic differences.  In category theory, morphisms can be composed only if their domains and co-domains
-agree.  In coda, {\it any} data $F$, $G$ and $H$ can be composed as 
-$X\mapsto H:G:F:X$.  The products $F_1*F_2*\dots *F_n$ in Table 3,
-for example, are always defined.  Another major difference
-is the relationship between spaces and morphisms.  In the theory of spaces, the morphisms between space
-$A$ and space $B$ are determined by $A$ and $B$.  In categories, on the other hand, there is always a choice of morphisms.  
-For instance, nothing prevents one from defining a category
-of real vector spaces with arbitrary functions as morphisms.  
+\subsection{The Algebra of Endomorphisms}  
 
-\section{Is Mathematics Consistent?}
+If $f$, $g$, and $h$ are endomorphisms of a space S with structure $s$, then $f\cdot(g\cdot h)=(f\cdot g)\cdot h$ is an associative 
+multiplication and $f+(g+h)=(f+g)+h$ is an associative addition if we define $f+g = s\cdot(f\oplus g)$.  
+Letting 1=S and 0=S$\cdot${\bf null}$\cdot$S, we have 
+$1\cdot f=f\cdot 1=f$ and $0+f=f+0=f$.  Multiplication distributes over addition from the right $(f+g)\cdot h=(f\cdot h)+(g\cdot h)$.  
 
-     We have defined empty data to be {\it true} and atomic data to be {\it false}.  But since pure data
-cannot be both true and false, we have seemingly proved that coda is consistent, seemingly
-in contradiction with G\"{o}del's second incompleteness theorem.  To explore this issue,
-express the consistency of coda directly in coda.  The following data
-\begin{equation}\label{eqn}
-{\rm ap\ \{xor\ (coda:B) : (not:coda:B) \} : allByteSequences :}
-\end{equation}
-logically expresses the consistency of coda in the coda language.  Here the `coda' operation maps
-finite byte sequences to data via the onto mapping $s\mapsto$ ($\{s\}$:).  This means that $({\rm coda}:s)$ and
-$({\rm not}:{\rm coda}:s)$ will be evaluated for each byte sequence $s$ and if they ever have the same logical
-value, the overall value of (11) is false.   Although each application of `${\rm xor}\ ({\rm coda}:B) : ({\rm not}:{\rm coda}:B)$'
-is true in (11), we cannot quite conclude that (11) is true because (allByteSequences:) will
-eventually produce the entire byte sequence (11), which will then recursively get re-evaluated
-without limit.  Thus, we have the situation where (11) is equal to
-\begin{equation}\label{eqn}
-() () () () () \dots ()\  (some\ undecided\ data)
-\end{equation}
-with endless empty sequences concatenated with forever undecided data.
-We know that the undecided data will never produce an atom, but we also know that it will never disappear,
-meaning that (11) never quite becomes equal to (), which is the definition of `truth.'  This appears
-to be a satisfying answer.  A G\"{o}del-like limitation appears, but, it is also clear that coda
-is essentially consistent in the sense that no actual contradiction can appear, even though we
-cannot prove that the expression `there will be no contradiction' is true in the coda internal sense.
+\begin{definition}
+A {\bf semiring} is a collection of data with an associative multiplication with unit 1, with associative addition with unit 0, and where 
+multiplication distributes over addition, from the right, as in $(f+g)\cdot h=(f\cdot h)+(g\cdot h)$.  
+\end{definition} 
 
-\section{Paradoxes}
-
-     Here we examine logical paradoxes as a way of stress testing the proposed conception of logic.
-From the coda point of view, any proposition, paradox or not, should be represented as pure data.
-Any pure data can be evaluated in a given context, and coda must, therefore, give a coda-logical result for 
-any such proposition.
-
-\subsection{G\"{o}del}
-
-Recall the overall structure of G\"{o}del's second incompleteness theorem\cite{Godel}.  G\"{o}del cleverly constructs a `G\"{o}del sentence' G
-in Peano Arithmetic (PA) that says of itself that G is not provable in PA.  Assuming that PA is consistent in the sense
-that sentences proven in PA are actually, platonically true, we proceed to reason outside of PA in platonic logic as follows.
-\begin{enumerate}
-\item Suppose that G is false;
-\item Then G is provable in PA;
-\item Since PA is consistent, by assumption, G is platonically true;
-\item Therefore G is not provable in PA.  $\Rightarrow\!\Leftarrow$;
-\item Therefore, G is true.
-\end{enumerate}
-Thus, we conclude that G is platonically true, but G is not provable within PA.
-
-In coda, data $X$ is provable if and only if $X=()$, so we only have to evaluate a `G\"{o}del coda' $G?$
-with definition $G?\mapsto {\rm not}:G?$.   This definition is established by
+\noindent In summary, the endomorphisms of a space are a semiring with operations as described.  
+If $f$, $g$, and $h$ are endomorphisms of S with structures $s$, we have the following.  
 \begin{itemize}
-\item let G : not : G?
-\end{itemize}
-in the coda language.
-Evaluating $G?$ a few times, we conclude that $G?$ is equal to the undecided data
-\begin{equation}\label{eqn}
-{\rm (not:(not:(not:(not:(not:(not:(not:(not:(not:(({not}:):({G?}:)))))))))))}
-\end{equation}
-which is neither true (empty) nor false (atomic).
-Since further evaluation of (13) just produces more of the same, $G?$ is an example of data which is {\it undecidable}.   At this point,
-G\"{o}del's argument could be repeated to conclude that $G?$ is platonically true, but unprovable in coda.  This seems less
-appealing than in G\"odel's argument, just because the self-referential source of the problem is so much more obvious.  An alternative
-is to adopt coda logic platonically and just consider $G?$ to be neither true nor false.
-
-\subsection{Berry}
-
-     One possible attitude about, say, the Liar Paradox, is to just exclude 
-the paradox from mathematical consideration.  After all, not all English sentences make sense mathematically, and perhaps the liar paradox is just another such sentence.  
-This point of view becomes much less convincing with Berry's paradox\cite{Berry} since Berry's proposal 
- seems like a legitimate mathematical question.  What is 
- \begin{itemize}
- \item {\it The smallest positive integer not definable in less than twelve words?}
+\item[-]{If $f$ is a space as well as an endomorphism, $f\cdot(g+h)=f\cdot((f\cdot g)+(f\cdot h))$.  If 
+$f$ is a distributive space then $f\cdot(g+h)=(f\cdot g)+(f\cdot h)$, so $f$ distributes from the left and the right.}
+\item[-]{$0\cdot f=0$.  If $f$ is a space, $f\cdot 0=0$ also.  Since 1=S is always a space, $1\cdot 0=0$.  If 1=0, 
+S=S$\cdot${\bf null}, so (S:X)=(S:) for all data X, in other words, S is a {\it constant} space.}
+\item[-] {If $f$:X\ Y = $f$:Y\ X for all X,Y, $f$ is an {\bf algebraic} endomorphism.  If $f$ is algebraic, and $g$ is any endomorphism,  
+$g\cdot f$ is algebraic.  If $f$ and $g$ are algebraic, so is $f+g$.  Thus, if Alg(S) are the algebraic endomorphisms, 
+Alg(S) is a sub-semiring and is an ideal in the sense that $f\cdot$Alg(S)=Alg(S).}
+\item[-] {Data (S:X) in S is {\bf in the kernel} of $f$ if (f:S:X) = (S:).  If $f$ is a space, then (S:X) and (S:Y) in the kernel of $f$ implies 
+(S:X)\ (S:Y) is also in the kernel.  If the converse holds, we say that $f$ is a {\bf positive} space.  If $f$ and $g$ are positive, so is 
+$f\cdot g$ and $f+g$ and 1 and 0, so positive endomorphism are a sub-semiring of mor(S).}
+\item[-]{$f$ is an {\it involution} if $f\cdot f=1$.  Involutions $f$ and $g$ commute if and only if $f\cdot g$ is an involution.  If $f\cdot f=f$, $f$ is {\it idempotent}.}
+\item[-]{If $f\cdot f'=f'\cdot f=1$ for some endomorphism $f'$, then $f$ and $f'$ are {\bf units} in the group of units.}
+\item[-]{If $s$=S, then every endomorphism is a product $u\cdot i$ of a unit $u$ and an idempotent endomorphism $i$.} 
  \end{itemize}
-The problem is this.  Surely, for any positive integer $N$, $N$ either is or isn't definable in less than twelve words.
-There is, therefore, a smallest integer that isn't definable in less than twelve words.  But if such an integer exists, we have succeeded in defining it in
-less than twelve words.  This is a contradiction.
 
-    Let's agree that a positive integer is `definable in coda' if it appears in the sequence (\{$s$\}:) for some 
-byte string $s$.  Let (bytes:N) produce all byte sequences with length less than or equal to N and let 
-(posint:B) filter for any positive integers which happen to be in it's input.  Let (berry:B) be the smallest 
-positive integer not in B.  Then  
-\begin{equation}
-{\rm berry:posint:coda:bytes:26}
-\end{equation}
-computes the smallest positive integer not definable in coda in less than 26 bytes.  
-Since, however, (14) is 26 bytes long, the entire string `berry:posint:coda:bytes:26' 
-will eventually re-appear as an input to `coda' guaranteeing that (14) can never evaluate to a positive integer.  
-Thus, (14) is in the coda logical category {\it undecidable}.  
+\section{Examples}
 
-\subsection{Curry}
+\subsection{{\bf pass} and {\bf null}} 
 
-Curry's paradox\cite{Curry} is another self-referential paradox.
-\begin{equation}
-{\rm If\ (15)\ is\ true,\ then\ Germany\ borders\ China.}
-\end{equation}
-We reason as follows.  Suppose (15) is true.  Then Germany borders China.  We have thus
-proved `If (15) is true, then Germany border China'.  This is exactly (15).
+    By definition, {\bf pass}:X=X and {\bf null}:X=() for any data X, so {\bf pass} and {\bf null} are both distributive, positive spaces.  As containers, {\bf pass} contains all data and {\bf null} contains only the empty sequence.  
+Of the two, only {\bf null} is an {\it algebraic} space, and is ``more mathematical'' than {\bf pass}, which, after all, contains everything.  
+From a preorder perspective, {\bf null}$\le$X$\le${\bf pass} for all X, {\bf pass} is only {\it compatible} with itself, and {\bf null} is {\it compatible} with every {\bf constant} space.  The kernel of {\bf pass} is the empty sequence only, while every data is in the kernel of {\bf null}.  {\bf pass} and {\bf null} are also 
+{\it complementary} since they contain each other's kernels.  
 
-In coda, we can define
-\begin{itemize}
-\item let Curry's\_sentence : imply Curry's\_sentence? : Germany\_borders\_China?
-\end{itemize}
-Here (imply $A$:$B$) has the standard truth table for implication when $A$ and $B$ are true and false and
-is undecided otherwise.  When evaluated in coda, `Curry's\_sentence?', as expected, is forever undecided data.  It is undecidable.
-
-\subsection{Yablo}
-
-     Since the Liar, Berry and Curry paradoxes have self-referential sentences, it is tempting to think
-that self-referential sentences is the source of the problem.  That this is not true was shown by Yablo\cite{Yablo} who
-pointed out a simple paradox with no self-referential sentences.  Consider an infinite sequence
-of sentences $Y_1,Y_2,\dots$ 
-\begin{enumerate}
-\item $Y_i$ is false for all $i>1$.
-\item $Y_i$ is false for all $i>2$.
-\item $Y_i$ is false for all $i>3$.
-\item \dots
-\end{enumerate}
-Suppose that $Y_n$ is true for some $n$.  Then all sentences greater than $Y_n$ are false.  But this means
-that all sentences greater than $Y_{n+1}$ are also false, which means that $Y_{n+1}$ is true, contradicting
-the assumption that $Y_n$ is true.  Thus, $Y_n$ cannot be true for any $n$.  But if all $Y_n$ are all false, then
-$Y_0$ is true.  This is a contradiction.
-
-     As in the previous cases, we can proceed concretely.  Introduce a definition for Yablo as follows.
-\begin{itemize}
-\item def Yablo : \{ap not : Yablo : skip 1 : nat : B\}
-\end{itemize}
-so that $({\rm Yablo}:n)$ is true if $({\rm Yablo}:n+1), ({\rm Yablo}:n+2), \dots$ are all false.
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{Yablo.png}
-\caption{{\it Evaluation of Yablo's proposition (Yablo:1) in a coda notebook, showing that (Yablo:1) remains undecided to depth 20, 
-as might be expected.}}
+\includegraphics[width=0.6\textwidth]{Pass-has.png}
+\caption{{\it In a definition adopted from Category Theory, if S with structure $s$ and T with structure $t$ are isomorphic, the top diagram commutes for some morphism $\alpha$ and some morphism $\alpha'$ where S and T function as their own `identity morphisms.' }}
 \end{figure}
-Figure 4 shows the standard evaluation of (Yablo:1) in coda to depth 20.  In the G\"odel case, it is `obvious' from
-the output that evaluating to greater depth will change nothing.  We have not attempted to actually
-prove it, but (Yablo:1) empirically remains undecided to depth 20 and we can expect that nothing changes 
-at greater depth. 
-\subsection {Questions that have no answers} 
-    It is certainly true that questions in Mathematics may seem syntactically reasonable, but 
-may actually have no answer.  For example, `Is $x=y$?' when $x$ and $y$ have not been defined, or 
-`What is the last natural number?' or `What is the sum of all the natural numbers?' or 
-any of the paradoxes examined in this section.  In coda, all of these are in the 
-logical category {\it undecided} and all but the first are also in the category {\it undecidable}.  
-Undecided data are `questions that currently have no answer' and undecidable data are 
-`questions that can never have an answer.'  In a sense, the Liar paradox has no answer 
-in the same way that the natural numbers have no last element.  
 
-\section{Summary}
+Since {\bf null}$\cdot f${\bf null}={\bf null}, {\bf null} is the only endomorphism of {\bf null}, so the semiring of {\bf null} contains only one data. 
+On the other hand, the semiring of {\bf pass} includes all data with product $f\cdot g$ and with $f+g={\bf pass} \cdot (f \oplus g)$.  
+Since {\bf pass}$\cdot f\cdot ${\bf pass}=$f$, any data $f$ is an endomorphism of {\bf pass}.  
+Thus, every idempotent is an idempotent endomorphism of {\bf pass}, any space is a space endomorphism of {\bf pass}.  In a sense, {\bf pass} and {\bf null} are the simplest examples of spaces.  On the other hand a complete 
+analysis of the semiring of {\bf pass} is far out of reach.  
 
-An axiomatic foundation for Mathematics is proposed, taking {\it finite sequence} as the starting point, rather than starting with logic, sets or types.  
-In this framework, called `coda,' all mathematical quantities are {\it pure data}.  Coda has only one axiom, the {\it Axiom of Definition}, which defines 
-what constitutes a valid definition.  The axiom induces a stable classification of pure data which we interpret as a logical system with 
-$empty/atomic/neither$ data interpreted as $true/false/undecided$ logical values respectively.  A language is introduced via the axiom which 
-gives programmatic control over pure data operations.  All byte sequences are valid language expressions so language axioms and 
-axioms defining valid and invalid syntax are not needed.  Proof and computation are defined in terms of data equality.  Unlike 
-dependent type systems with a Curry-Howard correspondence, proof and computation are the same thing in coda.  A theory of {\it spaces} and 
-{\it morphisms} is introduced and apparently plays a role analogous to the role of Category Theory in modern  
-Mathematics.  We make a first attempt at `Mathematical Machine Learning' where spaces are deduced from a classification problem. 
-As an exercise of the proposed logic, we computationally address the issue of the consistency of Mathematics and paradoxes 
-due to G\"odel, Berry, Curry and Yablo.  We reach a positive conclusion about the consistency of Mathematics and reach seemingly 
-satisfying conclusions about the paradoxes where each paradox results in data in the undecidable category.  
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{Pass-garden.png}
+\caption{{\it In a definition adopted from Category Theory, if S with structure $s$ and T with structure $t$ are isomorphic, the top diagram commutes for some morphism $\alpha$ and some morphism $\alpha'$ where S and T function as their own `identity morphisms.' }}
+\end{figure}
 
-    A great deal of further work seems warranted.  Only crude evaluation strategies have been attempted so far and this is an area 
-where large gains are likely.  These gains are likely important for developing tools for Mathematical exploration and proof assistance.  
-The example of Mathematical Machine learning in Section 6 is, at most, a hint at what's possible.  The apparently rich theory 
-of spaces seems promising and has just barely started.   
+As might be expected, {\bf pass} is isomorphic to subspaces of itself.  For example (Figure X), {\bf pass} is isomorphic to the space {\bf has} of (:X) atoms. 
+
+\subsection{Natural Numbers}
+
+Since concatenation is one of the two foundational operations, that suggests that the most ``organic'' version of natural numbers is to represent a natural number $n$ by a sequence of $n$ copies of some standard atom, for instance, if N is {\bf ap}\ \{$\vert$\}, N:X is a sequence of "sticks", one for each atom in X, and (N:X\ Y) is the natural number sum of the number of atoms 
+in X plus the number of atoms in Y.  Since \{$\vert$\} is idempotent, N is a distributive space, and, therefore, a positive space with empty neutral data.  The kernel of N is also the empty 
+sequence since only  
+Without additional structure, the endomorphisms of N are data N$\cdot f\cdot$N for some data f, and this includes any function from naturals to naturals in the ordinary sense.  
+
+    To add structure to N or to any space, one must find a space endomorphism of N, such as 
+\begin{itemize}
+\item[(a)]{N is a space endomorphism of itself.}
+\item[(b)]{{\bf const}\ $\vert\ \vert\ \vert$, is a space endomorphism, since all constants are spaces.}
+\item[(c)]{{\bf mod}\ $\vert\ \vert$, is a space endomorphism (mod $\vert\ \vert$:X is the number of atoms in X modulo 2)}
+\item[(d)]{{\bf less}\ $\vert\ \vert\ \vert$, (min $\vert\ \vert\ \vert$:X is the minimum of 3 and the number of atoms in X)} 
+\end{itemize}
+where {\bf const} and {\bf less} happen to be pre-defined (see Glossary), and {\bf mod} has been defined via 
+\begin{itemize}
+\item{}def mod : \{while frontstrip A:B\} 
+\end{itemize}
+so, for instance, {\bf mod}\ $\vert\ \vert$:X repeatedly removes two vertical bars, if possible, stopping when the result no longer changes. 
+
+\subsection{An isomorphism theorem}
+
+\begin{fact}  If space $S{\overset \alpha \cong}T$ is an isomorphism of spaces, then the monoids of S and T are isomorphic.  
+If $\alpha$ and it's inverse are distributive, the semirings of S and T are isomorphic as well. 
+\end{fact}
+
+As a consequence, $S$ and $T$ have the same involutions, idempotents, units, structure endomorphisms.  If $\alpha$ and it's inverse are distributive, then $S$ and $T$ also have the same spaces.  [Q?] If $S$ is algebraic, is $T$ also?  If $S$ is positive, is $T$ also?
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{isomorphism.png}
+\caption{{\it In a definition adopted from Category Theory, if S with structure $s$ and T with structure $t$ are isomorphic, the top diagram commutes for some morphism $\alpha$ and some morphism $\alpha'$ where S and T function as their own `identity morphisms.' }}
+\end{figure}
+
+\section{Glossary}
+
+For example, starting with context $\delta$, we can add more atoms of the form $\delta_a:c\mapsto c$:
+\begin{enumerate}
+\item[-]{$\delta_{(:)}$ : ((:) A : B) $\mapsto$ ((:) A : B), {\it single bit atoms where ((:):), ((:):(:)) are zero,one respectively.}}
+\item[-]{$\delta_{((:):)}$ : (((:):) A : B) $\mapsto$ (((:):) A : B), {\it eight bit bytes.}}
+\item[-]{$\delta_{((:):(:))}$ : (((:):(:)) A : B) $\mapsto$ (((:):(:)) A : B), {\it byte sequences}.}
+\end{enumerate}
+so that text strings or other data are atomic data within $\delta\cup\delta_{(:)}\cup\delta_{((:):)}\cup\delta_{((:):(:))}$.  We can then proceed to add named 
+definitions that `get coda components':
+\begin{enumerate}
+\item[-]{$\delta_{\bf pass}$ : ({\bf pass} A:B) $\mapsto$ B}
+\item[-]{$\delta_{\bf null}$ : ({\bf null} A:B) $\mapsto$ ()}
+\item[-]{$\delta_{\bf right}$ : ({\bf right} A:B) $\mapsto$ B} 
+\item[-]{$\delta_{\bf arg}$ : ({\bf arg} A:B) $\mapsto$ A} 
+\end{enumerate}
+and can add definitions for simple combinatorics 
+\begin{enumerate}
+\item[-]{$\delta_{\bf ap}$ : ({\bf ap} A : b B) $\mapsto$ (A:b) (ap A:B), {\it apply A to each atom in B.}}
+\item[-]{$\delta_{\bf rev}$ : ({\bf rev} A : B b) $\mapsto$ b (rev : B), {\it reverse the order of atoms in B.}}
+\end{enumerate}
+
+definitions computing the boolean value of data 
+\begin{enumerate}
+\item[-]{$\delta_{\bf bool}$ : ({\bf bool} A : B b) $\mapsto$ () if B is empty, (:) if B is atomic, {\it logical value of B.}}
+\end{enumerate}
+definitions making new definitions  
+\begin{enumerate}
+\item[-]{$\delta_{\bf def}$ : ({\bf def} a : B) $\mapsto$ Add $\delta_a$ to context if $a$ is an unused invariant atom.} 
+\end{enumerate}
+As explained in reference \cite{PDF}, a language is introduced merely as one more definition where the domain of the language context $\delta_{\{\}}$ is 
+codas starting with a curly brace as in (\{{\it language expression}\} A : B).  
+\begin{enumerate}
+\item[-]{$\delta_{\bf bool}$ : ({\bf bool} A : B b) $\mapsto$ () if B is empty, (:) if B is atomic, {\it logical value of B.}}
+\end{enumerate}
+definitions making new definitions  
+\begin{enumerate}
+\item[-]{$\delta_{\bf def}$ : ({\bf def} a : B) $\mapsto$ Add $\delta_a$ to context if $a$ is an unused invariant atom.} 
+\end{enumerate}
+As explained in reference \cite{PDF}, a language is introduced merely as one more definition where the domain of the language context $\delta_{\{\}}$ is 
+codas starting with a curly brace as in (\{{\it language expression}\} A : B).  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% \bibliography{jpsi}
 \begin{thebibliography}{10}
-\bibitem{Type} Dybjer, Peter and Erik Palmgren, {\it Intuitionistic Type Theory}, The Stanford Encyclopedia of Philosophy (Spring 2023 Edition), Edward N. Zalta \& Uri Nodelman (eds.)
-\bibitem{Type2} Steve Awodey and Thierry Coquand, {\it Univalent Foundations and the Large-Scale Formalization of Mathematics}, Institute for Advanced Study, 2013.
-\bibitem{HOTT} {\it Homotopy Type Theory: Univalent Foundations of Mathematics}, Institute for Advanced Study, 2013.
-\bibitem{aldor} S.Watt, {\it Dependent Types and Categorical Programming}, TRICS, University of Western Ontario, 2012, available as {\rm https://cs.uwaterloo.ca/}$\sim${\rm smwatt/talks/2012-trics-categorical.pdf}; pp. 265-270, in Handbook of Computer Algebra J. Grabmeier, E. Kaltofen, V. Weispfenning (editors) , Springer Verlag, Heidelberg 2003 , ISBN 3-540-65466-6; S.Youssef, {\it Prospects for Category Theory in Aldor}, 2008, {\rm https://physics.bu.edu/}$\sim${\rm youssef/aldor.pdf}.
-\bibitem{ZFC} Bagaria, Joan, {\it Set Theory}, The Stanford Encyclopedia of Philosophy (Spring 2023 Edition), Edward N. Zalta \& Uri Nodelman (eds.)
-\bibitem{github} An implementation of coda in Python is available at {\rm https://github.com/Saul-Youssef}.  The software includes Python API, a command line 
-interface and a Jupyter notebook plug-in.  
-\bibitem{egg} The coda language is a descendent of {\it egg}.  See Saul Youssef, John Brunelle, John Huth, David C. Parkes and Margo Seltzer {\it Minimal Economic Distributed Computing}, arXiv:0902.4730.  J. Brunelle et al., In GECON 2006: Proceedings of the 3rd International Workshop on Grid Economics and Business Models, Singapore, 16 May 2006, ed. H. Lee, and S. Miller. Singapore; Hackensack, NJ: World Scientific.
-\bibitem{Curry} Shapiro, Lionel and Jc Beall, {\it Curry’s Paradox}, The Stanford Encyclopedia of Philosophy (Winter 2021 Edition), Edward N. Zalta (ed.)
-\bibitem{Godel} Raatikainen, Panu, {\it Gödel’s Incompleteness Theorems}, The Stanford Encyclopedia of Philosophy (Spring 2022 Edition), Edward N. Zalta (ed.)
-\bibitem{Yablo} S. Yablo (1985). {\it Truth and reflection}. Journal of Philosophical Logic. 14 (2): 297–348. doi:10.1007/BF00249368.
+\bibitem{PDF} {\it Pure Data Foundation of Mathematics and Computing}, Saul Youssef, 2023.
 \bibitem{Berry} Nicholas Griffin (2003-06-23). {\it The Cambridge Companion to Bertrand Russell}. Cambridge University Press. p. 63. ISBN 978-0-521-63634-6.
 \bibitem{Mazur} Barry Mazur, {\it When is one thing equal to some other thing?}, Harvard University, 2007,  {\rm https://people.math.harvard.edu/}$\sim${\rm mazur/preprints/when\_is\_one.pdf}. 
 \end{thebibliography}

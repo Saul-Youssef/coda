@@ -57,6 +57,7 @@ def pow : {prod (dup A : (:B))}
 #   demo: fun (bin a b c:x y z) : a b c
 #   demo: fun (bin a:11) (bin b:22) (bin c:45) : b
 #   demo: ap fun (bin a:11) (bin b:22) (bin c:45) : a b c
+#   demo: map (bin has a:rev) : a b c
 #   demo: map (bin {a=(first:B)}:{45}) : a b c
 #   demo: map (bin {a=(first:B)}:{45}) : x a b c
 #   demo: map (bin {a=(first:B)}:{45}) (bin {not:a=(first:B)}:pass) : a b c

@@ -3,9 +3,8 @@
 #
 #   The kernel of a space
 #
-#   demo: Ker is a b : a x y a b z z 
+#   demo: ker is a b : a x y a b z z 
 #
-#def Ker : ap {if ((A:B)=(A:)):B} 
 def ker : apif {(A:B)=(A:)} 
 #  
 def Seq : {ap (in A:B)} 
@@ -52,12 +51,8 @@ Def involution : ap {bool:(get:B)=(A:A:get:B)}
 Def nilpotent : ap {bool:(A:get:B)} 
 Def identity : ap {bool:(get:B)=(A:get:B)} 
 #
-#   Spaces must be idempotent as well as satisfying SP  
+#   Searching 
 #
-#Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) #(A:tail 1:get:B)))}  
-#
-#   SP pass : (:(:aaa) (:bbb)) 
-#
-#Def SP : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 
-#Def space : {bool:((A:get:B)=(A:(A:head 1:get:B) (A:tail 1:get:B)))}
-Def preSpace : {(A:get:get:B)=((A:(A:get:head 1:get:B) (A:get:tail 1:get:B)))} 
+Def idempotent_search : ap {with (get:B):bool : idempotent (get:B) : A}
+Def algebraic_search : ap {with (get:B):bool : algebraic (get:B) : A}
+Def involution_search : ap {with (get:B):bool : involution (get:B) : A} 

@@ -75,3 +75,8 @@ def prepoly : {prepoly_ 0 A : B}
 #   demo: pair a b c : 1 2 3
 #
 def pair : {ap {:(arg:B) (right:B)} : ar bin A : B}
+#
+#   demo: default 1 2 3 : a b c
+#   demo: default 1 2 3 :
+#
+def default : {map (bin not:pass) (bin bool:const A):B}

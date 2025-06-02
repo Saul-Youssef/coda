@@ -41,12 +41,18 @@ class End(object):
     def positive(self):
         for e in self:
             if e.positive(): yield e 
+    def units(self):
+        for e in self:
+            if e.unit(): yield e 
     def special(self):
         for e in self._special: yield e 
     def is_special(self,f):
         return any([f==s for s in self.special()]) 
     def commute_with_special(self,f):
         return any([f.commute(s) for s in self.special()]) 
+    def centralizer(self):
+        for e in self:
+            if all([e.commute(u) for u in self.units()]): yield e 
 
 class endo(object):
     def __init__(self,vals):

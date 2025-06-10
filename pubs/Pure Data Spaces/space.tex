@@ -703,50 +703,30 @@ on \{0,T,F\} suggests that the standard binary operator names (`OR' as opposed t
 \section{Glossary}
 
 \begin{enumerate}
-\item const 
-\item first 
-\item get 
-\end{enumerate}
-
-For example, starting with context $\delta$, we can add more atoms of the form $\delta_a:c\mapsto c$:
+\item {Basics
 \begin{enumerate}
-\item[-]{$\delta_{(:)}$ : ((:) A : B) $\mapsto$ ((:) A : B), {\it single bit atoms where ((:):), ((:):(:)) are zero,one respectively.}}
-\item[-]{$\delta_{((:):)}$ : (((:):) A : B) $\mapsto$ (((:):) A : B), {\it eight bit bytes.}}
-\item[-]{$\delta_{((:):(:))}$ : (((:):(:)) A : B) $\mapsto$ (((:):(:)) A : B), {\it byte sequences}.}
+\item{$\delta_{\rm const}$ : (const A : B) $\mapsto$ A)}
+\item{$\delta_{\rm put}$ : (put A : B) $\mapsto$ (A:B)}
+\item{$\delta_{\rm get}$ : (get : (:B)) $\mapsto$ B....FIXME}
+\item{$\delta_{\rm atoms}$ : (atoms : b B) $\mapsto$ (:)\ (atoms : B)}
+\item{$\delta_{\rm bin}$ : (bin A:B) $\mapsto$ (bin A:B), atom}
 \end{enumerate}
-so that text strings or other data are atomic data within $\delta\cup\delta_{(:)}\cup\delta_{((:):)}\cup\delta_{((:):(:))}$.  We can then proceed to add named 
-definitions that `get coda components':
+}
+\item {Control
 \begin{enumerate}
-\item[-]{$\delta_{\bf pass}$ : ({\bf pass} A:B) $\mapsto$ B}
-\item[-]{$\delta_{\bf null}$ : ({\bf null} A:B) $\mapsto$ ()}
-\item[-]{$\delta_{\bf right}$ : ({\bf right} A:B) $\mapsto$ B} 
-\item[-]{$\delta_{\bf arg}$ : ({\bf arg} A:B) $\mapsto$ A} 
+\item{$\delta_{\rm if}$: (if ():B) $\mapsto$ B }
+\item{$\delta_{\rm if}$: (if a A:B) $\mapsto$ () }
+\item{$\delta_{\rm while}$: (while A:B) $\mapsto$ B if (A:B)=B }
+\item{$\delta_{\rm while}$: (while A:B) $\mapsto$ (while A: A : B) }
 \end{enumerate}
-and can add definitions for simple combinatorics 
+}
+\item{Sequence 
 \begin{enumerate}
-\item[-]{$\delta_{\bf ap}$ : ({\bf ap} A : b B) $\mapsto$ (A:b) (ap A:B), {\it apply A to each atom in B.}}
-\item[-]{$\delta_{\bf rev}$ : ({\bf rev} A : B b) $\mapsto$ b (rev : B), {\it reverse the order of atoms in B.}}
+\item{$\delta_{\rm first}$ : (first : b B) $\mapsto$ b}
+\item{$\delta_{\rm first}$ : (first : ()) $\mapsto$ ()} 
+\end{enumerate} 
+}
 \end{enumerate}
-
-definitions computing the boolean value of data 
-\begin{enumerate}
-\item[-]{$\delta_{\bf bool}$ : ({\bf bool} A : B b) $\mapsto$ () if B is empty, (:) if B is atomic, {\it logical value of B.}}
-\end{enumerate}
-definitions making new definitions  
-\begin{enumerate}
-\item[-]{$\delta_{\bf def}$ : ({\bf def} a : B) $\mapsto$ Add $\delta_a$ to context if $a$ is an unused invariant atom.} 
-\end{enumerate}
-As explained in reference \cite{PDF}, a language is introduced merely as one more definition where the domain of the language context $\delta_{\{\}}$ is 
-codas starting with a curly brace as in (\{{\it language expression}\} A : B).  
-\begin{enumerate}
-\item[-]{$\delta_{\bf bool}$ : ({\bf bool} A : B b) $\mapsto$ () if B is empty, (:) if B is atomic, {\it logical value of B.}}
-\end{enumerate}
-definitions making new definitions  
-\begin{enumerate}
-\item[-]{$\delta_{\bf def}$ : ({\bf def} a : B) $\mapsto$ Add $\delta_a$ to context if $a$ is an unused invariant atom.} 
-\end{enumerate}
-As explained in reference \cite{PDF}, a language is introduced merely as one more definition where the domain of the language context $\delta_{\{\}}$ is 
-codas starting with a curly brace as in (\{{\it language expression}\} A : B).  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% 

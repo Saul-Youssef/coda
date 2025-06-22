@@ -1,7 +1,4 @@
-% $Id: preview.tex,v 1.19 1998/06/22 08:07:00 ohl Exp $
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \NeedsTeXFormat{LaTeX2e}
 \documentclass[11pt]{article}
 \usepackage{amsmath,amssymb,amsthm}
@@ -14,7 +11,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeindex
 \begin{document}
-\title{\bf {PURE DATA SPACES....DRAFT...DRAFT...DRAFT}}
+\title{\bf {PURE DATA SPACES....DRAFT...getting there...}}
 \author{%
   SAUL YOUSSEF%
   \hfil \\
@@ -39,29 +36,13 @@ All about spaces.
 
 \section{Overview}
 
-In Reference 1, we introduced an axiomatic framework, based on the finite sequence as the foundational concept.  
-With finite sequences assumed, we had 
-\begin{itemize}
-\item[1 ]{\it ``Data" is a finite sequence of ``codas,'' where each coda is a pair of data.}
-\end{itemize}
-\noindent This kind of data, such as (:)\ (:(:))\ ((:):(:)\ (:)), is ``pure data'' in the sense that it is ''made of nothing.'' Such data has two natural operations: 
-{\it concatenation} of data A with data B, written (A\ B), and {\it pairing} data A and data B as a {\it coda}, written (A:B).  
-\begin{itemize}
-\item[2 ]{\it Definitions are embodied by a chosen partial function $\delta$ from codas to data called a context.}
-\end{itemize}
-As modest as it is, 1 and 2 appear to be able to capture Mathematics in general.  Consequences include:   
-\begin{itemize}
-\item[-]{Fixed points of $\delta$ ({\it atoms}), represent fixed data such as bits, bytes and text;}
-\item[-]{Data outside the domain of $\delta$ are {\it variables}, which might become defined over time as {\it definitions} are added to $\delta$;} 
-\item[-]{$\delta$ contains it's own {\it language}, allowing user specification of data and adding definitions to $\delta$;} 
-\item[-]{Equality of data A=B is determined by $c\sim\delta(c)$ and by compatibility with finite sequences. Proof and computation are then defined by the equality.  A sequence $A_1=A_2=\dots=A_n$ is both a proof of $A_n$ given $A_1$ and a computation $A_1\mapsto A_n$.  Proof and computation are essentially the same thing;}
-\item[-]{Data is {\it true} if it is empty, {\it false} if it is atomic, and {\it undecided} otherwise.  Undecided data may also be {\it undecidable}, as in the Godel phenomena or other seeming paradoxes.  Data which is {\it never false} as definitions are added is a {\it theorem}.}
-\end{itemize}
+....WRITE INTRODUCTION...
 
-In this work, we investigate the concept of a {\it space}, introduced in Reference 1.  
-
-
-...SEARCHING....ORGANICS....
+\begin{itemize}
+\item Conceptual overview: small(est?) axiomatic system analogous to ZFC, where proof and computation are the same thing.
+\item Point of the paper is to investigate the concept of a "Space" introduced in ref. 1.  This is analogous to ``Set'' or ``Category.''
+\item Theme is to ``grow the simplest spaces organically'' and compare the simplest results with classical mathematics. 
+\end{itemize}
 
 \section{Foundation}  
 
@@ -144,9 +125,11 @@ the expression and possibly using data $A$ and data $B$.}
 \item {Include definitions giving direct access to context-level values.  This include a Boolean definition $\delta_{\rm bool}$ to determine if data is empty, 
 $\delta_{=}$ to test if two data are equal in $\delta$, and $\delta_{\rm def}$ to add definitions via Equation 1.} 
 \end{enumerate}
-There are approximately fifty definitions needed to cover basic system function and combinatorics, making a minimal convenient context for mathematics.  
-We will list a few of these here.  A complete list can be found 
-in the Glossary.  
+These are meant to be a minimal collection of definitions, including only the minimal inevitable finite sequence concepts and, more generally, 
+the combinatorics of Equation X.  There are intentionally no definitions which presume underlying arithmetical operations.  A natural number, 
+`123`, for instance is a single atom byte sequence and there is no definition which implies interpreting this as a number in the usual way.  The idea is
+to allow natural numbers and whatever else to emerge ``organically.'' 
+There are approximately fifty definitions needed to create a basic system system.  We define some here for orientation.  More details can be found in the Glossary.  
 
 \subsection{Bits, Bytes and Byte sequences}
 
@@ -190,13 +173,13 @@ codas $({\rm ap}\ A,B)$ where $B$ starts with an atom.  By definition, if we lis
 
 Axiomatic systems like ZFC[ref] or dependent type theories[ref] are formal languages.  There is an alphabet, special symbols, and syntax rules 
 for defining valid expressions.  Our approach avoids this by defining a language as just one more definition like any other.  The basic idea is to 
-define minimalist language, mainly giving access to the two basic operations via text blank space and text colon.  So, the basic idea is 
+define minimalist language, mainly giving access to the two foundational operations via text blank space (for concatentation) and text colon (for pairing to data as a coda).  So, the idea is 
 \begin{itemize}
 \item {$\delta_{\{\}}$ : (\{x\ y\} A : B) $\mapsto$ (\{x\} A:B) (\{y\} A:B)}
 \item {$\delta_{\{\}}$ : (\{x:y\} A : B) $\mapsto$ (\{x\} A:B) : (\{y\} A:B)}
 \end{itemize}
 where x and y are byte sequences as defined above.  As written, this is ambiguous since $x$ and $y$ may contain space and colon characters, but 
-these ambiguities can easily be resolved by choosing and order in the text string and by ordering the above, thus forcing the language into one definition 
+these ambiguities can be resolved just by choosing and order, thus forcing the language into one definition 
 $\delta_{\{\}}$.  This definition includes 
 \begin{itemize}
 \item {$\delta_{\{\}}$ : (\{A\} A : B) $\mapsto$ A}
@@ -261,11 +244,6 @@ Following standard terminology, we say that $A$ is {\it idempotent} if $A\cdot A
 In the case of a {\it product}  A=$A_n\cdot\dots\cdot A_1$, we say that A {\it starts with} $A_1$ and {\it ends with} $A_n$.   
 
 Data $A$ is {\it commutative} if $A:X\ Y$=$A:Y\ X$ for all $X$, $Y$, and is {\it distributive} if $A:X\ Y$=$(A:X)\ (A:Y)$ for all $X$ and for all $Y$.  
-The concepts of commutative and distributive data are complementary in a sense that foreshadows later sections where we investigate `spaces.'  
-Commutative data can be expected to be ``mathematical'' because such data has, in a sense, transcended the finite sequence concept and might be 
-expected to have a Platonic meaning beyond this particular system.  We shall see multiple examples.  Distributive data, on the other hand, is strongly 
-sequence dependent, but is also interesting mathematically because it such data is, in a sense a ``morphism of finite sequences."  To emphasize this theme, we will sometimes refer 
-to commutative data as {\it algebraic} data and will sometimes refer to distributive data as a {\it homomorphism}. 
 
 Any data $A$ can be viewed as defining a binary operation on data defined by ($X{\overset A\ast}Y)=(A:X\ Y)$.  Since ${\overset A\ast}$ is associative if and only if 
  (A:X\ Y)=(A:(A:X)\ Y)=(A:X (A:Y)) for all X,Y we say that data $A$ is {\it associative} if it has this property.  
@@ -307,32 +285,51 @@ More examples come from noting that any data which is both idempotent and distri
 \subsection{Morphisms} 
 
 A product $F$ that starts with space $S$ and ends with space $T$ is a {\it morphism} from $S$ to $T$ and can be written $S{\overset F\longrightarrow}T$.
-A morphism $F$ always defines a function mapping ($S:X$) in $S$ to ($T:F:X$) in $T$.  Since spaces are idempotent, $F\cdot S$=$T\cdot F$=$F$.  Since the product of data is 
-associative, morphisms can be composed as usual, so that if $S{\overset F\longrightarrow}T$ and 
+A morphism $S{\overset F\longrightarrow}T$ always defines a function mapping ($S:X$) in $S$ to ($T:F:X$) in $T$.  
+Since spaces are idempotent, $F\cdot S$=$T\cdot F$=$F$.  Since the product of data is 
+associative, morphisms can be composed, so that if $S{\overset F\longrightarrow}T$ and 
 $T{\overset G\longrightarrow}U$, then $S{\overset {G\cdot F}\longrightarrow}U$.  
+If $F$ and $G$ are morphisms from $S$ to $T$, we can define a {\it sum of morphisms} by $F \oplus G = T\cdot (F+G)\cdot S$, so that 
+$S{\overset {F\oplus G}\longrightarrow}T$.  Note that morphism between any two spaces always exist, because $T\cdot S$ is a morphism from $S$ to $T$.  
+A space $S$ is always ``its own identity morphism'' since $S{\overset S\rightarrow}S$.  
 
-     It is helpful to think of morphisms from $S$ to $S$ as belonging to $S$, and so we will refer to a morphism $S{\overset f\longrightarrow}S$ as a morphism ``of $S$'' and we may indicate this as $f\in S$.
-Morphisms of a space $S$ have a semiring structure which is a slight generalization of the global semiring from Section 5.  Given morphisms $f, g\in S$, we have a semiring with 
-product $f\cdot g$, and with associative sum $f\oplus g$, defined to be $S\cdot (f+g) \cdot S$.  
-Distribution from the right follows as before, so $(f\oplus g)\cdot h = (f\cdot h)\oplus (g\cdot h)$ for all $f,g,h\in$S.  
+     Morphisms $f$, $g$ from a space $S$ to itself are closed under composition via $S{\overset {f\cdot g}\longrightarrow}S$ and are closed under addition 
+via $S{\overset {f\oplus g}\longrightarrow}S$.  
+Distribution from the right follows as in Section 5, with 
+$(f\oplus g)\cdot h = (f\cdot h)\oplus (g\cdot h)$ for all morphisms $f$, $g$ and $h$ from $S$ to $S$.  
 Multiplicative and additive units are inherited via $1$=$S\cdot${\rm pass}$\cdot S$=$S$ and $0$=$S\cdot${\rm null}$\cdot S$, so that 
-$1\cdot f$=$f\cdot 1$=$f$ and $0\oplus f$=$f\oplus 0$=$f$ for all $f\in$S.  For any morphism $f\in S$, $0\cdot f=0$.  
-Since every space $S$ is also a product of spaces starting at $S$ and ending at $S$, every space $S$ also qualifies as a morphism from $S$ to itself ($S{\overset S\rightarrow}S$).
+$1\cdot f$=$f\cdot 1$=$f$ and $0\oplus f$=$f\oplus 0$=$f$ for all $f$.  For any morphism $f$ from $S$ to $S$, $0\cdot f=0$. 
+The spaces where 0=1 are exactly the constant spaces, where ($S$:$X$)=($S$:) for all $X$.  In the special case $S$=pass, 
+the semiring of Section 5 is recovered. 
 
-Given a space $S$, we can identify a number of distinguished classes of morphisms within the semiring of $S$. 
+
+        Since every data ($S$:$X$) in a space $S$ has a corresponding constant morphism $S{\overset {{\rm const}\ (S:X)}\longrightarrow}S$, nothing is lost if we think 
+ of the endomorphisms of a space as embodying its internal structure including the data belonging to the space.  As defined, a 
+ morphism from space $S$ to space $T$ may generally be any function from the data of $S$ to the data of $T$.  
+ Morphisms which also ``preserve the structure'' 
+ of $S$ and $T$ are the `homomorphisms' from $S$ to $T$.   A morphism $F$ from $S$ to $T$ is a {\it homomorphism} if 
+ \begin{equation}
+F\cdot (f\oplus g) = (F\cdot f) \oplus (F\cdot g) 
+\end{equation}
+for all $f,g\in S$.  
+In the special case where $S$ and $T$ are distributive spaces, $f\oplus g$ = $f+g$, and 
+$F$ is a homomorphism if and only if $F$ is distributive.  In the special case where $S=T$, homomorphisms $h\in S$ are exactly the morphisms 
+which distribute both from the left and from the right.  
+
+Given a space $S$, we can identify a number of distinguished classes of morphisms within the semiring of $S$ as follows.
 \begin{itemize}
 
-\item{{\bf Subspaces.} If a morphism $f\in S$ happens to also be a space, we say that $f$ is a {\it subspace} of $S$.  The name ``subspace'' is justified because every data contained in $f$ is also contained in S, and every morphism $f\cdot$X$\cdot f$ of $f$ is also a morphism of $S$.  Algebraically, subspaces partially distribute from the left as 
-in $f\cdot(g\oplus h)=f\cdot((f\cdot g)\oplus(f\cdot h))$.  Every space has subspaces $1$ (the whole space), $0$ (just the neutral data of the space) and every data ($S$:$X$) in $S$ has a corresponding 
+\item{{\bf Subspaces.} If a morphism $f\in S$ happens to also be a space, we say that $f$ is a {\it subspace} of $S$.  The name ``subspace'' is justified because every data contained in $f$ is also contained in S, and every morphism $f\cdot$X$\cdot f$ of $f$ is also a morphism of $S$.  Algebraically, subspaces partially distribute from the left with  
+$f\cdot(g\oplus h)=f\cdot((f\cdot g)\oplus(f\cdot h))$.  Every space has subspaces $1$ (the whole space), $0$ (just the neutral data of the space) and every data ($S$:$X$) in $S$ has a corresponding 
 constant subspace morphism.} 
 
-\item{{\bf Homomorphisms.} If a morphism $f$ is distributive, we say that $f$ is a {\it homomorphism} of S.  
-Homomorphisms distribute both from the left as well as the right, so that $f\cdot(g\oplus h)=(f\cdot g)\oplus(f\cdot h)$ if $f$ is a homomorphism.  If $f$ and $g$ are 
-homomorphisms, so is $f\cdot g$.}
-
 \item {{\bf The Group of units}. The collection of morphisms $g\in$S with multiplicative inverses ($g\cdot g'=g'\cdot g=1$) is called {\it the group of units} of the space $S$.  
-The group of units may including {\it involutions} where $g\cdot g=1$.  As usual, involutions $g$ and $h$ commute if and only if $g\cdot h$ is also an involution.  Data in $S$ which is invariant under the group of units is 
+The group of units may including {\it involutions} where $g\cdot g=1$.  Data in $S$ which is invariant under the group of units is 
 called {\it central} data.  Morphisms which commute with the group of units are called {\it central} morphisms.}
+
+\item{{\bf Homomorphisms.}  A homomorphism $f\in S$ satisfies $f\cdot (g\oplus h) = (f\cdot g)\oplus (f\cdot h)$ for all $g,h\in S$.  If 
+$f,g\in S$ are homomorphisms, then $f\cdot g$ is a homomorphism, and, if $S$ is algebraic, $f\oplus g$ is also a homomorphism.  Since 0 and 1 are always homomorphisms, 
+homomorphisms are a sub-semiring if $S$ is an algebraic space.  Central homomorphisms are of special interest as these are, in a sense, the maximally platonic homomorphisms.}
 
 \item {{\bf Algebraic Morphisms.} The morphisms of an algebraic space are automatically algebraic as well.  In general, if $f,g\in$S and $f$ is algebraic, then $g\cdot f$ is algebraic.  If both 
 $f$ and $g$ are algebraic, $f\oplus g$ is algebraic.}
@@ -361,28 +358,23 @@ Since the morphisms of $S$ automatically includes a constant subspace for each d
 
 \subsection{Isomorphisms} 
 
-Borrowing a definition from category theory, spaces $S$ and $T$ are {\it isomorphic} if the diagram in Figure X commutes for 
-some morphisms $\alpha$ and $\alpha'$, where $S$ and $T$ serve as their own ``identity morphisms.''  It easily follows that 
-the semirings of S and T are isomorphic as monoids, and thus, have the same idempotents, involutions, group of units and identity.  
-If $\alpha$ and $\alpha'$ are homomorphisms, we say that $S$ and $T$ are {\it homeomorphic}.  In this case, 
-the semirings of $S$ and $T$ are isomorphic as semirings. 
+     If the diagram in Figure X commutes for spaces $S$, $T$ and for some homomorphisms $\alpha,\alpha'$, we say that $S$ and $T$ are {\it isomorphic} spaces.  
+It easily follows that the semirings of S and T are isomorphic as monoids, and thus, have the same idempotents, involutions, group of units, homomorphisms, subspaces, 
+constants and identity.   As a special case, if $S$ and $T$ are distributive spaces, then $\alpha$ and $\alpha'$ may be any distributive morphism.  
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.4\textwidth]{isomorphism.png}
-\caption{{\it In a definition adopted from Category Theory, spaces S and T are isomorphic if the diagram commutes, using S and T themselves instead of identity morphisms.}}
+\caption{{\it In a definition adopted from Category Theory, spaces S and T are isomorphic if the diagram commutes for some homomorphisms $\alpha$ and $\alpha'$.}}
 \end{figure}
-
-The basic theory of spaces and morphisms gives us enough of a framework to investigate spaces.  Our strategy is first look at the spaces which emerge most 
-simply, ``organically'' and naturally from the space of all pure data.
 
 \subsection{Organic Spaces}
 
-   Since the general concept of a collection leads directly to Definition 3, it is clear that spaces must play a fundamental role 
+   Since the general concept of a collection leads to Definition 3, it is clear that spaces must play a fundamental role 
 in the mathematics of pure data, perhaps in a way analogous to the role that Sets or Categories play in classical mathematics. However, it is also 
 clear that spaces are quite different from either Sets or Categories.  Most basically, a set is defined by its contents and a space is not.  For example,
-the space (ap \{a\}) contains the same data as (is a), but these spaces are not equal.  
-Since a space always contains its neutral data ($S$:), unlike a set, a space can never be empty.  An implicit operation mapping 
-($S$:$X$) and ($S$:$Y$) to ($S$:$X$\ $Y$), means that spaces come with a richer internal structure than Sets.  
+the space (ap \{a\}) contains the same data as (is a), but these spaces are not equal.    
+Since a space always contains neutral data ($S$:) a space can never be empty.  An implicit operation mapping 
+($S$:$X$) and ($S$:$Y$) to ($S$:$X$\ $Y$), means that a space always somes with some algebraic structure.  
 Although spaces have morphisms and associative composition, the theory of spaces must also be quite different than Category Theory because, for example, morphisms exist 
 between any two spaces.  
 These considerations suggests that pure data spaces may provide a different, and possibly interesting perspective on known mathematics.  
@@ -395,7 +387,7 @@ the basic definitions which also happen to be spaces, some of which are shown in
 spaces ``grow organically'' from the space of all pure data and examine the simplest results first.  
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.6\textwidth]{garden.png}
+\includegraphics[width=0.8\textwidth]{garden1.png}
 \caption{{\it The space of all pure data contains all mathematical objects.  Our strategy for exploring this space is to first introduce 
 the minimal combinatorics implicit from the foundational finite sequence concept, and then examine the simplest spaces first as they 
 appear ``organically.''  Since algebraic spaces are commutative, they, in a sense, transcend the foundational sequence concept and are more ``Platonic.''}}
@@ -415,12 +407,17 @@ additive identities of pass are $1$=pass$\cdot$pass$\cdot$pass=pass, and $0$=pas
 $X$ is actually a morphism of pass, since $X$=pass$\cdot X\cdot$pass.  Consider the classes of morphism defined in Section 6. 
 \begin{itemize}
 \item{{\bf Subspaces.}  Since every data is a morphism of pass, every space is a subspace of pass.}
-\item{{\bf Homomorphisms.} By definition, the homomorphisms of pass are the distributive data $D$ with the property $D$:$X$\ $Y$=($D$:$X$)\ ($D$:$Y$).}
-\item{{\bf The Group of Units.} The units of pass are the permutations such as (swap 1 2) and (rev).  Central data are data consisting of a sequence of 
-identical atoms, such as (:) (:) (:), or (a a a), which can be interpreted as the ``organic number three."}
-\item{{\bf Algebraic Morphisms.} Since algebraic morphisms commute with permutations, all algebraic morphisms are central in pass. 
-Morphisms like (ap const (:)) or (is a) are algebraic homomorphisms of pass and are, thus, distinguished as ``Platonic'' spaces with
-mathematical significance.  In this case, they each represent the natural numbers.}
+\item{{\bf The Group of Units.} The units of pass are the permutations such as (swap 1 2) and (rev).  
+The central data of pass are the data which are invariant under permutations.  In other words, sequences of 
+identical atoms, such as (:) (:) (:), or (a a a a a).  These can be interpreted as ``organic natural numbers."}
+\item{{\bf Homomorphisms.}  All distributive data are morphisms of pass, and are, therefore homomorphisms 
+of pass.  This includes distributive spaces such as (ap J) for idempotent J, and distributive non-spaces such as (ap \{B B\}), which doubles 
+every atom of input.  The central morphisms are those which commute with the permutations, and we recognize the central homomorphisms as  
+natural number multiplication of the central data.  In this sense, the natural numbers are the most Platonic morphisms of pass.  This is explored further in 
+Section X.}
+\item{{\bf Algebraic Morphisms.} Since algebraic morphisms commute with permutations, all of the central homomorphism are also algebraic.  
+The issue is whether there are non-distributive morphisms which are also algebraic.  A prominent example is `bool' which is an algebraic space, but is not 
+distributive.  Bool is further explored in section Y.}
 \item{{\bf Neutrality.} A morphism D$\in$pass is neutral preserving if ($D$:)=(), is neutral reflecting if ($D$:$X$=()) implies $X=()$ 
 and is positive if ($D$:$X$) is never empty.  For example,
 \begin{itemize}
@@ -431,8 +428,8 @@ and is positive if ($D$:$X$) is never empty.  For example,
 }
 \end{itemize}
 
-As an example of an isomorphism, consider the isomorphism pass$\cong$has illustrated in Figure X.  This isomorphism $X\leftrightarrow(:X)$ embodies 
-``storing and retrieving data $X$''.  A similar isomorphism $X\leftrightarrow(a:X)$ exists for every atom $a$.   
+As an example of an isomorphism, consider the isomorphism between `pass` and `has` illustrated in Figure X.  
+This isomorphism $X\leftrightarrow(:X)$ embodies ``storing and retrieving data $X$''.  A similar isomorphism $X\leftrightarrow(a:X)$ exists for every atom $a$.   
 
 \begin{figure}[h]
 \centering
@@ -441,32 +438,36 @@ As an example of an isomorphism, consider the isomorphism pass$\cong$has illustr
 is isomorphic to a subspace of itself for each atom type.}}
 \end{figure}
 
-The space pass is the ``garden'' where we will search for the simplest, most ``organic'' spaces.  
-The fact that the ``organic natural numbers'' are the only algebraic homomorphisms of pass makes them particularly interesting, and the first candidates to investigate.
+In classical Mathematics, the concept of a Set intentionally gives no information about it's contents, and so the Set of all Sets hardly gives any insight 
+into the contents of Mathematics in general.  This situation is interestingly different.  Pass contains everything, but it also has nontrivial  
+structure and gives specific indications about what will be most important (algebraic morphisms and central homomorphisms, natural numbers and booleans in this case).  Pass is the ``garden'' where we will search for the simplest, most ``organic'' spaces.  
 
 \section{Organic Numbers}
 
-      As we have seen, the natural numbers organically as sequences of identical atoms, so we might think of (:) (:) (:) or (a a a) as ``3'', depending on a conventional choice.  
-Thus, to study natural numbers, we want to find a space $N$ where the data of the space contains one sequence for each natural number.  There are many 
+      As we have seen the ``organic'' natural numbers appear as the central data of pass where we identify (:) (:) (:) or (a a a) with the natural number ``3'' 
+ depending on a conventional choice of atom.  Thus, we want to find a central space morphism $N$ where the data of the space contains one 
+ sequence for each natural number.  There are many 
 spaces which do this, for example,  
 \begin{itemize}
 \item [1)] The space (atoms) contains all sequences of (:) atoms, (), (:), (:) (:),$\dots$. 
-\item [2)] The space (ap const a) contains (), a, a\ a, a\ a\ a,\dots. 
-\item [3)] The space (is a), also containing (), a, a\ a, a\ a\ a,\dots.
+\item [2)] The space (ap const (:)) also contains all (:) sequences.
+\item [3)] The space (ap const a) contains (), a, a\ a, a\ a\ a,\dots. 
+\item [4)] The space (is a), also containing (), a, a\ a, a\ a\ a,\dots.
 \end{itemize}
-Choices 1) and 2) are compatible in the preorder sense, however 3) is not compatible with the others and, for instance, has a different kernel.  
-The main point, however, is that 1) 2) and 3) are isomorphic and they therefore have the same semiring structure.  To be definite, let $N$ be the space (is $a$).  
+Choices 1 and 2 are identical, choice 3 is compatible with 1 and 2 in the preorder sense, only differing in the choice of standard atom.  Space 4 is 
+not the same space as 3, even though it contains the same data.  The essential point, however, is that all four are isomorphic and therefore, have 
+the same semiring structure so they are equivalent for the purpose of the analysis below.   To be definite, we choose $N$ to be the space (is a).  
      
      The first thing to notice about $N$ is that it's main structure is natural number addition, since ($N$:$X$\ $Y$) is the natural number sum of ($N$:$X$) and ($N$:$Y$).  
-Since homomorphisms are distributive, a homomorphism $f$ of $N$ is defined by $f:a$, and, thus, $f$ is multiplication by some natural number, 
-for instance, (ap const $a$\ $a$\ $a$) is multiplication by $3$.  Since homomorphisms are distributive morphisms, they automatically distributes over addition in $N$.  
-Since the group of units is just the identity 1, all of the homomorphisms are central.  
+Since homomorphisms are distributive, a homomorphism $f$ of $N$ is defined by $f$:a, and, thus, $f$ is multiplication by some natural number, 
+for instance, (ap const a\ a\ a) is multiplication by $3$.  Since homomorphisms are distributive morphisms, they automatically distributes over addition in $N$.  
+Since the identity is the only unit, all homomorphisms are central.  
      
     Subspaces of $N$ are indicated by subspace morphisms.  As always, the subspace $1$ is the whole of $N$ and the subspace $0$ consists of just the neutral data of $N$, which, 
 since in is distributive is the empty sequence.  The following are easily verified to be classes subspace morphisms as well.  
 \begin{itemize} 
 \item [1.] {\bf Saturation subspaces} An morphism which computes, for example, min($n$,2) such as (min a a), is a subspace containing the three data \{(), a, a a\}. 
-\item [2.] {\bf Modular arithmetic subspaces} An morphism which removes three (a) atoms while possible, such as (while rem $a$ $a$ $a$) is a subspace which computes the sum of it's inputs modulo 3.  Note 
+\item [2.] {\bf Modular arithmetic subspaces} An morphism which removes three (a) atoms while possible, such as (while rem a a a) is a subspace which computes the sum of it's inputs modulo 3.  Note 
 that (while rem a a a) contains the same data as (min a a), but they have a completely different algebraic structure.  
 \end{itemize}
 These two unsurprising subspaces have a slightly more surprising generalization.  For $p,q\ge 1$, let rem($p$,$q$) be the morphism defined by 
@@ -478,6 +479,7 @@ The rem(p,q) are also subspaces and modular sum and saturation cases since rem($
 {\rm rem}(p,q)\cdot {\rm rem}(p',q') = {\rm rem}({\rm LCM}(p,p'),{\rm max}(q,q'))
 \end{equation}
 where {\it LCM} is the least common multiple.  This makes the rem a closed commutative semilattice of subspaces of N.  
+
 This completes the subspace analysis of N since we can show that every subspace of N is either the whole of N, a constant, or is rem(p,q) for some $p,q\ge1$. 
 
 \begin{proof}
@@ -542,11 +544,15 @@ swaps $a\leftrightarrow b$.  A homomorphism $f$ is determined by $f:a$, since $f
 Thus, the central homomorphisms of N$_2$.reduce are exactly integer multiplication, distributing over addition since homomorphisms are 
 distributive.  
 
+\item{Lexical sort followed by reducing (b b) to (b) results in a subspace equivalent to $\mathbf N\times\{0,1\}$....MORE}
+
 } 
 \end{itemize}
 
-FIX ME.... For instance in (is a b c d), one can reduce to a subspace by (a b)=(b a)=(c d)=(d c)=1, this reduction commutes with a lexical sort 
-and so the two can be composed to create $\mathbf Z\times\mathbf Z$ with homomorphisms ${\rm Mat}_{2\times2}(\mathbf N)$. 
+    Continuing to (is a b c),...MORE.
+
+    Continuing to (is a b c d), one gets $\mathbf N^4$ with lexical sort, $\mathbf Z^2$ if one adds (a b)=(b a)=(c d)=(d c)=1.  The latter 
+case has an involution (a,b)$\leftrightarrow$(c,d) making the central homomorphisms equivalent to Complex number multiplication....MORE 
 
 \subsection{Number Sequences}
 
@@ -597,17 +603,11 @@ generates the Fibbonacci sequence (n:a) (n:a) (n:a a) (n:a a a)$\dots$.
 \caption{{\it Organic numbers.}}
 \end{figure}
 
-Exploring further in this vein is certainly possible.  It's worth keeping in mind that if spaces commute, their commutator is a new space.  
-
-COMPLEX NUMBERS? QUATERNIONS?  ANY MORE SURPRISES? SEQUENCES, real numbers, calculus, etc... 
-
-This pretty clearly can be done.  The main question is does this reveal insights or new structures?  
-
-A very natural question, for instance, is what mathematical structures can be represented as subspaces of (is a b c$\dots$)?  
+SUMMARIZE...
 
 \section{Boolean} 
 
-      The space `bool' is algebraic and neutral, but not distributive.  Since bool contains two data:  () for {\it true} and (:) for {\it false},   
+      The space `bool' is algebraic and central, but is not a homomorphism.  Since bool contains two data:  () for {\it true} and (:) for {\it false},   
  bool has only four morphisms:  the identity ID=bool, two constants: TRUE=\{\} and FALSE=\{(:)\}, and one involution 
  NOT=bool$\cdot$not$\cdot$bool.  The morphism semiring is explicit in Table X, where it's useful to note that $\oplus$ is commutative since {\bf bool} is 
  algebraic, and $f\oplus f=f$ for $f\in${\bf bool}.  
@@ -626,9 +626,9 @@ NOT & NOT & FALSE & TRUE & ID \\
 $f\oplus g$ & ID & TRUE & FALSE & NOT  \\
 \hline
 ID &  ID & ID & FALSE & FALSE \\
-TRUE & - & TRUE  & FALSE & NOT \\
-FALSE & -  & - & FALSE & FALSE   \\
-NOT & - & - & - & NOT \\
+TRUE & ID & TRUE  & FALSE & NOT \\
+FALSE & FALSE  & FALSE & FALSE & FALSE   \\
+NOT & FALSE & NOT & FALSE & NOT \\
 \hline
 \end{tabular}
 \caption{{\it Product and sum of the four morphisms ID, TRUE, FALSE, NOT of the space bool}.  Note that ID is the unit of multiplication and TRUE is the 
@@ -690,26 +690,26 @@ Table Y shows the eight morphisms and their values on \{0,T,F,TT,TF,FT,FF\}.  Lo
 we recognize that these are slight generalizations of the eight standard symmetric binary boolean operators.  The values of the eight morphisms 
 on \{0,T,F\} suggests that the standard binary operator names (`OR' as opposed to `any') are not particularly illuminating in this larger context.  
 
-\section{Summary, Outlook, Rewrite Framework} 
+\section{Summary, Global Strategies, Questions} 
 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{bool.png}
-\caption{{\it A summary of the boolean spaces discussed in the text.  {\bf bool} is the most organic - the space of two boolean values () for true and (:) for false.  The space $\mathbb L$ is sequences of such values with subspaces of at most one (${\mathbb L}_1$) and at most two (${\mathbb L}_2$) values.}}
+\includegraphics[width=0.8\textwidth]{garden.png}
+\caption{{\it Some of the spaces and morphisms discussed in the text and ``grown organically'' from the space of all pure data. 
+The main starting points are natural number spaces (central homomorphism spaces) and bool (central algebraic spaces).}}
 \end{figure}
-
 
 \section{Glossary}
 
 \begin{enumerate}
 \item {Basics
 \begin{enumerate}
-\item{$\delta_{\rm const}$ : (const A : B) $\mapsto$ A)}
-\item{$\delta_{\rm put}$ : (put A : B) $\mapsto$ (A:B)}
+\item{$\delta_{\rm const}$ : (const A : B) $\mapsto$ A}
+\item{$\delta_{\rm put}$ : (put A : B) $\mapsto$ (A:B)} 
 \item{$\delta_{\rm get}$ : (get : (:B)) $\mapsto$ B....FIXME}
 \item{$\delta_{\rm atoms}$ : (atoms : b B) $\mapsto$ (:)\ (atoms : B)}
-\item{$\delta_{\rm bin}$ : (bin A:B) $\mapsto$ (bin A:B), atom}
+\item{$\delta_{\rm bin}$ : (bin A:B) $\mapsto$ (bin A:B), atom} 
 \end{enumerate}
 }
 \item {Control
@@ -720,10 +720,28 @@ on \{0,T,F\} suggests that the standard binary operator names (`OR' as opposed t
 \item{$\delta_{\rm while}$: (while A:B) $\mapsto$ (while A: A : B) }
 \end{enumerate}
 }
+\item{Semiring
+\begin{enumerate}
+\item{prod}
+\item{sum}
+\end{enumerate}
+}
+\item{Definition}
 \item{Sequence 
 \begin{enumerate}
 \item{$\delta_{\rm first}$ : (first : b B) $\mapsto$ b}
 \item{$\delta_{\rm first}$ : (first : ()) $\mapsto$ ()} 
+\item{$\delta_{\rm last}$ : (last : B b) $\mapsto$ b} 
+\item{$\delta_{\rm last}$ : (last : ()) $\mapsto$ ()} 
+\item{has}
+\item{hasnt}
+\item{is}
+\item{isnt} 
+\item{once} 
+\item{$\delta_{\rm rev}$ : (rev : B b) $\mapsto$ b (rev:B)} 
+\item{$\delta_{\rm rev}$ : (rev : () ) $\mapsto$ ()}
+\item{rem} 
+\item{sort} 
 \end{enumerate} 
 }
 \end{enumerate}

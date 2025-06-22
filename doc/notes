@@ -16,21 +16,3 @@ o Functors
 o Speed up with parallelism
 o Video?
 o Fix up help system
-
-\item[] {Basics
-\begin{itemize}
-\item{$\delta_{\rm const}$ : (const A : B) $\mapsto$ A)}
-\item{$\delta_{\rm put}$ : (put A : B) $\mapsto$ (A:B)}
-\item{$\delta_{\rm get}$ : (get : (:B)) $\mapsto$ B....FIXME}
-\item{$\delta_{\rm atoms}$ : (atoms : b B) $\mapsto$ (:)\ (atoms : B)}
-\item{$\delta_{\rm bin}$ : (bin A:B) $\mapsto$ (bin A:B), atom}
-\end{itemize}
-}
-\item[] {Control
-\begin{itemize}
-\item{$\delta_{\rm if}$: (if ():B) $\mapsto$ B }
-\item{$\delta_{\rm if}$: (if a A:B) $\mapsto$ () }
-\item{$\delta_{\rm while}$: (while A:B) $\mapsto$ B if (A:B)=B }
-\item{$\delta_{\rm while}$: (while A:B) $\mapsto$ (while A: A : B) }
-\end{itemize}
-}

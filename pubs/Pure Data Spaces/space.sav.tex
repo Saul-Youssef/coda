@@ -547,7 +547,7 @@ are mutually commuting and, thus, are closed under composition.
 Let $f:{\mathbf N}\rightarrow{\mathbf N}$ where $f(x+y)=f(f(x)+y)=f(x+f(y))$ for all $x,y\in\mathbf N$...
 \end{proof}
 
-\subsection{N$_2$} 
+\subsection{$N_2$} 
 
 The second simplest ``organic number'' is (is a b), which we can refer to as N$_2$ for brevity.  Since N$_2$ is distributive, the homomorphisms of N$_2$ 
 are the distributive endomorphisms.  Consider subspaces N$_2$.  
@@ -556,12 +556,12 @@ are the distributive endomorphisms.  Consider subspaces N$_2$.
 \item{The subspaces 1 and 0 give the whole of N$_2$ and just the empty sequence as subspaces, respectively.  
 Projections N$_2$$\cdot$(is a)$\cdot$N$_2$ and N$_2$$\cdot$(is b)$\cdot$N$_2$ produce two N$_1$-isomorphic subspaces.}
 
-\item{Let `reduce' be the endomorphism of N$_2$ which removes (a b) and (b a) subsequences until saturation.  Thus, every data in reduce
-is either a$^n$ or b$^n$ for some natural number $n$.  A homomorphism $h$ satisfies $h:X\ Y$ = reduce $:(h:X)\ (h:Y)$, so 
+\item{Let $r$ be the morphism which removes (a b) and (b a) subsequences until saturation.  Thus, every data in $r$ 
+is either a$^n$ or b$^n$ for some natural number $n$.  A homomorphism $h$ satisfies $h:X\ Y$ = $r:(h:X)\ (h:Y)$, so 
 $h$ is determined by ($h$:a) and ($h$:b).  If $h$ is a central homomorphism, ($h$:b) is ($h$:a) followed by an 
 a$\leftrightarrow$b swap.  Thus, if we interpret a$^n$ as the integer $n$ and b$^n$ as the integer $-n$, then applying $h$ 
-is standard distributive integer multiplication by the integer ($h$:a).  Since there is one central homomorphism for each data in the subspace reduce, 
-reduce is a central semialgebra isomorphic to the standard ring $\mathbf Z$ of integers.}
+is standard distributive integer multiplication.  Since there is one central homomorphism for each fixed point of $r$, 
+$r$ is a central semialgebra isomorphic to the standard ring $\mathbf Z$ of integers.}
 
 \item{If `sort' is the endomorphism which does lexical sorting of N$_2$ data, then sort is also a subspace of N$_2$ where the 
 data of sort can be written $a^m b^n$ for $m,n\ge 0$.  As in the previous case, a homomorphism M of sort is defined by  
@@ -577,7 +577,7 @@ m_{11} & m_{21} \\ m_{12} & m_{22}
 \end{array}
 \right ) 
 $
-so the action of M is standard matrix multiplication.  Thus, the data of sort are pairs of natural numbers and the 
+so the action of M is matrix multiplication.  Thus, the data of sort are pairs of natural numbers and the 
 homomorphisms are 2x2 matrices with natural number entries.  The central homomorphisms of sort 
 commute with the involution 
 $
@@ -602,22 +602,22 @@ and sort is, therefore, a central semialgebra, equivalent to the standard matrix
 \item{Lexical sort followed by reducing (b b) to (b) results in a subspace equivalent to $\mathbf N\times\{0,1\}$ with addition
 defined by $(n,\alpha)+(m,\beta)$=$(n+m,\alpha\vee\beta)$.}
 
-\item{Lexical sort followed by reducing $a^n b^m$ to $a^{(n/g)} b^{(m/g)}$ where $g$=GCD$(n,m)$ is the greatest common divisor.  
-This is the space of positive rational numbers, but with non-standard `mediant' addition[ref].}
+\item{Lexical sort followed by reducing $a^n b^m$ to $a^{(n/g)} b^{(m/g)}$ where $g=gcd(n,m)$.  This is the space of positive 
+rational numbers, but with non-standard mediant addition[ref].}
 
+} 
 \end{itemize}
 
-\subsection{N$_4$,N$_8$,$\dots$} 
+\subsection{Organic Numbers} 
 
-     It is clear that in going to higher organic numbers, some of the features of $N_1$ and $N_2$ will repeat.  $N_n$ sorted 
- will always result in a space with homomorphisms ${\rm Mat}_{n\times n}(\mathbf N)$.  Sorting followed by cancelling 
- atoms in pairs will result in ${\rm Mat}_{(n/2)\times (n/2)}(\mathbf Z)$
- 
- Examples...
- \begin{itemize}
- \item{In $N_4$=(is a b c d), with (a b)=(b a)=(c d)=(d c)=(), the homomorphisms are all of ${\rm Mat}_{2\times 2}(\mathbf Z)$.  The 
- central homomorphisms, however, must commute with 
- $
+Continue the N, N2 themes, Z[i], H? semialgebras? central semialgebras? 
+
+\subsection{N$_4$} 
+
+    Continuing to (is a b c d), we can similarly have $\mathbf N^4$ with lexical sort or $\mathbf Z^2$ with the subspace
+(a b)=(b a)=(c d)=(d c)=1.  With this reduction, the swaps (a,b $\leftrightarrow$ c,d) is then an involution $J$ of the reduced subspace.  
+As before, the homomorphisms of the reduced space are the matrices ${\rm Mat}_{2\times2}(\mathbf Z)$ where 
+$
 J=
 \left (
 \begin{array}{cc} 
@@ -625,7 +625,7 @@ J=
 \end{array}
 \right ) 
 $
-and are thus 
+is a new involution, so central homomorphisms commute with $J$ and, as before, the central homomorphisms 
 $
 \left (
 \begin{array}{cc} 
@@ -633,26 +633,22 @@ a & -b \\ b & a
 \end{array}
 \right ) 
 $
-so the central homomorphisms of $N_4$ is a central semialgebra equivalent to the Gaussian integers ${\mathbf Z}[i]$.
-}
-
-\item{Quaternions}
-\item{Octonions, even though semirings ops are associative}  
-\end{itemize} 
+are each complex multiplication by some complex number ($a+b i$).  Thus, the standard ring of complex Gaussian integers appears 
+in the same way as the integers do from (is a b). 
 
 \subsection{Number Sequences}
 
-      Given the space $N_1$ from the previous section, let $\mathbb{N}$ be 
+      Given the space $N$ from the previous section, let $\mathbb{N}$ be 
 \begin{equation}
-{{\rm ap}\ ({\rm put\ {\rm n}})\cdot N_1 \cdot ({\rm get\ {\rm n}})}
+{{\rm ap}\ ({\rm put\ {\rm n}})\cdot N \cdot ({\rm get\ {\rm n}})}
 \end{equation}
-where `n' is some chosen atom.  Since $({\rm put\ n})\cdot N_1 \cdot ({\rm get\ n})$ is idempotent, ${\mathbb N}$ is a distributive space containing 
-sequences of $n$-atoms containing $N_1$-data, such as 
+where `n' is some chosen atom.  Since $({\rm put\ n})\cdot N \cdot ({\rm get\ n})$ is idempotent, ${\mathbb N}$ is a distributive space containing 
+sequences of $n$-atoms containing $N$-data, such as 
 \begin{equation} 
 {\rm T = (n:a\ a\ a)\ (n:)\ (n:a\ a)\ (n:a)\ (n:)}
 \end{equation} 
 
-Unlike the case of $N_1$, the action of ${\mathbb N}$ is merely to concatenate sequences.  It's easy, however, to identify 
+Unlike the case of N, the action of ${\mathbb N}$ is merely to concatenate sequences.  It's easy, however, to identify 
 natural number sum again as one of several subspaces 
 \begin{itemize}
 \item sum:T = (n:a a a a a a)
@@ -661,22 +657,26 @@ natural number sum again as one of several subspaces
 \item first:T = (n:a a a)
 \end{itemize} 
 All but the last are algebraic subspaces and, predictably, have established names.  
-Some endomorphisms of ${\mathbb N}$ are ``inherited'' from $N_1$ as follows.  Define inner:F to be 
+Some morphisms of ${\mathbb N}$ can be ``inherited'' from $f\in$N.  Define inner:F to be 
 \begin{equation}
 {\mathbb N}\cdot({\rm put\ n})\cdot {\rm F}\cdot({\rm get\ n})\cdot{\mathbb N}
 \end{equation}
-so that (inner:F):X means letting F act on the concatenated $N_1$-contents of $X$, returning the result in a single n-atom.  The sum endomorphism 
-above, for instance, is equal to inner:$N_1$.  The construction of Equation 7 works for any space, and so we can define a ``functor'' {\it Seq} to be 
+so that (inner:F):X means letting F act on the concatenated N-contents of $X$, returning the result in a single n-atom.  The sum morphism 
+above, for instance, is equal to inner:N.  The construction of Equation 7 works for any space, and so we can define a ``functor'' {\it Seq} to be 
 \begin{equation}
 \{({\rm put}\ {\rm A})\cdot {\rm B} \cdot ({\rm get}\ {\rm A})\}
 \end{equation}
-Then {$\mathbb N$} is equal to (Seq n:$N_1$) and given any atom s and any space S, (Seq s:S) is the space of S-values stored in s-atoms.  
+Then {$\mathbb N$} is equal to (Seq n:N) and given any atom s and any space S, (Seq s:S) is the space of S-values stored in s-atoms.  
 Similarly, if we define {\it inner} to be  
 \begin{equation}
-S\cdot\{({\rm put\ s})\cdot{\rm B}\cdot({\rm get\ s})\}\cdot S
+{\mathbb N}\cdot\{({\rm put\ n})\cdot{\rm B}\cdot({\rm get\ n})\}\cdot{\mathbb N}
 \end{equation}
-then inner:$f$ is the inner version of an endomorphism $f$ of $S$.  Other general constructions of this type are possible.  For example, 
-since the endomorphism last2 = (inner:last 2) sums the last two atoms of a data of ${\mathbb N}$, (series last2) generates the fibonacci sequence. 
+then inner:F is the inner version of F$\in$S.  Other general constructions of this type are possible.  For example, let {\it series} be 
+\begin{equation}
+{\mathbb N}\cdot\{{\rm B\ (A:B)}\}\cdot{\mathbb N} 
+\end{equation}
+and, thus (series:F) applies F to data appending the result.  For example, the morphism series$\cdot$(inner:back a a)
+generates the Fibbonacci sequence (n:a) (n:a) (n:a a) (n:a a a)$\dots$.
 
 \begin{figure}[h]
 \centering
@@ -684,6 +684,7 @@ since the endomorphism last2 = (inner:last 2) sums the last two atoms of a data 
 \caption{{\it Organic numbers.}}
 \end{figure}
 
+SUMMARIZE...What structures characterize Organic Numbers and Organic Sequences in general? 
 
 \section{Boolean} 
 
@@ -718,7 +719,6 @@ unit of addition, and we have $f\oplus g=g\oplus f$, since bool is algebraic, an
 \end{table}
 The subspaces of bool are ID, TRUE and FALSE, so bool has only trivial subspaces.  The endomorphisms ID and TRUE are neutral, ID is the only positive 
 endomorphism and all endomorphisms are algebraic since bool itself is algebraic.  The group of units is ID and NOT, and ID is the only central endomorphism. 
-
 
 \subsection{Boolean Sequences}
 

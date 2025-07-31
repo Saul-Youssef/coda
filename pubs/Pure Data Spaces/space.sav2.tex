@@ -248,6 +248,11 @@ Data $A$ is called {\it algebraic} or {\it commutative} if $A:X\ Y$=$A:Y\ X$ for
 Any data $A$ defines a binary operator on data via ($X{\overset A\ast}Y)=(A:X\ Y)$.  Since ${\overset A\ast}$ is associative if and only if 
  ($A$:$X$\ $Y$)=($A$:($A$:$X$)\ $Y$)=($A$:$X$ ($A$:$Y$)) for all $X$,$Y$ we say that data $A$ is {\it associative} if it has this property.  
  
+      For data $A$ and $B$, let $A{\overset i\leq}B$ be the transitive relation $A\cdot B$=$A$ ($A$ {\it absorbs} $B$).  The equivalence classes of the 
+corresponding symmetric relation $A{\overset i\sim}B$ contain all idempotent data, since if  $A{\overset i\sim}B$, then both $A$ and $B$ are idempotent and since $A{\overset i\sim}A$ for any idempotent $A$.  In this {\it idempotent order}, pass is the unique maximum idempotent, and every constant 
+is minimal: $({\rm const}\ K)\ {\overset i\leq}\ X\ {\overset i\leq}\ $pass for any data $X$,  
+and for any data $K$.
+
 Algebraic and distributive data foreshadow a theme where these two properties make data mathematically interesting for complementary reasons.  
 Algebraic data has, in a sense, ``transcended finite sequence," the foundational concept of the system and has a platonic existence in 
 that sense.  Distributive data, on the other hand, is maximally sequence dependent, but it may also be mathematically interesting since 
@@ -301,9 +306,27 @@ for all endomorphisms $f$ and $g$ of $S$.  Compare with morphisms that happen to
 \begin{equation}
 F\cdot (f\oplus_S g) = F\cdot ((F\cdot f) \oplus_T (F\cdot g)) 
 \end{equation}
-for all endomorphisms $f$ and $g$ of $S$.  Thus, any idempotent homomorphism is a space.  
-Note that homomorphisms are closed under composition, but the composition of two spaces is a space 
-only if the two spaces commute. 
+for all endomorphisms $f$ and $g$ of $S$.  Thus, any idempotent homomorphism is a space morphism.  Space morphisms, however, are often not homomorphisms, 
+as we shall see in examples.  If $S{\overset H\longrightarrow}T$ and $T{\overset J\longrightarrow}U$ 
+are homomorphisms, then $S{\overset {J\cdot H} \longrightarrow}U$ is a homomorphism, so homomorphisms are comparable to morphisms in Category Theory.  
+In contrast, the composition of two spaces is guaranteed to be a space only if they commute. 
+
+The fact that homomorphisms compose suggests adapting definitions from Category Theory.  
+We say, for instance, that spaces $S$ and $T$ are {\it isomorphic} if the diagram of Figure X commutes for homomorphisms 
+$\alpha$ and $\alpha'$.  
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{isomorphism.png}
+\caption{{\it In a definition adopted from Category Theory, spaces S and T are isomorphic if the diagram commutes for some homomorphisms $\alpha$ and $\alpha'$.}}
+\end{figure}
+where we have used $S$ and $T$ instead of respective ``identity morphisms."  Given morphism $S{\overset F\longrightarrow}T$, we can define kernels and images 
+using the idempotent order.
+\begin{itemize}
+\item{A minimal idempotent $e$ such that $S{\overset F\longrightarrow}T{\overset e\longrightarrow}T$ is equal to $S{\overset F\longrightarrow}T{\overset {\rm pass}\longrightarrow}T$ is the {\it image} of $S{\overset F\longrightarrow}T$};
+\item{A maximal idempotent $e$ such that $S{\overset e\longrightarrow}S{\overset F\longrightarrow}T$ is equal to  $S{\overset {\rm null}\longrightarrow}S{\overset F\longrightarrow}T$ is
+the {\it kernel} of $S{\overset F\longrightarrow}T$}.
+\end{itemize}
+If $F$ is a homomorphism, the corresponding idempotents are also homomorphisms, and so the kernels and images of homomorphisms are spaces. 
 
 \subsection{Spaces are Semirings} 
 
@@ -353,30 +376,12 @@ semilattice endomorphisms are an ideal of $S$.}
 \item{{\bf Neutral endomorphisms}.  For any endomorphism $f$, ($0\cdot f$)=$0$.  If, also, ($f\cdot 0$)=$0$, then $f$ is a {\it neutral} endomorphism. 
 If $f\cdot k$ is not equal to $0$ for any constant $k$, we say that $f$ is a {\it positive} endomorphism. Neutral endomorphisms are a subsemiring of
 the semiring of $S$.  Positive endomorphisms are closed under multiplication, and, if $S$ itself is positive, they are closed under addition as well.} 
-
-\item{{\bf Idempotents}.  Define a relation ${\overset i \leq}$ on the endomorphisms of $S$ by $f{\overset i \leq}g$ if ($f\cdot g$)=$f$.  The equivalence 
-classes of the corresponding symmetric relation $f{\overset i \sim} g$ contain all the idempotent endomorphisms, since $f{\overset i\sim}g$ implies that 
-both $f$ and $g$ are idempotent.  In this {\it idempotent order}, 1 is the maximum endomorphism and the constant endomorphisms are minimal.}
-
 \end{itemize} 
 In the case where $S$ is distributive, $(f\oplus g)$ = $(f+g)$ for $f$, $g$ endomorphisms of $S$.  This means that the homomorphisms of $S$ are 
 the distributive endomorphism.  If the group of units of $S$ includes permutations, then the central homomorphisms are algebraic.  This illustrates 
 the generalization of the earlier remark about algebraic and distributive data being mathematically interesting for complementary reasons.  Central 
 endomorphisms are the generalization of algebraic data and homomorphisms are the generalization of distributive data.  Naturally, one suspects 
 that the central homomorphisms of a space will be particularly interesting. 
-
-\subsection{Isomorphic Spaces have Isomorphic Semirings} 
-
-The fact that homomorphisms compose suggests adapting definitions from Category Theory.  
-We say, for instance, that spaces $S$ and $T$ are {\it isomorphic} if the diagram of Figure X commutes for homomorphisms 
-$\alpha$ and $\alpha'$.  
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.4\textwidth]{isomorphism.png}
-\caption{{\it In a definition adopted from Category Theory, spaces S and T are isomorphic if the diagram commutes for some homomorphisms $\alpha$ and $\alpha'$.}}
-\end{figure}
-where we have used $S$ and $T$ instead of respective ``identity morphisms."  Given an isomorphism as in Figure X, the bijection $f\mapsto \alpha'\cdot\alpha$ is 
-a semiring isomorphism, preserving product, sum, 1 and 0.
 
 \subsection{Spaces can be Semialgebras} 
 
@@ -403,29 +408,17 @@ If a space has multiple subspaces, each commuting pair of subspaces is a new sub
 a homomorphism of $s$.  Similarly, if $u$ is a unit of $S$ and $u$ is an endomorphism of $s$, then $u$ is also a unit of $s$.  Subspaces, however, 
 can have homomorphisms and units which are not inherited in this way.
 
-\subsection{Quotients and Kernels are Spaces} 
+\subsection{Quotients} 
 
-A homomorphism $h$ from $S$ to $T$ can always be factorized as 
-$h = m \cdot e $
-where $m$ is a monomorphism and $e$ is an idempotent.  Using $h\cdot e=h$ and the homomorphism property,
-\begin{equation}
-m\cdot e\cdot(f\oplus g) = m\cdot e\cdot (e\cdot f\oplus e\cdot g)
-\end{equation}
-and, since $m$ is a monomorphism, $e$ is a space which we denote $S/h$.  
+\subsection{Subspaces can be Fields}
 
-\subsection{Fields}
-
-Since spaces have subspaces, which may themselves have subspaces, a descending sequence of subspaces can only terminate 
-with a constant space, since constant spaces are the only spaces with no proper subspaces.  From the semiring perspective, 
-constant spaces have no variety.  All constants are isomorphic and they all have 0=1.  On the other hand, there is a wide and 
-interesting variety of spaces one step above constants.  These are the `fields'.  
 \begin{definition}
 A space where all proper subspaces are constants is a {\bf field}.
 \end{definition}
-\noindent All constants are fields as is the space bool.  In classical ring theory, a field is guaranteed to have 
-multiplicative inverses.  The analogous result nicely combines homomorphisms, constants, units and subspaces. 
-\begin{theorem}
-A space $S$ is a field if and only if every non-constant homomorphism of $S$ is a unit. 
+
+
+\begin{theorem}[Fields]
+A space $S$ is a field, if and only if every non-constant homomorphism of $S$ is a unit. 
 \end{theorem}
 
 \begin{proof}
@@ -435,11 +428,6 @@ Then $S$ contains a non-constant proper subspace, $s$.
 By lemma 1, (ap $s$) is a non-constant homomorphism of $S$ with image contained in $s$.  Therefore, 
 (ap $s$) is not a unit. 
 \end{proof}
-
-lemma 1: If $S$ is a non-constant space, (ap $S$) is a non-constant subspace of $S$. 
-
-Often, the only constant homomorphism is 0 and, in the context of semialgebras, multiplication by a non-zero homomorphism 
-has an inverse.  The standard field of rationals is an example of this as shown in Section X.Y.
 
 \subsection{Themes}
 
@@ -508,8 +496,6 @@ both the natural numbers and bool are good starting points for exploration.}
 pass is a semialgebra as well as a semiring with $X\star (Y+Z)$ equal to $(X\star Y)+(X\star Z)$ where $X\star Y$ is defined to be (ap $X$)$\cdot Y$.}
 \item{{\bf Semilattice} The ideal semilattice includes the spaces (bool), (once) and (const $K$) for any data $K$. Although not a homomorphism,
 bool is a central endomorphism as well as a semilattice and is the unique space with exactly two fixed points.} 
-\item{{\bf Idempotents} The idempotent equivalence classes of pass includes all idempotent data where (pass) is the unique maximum idempotent and where all constants 
-are in the minimal equivalence class.}
 \end{itemize}
 In the idempotence order, pass is the unique maximum $X{\overset i\leq}{\rm pass}$ since pass uniquely satisfies 
 $X\cdot {\rm pass}=X$ for all $X$.  Pass is its own image and the kernel of pass is the maximal idempotent $e$ such that $e\cdot {\rm pass}={\rm null}\cdot{\rm pass}$, 

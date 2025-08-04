@@ -11,7 +11,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeindex
 \begin{document}
-\title{\bf {PURE DATA SPACES....DRAFT...getting there...}}
+\title{\bf {PURE DATA SPACES....DRAFT...}}
 \author{%
   SAUL YOUSSEF%
   \hfil \\
@@ -30,6 +30,7 @@ All about spaces.
 \newtheorem*{axiom*}{Axiom}
 \newtheorem*{fact}{Fact}
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}
 
 \newtheorem{definition}{Definition}
 
@@ -43,6 +44,7 @@ All about spaces.
 \item Conceptual overview: small(est?) axiomatic system analogous to ZFC, where proof and computation are the same thing.
 \item Point of the paper is to investigate the concept of a "Space" introduced in ref. 1.  This is analogous to ``Set'' or ``Category.''
 \item Theme is to ``grow the simplest spaces organically'' and compare the simplest results with classical mathematics. 
+\item Minimal container...associative data...semiring...analogous to sets or categories.
 \end{itemize}
 
 \section{Foundation}  
@@ -280,8 +282,7 @@ The data ($S$:) is called the {\it neutral data} of $S$.
 
 Examples of spaces can be found in the basic definitions, including `pass`, `null` and `bool`.  More examples come from 
 noting that any data which is both idempotent and distributive is a space.  Thus, if $J$ is idempotent, then (ap\ $J$) is idempotent and 
-distributive, and is, therefore, a space.  If spaces $S$ and $T$ commute, then $S\cdot T$ is a space.  Idempotent ordering is another 
-source of examples.  If $S$ is a space and $S{\overset i\sim}T$, then $T$ is also a space.  
+distributive, and is, therefore, a space.  If spaces $S$ and $T$ commute, then $S\cdot T$ is a space.    
 
 \subsection{Morphisms} 
 
@@ -293,17 +294,17 @@ If $F$ and $G$ are morphisms from $S$ to $T$, we can also define a {\it sum of m
 $S{\overset {F\oplus G}\longrightarrow}T$.  A morphism from a space to itself is called an {\it endomorphism}. 
 
     Since $T\cdot X\cdot S$ is a morphism from $S$ to $T$ for any data $X$, a morphism can define any function.  Special morphisms which 
-``preserve the structure'' of $S$ and $T$ can be defined as follows.  A morphism $S{\overset F\longrightarrow}T$ is a {\it homomorphism} if 
+``preserve the structure'' of $S$ and $T$ can be defined as follows.  A morphism $S{\overset H\longrightarrow}T$ is a {\it homomorphism} if 
 \begin{equation}
-F\cdot (f\oplus_S g) = (F\cdot f) \oplus_T (F\cdot g) 
+H\cdot (f\oplus_S g) = (H\cdot f) \oplus_T (H\cdot g) 
 \end{equation}
-for all endomorphisms $f$ and $g$ of $S$.  Compare with morphisms that happen to also be a space.  Morphism $S{\overset F\longrightarrow}T$ is a space if and only if 
+for all endomorphisms $f$ and $g$ of $S$.  Compare with morphisms that happen to also be a space.  Morphism $S{\overset U\longrightarrow}T$ is a space if and only if 
 \begin{equation}
-F\cdot (f\oplus_S g) = F\cdot ((F\cdot f) \oplus_T (F\cdot g)) 
+U\cdot (f\oplus_S g) = U\cdot ((U\cdot f) \oplus_T (U\cdot g)) 
 \end{equation}
 for all endomorphisms $f$ and $g$ of $S$.  Thus, any idempotent homomorphism is a space.  
 Note that homomorphisms are closed under composition, but the composition of two spaces is a space 
-only if the two spaces commute. 
+only if the two spaces commute.  
 
 \subsection{Spaces are Semirings} 
 
@@ -331,7 +332,7 @@ Consider the semiring of a fixed space $S$.
 
 \item{{\bf Subspaces.} If an endomorphism $s$ of $S$ happens to also be a space, we say that $s$ is a {\it subspace} of $S$.  The name ``subspace'' is justified because every data contained in $s$ is also contained in $S$, and every endomorphism $s\cdot$X$\cdot s$ of $s$ is also an endomorphism of $S$.  
 Subspaces partially distribute from the left as with $s\cdot(f\oplus g)$=$s\cdot((s\cdot f)\oplus(s\cdot g))$.
-Every space has subspaces $1$ (the whole space), and $0$, the constant neutral space.} 
+Every space has subspaces $1$ (the whole space), and $0$, the constant neutral space.  If subspace $s$ is not equal to $S$, $s$ is a {\it proper} subspace.} 
 
 \item{{\bf Constants.}  An endomorphism $k$ of $S$ satisfying $k\cdot 0$=$k$ is a {\bf constant} subspace of $S$.  There is one such constant for each 
 data in $S$.  Since $k\cdot f$ and $k\oplus l$ are constants for 
@@ -369,14 +370,16 @@ that the central homomorphisms of a space will be particularly interesting.
 
 The fact that homomorphisms compose suggests adapting definitions from Category Theory.  
 We say, for instance, that spaces $S$ and $T$ are {\it isomorphic} if the diagram of Figure X commutes for homomorphisms 
-$\alpha$ and $\alpha'$.  
+$h$ and $h'$.  
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.4\textwidth]{isomorphism.png}
 \caption{{\it In a definition adopted from Category Theory, spaces S and T are isomorphic if the diagram commutes for some homomorphisms $\alpha$ and $\alpha'$.}}
 \end{figure}
-where we have used $S$ and $T$ instead of respective ``identity morphisms."  Given an isomorphism as in Figure X, the bijection $f\mapsto \alpha'\cdot\alpha$ is 
-a semiring isomorphism, preserving product, sum, 1 and 0.
+where we have used $S$ and $T$ instead of respective ``identity morphisms."  Given an isomorphism as in Figure X, the bijection $f\mapsto h'\cdot f \cdot h$ is 
+a semiring isomorphism, preserving product, sum, 1 and 0, so that isomorphic spaces have the same features defined in the previous section, since 
+these are all defined with semiring operations.  A homomorphism $h$ where $h\cdot \alpha=h\cdot \beta$ implies $\alpha=\beta$ is a {\it monomorphism} and 
+and if $\alpha\cdot h=\beta\cdot h$ implies $\alpha=\beta$, $h$ is an {\it epimorphism}.  
 
 \subsection{Spaces can be Semialgebras} 
 
@@ -403,15 +406,16 @@ If a space has multiple subspaces, each commuting pair of subspaces is a new sub
 a homomorphism of $s$.  Similarly, if $u$ is a unit of $S$ and $u$ is an endomorphism of $s$, then $u$ is also a unit of $s$.  Subspaces, however, 
 can have homomorphisms and units which are not inherited in this way.
 
-\subsection{Quotients and Kernels are Spaces} 
-
-A homomorphism $h$ from $S$ to $T$ can always be factorized as 
-$h = m \cdot e $
-where $m$ is a monomorphism and $e$ is an idempotent.  Using $h\cdot e=h$ and the homomorphism property,
+       For any morphism $S{\overset h \longrightarrow}T$, there is a guaranteed factorization  
 \begin{equation}
-m\cdot e\cdot(f\oplus g) = m\cdot e\cdot (e\cdot f\oplus e\cdot g)
+h = m \cdot e
 \end{equation}
-and, since $m$ is a monomorphism, $e$ is a space which we denote $S/h$.  
+where $m$ is a monomorphism and $e$ is an idempotent of $S$.  If $h$ is a homomorphism, we can substitute this into the 
+definition of a homomorphism, use $h\cdot e=h$, and, cancelling $m$ on the left, find 
+\begin{equation}
+e\cdot (f\oplus g) = e\cdot (e\cdot f \oplus e\cdot g),
+\end{equation}
+and conclude that $e$ is a subspace of $S$, which we call a {\it quotient} of $S$, and denote $e$ by $S/h$.  Note that $S/h=S$ if and only if $h$ is a unit as well as a homomorphism. 
 
 \subsection{Fields}
 
@@ -422,24 +426,22 @@ interesting variety of spaces one step above constants.  These are the `fields'.
 \begin{definition}
 A space where all proper subspaces are constants is a {\bf field}.
 \end{definition}
-\noindent All constants are fields as is the space bool.  In classical ring theory, a field is guaranteed to have 
-multiplicative inverses.  The analogous result nicely combines homomorphisms, constants, units and subspaces. 
+\noindent In classical ring theory, a field is guaranteed to have 
+multiplicative inverses.  An analogous result nicely combines homomorphisms, constants, units and subspaces.  
 \begin{theorem}
 A space $S$ is a field if and only if every non-constant homomorphism of $S$ is a unit. 
 \end{theorem}
 
-\begin{proof}
-Suppose that $S$ is a field and $h$ is a non-constant homomorphism.  Since $h$ is non-constant, 
-$S/h$ is a non-constant subspace of $S$.  Thus, $S/h$=$S$ and $h$ is, therefore, a unit.   Conversely, suppose S is not a field.  
-Then $S$ contains a non-constant proper subspace, $s$.  
-By lemma 1, (ap $s$) is a non-constant homomorphism of $S$ with image contained in $s$.  Therefore, 
-(ap $s$) is not a unit. 
+\begin{proof} If $S$ is a field, every non-constant homomorphism $h$ has $S/h$=$S$ and, thus, is a unit.  Conversely, 
+suppose that $S$ is not a field.  Then $S$ contains a proper non-constant subspace $s$ and $\sigma = S\cdot {\rm ap}\ s\cdot S$ is,
+therefore, a non-constant homomorphism of $S$.  Since $\sigma:X$ is in $s$ for any data $X$, $\sigma$ is not a unit. 
 \end{proof}
 
-lemma 1: If $S$ is a non-constant space, (ap $S$) is a non-constant subspace of $S$. 
-
-Often, the only constant homomorphism is 0 and, in the context of semialgebras, multiplication by a non-zero homomorphism 
-has an inverse.  The standard field of rationals is an example of this as shown in Section X.Y.
+\noindent 
+The obvious examples of fields are null, bool and any constant space.  In the examples, we will see familiar fields such 
+as the natural number modulo a prime or the field of rational numbers.  In these examples, zero will be the only constant 
+homomorphism and since semialgebra multiplication is application by a homomorphism, the guarantee of an inverse 
+for non-zero elements comes from a guarantee that non-constant homomorphisms are units.   
 
 \subsection{Themes}
 
@@ -464,7 +466,14 @@ means that $F$ is a morphism from $S\cdot T$ to $U$, from $S$ to $U$ and is also
 \item{Category theory is a theory of structures with corresponding morphisms.  In the theory of spaces, each space 
 comes with both structure preserving ``homomorphisms'' and not-necessarily-structure-preserving morphisms, packaged together 
 in a coherent semiring.} 
-\item{Substructures, subspaces instead of ideals, substructures can be very different than the ambient space.  This is very different, than, say groups or rings.} 
+\item{In classical mathematics, one expects sets to have subsets, groups to have subgroups, rings to have ideals, and, in general, 
+structures to have similar substructures.  Thus, it is not surprising that spaces can have subspaces, but unlike the classical situation, 
+subspaces of a space can have completely different mathematical structures from the ambient space.  For example, we shall see that 
+the space (is a b c d) has various free monoids, natural numbers, integers, the algebra of 4x4 natural number matrices and 
+Gaussian integers as different subspaces.  The extreme version of this is the space pass which contains {\it every} space as a subspace.  One can think of 
+an algebraic space $S$ as having ``horizontal'' features coming from the subsemiring of homomorphisms and ``vertical'' features 
+coming from general endomorphisms and subspaces.  Classical fields are limited in the sense that this is a theory of Commutative Rings.  Interestingly, 
+fields as defined in the previous section appears to be a generalization which appears wherever spaces appears.} 
 \end{itemize}
 Since this is a rich but unfamiliar 
 viewpoint, we proceed with the simplest, most ``organic'' spaces first, starting with foundational definitions which happen to also 
@@ -518,7 +527,11 @@ so the space (null) is the kernel of pass.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{pass.pdf}
-\caption{{\it The space of pure data.}}
+\caption{{\it The space of pass is the space of all pure data.  Thus, as a collection, pass contains all objects with mathematical 
+meaning as well as all computations.  As a space, it has a specific structure which is typical of other examples in the text.  
+In the idemopotent partial order, (pass) is the maximum and (null) is minimal.  Each data in (pass) is also an endomorphism.  Homomorphisms 
+are distributive data.  The central homomorphisms are equivalent to the natural numbers.  Bool and null are fields as well as
+semilattices.}}
 \end{figure}
 
 In classical mathematics, the concept of a Set intentionally gives no information about its contents.  Thus, the ``Set of all Sets" is vast and, in 
@@ -754,7 +767,6 @@ unit of addition, and we have $f\oplus g=g\oplus f$, since bool is algebraic, an
 \end{table}
 The subspaces of bool are ID, TRUE and FALSE, so bool has only trivial subspaces.  The endomorphisms ID and TRUE are neutral, ID is the only positive 
 endomorphism and all endomorphisms are algebraic since bool itself is algebraic.  The group of units is ID and NOT, and ID is the only central endomorphism. 
-
 
 \subsection{Boolean Sequences}
 

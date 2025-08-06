@@ -31,7 +31,6 @@ All about spaces.
 \newtheorem*{fact}{Fact}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
 
 \newtheorem{definition}{Definition}
 
@@ -438,12 +437,6 @@ suppose that $S$ is not a field.  Then $S$ contains a proper non-constant subspa
 therefore, a non-constant homomorphism of $S$.  Since $\sigma:X$ is in $s$ for any data $X$, $\sigma$ is not a unit. 
 \end{proof}
 
-\begin{corollary}
-Every field is a semialgebra. 
-\end{corollary}
-\begin{proof} ap const K trick...
-\end{proof} 
-
 \noindent 
 The obvious examples of fields are null, bool and any constant space.  In the examples, we will see familiar fields such 
 as the natural number modulo a prime or the field of rational numbers.  In these examples, zero will be the only constant 
@@ -662,13 +655,16 @@ This is the space of positive rational numbers, but with non-standard `mediant' 
 
 \end{itemize}
 
-\subsection{is a b c d...} 
+\subsection{xxxx} 
 
      It is clear that in going to higher organic numbers, some of the features of $N_1$ and $N_2$ will repeat.  $N_n$ sorted 
  will always result in a space with homomorphisms ${\rm Mat}_{n\times n}(\mathbf N)$.  Sorting followed by cancelling 
- atoms in pairs will result in ${\rm Mat}_{(n/2)\times (n/2)}(\mathbf Z)$.  For example, in (is a b c d) with subspace 
- (a b)=(b a)=(c d)=(d c)=(), homomorphisms are ${\rm Mat}_{2\times 2}(\mathbf Z)$.  Central homomorphisms must 
- commute with 
+ atoms in pairs will result in ${\rm Mat}_{(n/2)\times (n/2)}(\mathbf Z)$
+ 
+ Examples...
+ \begin{itemize}
+ \item{In $N_4$=(is a b c d), with (a b)=(b a)=(c d)=(d c)=(), the homomorphisms are all of ${\rm Mat}_{2\times 2}(\mathbf Z)$.  The 
+ central homomorphisms, however, must commute with 
  $
 J=
 \left (
@@ -677,38 +673,28 @@ J=
 \end{array}
 \right ) 
 $
-and are thus matrices of the form 
+and are thus 
 $
 \left (
 \begin{array}{cc} 
-x & -y \\ y & x 
+a & -b \\ b & a 
 \end{array}
 \right ) 
 $
-and we have the central semialgebra equivalent of the Gaussian Integers ${\mathbf Z}[i]$.  
-Figure 5 shows similar results for some of the more notable Organic Number subspaces.  
-Notice that this is a success from the organic gardening perspective.  Important mathematical 
-structures are emerging quite naturally.  Note that even though both semiring operations 
-are associative, a non-associative algebra such as the integer Octonions appears in the 
-same way as the other spaces with homomorphisms implementing the non-associative octonion 
-multiplication.  
- 
+so the central homomorphisms of $N_4$ is a central semialgebra equivalent to the Gaussian integers ${\mathbf Z}[i]$.
+}
+
+\item{Quaternions}
+\item{Octonions, even though semirings ops are associative}  
+\end{itemize} 
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=1.0\textwidth]{OrganicTable.png}
 \caption{{\it Organic Numbers.}}
 \end{figure}
-\noindent Although many interesting spaces appear as "Organic Numbers", some simple spaces appear to be missing.  It's noticeable, 
-for instance, that only non-standard rationals appear.  To understand why, notice that any non-constant subspace of an Organic Number 
-space (is a b c...) will have proper non-constant subspaces by projecting onto a subset of a b c... Thus, the only non-trivial fields that 
-appear as Organic Number subspaces are the $F_p$ subspaces of (is a).  Thus, the rationals are not Organic Numbers.  
 
-\section{Rationals} 
-
-Although the rationals are not organic numbers, they appear quite naturally as sequences of atoms (Q a a a : a a a a) with some 
-fixed chosen atom Q....MORE 
-
-\section{Number Sequences}
+\subsection{Number Sequences}
 
       Given the space $N_1$ from the previous section, let $\mathbb{N}$ be 
 \begin{equation}

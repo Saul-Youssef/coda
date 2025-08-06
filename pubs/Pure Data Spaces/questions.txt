@@ -1,0 +1,17 @@
+
+
+A standard set of questions to ask about a space.
+Describe things in classical mathematical terms whenever possible.
+
+1. Describe the space and briefly explain it's contents, main operation and neutral data.
+
+2. What global properties does the space have? Possible global properties are:
+     Distributive, algebraic, neutral, field, semialgebra, central semialgebra, set, positive, non-zero preserving
+
+3. Describe the constants of the space.
+
+4. Describe the homomorphisms of the space.
+
+5. Describe the group of units and the central homomorphisms of the space.
+
+6. Describe the semialgebra if the space is a semialgebra, or central semialgebra if the space is a semialgebra.

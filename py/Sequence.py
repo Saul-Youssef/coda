@@ -412,9 +412,9 @@ CONTEXT.define('swap',swap)
 #
 #   Some combinatorics
 #
-#   demo: presum a b c : x y z
-#   demo: presum a : x y z
-#   demo: preprod a b c : x y z
+#   demo: freesum a b c : x y z
+#   demo: freesum a : x y z
+#   demo: freeprod a b c : x y z
 #   demo: polyprod a b c : x y z
 #   demo: collect : ap {(bin (nat_sum:arg:B):right:B)} : preprod a b c : x y z
 #
@@ -424,7 +424,7 @@ def freeprod(context,domain,A,B):
         for i in range(len(A)):
             for j in range(len(B)): sum.append((da('bin')+da(str(i))+da(str(j)))|data(A[i],B[j]))
         return data(*sum)
-CONTEXT.define('preprod',freeprod)
+CONTEXT.define('freeprod',freeprod)
 
 def poly_1(context,domain,A,B):
     AL,AR = A.split()
@@ -467,7 +467,7 @@ def freesum(context,domain,A,B):
         return data(data()|BL) + data((domain+AR)|BR)
     elif AL.atom(context) and BL.atom(context):
         return data(data()|(AL+BL)) + data((domain+AR)|BR)
-CONTEXT.define('presum',freesum)
+CONTEXT.define('freesum',freesum)
 
 #
 #   demo: permutation 2 : a b

@@ -79,7 +79,7 @@ Data $A$ is {\bf invariant} if every coda $a$ in the sequence of $A$ is an atom 
 \end{definition}
 \noindent It follows from the definition that empty data is invariant and atoms $a$ and $b$ are equal if and only if $a^L=b^L$ and $a^R=b^R$.  If $a$ and $b$ are atoms, 
 $A$ and $B$ are data, then $(a\ A)=(b\ B)$ and $(A\ a)=(B\ b)$, if and only if $a=b$ and $A=B$.  If $A=B$ and $A$ and $B$ are invariant, then $A$ and 
-$B$ are identical as pure data.
+$B$ are identical as pure data [proof].
 
 \section{Genesis}
 
@@ -349,14 +349,15 @@ $f\cdot g$ is a homomorphism.  If $S$ is algebraic, the homomorphisms are a subs
 are central.  If $f$ and $g$ are central endomorphisms, then $f\cdot g$ is a central endomorphism.  If $f$ and $g$ are {\it central homomorphisms}, then 
 $f\oplus g$ is also a central homomorphism.  Thus, the central homomorphisms of $S$ are a subsemiring of the semiring of $S$.}
 
-\item{{\bf Idempotents}.  Define a relation ${\overset i \leq}$ on the endomorphisms of $S$ by $f{\overset i \leq}g$ if ($f\cdot g$)=$f$.  The equivalence 
-classes of the corresponding symmetric relation $f{\overset i \sim} g$ contain all the idempotent endomorphisms, since $f{\overset i\sim}g$ implies that 
-both $f$ and $g$ are idempotent.  In this {\it idempotent order}, 1 is the maximum endomorphism and the constant endomorphisms are minimal.}
-
 \item{{\bf Neutral spaces}. If addition in $S$ allows left and right cancellation ($f\oplus g=f\oplus h$ implies $g=h$ and $g\oplus f=h\oplus f$ implies $g=h$), 
 $S$ is a {\it neutral} space.  The neutrality of $S$ guarantees $h\cdot 0$=0 for homomorphism $h$, and guarantees that if $f\oplus f$=$f$, then $f=0$.} 
 
-\item{{\bf Semilattice spaces}.  If $S$ is algebraic and $f\oplus f$=$f$ for all endomorphisms $f$, then $S$ is called a {\it semilattice space}.}
+\item{{\bf Positive spaces}.  If endomorphisms cannot cancel in the sense that $f\oplus g$=0 implies $f$=$g$=0, $S$ is a {\it positive} space.  If  
+non-zero endomorphisms $f$ and $g$ imply that $f\cdot g$ is also non-zero, then $S$ is a {\it non-zero preserving} space.} 
+
+\item{{\bf Idempotents}.  Define a relation ${\overset i \leq}$ on the endomorphisms of $S$ by $f{\overset i \leq}g$ if ($f\cdot g$)=$f$.  The equivalence 
+classes of the corresponding symmetric relation $f{\overset i \sim} g$ contain all the idempotent endomorphisms, since $f{\overset i\sim}g$ implies that 
+both $f$ and $g$ are idempotent.  In this {\it idempotent order}, 1 is the maximum endomorphism and the constant endomorphisms are minimal.}
 
 \end{itemize} 
 In the case where $S$ is distributive, $(f\oplus g)$ = $(f+g)$ for $f$, $g$ endomorphisms of $S$.  This means that the homomorphisms of $S$ are 
@@ -515,8 +516,8 @@ both the natural numbers and bool are good starting points for exploration.}
 pass is a semialgebra as well as a semiring with $X\star (Y+Z)$ equal to $(X\star Y)+(X\star Z)$ where $X\star Y$ is defined to be (ap $X$)$\cdot Y$.}
 \item{{\bf Idempotents} The idempotent equivalence classes of pass includes all idempotent data where (pass) is the unique maximum idempotent and where all constants 
 are in the minimal equivalence class.}
-\item{{\bf Semilattice} Semilattice spaces include (bool), (once) and (const $K$) for any data $K$.  The space bool is special in several ways.  
-It is a semilattice, a field, a central endomorphism, and is isomorphic to any space with exactly two data.}
+\item{{\bf Semilattice} The ideal semilattice includes the spaces (bool), (once) and (const $K$) for any data $K$.  The space bool is special in several ways.  
+It is a semlattice, a field, a central endomorphism, and the only space with exactly two data.}
 \end{itemize}
 In the idempotence order, pass is the unique maximum $X{\overset i\leq}{\rm pass}$ since pass uniquely satisfies 
 $X\cdot {\rm pass}=X$ for all $X$.  Pass is its own image and the kernel of pass is the maximal idempotent $e$ such that $e\cdot {\rm pass}={\rm null}\cdot{\rm pass}$, 
@@ -729,25 +730,6 @@ POWER SERIES
 POLYNOMIALS
 
 \section{Sets}
-
-    We have seen familiar mathematical objects appear organically as spaces rather than as sets with algebraic structure.  
-    
-\begin{itemize}
-\item{The data of the space $S$=first$\cdot$(is a b c d) is \{(),a,b,c,d\}.} 
-\end{itemize}
-
-Thus, (first)$\cdot$(is a b c d) does represent the set \{(),a,b,c,d\} but does so in a slightly awkward way because of the forced presence of the 
-empty sequence.  From the organic perspective, this is organic, but it fails to be fully mathematical because (first) is not algebraic.   
-This suggests looking for {\it algebraic} spaces with $\f\oplus f$=$f$.
-
-\begin{itemize}
-\item{
-\end{itemize}
-
-We have seen familiar mathematical objects appear organically, but as spaces rather than as sets with extra algebraic structure.  Still, 
-it is reasonable to ask if ordinary sets appears 
-rather than 
-as sets or objects of a category.  
 
 For an example that demonstrates ordinary sets in a fairly organic matter, consider the space $S$=once$\cdot$(is a b c d).  The data of $S$ 
 are the $2^4$ subsets of \{a,b,c,d\} with ($S$:$X$ $Y$) the set union of ($S$:$X$) and ($S$:$Y$).  The endomorphisms of $S$ are functions 

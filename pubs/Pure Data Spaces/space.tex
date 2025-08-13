@@ -74,7 +74,7 @@ of moving from $\delta$ to $\delta'$ as the passage of ``time."  The fixed point
 and if $\delta\leq\delta'$, then $c$ is still an atom a context in $\delta'$.  Thus, atoms are ``permanent" and if $c$ is an atom, $c$ is ``always" an atom.  
 
 \begin{definition}
-{Within a given context $\delta$, coda $c$ is an {\bf atom} if $\delta:c\mapsto c$.  If data $A$ contains an atom in its sequence, $A$ is {\bf atomic} data. 
+{Within a given context $\delta$, coda $c$ is an {\bf fixed point} if $\delta:c\mapsto c$.  A coda equal to a fixed point is an {\bf atom}.  If data $A$ contains an atom in its sequence, $A$ is {\bf atomic} data. 
 Data $A$ is {\bf invariant} if every coda $a$ in the sequence of $A$ is an atom and if $a^L$ and $a^R$ are both {\bf invariant}. }
 \end{definition}
 \noindent It follows from the definition that empty data is invariant and atoms $a$ and $b$ are equal if and only if $a^L=b^L$ and $a^R=b^R$.  If $a$ and $b$ are atoms, 
@@ -527,8 +527,11 @@ so the space (null) is the kernel of pass.
 \includegraphics[width=0.6\textwidth]{pass.pdf}
 \caption{{\it As a collection, pass contains all pure data; that is, all objects with mathematical 
 meaning as well as all computations.  As a space, it has a specific structure which is typical of other examples in the text.  
-In the idempotent partial order, (pass) is the unique maximum and (null) is minimal.  Each data in pass is also an endomorphism of pass.  The homomorphisms of pass are the distributive data.  The central homomorphisms are a single isomorphism class equivalent to the ``organic'' natural 
-numbers.  Spaces that are fields includes bool, null, and the rem(p,p) subspaces of ${\mathbf N}$, equal to ${\mathbf F}_p$ for prime $p$.  Bool and null are in the ideal of semilattice spaces as well.}}
+In the idempotent partial order, (pass) is the unique maximum and (null) is minimal as are all constants.  
+Each data in pass is also an endomorphism of pass.  The homomorphisms of pass are the distributive data.  
+The central homomorphisms are a single isomorphism class equivalent to the ``organic'' natural 
+numbers.  Spaces that are fields includes bool, null, and the rem(p,p) subspaces of ${\mathbf N}$, equal to ${\mathbf F}_p$ for prime $p$. 
+The space bool is the unique space with two data and is a semilattice as well as a field.}}
 \end{figure}
 
 In classical mathematics, the concept of a Set intentionally gives no information about its contents.  Thus, the ``Set of all Sets" is vast and, in 
@@ -640,7 +643,8 @@ and sort is, therefore, a central semialgebra, equivalent to the standard matrix
 defined by $(n,\alpha)+(m,\beta)$=$(n+m,\alpha\vee\beta)$.}
 
 \item{Lexical sort followed by reducing $a^n b^m$ to $a^{(n/g)} b^{(m/g)}$ where $g$=GCD$(n,m)$ is the greatest common divisor.  
-This is the space of positive rational numbers, but with non-standard `mediant' addition[ref].}
+This is the space of positive rational numbers, but with non-standard `mediant' addition where $(n/m)+(n'/m')$ is defined to be 
+$(n+n')/(m+m')$ \cite{mediant}.}
 
 \end{itemize}
 
@@ -678,14 +682,77 @@ multiplication.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1.0\textwidth]{OrganicTable.png}
-\caption{{\it Organic Numbers.}}
+\caption{{\it Classical algebras which appear as ``organic numbers'': subspaces of the spaces (is a b c...).}}
 \end{figure}
 \noindent Although many interesting spaces appear as organic numbers, some simple spaces appear to be missing.  It's noticeable, 
-for instance, that only non-standard rationals appear.  To understand why, notice that any non-constant subspace of an organic number 
-space (is a b c...) will have proper non-constant subspaces formed by projecting onto a subset of a b c... This means that the only non-trivial fields 
-in the organic numbers are the $F_p$ subspaces of (is a).  Thus, we can understand that the standard rational number field 
-cannot be an organic number. 
+for instance, that only non-standard rationals appear.  
 
+\section{Rationals} 
+
+       In the naive version of the organic theme, we would define a context with the basic combinatoric definitions and then 
+search the space of pure data, up to, say, some specified width and depth.  Then, for each data, we would test if it is 
+a space or not.  Ideally, all of the most important mathematical structures would all be found this way.  They would appear ``organically.'' 
+This has actually worked fairly well up through the organic numbers (Figure X) but there we noticed that only a mediant-addition 
+version of the rational numbers appeared as an organic integer.  The theory of fields makes the situation clear.  Notice 
+that any non-constant subspace of an organic number space (is a b c...) will have proper non-constant subspaces formed by 
+projecting onto a subset of (a b c...).  This means that the only non-trivial fields in the organic numbers are ${\mathbf F}_p$, 
+the subspaces rem($p$,$p$) for prime $p$ of (is a).  
+
+       As a result, we will take more of an active design approach to creating a space that represents the standard rationals, while 
+ still aiming to be as ``organic'' as possible in the sense of only using basic combinatoric definitions.  For illustrative purposes, 
+ we will follow a broadly applicable plan for defining a space corresponding to some algebra of interest.  The plan is as follows. 
+ 
+ \begin{itemize}
+ \item[(a)]{Define suitable atoms to represent the objects of interest.}
+ \item[(b)]{Create a base ``free construction'' space, typically a distributive sequence of a) atoms.} 
+ \item[(c)]{Invent a sequence of mutually commuting subspaces of the base space, until the sum in the subspace product agrees with the desired sum in 
+ a mathematical sense.}
+ \item[(d)]{The homomorphisms of the resulting product subspace are then supposed to be the ``product'' of the algebra via 
+ a bijection between the data of the space and homomorphisms (semialgebra) or central homomorphisms (central semialgebra).  The resulting 
+ algebra my or may not be a field.}
+ \end{itemize}
+ In the case of rational natural numbers, we proceed as follows.
+\begin{itemize} 
+\item[(a)] { 
+Start with an atom $q$ defined by 
+\begin{itemize}
+\item{($q$ $A$ $B$ : $B$) $\mapsto$ ($q$ $A$:$B$)}
+\item{($q$ $A$ : $A$ $B$) $\mapsto$ ($q$ $A$:$B$)} 
+\end{itemize}
+Note that ($q$ $A$:$B$) is not directly a fixed point, but it is an atom since it is equal to the corresponding unique fixed point.  In the case when 
+A and B are both sequences of some fixed atom as in (is a), $q$ is effectively guaranteeing that $A$ and $B$ are coprime natural numbers via Euclid's 
+algorithm for the GCD.  
+
+ }
+ \item[(b)] { 
+ Begin with a distributive space $Q$ of $q$-atoms such as ($q$ a a : a a a ) representing, for instance, ``2/3".  By definition, $Q$ contains a-only ``numerator'' and 
+''denominator'' and excludes ($q$ $A$:) atoms representing rationals with zero denominator.  
+
+ }
+ \item[(c)] { 
+ We refine by introducing a sequence of mutually commuting subspaces of $Q$. 
+\begin{itemize}
+\item{ADD is the subspace defined by $(q\ X_1:Y_1)\ (q\ X_2:Y_2)$ maps to 
+$(q\ ({\rm pr}\ X_1:Y_2)\ ({\rm pr}\ X_2:Y_1) : ({\rm pr}\ Y_1:Y_2))$, where 
+pr=(ap const a)$\cdot$ar is the natural number product.}
+\item{NORM is the subspace of $Q$ defined by ($q$\ $A$:$A$) $\mapsto$ (q\ a:a).}
+\item{NORM0 is the subspace of $Q$ defined by ($q$:$B$)$\mapsto$ ().}  
+\end{itemize}
+The subspace S=(ADD$\cdot$NORM$\cdot$NORM0) thus contains the empty sequence (representing the zero rational) and 
+and a single q-atom (representing non-zero rationals).  The sum in $S$ is standard rational number addition in $\mathbb Q^+$.
+
+ }
+ \item[(d)] { 
+ As for the nicest of the organic numbers, for each rational in $S$, there is a corresponding homomorphism $h_s$ where $h_s:q$ is multiplication 
+of $s$ and $q$ as rational numbers.  $S$ is both a semialgebra and a field.  
+
+ }
+ \end{itemize} 
+ 
+ Thus, we find that the standard rational natural numbers do appear to have a representation in this framework which is natural in the sense that 
+ it is a simple construction from basic combinatorial definitions.  It was, however, created via a bespoke intentional process steering towards 
+ an intended result, rather than as a space that appears with essentially no effort. 
+ 
 \section{Number Sequences}
 
       Given the Organic Naturals $N$=(is a), let $\mathbb{N}$ be 
@@ -724,50 +791,40 @@ S\cdot\{({\rm put\ s})\cdot{\rm B}\cdot({\rm get\ s})\}\cdot S
 then inner:$f$ is the inner version of an endomorphism $f$ of $S$.  Other general constructions of this type are possible.  For example, 
 since the endomorphism last2 = (inner:last 2) sums the last two atoms of a data of ${\mathbb N}$, (series last2) generates the fibonacci sequence. 
 
-     We can also use Seq to construct power series starting from (Seq $z$:$N$) where $z$ is some chosen atom and $N$ is (is a)....
-POWER SERIES
-POLYNOMIALS
-
 \section{Sets}
 
-    We have seen familiar mathematical objects appear organically as spaces rather than as sets with algebraic structure.  
-    
-\begin{itemize}
-\item{The data of the space $S$=first$\cdot$(is a b c d) is \{(),a,b,c,d\}.} 
-\end{itemize}
+    We have seen that familiar mathematical structures appear ``organically'' as pure data spaces rather than as sets with additional algebraic structure.  
+It is natural to ask whether ordinary sets also appear organically.  
 
-Thus, (first)$\cdot$(is a b c d) does represent the set \{(),a,b,c,d\} but does so in a slightly awkward way because of the forced presence of the 
-empty sequence.  From the organic perspective, this is organic, but it fails to be fully mathematical because (first) is not algebraic.   
-This suggests looking for {\it algebraic} spaces with $\f\oplus f$=$f$.
+     Consider $S$=first$\cdot$(is a b c).  $S$ is a distributive space containing \{(),a,b,c\} as data.  Endomorphisms of $S$ are  
+$S\cdot X\cdot S$ for some data $X$ and, thus, can be any ordinary function from \{(),a,b,c\} to \{(),a,b,c\}.  Homomorphisms of $S$ 
+are merely endomorphisms which map () to ().  Thus, $S$ basically functions as the set \{a,b,c\} but with slightly awkward complications due 
+to the forced presence of ().  Thematically, we attribute this awkwardness to the ``flaw'' that even though $S$ has the key property 
+that $f\oplus f$=$f$ for all endomorphisms, $S$ is not algebraic and, thus, we expect it not to be perfectly mathematical.  
 
-\begin{itemize}
-\item{
-\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{hasse.png}
+\caption{{\it Hasse diagram of the constant endomorphisms of $S$=sort$\cdot$once$\cdot$(is a b c).  The data of $S$ are subsets 
+of \{1,2,3\} ordered by inclusion.}}
+\end{figure}
 
-We have seen familiar mathematical objects appear organically, but as spaces rather than as sets with extra algebraic structure.  Still, 
-it is reasonable to ask if ordinary sets appears 
-rather than 
-as sets or objects of a category.  
-
-For an example that demonstrates ordinary sets in a fairly organic matter, consider the space $S$=once$\cdot$(is a b c d).  The data of $S$ 
-are the $2^4$ subsets of \{a,b,c,d\} with ($S$:$X$ $Y$) the set union of ($S$:$X$) and ($S$:$Y$).  The endomorphisms of $S$ are functions 
-from the power set of \{a,b,c,d\} to itself.  They have the characteristic property $f\oplus f$=$f$ for endomorphism $f$.  If $S$ is also algebraic, 
-the endomorphisms of $S$ and $\oplus$ are a semilattice and we say that $S$ is a {\it semilattice space}. 
-
-\section{Rationals} 
-
-Although the rationals are not organic numbers, they appear quite naturally as sequences of atoms (Q a a a : a a a a) with some 
-fixed chosen atom Q....(Q m:n) (Q m':n) -- (Q m m':n)....(Q 1 m:n) = (Q 1:n) (Q m:n)...+homomorphism product => field => semialgebra. 
+     The partial success of first$\cdot$(is a b c) suggests considering an {\it algebraic} space where $f\oplus f=f$.  
+suggests looking for algebraic spaces where $f\oplus f$=$f$. These are the {\it semilattice} spaces.  The space $S$=sort$\cdot$once$\cdot$(is a b c) is such 
+a semilattice.  Instead of containing the elements of \{a,b,c\}, $S$ now contains the $2^3$ subsets \{$\emptyset$, \{a\}, \{b\}, \{c\}, \{a b\}, \{a c\}, \{b c\}, \{a b c\}\} 
+represented as sorted non-repeating sequences.  The endomorphisms of $S$ are general endofunctions of ${\mathcal P}(\{a,b,c\})$.  The semilattice of 
+constants of $S$ is the standard semilattice of subsets of \{a,b,c\} ordered by the set union operation.  
+The unit endomorphisms are the permutation group $S_3$ permuting a, b and c.  The central endomorphisms are $S_3$-equivariant functions, and the homomorphisms 
+are morphisms of the standard set union.  In other words, $S$ has everything that one mathematically expects, without extraneous features or 
+unexpected constraints.  Thus, the intuition that algebraic spaces will be more platonic and mathematically perfect is encouraged.  
 
 \section{Boolean} 
 
-      As mentioned already, the space bool is likely to be mathematically interesting, both because of its direct connection to 
-the underlying pure data context and, in abstract terms, because it is a central, algebraic space within pass.  Although central, bool is not a 
-homomorphism and so has a different character from natural numbers.  
-Since bool contains two data:  () for {\it true} and (:) for {\it false}, bool has only four endomorphisms:  
-the identity ID=bool, two constants: TRUE=(const ()), and FALSE=(const (:)), and one involution NOT=bool$\cdot$not$\cdot$bool.  
-Since there are only four, we include the complete semiring operations in Table X.  Note that $\oplus$ is commutative since 
-bool is algebraic and $f\oplus f=f$, since bool has the semilattice property.  
+      As mentioned already, the space (bool) is likely to be mathematically interesting, both because of its direct connection to 
+the underlying pure data context and, because it has a number of special properties.  Although bool is not a homomorphism of pass,
+it is algebraic, a central endomorphism, a semilattice, a field and the only space containing exactly two data. 
+Because bool only contains:  () for {\it true} and (:) for {\it false}, there are only four endomorphisms:  
+the identity ID=bool, two constants: TRUE=const (), and FALSE=const (:), and one involution, NOT=bool$\cdot$not$\cdot$bool.  
 \begin{table}
 \begin{tabular}{| l | l | l | l | l |  }
 $f\cdot g$ & ID & TRUE & FALSE & NOT  \\
@@ -788,10 +845,10 @@ NOT & FALSE & NOT & FALSE & NOT \\
 \hline
 \end{tabular}
 \caption{{\it Product and sum of the four morphisms ID, TRUE, FALSE, NOT of the space bool}.  Note that ID is the unit of multiplication and TRUE is the 
-unit of addition, and we have $f\oplus g=g\oplus f$, since bool is algebraic, and $f\oplus f=f$.}
+unit of addition, and we have $f\oplus g=g\oplus f$ and $f\oplus f=f$ since bool is a semilattice space.}
 \end{table}
-The subspaces of bool are ID, TRUE and FALSE, so bool has only trivial subspaces.  The endomorphisms ID and TRUE are neutral, ID is the only positive 
-endomorphism and all endomorphisms are algebraic since bool itself is algebraic.  The group of units is ID and NOT, and ID is the only central endomorphism. 
+Table 1 shows the bool semiring.  The only proper subspaces of bool are the constants TRUE and FALSE, so bool is a field. The group of units is ID and 
+the involution NOT, so ID is the only central endomorphism.    
 
 \subsection{Boolean Sequences}
 
@@ -801,8 +858,8 @@ As in the case of N, we can let $\mathbb L$=(Seq b:bool), be the distributive sp
 \end{equation}
 Let's agree to write such sequences replacing (b:) with T, (b:(:)) with F and the empty sequence with 0, so that the above is written TTFTFF.   
 Let's also consider the shortest subspaces of $\mathbb L$ first.  
-The subspace ${\mathbb L}\cdot {\rm first}\cdot{\mathbb L}$ contains the $\mathbb L$ sequences of length less than or equal to 1 and similarly,  
-${\mathbb L}\cdot {\rm first\ 2}\cdot{\mathbb L}$ is the subspace of sequences with length less than or equal to 2.  Lets refer to these spaces as 
+The subspace (${\mathbb L}\cdot {\rm first}\cdot{\mathbb L}$) contains the $\mathbb L$ sequences of length less than or equal to 1 and similarly,  
+(${\mathbb L}\cdot {\rm first\ 2}\cdot{\mathbb L}$) is the subspace of sequences with length less than or equal to 2.  Lets refer to these spaces as 
 ${\mathbb L}_1$ and ${\mathbb L}_2$ repectively.  
 Thus, ${\mathbb L}_1$ contains data \{0,T,F\} and ${\mathbb L}_2$ contains data \{0,T,F,TT,TF,FT,FF\}. 
 For ${\mathbb L}_1$, we can specify an endomorphism $f$ of ${\mathbb L}_1$ by listing the values of $f$ on 0,T,F in standard order.  So, for example, 
@@ -850,6 +907,9 @@ Indeed, Table Y shows the eight morphisms and their values on \{0,T,F,TT,TF,FT,F
 we recognize that these are slight generalizations of the eight standard symmetric binary boolean operators.  The values of the eight morphisms 
 on \{0,T,F\} suggests that the standard binary operator names (`OR' as opposed to `any') are not particularly illuminating in this larger context.  
 
+    Further analysis of ${\mathbb L}$ is beyond the scope of this paper, but we note that the obvious isomorphism between (is a b) and ${\mathbb L}$ 
+means that all of the semilattice structure and subspaces found in (is a b) are directly reflected in ${\mathbb L}$.  
+
 \section{Summary, Global Strategies, Questions} 
 
 Summary:  we have a coherent view of mathematics analogous to sets with structure or Category Theory.  
@@ -864,9 +924,10 @@ of all pure data.}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{garden.png}
-\caption{{\it Some of the spaces and morphisms discussed in the text and ``grown organically'' from the space of all pure data. 
-The main starting points are natural number spaces (central homomorphism spaces) and bool (central algebraic spaces).}}
+\includegraphics[width=1.0\textwidth]{garden2.png}
+\caption{{\it Spaces and subspaces discussed in the text, viewed as emerging ``organically'' from (pass), the space of all pure data. 
+Organic numbers are subspaces of (is a..) are shown in the center with bool and descendants on the left, sets and the bespoke
+${\mathbb Q}^+$ construction to the right of the figure.}}
 \end{figure}
 
 \section{Glossary}
@@ -900,6 +961,8 @@ The main starting points are natural number spaces (central homomorphism spaces)
 \begin{enumerate}
 \item{map}
 \item{various aps}
+\item{aq}
+\item{ar}
 \end{enumerate}
 \item{Sequence 
 \begin{enumerate}

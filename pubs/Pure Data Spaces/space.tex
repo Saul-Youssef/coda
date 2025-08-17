@@ -26,7 +26,7 @@ the foundational concept rather than based on {\it logic} or {\it types}.  The b
 Within this theory, minimal requirements to have set-like collections of mathematical objects leads to the definition 
 of a {\it pure data space}.  A theory of pure data spaces and their morphisms is developed where a space is best 
 understood as a semiring of endomorphisms with homomorphisms representing structure, and with subspace 
-endomorphisms representing new and possibly very different substructures.  
+endomorphisms representing new and often quite different substructures.  
 As an exploration, and in order to illustrate these concepts, pure data spaces are 
 ``grown organically'' from the substrate of pure data with the minimal combinatorial definitions which follow from 
 the basic concept of a finite sequence.  Familiar objects from classical mathematics emerge this way,   
@@ -193,7 +193,7 @@ codas $({\rm ap}\ A,B)$ where $B$ starts with an atom.  By definition, if we lis
 
 \subsection{Language} 
 
-Axiomatic systems like ZFC\cite{ZFC} or dependent type theories[ref] are formal languages.  There is an alphabet, special symbols, and syntax rules 
+Axiomatic systems like ZFC\cite{ZFC} or dependent type theories\cite{types,hott} are formal languages.  There is an alphabet, special symbols, and syntax rules 
 for defining valid expressions.  Our approach avoids this by defining a language as just one more definition like any other.  The basic idea is to 
 define minimalist language, mainly giving access to the two foundational operations via text blank space (for concatenation) and text colon (for pairing to data as a coda).  So, the idea is 
 \begin{itemize}
@@ -277,7 +277,7 @@ Data $A$ defines a binary operator on data via ($X{\overset A\ast}Y)=(A:X\ Y)$. 
  ($A$:$X$\ $Y$)=($A$:($A$:$X$)\ $Y$)=($A$:$X$ ($A$:$Y$)) for all $X$,$Y$ we say that data $A$ is {\it associative} if it has this property.  
  
 Algebraic and distributive data foreshadow a theme where these two properties make data mathematically interesting for complementary reasons.  
-Algebraic data has, in a sense, ``transcended finite sequence," the foundational concept of the system and has a platonic existence in 
+Algebraic data has, in a sense, ``transcended finite sequence," the foundational concept of the system, and deserves a platonic existence in 
 that sense.  Distributive data, on the other hand, is maximally sequence dependent, but it may also be mathematically interesting since 
 such data is a ``morphism of finite sequence.''   
  
@@ -289,8 +289,8 @@ all collections of mathematical objects are also merely data.
 Thus, we are lead to ask, given some data $S$, how could $S$ represent a collection of other data?  
 There are a couple of plausible ways to do this.  
 \begin{itemize} 
-\item The collection corresponding to $S$ would be the collection of data ($S$:$X$) for any data $X$;
-\item The collection corresponding to $S$ would be the collection of all of the fixed points of $S$.  
+\item The collection corresponding to $S$ could be the collection of data ($S$:$X$) for any data $X$;
+\item The collection corresponding to $S$ could be the collection of all of the fixed points of $S$.  
 \end{itemize}
 These ideas coincide if we require $S$ to be idempotent, so that ($S$:$X$) is automatically a fixed point.  It is natural to also expect compatibility with 
 sequences in the sense that if ($S$:$X$) is in the collection and ($S$:$Y$) is in the collection, then ($S$:$X$) ($S$:$Y$) is also in the collection.  
@@ -299,7 +299,7 @@ This is guaranteed if we require
 (S : X\ Y) = S : (S:X)\ (S:Y)
 \end{equation}
 for all data $X$, $Y$.  
-Note that data $S$ is idempotent and satisfies Equation 4 if and only if $S$ is associative, and so we are lead 
+Note that data $S$ is idempotent and satisfies Equation 5 if and only if $S$ is associative, and so we are lead 
 to a simple definition.
 \begin{definition} Data $S$ is a {\bf space} if $S$ is associative.
 \end{definition}
@@ -363,7 +363,7 @@ Every space has subspaces $1$ (the whole space), and $0$, the constant neutral s
 data in $S$.  Since $k\cdot f$ and $k\oplus l$ are constants for 
 constant $k$ and $l$ and for any endomorphism $f$, the constants of $S$ are a left-ideal of the semiring of $S$.} 
 
-\item{{\bf Homomorphisms.}  By Equation 5, the homomorphisms of $S$ are exactly the endomorphisms which distribute over addition from
+\item{{\bf Homomorphisms.}  By Equation 6, the homomorphisms of $S$ are exactly the endomorphisms which distribute over addition from
 both the left and from the right.  The endomorphisms 0 and 1 are homomorphisms.  If $f$ and $g$ are homomorphisms of $S$, then 
 $f\cdot g$ is a homomorphism.  If $S$ is algebraic, the homomorphisms are a subsemiring of the semiring of $S$.} 
 
@@ -413,7 +413,7 @@ $h\cdot (k\oplus l)$ equal to $(h\cdot k)\oplus (h\cdot l)$ so homomorphisms of 
 be an algebra in the ordinary sense except that homomorphisms might not be constants.  This suggests a definition. 
 
 \begin{definition}
-A space with a one-to-one mapping from constants to homomorphisms is a {\bf semialgebra}.  If the homomorphisms 
+A space with a chosen mapping from constants to homomorphisms is a {\bf semialgebra}.  If the homomorphisms 
 in the image of the mapping are central, the semialgebra is a {\bf central semialgebra}.  
 \end{definition}
 \noindent Since pure data is meant to include all mathematical objects, we might expect that important algebras of standard 
@@ -594,9 +594,8 @@ These unsurprising subspaces have a slightly more surprising generalization.  Fo
 \begin{equation}
 {\rm while}\ n\ge p,q: {\rm remove\ p\ from\ n}
 \end{equation}
-which results in rem($p$,$q$)($n$) = min($n$\ mod\ $p$,$q-1$), specializing to addition modulo p for rem(p,p).  This completes the analysis of $N$.  $N$ is 
-a semialgebra identical to the standard semiring $\mathbb N$.  The only subspaces of $N$ are 1, constants and rem(p,q)\cite{rem}.  The subspaces are
-all mutually commuting.  The non-trivial fields of $N$ are ${\rm rem}(p,p)$ for prime $p$.  
+which results in rem($p$,$q$)($n$) = min($n$\ mod\ $p$,$q-1$), specializing to addition modulo p for rem(p,p).  Since a subspace of $N$ is exactly an idempotent 
+endomorphism of the semigroup (${\mathbb N},+$), it is known from the theory of semigroups that this list is complete\cite{semigroup}.  The only subspaces of $N$ are $1$, constants and rem($p$,$q$) for $p,q\ge 1$, and the only field subspaces of $N$ are rem($p$,$p$) for prime $p$. 
 
 \begin{figure}[h]
 \centering
@@ -709,36 +708,32 @@ for instance, that standard rationals do not appear.  We would like to understan
 
        In the naive version of the organic theme, we would define a context with the basic combinatoric definitions and then 
 search the space of pure data, up to, say, some specified width and depth.  Then, for each data, we would test if it is 
-a space or not.  Ideally, all of the most important mathematical structures would all be found this way.  They would appear ``organically.'' 
+a space or not.  Ideally, all of the most important mathematical structures would be found this way.  They would appear ``organically.'' 
 This has actually worked fairly well up through the organic numbers (Figure 5) but there we noticed that only a mediant-addition 
-version of the rational numbers appeared as an organic integer.  The theory of fields makes the reason for this situation clear.  Any non-constant 
-subspace of an organic number space (is a b c...) will have proper non-constant subspaces formed by 
+version of the rational numbers appeared as an organic integer.  The theory of fields makes the reason for this clear.  
+Any non-constant subspace of an organic number space (is a b c...) will have proper non-constant subspaces formed by 
 projecting onto a subset of (a b c...).  This means that the only non-trivial fields in the organic numbers are ${\mathbf F}_p$, 
-the subspaces rem($p$,$p$) for prime $p$ of (is a).  
-
-       As a result, we take a more active design approach to creating a space that represents the standard rationals, while 
- still aiming to be as organic as possible in the sense of only using basic combinatoric definitions.  For illustrative purposes, 
- we follow a broadly applicable plan for defining a space corresponding to some algebra of interest.  The plan is as follows. 
+the subspaces rem($p$,$p$) for prime $p$ of (is a).  As a result, we take a more active design approach to creating a space that represents the standard rationals, while still aiming to be as organic as possible in the sense of only using basic combinatoric definitions.  For illustrative purposes, we follow a broadly applicable plan for defining a space corresponding to some algebra of interest.  The plan is as follows. 
  
  \begin{itemize}
  \item[(a)]{Define suitable atoms to represent the objects of interest.}
  \item[(b)]{Create a base ``free construction'' space, typically a distributive sequence of a) atoms.} 
  \item[(c)]{Invent a sequence of mutually commuting subspaces of the base space, until the sum in the subspace product agrees with the desired sum in 
  a mathematical sense.}
- \item[(d)]{The homomorphisms of the resulting product subspace are then define a module-like product.  If there is a one to one mapping 
+ \item[(d)]{The homomorphisms of the resulting product subspace then define a module-like product.  If there is a suitable mapping 
  from constants to homomorphisms, one has a semialgebra or a central semialgebra.}
  \end{itemize}
  In the case of rational natural numbers, we proceed as follows.
 \begin{itemize} 
 \item[(a)] { 
 We will represent single rational numbers with $q$-atoms such as ($q$ a a: a a a) representing 2/3.  
-We could define $q$ direct as a fixed point via ($q$ $A$ $B$:$B$) $\mapsto$ ($q$ $A$ $B$:$B$).  
+We could define $q$ directly as a fixed point via ($q$ $B$:$B$) $\mapsto$ ($q$ $A$:$B$).  
 It is more convenient and more illustrative to instead define a ``fancy'' $q$-atom that is not a direct fixed point, but is nevertheless equal to a fixed point. 
 \begin{itemize}
 \item{($q$ $A$ $B$ : $B$) $\mapsto$ ($q$ $A$:$B$)}
 \item{($q$ $A$ : $A$ $B$) $\mapsto$ ($q$ $A$:$B$)} 
 \end{itemize}
-The point of this definition is that the guaranteed fixed point guarantees that the $A$ and $B$ components of each $q$-atom 
+The point of this definition is that the guaranteed fixed point means that the $A$ and $B$ components of each $q$-atom 
 are coprime natural numbers.
  }
  \item[(b)] {For the base ``free construction'' space, we can simply choose the distributive space of $q$-atoms, modified only by 
@@ -767,34 +762,36 @@ of $s$ and $q$ as rational numbers.  $S$ is a central semialgebra and a field.
  
 \section{Number Sequences}
 
-      Given the organic naturals $N$=(is a), from Section 9.1, we can go from a space containing single natural numbers to a space 
+      Given any space $S$, a common functor-like construction produces a corresponding distributive space of 
+$S$-values stored in some chosen $s$-atom.  An example with the organic natural numbers will illustrate how this works. 
+Given the organic naturals $N$=(is a), from Section 9.1, we can go from a space containing single natural numbers to a space 
 containing sequences of natural numbers.  
 Let $\mathbb{N}$ be 
 \begin{equation}
-{{\rm ap}\ ({\rm put\ {\rm n}})\cdot N \cdot ({\rm get\ {\rm n}})}
+{{\rm ap}\ ({\rm put}\ n)\cdot N \cdot ({\rm get}\ n)}
 \end{equation}
-where $n$ is a pre-defined atom.  Since $({\rm put\ n})\cdot N \cdot ({\rm get\ n})$ is idempotent, ${\mathbb N}$ is a distributive space containing 
+where $n$ is a pre-defined atom.  Since $({\rm put}\ n)\cdot N \cdot ({\rm get}\ n)$ is idempotent, ${\mathbb N}$ is a distributive space containing 
 sequences of $n$-atoms containing $N$-data, such as 
 \begin{equation} 
-{\rm T = (n:a\ a\ a)\ (n:)\ (n:a\ a)\ (n:a)\ (n:)}.
+T = (n:a\ a\ a)\ (n:)\ (n:a\ a)\ (n:a)\ (n:).
 \end{equation} 
 Unlike the case of $N$, the action of ${\mathbb N}$ is merely to concatenate sequences.  It's easy, however, to identify 
 natural number sum again as one of several subspaces 
 \begin{itemize}
-\item sum:T = (n:a a a a a a)
-\item sort:T = (n:) (n:) (n:a) (n:a a) (n:a a a)
-\item min:T = (n:)
-\item first:T = (n:a a a)
+\item sum:$T$ = ($n$:a a a a a a)
+\item sort:$T$ = ($n$:) ($n$:) ($n$:a) ($n$:a a) ($n$:a a a)
+\item min:$T$ = ($n$:)
+\item first:$T$ = ($n$:a a a)
 \end{itemize} 
-All but the last are algebraic subspaces and, predictably, have established names.  
-Some endomorphisms of ${\mathbb N}$ are inherited from $N$ as follows.  Define inner:F to be 
+All but the last are algebraic subspaces and, predictably, have recognizable names.  
+Some endomorphisms of ${\mathbb N}$ are inherited from $N$ as follows.  Define inner:$F$ to be 
 \begin{equation}
-{\mathbb N}\cdot({\rm put\ n})\cdot {\rm F}\cdot({\rm get\ n})\cdot{\mathbb N}
+{\mathbb N}\cdot({\rm put}\ n)\cdot F\cdot({\rm get}\ n)\cdot{\mathbb N}
 \end{equation}
-so that (inner:F):X means letting F act on the concatenated $N$-contents of $X$, returning the result in a single $n$-atom.  The sum endomorphism 
-above, for instance, is equal to inner:$N$.  The construction of Equation 7 works for any space, and so we can define a ``functor'' {\it Seq} to be 
+so that (inner:$F$):$X$ means letting $F$ act on the concatenated $N$-contents of $X$, returning the result in a single $n$-atom.  The sum endomorphism 
+above, for instance, is equal to inner:$N$.  The construction of Equation 11 works for any space, and so we can define a ``functor'' {\it Seq} to be 
 \begin{equation}
-\{({\rm put}\ {\rm A})\cdot {\rm B} \cdot ({\rm get}\ {\rm A})\}
+{\rm ap}\ \{({\rm put}\ {\rm A})\cdot {\rm B} \cdot ({\rm get}\ {\rm A})\}.
 \end{equation}
 Then {$\mathbb N$} is equal to (Seq $n$:$N$) and given any atom $s$ and any space $S$, (Seq $s$:$S$) is the space of $S$-values stored in $s$-atoms.  
 Similarly, if we define {\it inner} to be  
@@ -811,7 +808,7 @@ It is natural to ask whether ordinary sets also appear organically.
 
      Consider $S$=first$\cdot$(is a b c).  $S$ is a distributive space containing \{(),a,b,c\} as data.  Endomorphisms of $S$ are  
 $S\cdot X\cdot S$ for some data $X$ and, thus, can be any ordinary function from \{(),a,b,c\} to \{(),a,b,c\}.  Homomorphisms of $S$ 
-are endomorphisms which map () to ().  Thus, $S$ basically is the set \{a,b,c\} but with slightly awkward complications due 
+are endomorphisms which map () to ().  Thus, $S$ is, roughly speaking, the set \{a,b,c\} but with awkward complications due 
 to the forced presence of ().  Thematically, we attribute this awkwardness to the ``flaw'' that even though $S$ has the key property 
 that $f\oplus f$=$f$ for all endomorphisms, $S$ is not algebraic and, thus, we expect it not to be perfectly mathematical.  
 
@@ -865,7 +862,7 @@ the involution NOT, so ID is the only central endomorphism.
 
 \subsection{Boolean Sequences}
 
-Repeating the sequencing operation from Section 11, we can let $\mathbb L$=(Seq $b$:bool), 
+Repeating the sequencing operation from Section 12, we can let $\mathbb L$=(Seq $b$:bool), 
 be the distributive space of bool-valued data stored in pre-defined $b$-atoms, so a typical data in $\mathbb L$ is 
 \begin{equation}
 (b:)\ (b:)\ (b:(:))\ (b:)\ (b:(:))\ (b:(:))
@@ -879,7 +876,8 @@ Thus, ${\mathbb L}_1$ contains data \{0,T,F\} and ${\mathbb L}_2$ contains data 
 For ${\mathbb L}_1$, we can specify an endomorphism $f$ of ${\mathbb L}_1$ by listing the values of $f$ on 0,T,F in standard order.  So, for example, 
 0TF denotes the identity endomorphism of ${\mathbb L}_1$.  
 Since ${\mathbb L}_1$ has 27 morphisms, we can be completely explicit about this space.  
-Figure 4 lists the 27 endomorphisms and indicates endomorphisms with special properties.  Even with relatively small space like ${\mathbb L}_1$, all of 
+Figure 4 lists the 27 endomorphisms and indicates endomorphisms with special properties and where an endomorphism is {\it positive} if its value is never 0.  
+Even with relatively small space like ${\mathbb L}_1$, all of 
 the classes of endomorphisms appear in a nontrivial way.
 
 \begin{figure}[h]
@@ -890,7 +888,6 @@ values in the column on the left.  Even with a small space of this size, the $3^
 appear in a non-trivial way.}}
 \end{figure}
 \begin{table}
-\caption{The eight inner morphisms of ${\mathbb L}_2$ slightly generalize the eight standard symmetric binary boolean operators.}
 \centering 
 \begin{tabular}{r c c c c c c c r r l}
 \hline\hline
@@ -908,6 +905,8 @@ $e_8$ & F & F & F & F & F & F & F & FALSE & {\bf never} & never true \\
 Number of (:)   & 0 & 0 & 1 & 0 & 1 & 1 & 2 &  \\ 
 \hline
 \end{tabular}
+\caption{The eight inner morphisms of ${\mathbb L}_2$ slightly generalize the eight standard symmetric binary boolean operators.
+In this slightly generalized context, one can see that the standard names for these operators are not perfectly descriptive.}
 \label{table:L2}
 \end{table} 
 
@@ -945,14 +944,16 @@ A space, together with the endomorphisms of the space are a {\it semiring} which
 
      After working out the basic theory, we develop a set of examples, partly to illustrate the theory, and partly as an exploration of the general 
 space of mathematical results from the pure data perspective.  We adopt the theme of letting spaces emerge ``organically'' from the simplest 
-combinatorial definitions which are inevitable from the foundational finite sequence concept.  A second major theme is to focus on algebraic 
-data which ``transcends'' finite sequencing, and so might be expected to have platonic meaning that transcends the system.  The more 
-sophisticated version of this is focusing on algebraic spaces and on central homomorphisms. 
+combinatorial definitions which are inevitable from the foundational finite sequence concept.  
+A second major theme is to focus on algebraic data because such data, in some sense, transcends 
+the foundational concept, and, in some sense, earns a platonic meaning independent of the pure data framework.  A more 
+sophisticated version of this idea is to focus on algebraic spaces and on central homomorphisms as the most likely objects 
+of mathematical interest. 
 Figure 8 illustrates the spaces explored with these considerations in mind.  
 We find that the purely organic approach is at least partially successful.  A substantial fraction of natural combinatoric definitions are 
 spaces already, and, for instance, the {\it organic numbers} show that a substantial fraction of the resulting spaces are important classical algebras.  Of course, this is only scratching the surface.  Surely many areas of mathematics can be approached from this angle.  
 
-      Section 10, describing the rational numbers, is an example of a more intentional approach where one has something mathematical
+      Section 11, describing the rational numbers, is an example of a more intentional approach where one has something mathematical
 in mind from the beginning.  This process is interestingly different from what one does in classical mathematics.  The rational numbers 
 must be a space, since, basically, everything must be a space.  This means that rather than inventing axioms, one starts with a space 
 large enough to encompass what one wants and then try to coax it towards the desired space by passing into subspaces.  In this 
@@ -970,7 +971,7 @@ one does seem to end up with the intended structure.
 3 & 1 & 4 & 4369 & $7.0\times 10^{21}$ & $1.1\times 10^{131}$ \\
 4 & 1 & 5 & 406901 & $7.5\times 10^{44}$ & $1.0\times 10^{359}$ \\
 \end{tabular}
-\caption{The number of pure data within maximum specified width and depth.}
+\caption{The number of pure data within maximum specified width and depth grows rapidly.}
 \label{tab:pure_data_counts}
 \end{table}
 
@@ -1024,7 +1025,6 @@ continuing to investigate other areas of mathematics in the bespoke style of Sec
 \end{enumerate}
 \item{Sequence 
 \begin{enumerate}
-\item{(nat:n)->n (nat:n+1), example of infinite data.  MOVE UP TO TOP?}
 \item{$\delta_{\rm first}$ : (first : b B) $\mapsto$ b}
 \item{$\delta_{\rm first}$ : (first : ()) $\mapsto$ ()} 
 \item{$\delta_{\rm last}$ : (last : B b) $\mapsto$ b} 
@@ -1044,7 +1044,7 @@ continuing to investigate other areas of mathematics in the bespoke style of Sec
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% 
-\begin{thebibliography}{1}
+\begin{thebibliography}{2}
 
 \bibitem{PDF}
 Saul Youssef.
@@ -1055,8 +1055,6 @@ Saul Youssef.
 T.~Jech.
 \newblock {\em Set Theory}.
 \newblock Springer, 3rd Millennium ed., 2002.
-\bibitem{rem}
-Proof of rem...
 \bibitem{mediant}
 G.~H. Hardy and E.~M. Wright.
 \newblock {\em An Introduction to the Theory of Numbers}.
@@ -1080,6 +1078,18 @@ J.~C. Baez.
 \newblock The octonions.
 \newblock {\em Bulletin of the American Mathematical Society}, 39(2):145--205, 2002.
 \newblock Available at: \url{https://arxiv.org/abs/math/0105155}.
+\bibitem{semigroup}
+A.~H.~Clifford and G.~B.~Preston, 
+\emph{The Algebraic Theory of Semigroups, Vol.~I}, 
+American Mathematical Society, Mathematical Surveys and Monographs, Vol.~7, Providence, RI, 1961.
+\bibitem{types}
+P.~Martin-L{\"o}f, 
+\emph{Intuitionistic Type Theory}, 
+Bibliopolis, Naples, 1984.
+\bibitem{hott}
+Univalent Foundations Program, 
+\emph{Homotopy Type Theory: Univalent Foundations of Mathematics}, 
+Institute for Advanced Study, 2013.
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}

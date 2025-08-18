@@ -112,7 +112,7 @@ given $A_1$ or as a computation $A_1\mapsto A_n$.
 The immediate issue is how to choose $\delta$.  
     
      In the beginning, there are no definitions, and the corresponding context is the empty partial function $\delta_0$.  
-Since the domain of $\delta_0$ is empty, it has no fixed points and, therefore, no atoms.  Thus, the empty sequence is the only invariant, 
+Since the domain of $\delta_0$ is empty, it has no fixed points and, therefore no atoms.  Thus, the empty sequence is the only invariant, 
 $X{\overset \delta =}X$ is the only valid proof, and the only valid 
  computations do nothing $X\mapsto X$ for any data $X$.
 To define a non-empty context $\delta_0\le\delta$, we need, at least, an invariant specification of the domain of $\delta$ as a partial function.    
@@ -147,17 +147,16 @@ we introduce minimal definitions using the mechanism explained in the previous s
 \item {Define ``bits'', ``bytes'' and ``byte sequences'' so that words are single atoms, so that $a$ can be a word in future definitions $\delta_a$.}
 \item {Define all of the naturally occurring combinatoric operations given two finite sequences $A$ and $B$.  For example $\delta_{\rm ap}$
 maps (ap $A$ : b$_1$\ b$_2$ $\dots$ b$_n$) to ($A$:b$_1$)\ ($A$:b$_2$)$\dots$ ($A$:b$_n$), so that ap ``applies $A$ to each atom of input.'' }
-\item {Define a minimal internal language $\delta_{\{\}}$ so that a coda $(\{\texttt{language expression}\}\ A : B)$ is mapped to corresponding 
-data as described in Section 4.3 below.}
-\item {Include definitions giving direct access to context-level values.  This includes a Boolean definition $\delta_{\rm bool}$ to determine if data is empty, 
+\item {Define a minimal internal language $\delta_{\{\}}$ so that a coda $(\{\texttt{language expression}\}\ A : B)$ is mapped to data as described by 
+the expression and possibly using data $A$ and data $B$.}
+\item {Include definitions giving direct access to context-level values.  This include a Boolean definition $\delta_{\rm bool}$ to determine if data is empty, 
 $\delta_{=}$ to test if two data are equal in $\delta$, and $\delta_{\rm def}$ to add definitions via Equation 1.} 
 \end{enumerate}
 These are meant to be a minimal collection of definitions, including only the minimal inevitable finite sequence concepts and, more generally, 
-the combinatorics of Equation 1.  There are intentionally no definitions which presume underlying arithmetical operations.  A natural number, 
-`123', for instance is a single atom byte sequence and there is no definition which implies interpreting this as a number in the usual way.  The idea is
+the combinatorics of Equation X.  There are intentionally no definitions which presume underlying arithmetical operations.  A natural number, 
+`123`, for instance is a single atom byte sequence and there is no definition which implies interpreting this as a number in the usual way.  The idea is
 to allow natural numbers and whatever else to emerge ``organically.'' 
-There are approximately fifty definitions needed to create a basic system.  We define some here for orientation.  The remaining definitions used 
-in the text can be found in the Glossary.
+There are approximately fifty definitions needed to create a basic system.  We define some here for orientation.  More details can be found in the Glossary.  
 
 \subsection{Bits, Bytes and Byte sequences}
 
@@ -181,7 +180,7 @@ It is convenient to define ``getting the A and B components of a coda'' like so
 \item{$\delta_{\rm right}$ : ({\rm right} A:B) $\mapsto$ B} 
 \end{itemize}
 We proceed to define the minimal combinatorics involving of A and B as finite sequences.  These don't have 
-commonly understood names, so we introduce new names.  For example the name `ap' is meant to suggest the 
+commonly understood names, so we are forced to invent new names.  For example the name `ap' is meant to suggest the 
 concept ``apply A to each atom of B" is expressed by the definition.  
 \begin{itemize}
 \item{$\delta_{\rm ap}$ : ({\rm ap} A : b B) $\mapsto$ (A:b) ({\rm ap} A : B)}
@@ -248,7 +247,7 @@ so, for instance (def first2 : {first 2 : B}), means that (first2 : a b c d) is 
 We take this as the ``organic'' base of naturally occurring 
 definitions plus the language will be a starting point in searching for the ``spaces'' defined in section 5.  Further definitions used in the text can be found in 
 the Glossary.  Examples, tutorials, a complete definition of the language, and software can be 
-found in reference \cite{coda}. 
+found in reference [x]. 
 
 \section{Global Structure} 
 
@@ -450,7 +449,7 @@ spaces one step above constants.  These are the `fields'.
 A space where all proper subspaces are constants is a {\bf field}.
 \end{definition}
 \noindent In classical ring theory, a field is guaranteed to have 
-multiplicative inverses.  An analogous result nicely combines homomorphisms, constants, units and subspaces \cite{ring}.  
+multiplicative inverses.  An analogous result nicely combines homomorphisms, constants, units and subspaces \cite{Ring}.  
 \begin{theorem}
 A space $S$ is a field if and only if every non-constant homomorphism of $S$ is a unit. 
 \end{theorem}
@@ -528,7 +527,7 @@ Consider the properties defined in section 6.
 $K\cdot 0$=$K$, in other words, the constant spaces (const $K$) are the constants.}
 \item{{\bf Homomorphisms.} Since pass is distributive, the homomorphisms of pass are the distributive data in pass, including spaces, such as (ap \{a\}) 
 and non-spaces such as (ap \{B B\}).} 
-\item{{\bf Group of units.} The units of pass are permutations.  The central constants of pass are the data which 
+\item{{\bf Group of units.} The units of pass are permutations such as (swap 1 2) and (rev).  The central constants of pass are the data which 
 are invariant under all permutations.  These are the sequences of identical atoms such as (:) (:) (:) or (a a a a a).  These are interpreted as ``organic natural numbers.''}
 \item{{\bf Central endomorphisms} The maximally platonic, maximally significant content of pass are the central homomorphisms, which include 
 subspaces such as (ap const a), (atoms), (is b).  These are isomorphic spaces, each representing natural numbers with natural number 
@@ -587,7 +586,7 @@ since $N$ is distributive, is the empty sequence.  It is easy to guess some subs
 \begin{itemize} 
 \item [1.] {\bf Saturation subspaces} An endomorphism (min a a) is a subspace which effectively computes the minimum of 2 and its argument.  Thus (min a a) contains the data (), (a), and (a a). 
 \item [2.] {\bf Modular arithmetic subspaces} An endomorphism which removes three (a) atoms while possible, such as (while remove a a a) is a subspace which computes the sum modulo 3.  Note 
-that (while remove a a a) contains the same data as (min a a), two spaces have a different additive structure.  
+that (while remove a a a) contains the same data as (min a a), but they have a different additive structure.  
 \end{itemize}
 These unsurprising subspaces have a slightly more surprising generalization.  For $p,q\ge 1$, let rem($p$,$q$) be the endomorphism defined by 
 \begin{equation}
@@ -599,8 +598,7 @@ endomorphism of the semigroup (${\mathbb N},+$), it is known from the theory of 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{rem.png}
-\caption{{\it The subspaces of the organic natural numbers are $N$ itself, the constants subspaces, and the rem(p,q) subspaces, 
-which specialize to natural numbers modulo $p$ and ceiling functions less than or equal to $q$.}} 
+\caption{{\it Subspaces of (is a) or $N$ are $N$ itself, constants and rem(p,q) subspaces.  These specialize to natural numbers mod p and ceiling functions min(q).}}
 \end{figure}
 
 \subsection{is a b} 
@@ -709,7 +707,7 @@ for instance, that standard rationals do not appear.  We would like to understan
        In the naive version of the organic theme, we would define a context with the basic combinatoric definitions and then 
 search the space of pure data, up to, say, some specified width and depth.  Then, for each data, we would test if it is 
 a space or not.  Ideally, all of the most important mathematical structures would be found this way.  They would appear ``organically.'' 
-This has actually worked fairly well up through the organic numbers (Figure 5), but there we noticed that only a mediant-addition 
+This has actually worked fairly well up through the organic numbers (Figure 5) but there we noticed that only a mediant-addition 
 version of the rational numbers appeared as an organic integer.  The theory of fields makes the reason for this clear.  
 Any non-constant subspace of an organic number space (is a b c...) will have proper non-constant subspaces formed by 
 projecting onto a subset of (a b c...).  This means that the only non-trivial fields in the organic numbers are ${\mathbf F}_p$, 
@@ -747,7 +745,8 @@ pr=(ap const a)$\cdot$ar is the natural number product.}
 \item{NORM is the subspace of $Q$ defined by ($q$\ $A$:$A$) $\mapsto$ (q\ a:a).}
 \item{NORM0 is the subspace of $Q$ defined by ($q$:$B$) $\mapsto$ ().}  
 \end{itemize}
-The subspace S=(ADD$\cdot$NORM$\cdot$NORM0) thus contains the empty sequence (representing the zero rational) and a single q-atom (representing non-zero rationals).  The sum in $S$ is standard rational number addition in $\mathbb Q^+$.
+The subspace S=(ADD$\cdot$NORM$\cdot$NORM0) thus contains the empty sequence (representing the zero rational) and 
+and a single q-atom (representing non-zero rationals).  The sum in $S$ is standard rational number addition in $\mathbb Q^+$.
 
  }
  \item[(d)] { 
@@ -756,7 +755,7 @@ of $s$ and $q$ as rational numbers.  $S$ is a central semialgebra and a field.
  }
  \end{itemize} 
  We find that the standard rational natural numbers do appear to have a representation in this framework which is natural in the sense that 
- it is a simple construction from basic combinatoric definitions.  It is, however, created via a bespoke intentional process steering towards 
+ it is a simple construction from basic combinatorial definitions.  It is, however, created via a bespoke intentional process steering towards 
  an intended result, rather than as a space appearing with essentially no effort. 
  
 \section{Number Sequences}
@@ -808,7 +807,7 @@ It is natural to ask whether ordinary sets also appear organically.
      Consider $S$=first$\cdot$(is a b c).  $S$ is a distributive space containing \{(),a,b,c\} as data.  Endomorphisms of $S$ are  
 $S\cdot X\cdot S$ for some data $X$ and, thus, can be any ordinary function from \{(),a,b,c\} to \{(),a,b,c\}.  Homomorphisms of $S$ 
 are endomorphisms which map () to ().  Thus, $S$ is, roughly speaking, the set \{a,b,c\} but with awkward complications due 
-to the forced presence of ().  Thematically, we attribute this to the ``flaw'' that even though $S$ has the key property 
+to the forced presence of ().  Thematically, we attribute this awkwardness to the ``flaw'' that even though $S$ has the key property 
 that $f\oplus f$=$f$ for all endomorphisms, $S$ is not algebraic and, thus, we expect it not to be perfectly mathematical.  
 
 \begin{figure}[h]
@@ -853,31 +852,9 @@ FALSE & FALSE  & FALSE & FALSE & FALSE   \\
 NOT & FALSE & NOT & FALSE & NOT \\
 \hline
 \end{tabular}
-\caption{{\it Product and sum of the four morphisms ID, TRUE, FALSE, NOT of the space bool.  ID is the unit of multiplication and TRUE is the 
-unit of addition, and we have $f\oplus g=g\oplus f$ and $f\oplus f=f$ since bool is a semilattice space.}}
+\caption{{\it Product and sum of the four morphisms ID, TRUE, FALSE, NOT of the space bool}.  Note that ID is the unit of multiplication and TRUE is the 
+unit of addition, and we have $f\oplus g=g\oplus f$ and $f\oplus f=f$ since bool is a semilattice space.}
 \end{table}
-\begin{table}
-\centering 
-\begin{tabular}{r c c c c c c c r r l}
-\hline\hline
-$e_i \in {\mathbb L}_2$ & 0 & T & F & TT & TF & FT & FF & standard & generalized & description \\ [0.5ex] 
-\hline
-$e_1$  & T & T & T & T & T & T & T & TRUE & {\bf always} & always true \\
-$e_2$  & T & T & T & T & T & T & F & OR & {\bf any} & any are true \\
-$e_3$  & T & T & F & T & F & F & T & XNOR & {\bf even} & even (:)s \\
-$e_4$ & T & T & F & T & F & F & F & AND & {\bf all} & all are true \\
-$e_5$ & F & F & T & F & T & T & T & NAND & {\bf notall} & not all are true \\
-$e_6$ & F & F & T & F & T & T & F & XOR & {\bf odd} & odd (:)s \\
-$e_7$ & F & F & F & F & F & F & T & NOR & {\bf none} & none are true  \\
-$e_8$ & F & F & F & F & F & F & F & FALSE & {\bf never} & never true \\
-\hline
-Number of (:)   & 0 & 0 & 1 & 0 & 1 & 1 & 2 &  \\ 
-\hline
-\end{tabular}
-\caption{{\it The eight inner morphisms of ${\mathbb L}_2$ slightly generalize the eight standard symmetric binary boolean operators.
-In this slightly generalized context, one can see that the standard names for these operators are not perfectly descriptive.}}
-\label{table:L2}
-\end{table} 
 Table 1 shows the bool semiring.  The only proper subspaces of bool are the constants TRUE and FALSE, so bool is a field. The group of units is ID and 
 the involution NOT, so ID is the only central endomorphism.    
 
@@ -908,6 +885,28 @@ the classes of endomorphisms appear in a nontrivial way.
 values in the column on the left.  Even with a small space of this size, the $3^3=27$ all of the classes of endomorphism identified in the text 
 appear in a non-trivial way.}}
 \end{figure}
+\begin{table}
+\centering 
+\begin{tabular}{r c c c c c c c r r l}
+\hline\hline
+$e_i \in {\mathbb L}_2$ & 0 & T & F & TT & TF & FT & FF & standard & generalized & description \\ [0.5ex] 
+\hline
+$e_1$  & T & T & T & T & T & T & T & TRUE & {\bf always} & always true \\
+$e_2$  & T & T & T & T & T & T & F & OR & {\bf any} & any are true \\
+$e_3$  & T & T & F & T & F & F & T & XNOR & {\bf even} & even (:)s \\
+$e_4$ & T & T & F & T & F & F & F & AND & {\bf all} & all are true \\
+$e_5$ & F & F & T & F & T & T & T & NAND & {\bf notall} & not all are true \\
+$e_6$ & F & F & T & F & T & T & F & XOR & {\bf odd} & odd (:)s \\
+$e_7$ & F & F & F & F & F & F & T & NOR & {\bf none} & none are true  \\
+$e_8$ & F & F & F & F & F & F & F & FALSE & {\bf never} & never true \\
+\hline
+Number of (:)   & 0 & 0 & 1 & 0 & 1 & 1 & 2 &  \\ 
+\hline
+\end{tabular}
+\caption{The eight inner morphisms of ${\mathbb L}_2$ slightly generalize the eight standard symmetric binary boolean operators.
+In this slightly generalized context, one can see that the standard names for these operators are not perfectly descriptive.}
+\label{table:L2}
+\end{table} 
 
     Moving to ${\mathbb L}_2$, there are already $7^7=823,543$ endomorphisms; far too many to be as explicit as in the case of ${\mathbb L}_1$.  
  We can, however, at least examine the eight inner endomorphisms 
@@ -935,7 +934,7 @@ ${\mathbb Q}^+$ construction to the right of the figure.  Dashed lines indicate 
 
 \section{Discussion} 
 
-      Within the axiomatic framework of pure data, one needs a concept of collections of mathematical objects analogous to sets in Set Theory or categories 
+      Within the axiomatic framework of pure data, one needs a concept of collections of mathematical object analogous to sets in Set Theory or categories 
 in Category Theory.   We find that data representing a collection of other data needs to satisfy an intuitive and simple condition.  Such data must 
 be an associative {\it space}.  The morphisms corresponding to spaces are then just products of data which start and end with a space.  
 A space, together with the endomorphisms of the space are a {\it semiring} which may be {\it semialgebras}, {\it central semialgebras} or 
@@ -943,15 +942,16 @@ A space, together with the endomorphisms of the space are a {\it semiring} which
 
      After working out the basic theory, we develop a set of examples, partly to illustrate the theory, and partly as an exploration of the general 
 space of mathematical results from the pure data perspective.  We adopt the theme of letting spaces emerge ``organically'' from the simplest 
-combinatoric definitions which are inevitable from the foundational finite sequence concept.  
+combinatorial definitions which are inevitable from the foundational finite sequence concept.  
 A second major theme is to focus on algebraic data because such data, in some sense, transcends 
-the foundational concept, earning a platonic meaning independent of the pure data framework.  A more 
+the foundational concept, and, in some sense, earns a platonic meaning independent of the pure data framework.  A more 
 sophisticated version of this idea is to focus on algebraic spaces and on central homomorphisms as the most likely objects 
 of mathematical interest. 
 Figure 8 illustrates the spaces explored with these considerations in mind.  
 We find that the purely organic approach is at least partially successful.  A substantial fraction of natural combinatoric definitions are 
 spaces already, and, for instance, the {\it organic numbers} show that a substantial fraction of the resulting spaces are important classical algebras.  
-The rational numbers, as described in Section 11, is an example of a more intentional approach where one has something mathematical
+
+      Section 11, describing the rational numbers, is an example of a more intentional approach where one has something mathematical
 in mind from the beginning.  This process is interestingly different from what one does in classical mathematics.  The rational numbers 
 must be a space, since, basically, everything must be a space.  This means that rather than inventing axioms, one starts with a space 
 large enough to encompass what one wants and then try to coax it towards the desired space by passing into subspaces.  In this 
@@ -959,16 +959,45 @@ process one is only defining the main addition operation of a space, hoping or t
 doing what you intended from the beginning.  This seems much more constrained than standard mathematics.  On the other hand, 
 one does seem to end up with the intended structure.  
 
-\subsection{Open Questions}
+\subsection{Is there a missing theory of morphisms?}
 
-These results raise a number of questions which might be answered by further research.  
+The theory of section 6 is almost exclusively an ``inward facing'' look at the endomorphisms of one space at a time.  Other than 
+subspaces, ``outward facing'' morphisms between spaces have barely been touched.  We have done nothing to relate spaces with 
+similar properties to each other.  
+The situation may be analogous to understanding Set theory but not yet having a theory of categories where morphisms between similar spaces 
+are understood in some coherent way.  One can expect a general theory of morphisms to exist, but it should also be substantially 
+different than classical Category Theory, and so could possibly be a source of new insights.
 
-\subsubsection{How can we find more ``organic'' spaces?}
+\subsection{How is the rest of Mathematics supposed to work?}
 
-One advantage of the pure data approach is that spaces are ``born with computation'' and the particular space (pass), by definition,  
-contains {\it all} mathematical objects of any kind\cite{coda}.  Naively, we could search the space of pure data, say, up to 
-a specified depth and width and check each data to see if it is a space, thus producing a list of {\it all} mathematical objects up to 
-some specified level of simplicity.  
+In \cite{PDF} and in this paper, we presume that mathematics in general fits into the overall framework of pure data.  
+But we also argue that anything that's at least a collection of data must be a space, which automatically comes
+with a semiring.  This appears to work well for the examples show here.  The ``organically grown'' 
+spaces, the ``bespoke rationals'' and the spaces resulting from Seq functors are all well described as semirings and 
+all have a similar algebraic flavor.  However, it is not clear how this is supposed to work for the parts of Mathematics 
+which is far from the theory of semirings.
+
+\subsection{Is there a deeper theory of spaces?}
+
+Only the most basic theory of spaces and their semirings is worked out here.  We know that isomorphic spaces have isomorphic semirings 
+and the theory of fields tells us about the bottom structure of spaces, but many classification questions remain.  Spaces are close 
+to a number of known areas in mathematics which may provide insight.
+
+\subsection{How can we effectively search for spaces, morphisms and proofs?}. 
+
+One advantage of the pure data approach is that spaces are ``born with computation.''  If you can define a space, it is also 
+available computationally.  Spaces are also theoretically born with a built in proof infrastructure.  In general, data THM is 
+a {\it theorem} if it is ``never false'' in the sense that no context greater than the current context causes THM to be false data.  
+For instance,  the existence of an isomorphism between space $S$ and space $T$ can be expressed as ISO=() for some 
+suitable data ISO.  With infinite computing resources, one could search up to say, a specified depth and width, test all data to see if they are 
+spaces and thus find all mathematical structures within some given range of simplicity.  Nothing like this, however, has been attempted 
+in this paper.  The proofs are human comprehensible and not machine generated or even machine validated.  The main reason for this
+is that even to approach doing proofs computationally requires sophisticated evaluation where one is cleverly moving through the context 
+partial ordering towards a goal.  The current software \cite{Software} is by no means capable of this.  Even with this sort of advance, 
+the resulting computational problems may be difficult.  Table 3 illustrates how drastically impractical it is to naively extend even the 
+``organic'' search for spaces.  Although major advances are needed to make deeper searches and automated proofs practical, 
+continuing to investigate other areas of mathematics in the bespoke style of Section 10 seems quite promising.  
+
 \begin{table}[h!]
 \centering
 \begin{tabular}{c|ccrrr}
@@ -980,40 +1009,11 @@ some specified level of simplicity.
 3 & 1 & 4 & 4369 & $7.0\times 10^{21}$ & $1.1\times 10^{131}$ \\
 4 & 1 & 5 & 406901 & $7.5\times 10^{44}$ & $1.0\times 10^{359}$ \\
 \end{tabular}
-\caption{{\it The number of pure data grows rapidly with maximum width and depth.}}
+\caption{The number of pure data within maximum specified width and depth grows rapidly.}
 \label{tab:pure_data_counts}
 \end{table}
-This is actually how we started searching for ``organic'' spaces as illustrated in Figure 2.  Unfortunately, 
-Table 3 shows how drastically impractical it is to extend a naive approach, even slightly.  
-There are clearly strategies to do better than a brute force approach, but these are as yet unexplored.  
-
-\subsubsection{Is there a missing theory of morphisms?}
-
-The theory of section 6 is almost exclusively an ``inward facing'' look at the endomorphisms of one space at a time.  Other than 
-subspaces, ``outward facing'' morphisms between spaces have barely been touched.  We have done little to relate spaces with 
-similar properties to each other.  The situation may be analogous to understanding Set theory but not yet having a theory of categories 
-where morphisms between similar spaces are understood in some coherent way.  One can expect a general theory of morphisms to exist, 
-but it should also be substantially different than classical Category Theory, and so could be a source of new insights.
-
-\subsubsection{How is the rest of Mathematics supposed to work?}
-
-In \cite{PDF} and in this paper, we presume that mathematics in general fits into the overall framework of pure data.  
-But we also argue that anything that's at least a collection of data must be a space, which automatically comes
-with a semiring.  This appears to work well for the examples shown here.  The ``organically grown'' 
-spaces, the ``bespoke rationals'' and the spaces resulting from Seq functors are all well described as semirings and 
-all have a similar algebraic flavor.  However, it is not clear how well this will work for the parts of Mathematics 
-which are far from the theory of semirings.
-
-\subsubsection{Is there a deeper theory of spaces?}
-
-Only the most basic theory of spaces and their semirings is worked out here.  We know that isomorphic spaces have isomorphic semirings 
-and the theory of fields tells us about the bottom structure of spaces, but basic questions remain.  We haven't explained how to characterize
-semirings which are semirings of spaces as opposed to semirings in general.  The different kinds of spaces defined here and different 
-internal structures seems like a fertile area for new results.   Insights imported from known related areas of mathematics 
-may well be possible \cite{golan1999,kuich1986,howie1995,semigroup,eilenberg1976,baader1998,dershowitz1990}.
 
 \section{Glossary}
-Some basic definitions used in the text and associated software\cite{coda}.  Lower case letters indicate atoms. 
 
 \begin{enumerate}
 \item {Basics
@@ -1023,38 +1023,30 @@ Some basic definitions used in the text and associated software\cite{coda}.  Low
 \item{$\delta_{\rm get}$ : (get A:B) $\mapsto$ ap (get0 A:B)}  
 \item{$\delta_{\rm get0}$ : (get A: (A:B)) $\mapsto$ B}
 \item{$\delta_{\rm atoms}$ : (atoms : b B) $\mapsto$ (:)\ (atoms : B)}
+\item{$\delta_{\rm bin}$ : (bin A:B) $\mapsto$ (bin A:B), atom} 
 \end{enumerate}
 }
 \item {Control
 \begin{enumerate}
 \item{$\delta_{\rm if}$: (if ():B) $\mapsto$ B }
 \item{$\delta_{\rm if}$: (if a A:B) $\mapsto$ () }
-\item{$\delta_{\rm nif}$: (nif ():B) $\mapsto$ () }
-\item{$\delta_{\rm nif}$: (nif a A:B) $\mapsto$ B }
 \item{$\delta_{\rm while}$: (while A:B) $\mapsto$ B if (A:B)=B }
 \item{$\delta_{\rm while}$: (while A:B) $\mapsto$ (while A: A : B) }
 \end{enumerate}
 }
 \item{Semiring
 \begin{enumerate}
-\item{$\delta_{\rm prod}$: (prod a A:B) $\mapsto$ (a$^R$: prod A:B)}
-\item{$\delta_{\rm prod}$: (prod :B) $\mapsto$ B}
-\item{$\delta_{\rm sum}$: (sum a A:B) $\mapsto$ (a$^R$:B) (sum A:B)}
-\item{$\delta_{\rm sum}$: (sum : B) $\mapsto$ () }
+\item{prod}
+\item{sum}
 \end{enumerate}
 }
 \item{Definition}
-\begin{enumerate}
-\item{$\delta_{\rm n}$: (n A:B) $\mapsto$ (n A:B).  Defines n-atoms as fixed points with {\bf domain} n.} 
-\item{$\delta_{\rm domain}$ : (domain : b B) $\mapsto$ ({\it domain of the atom b}) (domain:B)}
-\end{enumerate}
 \item{Combinatorics} 
 \begin{enumerate}
-\item{$\delta_{\rm map}$ : (map A:B) $\mapsto$ aq \{if ((arg:A):B):(right:B):B\} A:B}
-\item{$\delta_{\rm aq}$: (aq a1 a2 A:B) $\mapsto$ (a1 a2:B) (aq a1 A:B)}
-\item{$\delta_{\rm aq}$: (aq :B) $\mapsto$ ()}
-\item{$\delta_{\rm aq}$: (aq A:) $\mapsto$ ()}
-\item{$\delta_{\rm ar}$: (ar a A:B) $\mapsto$ (a a$_i$ : b$_j$) for $a_i$ in A and b$_j$ in B.} 
+\item{map}
+\item{various aps}
+\item{aq}
+\item{ar}
 \end{enumerate}
 \item{Sequence 
 \begin{enumerate}
@@ -1062,111 +1054,67 @@ Some basic definitions used in the text and associated software\cite{coda}.  Low
 \item{$\delta_{\rm first}$ : (first : ()) $\mapsto$ ()} 
 \item{$\delta_{\rm last}$ : (last : B b) $\mapsto$ b} 
 \item{$\delta_{\rm last}$ : (last : ()) $\mapsto$ ()} 
-\item{$\delta_{\rm has}$ : (has A:B) $\mapsto$ ap \{if (A=(domain:B)):B\} A : B}
-\item{$\delta_{\rm hasnt}$ : (hasnt A:B) $\mapsto$ ap \{nif (A=(domain:B)):B\} A : B}
-\item{$\delta_{\rm is}$ : (is A:B) $\mapsto$ ap \{nif\ (ar \{not:A=B\} A:B):B\} }
-\item{$\delta_{\rm isnt}$ : (is A:B) $\mapsto$ ap \{if\ (ar \{not:A=B\} A:B):B\} }
-\item{$\delta_{\rm once}$ : (once A:b B) $\mapsto$ (once A:b) (once A:B)} 
-\item{$\delta_{\rm once}$ : (once A:b) $\mapsto$ b, if b$\in$A}
+\item{has}
+\item{hasnt}
+\item{is}
+\item{isnt} 
+\item{once} 
 \item{$\delta_{\rm rev}$ : (rev : B b) $\mapsto$ b (rev:B)} 
 \item{$\delta_{\rm rev}$ : (rev : () ) $\mapsto$ ()}
-\item{$\delta_{\rm remove}$ : (remove A : A B) $\mapsto$ B} 
-\item{$\delta_{\rm remove}$ : (remove A : B) $\mapsto$ B, if B does not start with A.} 
-\item{$\delta_{\rm sort}$ : (sort A: B) $\mapsto$ B, sorted in lexical order.} 
+\item{rem} 
+\item{sort} 
 \end{enumerate} 
 }
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% 
-
-\clearpage 
-\begin{thebibliography}{99}
+\begin{thebibliography}{2}
 
 \bibitem{PDF}
 Saul Youssef.
 \newblock Pure Data Foundation of Mathematics and Computing.
-\newblock \emph{arXiv preprint arXiv:2305.05507}, 2023.
-Available at: \url{https://arxiv.org/abs/2305.05507}.
-
+\newblock {\em arXiv preprint arXiv:2305.05507}, 2023.
+\newblock Available at: \url{https://arxiv.org/abs/2305.05507}.
 \bibitem{ZFC}
-T. Jech.
-\newblock \emph{Set Theory}.
-\newblock Springer, 3rd Millennium edition, 2002.
-
-\bibitem{types}
-Per Martin-Löf.
-\newblock \emph{Intuitionistic Type Theory}.
-\newblock Bibliopolis, Naples, 1984.
-
-\bibitem{hott}
-Univalent Foundations Program.
-\newblock \emph{Homotopy Type Theory: Univalent Foundations of Mathematics}.
-\newblock Institute for Advanced Study, 2013.
-
-\bibitem{categories}
-Robert Geroch.
-\newblock \emph{Mathematical Physics}.
-\newblock University of Chicago Press, 1985. ISBN: 978-0-226-28862-3.
-
-\bibitem{ring}
-S. Mac Lane and G. Birkhoff.
-\newblock \emph{Algebra}.
-\newblock Chelsea Publishing Company, 3rd edition, 1999. ISBN: 978-0-8218-1646-6.
-
+T.~Jech.
+\newblock {\em Set Theory}.
+\newblock Springer, 3rd Millennium ed., 2002.
 \bibitem{mediant}
-G. H. Hardy and E. M. Wright.
-\newblock \emph{An Introduction to the Theory of Numbers}.
+G.~H. Hardy and E.~M. Wright.
+\newblock {\em An Introduction to the Theory of Numbers}.
 \newblock Oxford University Press, 6th edition, 2008.
-
-\bibitem{octonions}
-Jon C. Baez.
-\newblock The octonions.
-\newblock \emph{Bulletin of the American Mathematical Society}, 39(2):145–205, 2002.
-Available at: \url{https://arxiv.org/abs/math/0105155}.
-
-\bibitem{semigroup}
-A. H. Clifford and G. B. Preston.
-\newblock \emph{The Algebraic Theory of Semigroups, Vol. I}.
-\newblock American Mathematical Society, Mathematical Surveys and Monographs, Vol. 7, Providence, RI, 1961.
-
-\bibitem{golan1999}
-J. S. Golan.
-\newblock \emph{Semirings and their Applications}.
-\newblock Springer, 1999.
-
-\bibitem{kuich1986}
-W. Kuich and A. Salomaa.
-\newblock \emph{Semirings, Automata, Languages}.
-\newblock Springer EATCS Monographs on Theoretical Computer Science, 1986.
-
-\bibitem{howie1995}
-J. M. Howie.
-\newblock \emph{Fundamentals of Semigroup Theory}.
-\newblock Oxford University Press, 1995.
-
-\bibitem{eilenberg1976}
-S. Eilenberg.
-\newblock \emph{Automata, Languages, and Machines, Vols. A and B}.
-\newblock Academic Press, 1974–1976.
-
-\bibitem{baader1998}
-F. Baader and T. Nipkow.
-\newblock \emph{Term Rewriting and All That}.
-\newblock Cambridge University Press, 1998.
-
-\bibitem{dershowitz1990}
-N. Dershowitz and J.-P. Jouannaud.
-\newblock Rewrite Systems.
-\newblock In J. van Leeuwen (ed.), \emph{Handbook of Theoretical Computer Science}, Vol. B, pp. 243–320.
-Elsevier/MIT Press, 1990.
-
-\bibitem{coda}
+\bibitem{Software}
 Saul Youssef.
 \newblock Coda: Pure Data Spaces software repository.
-\newblock Available at: \url{https://github.com/Saul-Youssef/coda}, 2025.
-
+\newblock Available at: https://github.com/Saul-Youssef/coda, 2025.
+\bibitem{categories}
+Robert Geroch.
+\newblock {\em Mathematical Physics}.
+\newblock University of Chicago Press, 1985.
+\newblock ISBN: 978-0-226-28862-3.
+\bibitem{Ring}
+S.~Mac~Lane and G.~Birkhoff.
+\newblock {\em Algebra}.
+\newblock Chelsea Publishing Company, 3rd edition, 1999.
+\newblock ISBN: 978-0-8218-1646-6.
+\bibitem{octonions}
+J.~C. Baez.
+\newblock The octonions.
+\newblock {\em Bulletin of the American Mathematical Society}, 39(2):145--205, 2002.
+\newblock Available at: \url{https://arxiv.org/abs/math/0105155}.
+\bibitem{semigroup}
+A.~H.~Clifford and G.~B.~Preston, 
+\emph{The Algebraic Theory of Semigroups, Vol.~I}, 
+American Mathematical Society, Mathematical Surveys and Monographs, Vol.~7, Providence, RI, 1961.
+\bibitem{types}
+P.~Martin-L{\"o}f, 
+\emph{Intuitionistic Type Theory}, 
+Bibliopolis, Naples, 1984.
+\bibitem{hott}
+Univalent Foundations Program, 
+\emph{Homotopy Type Theory: Univalent Foundations of Mathematics}, 
+Institute for Advanced Study, 2013.
 \end{thebibliography}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}

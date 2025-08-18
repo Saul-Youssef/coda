@@ -27,7 +27,7 @@ all {\it data}, and collections of mathematical objects must then be a {\it spac
 framework analogous to sets in Set Theory or categories in Category Theory.  A theory of spaces is developed, where 
 spaces are best identified with their semiring of endomorphisms.  To illustrate these concepts, and as a way of 
 exploring the implications of the framework, pure data spaces are ``grown organically'' from the substrate of 
-pure data with minimal combinatoric definitions.  Familiar objects from classical mathematics emerge this way,   
+pure data with minimal combinatorial definitions.  Familiar objects from classical mathematics emerge this way,   
 including natural numbers, integers, rational numbers, boolean spaces, matrix algebras, Gaussian Integers, 
 integer Quaternions, and even non-associative algebras like the Integer Octonions and Sedenions. 
 Insights from these examples are discussed with a view towards new directions in theory and new exploration.
@@ -98,7 +98,7 @@ and if $\delta\leq\delta'$, then $c$ is still an atom a context in $\delta'$.  T
 
 \begin{definition}
 {Within a given context $\delta$, coda $c$ is an {\bf fixed point} if $\delta:c\mapsto c$.  A coda equal to a fixed point is an {\bf atom}.  If data $A$ contains an atom in its sequence, $A$ is {\bf atomic} data. 
-Data $A$ is {\bf invariant} if every coda $a$ in the sequence of $A$ is a fixed point and if $a^L$ and $a^R$ are both {\bf invariant}. }
+Data $A$ is {\bf invariant} if every coda $a$ in the sequence of $A$ is an atom and if $a^L$ and $a^R$ are both {\bf invariant}. }
 \end{definition}
 \noindent It follows from the definition that empty data is invariant and atoms $a$ and $b$ are equal if and only if $a^L=b^L$ and $a^R=b^R$.  If $a$ and $b$ are atoms, 
 $A$ and $B$ are data, then $(a\ A)=(b\ B)$ and $(A\ a)=(B\ b)$, if and only if $a=b$ and $A=B$.  If $A=B$ and $A$ and $B$ are invariant, then $A$ and 
@@ -267,11 +267,12 @@ for all data $X$. This product distributes over the sum, from the right only, so
 for any data $A$, $B$, and $C$.
 Since $({\rm pass}\cdot A)$=$(A\cdot {\rm pass})$=$A$ and $(A+{\rm null})$=$({\rm null}+A)$=$A$ for any $A$, (pass) and (null) are the units of data composition and 
 data addition respectively.  
-Data $A$ is {\it idempotent} if $A\cdot A$=$A$, is an {\it involution} if $A\cdot A$=$1$, and $A$ has an {\it inverse} if $A\cdot A'$=$A'\cdot A$=$1$ for some data $A'$.   
-A product ($A_n\cdot A_{n-1}\dots A_2\cdot A_1$) {\it starts with} $A_1$ and {\it ends with} $A_n$.   
-Data $A$ {\it algebraic} or {\it commutative} if $A:X\ Y$=$A:Y\ X$ for all $X$, $Y$.  Data $A$ is 
+Following standard terminology, we say that $A$ is {\it idempotent} if $A\cdot A$=$A$, is an {\it involution} if $A\cdot A$=$1$, and $A$ has an {\it inverse} if $A\cdot A'$=$A'\cdot A$=$1$ for some data $A'$.   
+In the case of a {\it product}  A=$A_n\cdot\dots\cdot A_1$, we say that A {\it starts with} $A_1$ and {\it ends with} $A_n$.   
+
+Data $A$ is called {\it algebraic} or {\it commutative} if $A:X\ Y$=$A:Y\ X$ for all $X$, $Y$.  Data $A$ is 
 {\it distributive} if $A:X\ Y$=$(A:X)\ (A:Y)$ for all $X$ and for all $Y$.  
-Each data $A$ defines a binary operator on data via ($X{\overset A\ast}Y)=(A:X\ Y)$.  Since ${\overset A\ast}$ is associative if and only if 
+Data $A$ defines a binary operator on data via ($X{\overset A\ast}Y)=(A:X\ Y)$.  Since ${\overset A\ast}$ is associative if and only if 
  ($A$:$X$\ $Y$)=($A$:($A$:$X$)\ $Y$)=($A$:$X$ ($A$:$Y$)) for all $X$,$Y$ we say that data $A$ is {\it associative} if it has this property.  
  
 Algebraic and distributive data foreshadow a theme where these two properties make data mathematically interesting for complementary reasons.  
@@ -282,13 +283,13 @@ such data is a ``morphism of finite sequence.''
 \section{Spaces}
 
       A basic requirement for useful mathematics is to have a way to define and refer to collections.  
-Within the framework of pure data, however, there is only one ``substance'' to work with.  All mathematical objects are data and 
-all collections of mathematical objects are also data.  
+Within the framework of pure data, however, there is only one ``substance'' to work with.  All mathematical objects are merely data and 
+all collections of mathematical objects are also merely data.  
 Thus, we are lead to ask, given some data $S$, how could $S$ represent a collection of other data?  
 There are a couple of plausible ways to do this.  
 \begin{itemize} 
 \item The collection corresponding to $S$ could be the collection of data ($S$:$X$) for any data $X$;
-\item The collection corresponding to $S$ could be the collection of fixed points of $S$.  
+\item The collection corresponding to $S$ could be the collection of all of the fixed points of $S$.  
 \end{itemize}
 These ideas coincide if we require $S$ to be idempotent, so that ($S$:$X$) is automatically a fixed point.  It is natural to also expect compatibility with 
 sequences in the sense that if ($S$:$X$) is in the collection and ($S$:$Y$) is in the collection, then ($S$:$X$) ($S$:$Y$) is also in the collection.  
@@ -315,10 +316,10 @@ Since spaces are idempotent, $F$=($F\cdot S$)=($T\cdot F$).  Since $T\cdot S$ is
 Since the product is associative, morphisms can be composed, so that if $S{\overset F\longrightarrow}T$ and 
 $T{\overset G\longrightarrow}U$, then $S{\overset {G\cdot F}\longrightarrow}U$.  
 If $F$ and $G$ are morphisms from $S$ to $T$, we can also define a {\it sum of morphisms} by $F \oplus G = T\cdot (F+G)$, so that 
-$S{\overset {F\oplus G}\longrightarrow}T$.  A morphism from a space to itself is an {\it endomorphism}. 
+$S{\overset {F\oplus G}\longrightarrow}T$.  A morphism from a space to itself is called an {\it endomorphism}. 
 
     Since $T\cdot X\cdot S$ is a morphism from $S$ to $T$ for any data $X$, a morphism can define any function.  Special morphisms which 
-``preserve the structure'' of $S$ and $T$ are defined as follows.  A morphism $S{\overset H\longrightarrow}T$ is a {\it homomorphism} if 
+``preserve the structure'' of $S$ and $T$ can be defined as follows.  A morphism $S{\overset H\longrightarrow}T$ is a {\it homomorphism} if 
 \begin{equation}
 H\cdot (f\oplus_S g) = (H\cdot f) \oplus_T (H\cdot g) 
 \end{equation}
@@ -327,8 +328,8 @@ for all endomorphisms $f$ and $g$ of $S$.  Compare with morphisms that happen to
 U\cdot (f\oplus_S g) = U\cdot ((U\cdot f) \oplus_T (U\cdot g)) 
 \end{equation}
 for all endomorphisms $f$ and $g$ of $S$.  Thus, any idempotent homomorphism is a space.  
-Note that homomorphisms are closed under composition, but the composition of two spaces is guaranteed to be a space 
-only if the spaces commute.  
+Note that homomorphisms are closed under composition, but the composition of two spaces is a space 
+only if the two spaces commute.  
 
 \subsection{Spaces are Semirings} 
 
@@ -373,10 +374,10 @@ $f\oplus g$ is also a central homomorphism.  Thus, the central homomorphisms of 
 
 \item{{\bf Idempotents}.  Define a relation ${\overset i \leq}$ on the endomorphisms of $S$ by $f{\overset i \leq}g$ if ($f\cdot g$)=$f$.  The equivalence 
 classes of the corresponding symmetric relation $f{\overset i \sim} g$ contain all the idempotent endomorphisms, since $f{\overset i\sim}g$ implies that 
-both $f$ and $g$ are idempotent.  In this {\it idempotent order}, 1 is the maximum idempotent and the constant idempotents are minimal and equivalent to each other.}
+both $f$ and $g$ are idempotent.  In this {\it idempotent order}, 1 is the maximum endomorphism and the constant endomorphisms are minimal.}
 
 \item{{\bf Neutral spaces}. If addition in $S$ allows left and right cancellation ($f\oplus g=f\oplus h$ implies $g=h$ and $g\oplus f=h\oplus f$ implies $g=h$), 
-$S$ is a {\it neutral} space.  Neutrality of $S$ guarantees $h\cdot 0$=0 for homomorphism $h$, and guarantees that if $f\oplus f$=$f$, then $f=0$.} 
+$S$ is a {\it neutral} space.  The neutrality of $S$ guarantees $h\cdot 0$=0 for homomorphism $h$, and guarantees that if $f\oplus f$=$f$, then $f=0$.} 
 
 \item{{\bf Semilattice spaces}.  If $S$ is algebraic and $f\oplus f$=$f$ for all endomorphisms $f$, then $S$ is called a {\it semilattice space}.}
 
@@ -441,14 +442,15 @@ and conclude that $e$ is a subspace of $S$, which we call a {\it quotient} of $S
 
 \subsection{Fields}
 
-A descending sequence of subspaces can only end with a constant space, since constant spaces are the only spaces with 
-no proper subspaces.  Constant spaces have no variety - they are all isomorphic. However, there is an interesting 
-variety one step above constants. These are the `fields.'. 
+Since spaces have subspaces, which may themselves have subspaces, a descending sequence of subspaces can only terminate 
+with a constant space, since constant spaces are the only spaces with no proper subspaces.  From the semiring perspective, 
+constant spaces have no variety.  All constants spaces are isomorphic and they all have 0=1.  On the other hand, there is a variety of 
+spaces one step above constants.  These are the `fields'.  
 \begin{definition}
 A space where all proper subspaces are constants is a {\bf field}.
 \end{definition}
-\noindent In classical ring theory\cite{ring}, a field guarantees multiplicative inverses.  
-An analogous result for spaces nicely combines homomorphisms, constants, units and subspaces.  
+\noindent In classical ring theory, a field is guaranteed to have 
+multiplicative inverses.  An analogous result nicely combines homomorphisms, constants, units and subspaces \cite{ring}.  
 \begin{theorem}
 A space $S$ is a field if and only if every non-constant homomorphism of $S$ is a unit. 
 \end{theorem}
@@ -459,7 +461,9 @@ therefore, a non-constant homomorphism of $S$.  Since $\sigma:X$ is in $s$ for a
 \end{proof}
 \noindent 
 The obvious examples of fields are null, bool and any constant space.  In the examples, we will see familiar fields such 
-as the natural numbers modulo a prime or the field of rational numbers.   
+as the natural numbers modulo a prime or the field of rational numbers.  In these examples, zero will be the only constant 
+homomorphism and since semialgebra multiplication is application by a homomorphism, the guarantee of an inverse 
+for non-zero elements comes from a guarantee that non-constant homomorphisms are units.   
 
 \section{Plan}
 
@@ -513,7 +517,7 @@ in a sense, transcend the foundational sequence concept, making them more ``plat
 \section{The Space of all data} 
 
      As a first example and for orientation, let's consider the space of all pure data.  Since (pass:X)=X for all data X, the distributive space (pass) 
-contains all data.  Since spaces are fixed points on their contents, pass is the unique space containing all data.  Every data $X$ is both in pass
+contains all pure data.  Since spaces are fixed points on their contents, pass is the unique space containing all data.  Every data $X$ is both in pass
 and is also an endomorphism of pass, since $X$ is equal to pass$\cdot X\cdot$pass.  Thus, the semiring of pass is also the collection of all data, with 
 addition ($X\oplus Y$)=($X+Y$), and multiplication $(X\cdot Y)$.  The units of the semiring are $1$=pass$\cdot$pass$\cdot$pass=pass, 
 and $0$=pass$\cdot$null$\cdot$pass=null respectively.   
@@ -525,14 +529,14 @@ $K\cdot 0$=$K$, in other words, the constant spaces (const $K$) are the constant
 \item{{\bf Homomorphisms.} Since pass is distributive, the homomorphisms of pass are the distributive data in pass, including spaces, such as (ap \{a\}) 
 and non-spaces such as (ap \{B B\}).} 
 \item{{\bf Group of units.} The units of pass are permutations.  The central constants of pass are the data which 
-are invariant under permutations.  These are the sequences of identical atoms such as (:) (:) (:) or (a a a a a).  These are interpreted as ``organic natural numbers.''}
+are invariant under all permutations.  These are the sequences of identical atoms such as (:) (:) (:) or (a a a a a).  These are interpreted as ``organic natural numbers.''}
 \item{{\bf Central endomorphisms} The maximally platonic, maximally significant content of pass are the central homomorphisms, which include 
 subspaces such as (ap const a), (atoms), (is b).  These are isomorphic spaces, each representing natural numbers with natural number 
-addition.  This, and the direct connection of bool with the underlying pure data context means that 
-both the natural numbers and bool are natural starting points for exploration.} 
+addition.  This and the direct connection of bool with the underlying pure data context means that 
+both the natural numbers and bool are starting points for exploration.} 
 \item{{\bf Semialgebra} In pass, there is a bijection between the homomorphisms of pass and the constants of pass given by $X\leftrightarrow ({\rm ap}\ X)$.  Thus,
 pass is a semialgebra as well as a semiring with $X\star (Y+Z)$ equal to $(X\star Y)+(X\star Z)$ where $X\star Y$ is defined to be (ap $X$)$\cdot Y$.}
-\item{{\bf Idempotents} The idempotent equivalence classes of pass includes all idempotent data where (pass) is the unique maximum idempotent and where all constants are in the minimal equivalence class.}
+\item{{\bf Idempotents} The idempotent equivalence classes of pass includes all idempotent data where (pass) is the unique maximum idempotent and where all constants are in the minimal equivalence class.  In the idempotent order, (pass) is the unique maximum.}
 \item{{\bf Semilattice} Semilattice spaces include (bool), (once) and (const $K$) for any data $K$.  The space bool is special in several ways.  
 It is a semilattice, a field, a central endomorphism, and is isomorphic to any space with exactly two data.}
 \end{itemize}
@@ -542,7 +546,7 @@ It is a semilattice, a field, a central endomorphism, and is isomorphic to any s
 \includegraphics[width=0.8\textwidth]{pass.png}
 \caption{{\it As a collection, pass contains all pure data; that is, all objects with mathematical 
 meaning as well as all computations.  As a space, it has a specific structure which is typical of other examples in the text.  
-In the idempotent order, pass is the unique maximum and null is minimal as are all constants.  
+In the idempotent partial order, (pass) is the unique maximum and (null) is minimal as are all constants.  
 Each data in pass is also an endomorphism of pass.  The homomorphisms of pass are the distributive data.  
 The central homomorphisms of pass are a single isomorphism class equivalent to the ``organic'' natural 
 numbers.  Spaces that are fields includes bool, null, and the rem(p,p) subspaces of ${\mathbf N}$, equal to ${\mathbf F}_p$ for prime $p$. 
@@ -609,7 +613,7 @@ are the distributive endomorphisms.  Consider subspaces N$_2$.
 Projections N$_2$$\cdot$(is a)$\cdot$N$_2$ and N$_2$$\cdot$(is b)$\cdot$N$_2$ produce two $N$-isomorphic subspaces. The absolute value 
 subspace (ap const a) is also isomorphic to $N$.}
 
-\item{Let `reduce' be the subspace of N$_2$ which removes (a b) and (b a) subsequences until saturation.  Thus, every data in reduce
+\item{Let {\it reduce} be the endomorphism of N$_2$ which removes (a b) and (b a) subsequences until saturation.  Thus, every data in reduce
 is either a$^n$ or b$^n$ for some natural number $n$.  A homomorphism $h$ satisfies $h:X\ Y$ = reduce $:(h:X)\ (h:Y)$, so 
 $h$ is determined by ($h$:a) and ($h$:b).  If $h$ is a central homomorphism, ($h$:b) is ($h$:a) followed by an 
 a$\leftrightarrow$b swap.  Thus, if we interpret a$^n$ as the integer $n$ and b$^n$ as the integer $-n$, then applying $h$ 
@@ -656,7 +660,8 @@ and sort is, therefore, a central semialgebra, equivalent to the standard matrix
 defined by $(n,\alpha)+(m,\beta)$=$(n+m,\alpha\vee\beta)$.}
 
 \item{Lexical sort followed by reducing $a^n b^m$ to $a^{(n/g)} b^{(m/g)}$ where $g$=GCD$(n,m)$ is the greatest common divisor.  
-This is the space of positive rational numbers, but with non-standard `mediant' addition where $(n/m)+(n'/m')$ is $(n+n')/(m+m')$\cite{mediant}.}
+This is the space of positive rational numbers, but with non-standard `mediant' addition where $(n/m)+(n'/m')$ is defined to be 
+$(n+n')/(m+m')$\cite{mediant}.}
 
 \end{itemize}
 
@@ -712,33 +717,35 @@ the subspaces rem($p$,$p$) for prime $p$ of (is a).  As a result, we take a more
  
  \begin{itemize}
  \item[(a)]{Define suitable atoms to represent the objects of interest.}
- \item[(b)]{Create a base space; typically a distributive sequence of atoms defined in (a).} 
- \item[(c)]{Invent a sequence of mutually commuting subspaces of the base space, until the sum in the product of the subspaces has 
- the desired sum in a mathematical sense.}
+ \item[(b)]{Create a base ``free construction'' space, typically a distributive sequence of a) atoms.} 
+ \item[(c)]{Invent a sequence of mutually commuting subspaces of the base space, until the sum in the subspace product agrees with the desired sum in 
+ a mathematical sense.}
  \item[(d)]{The homomorphisms of the resulting product subspace then define a module-like product.  If there is a suitable mapping 
  from constants to homomorphisms, one has a semialgebra or a central semialgebra.}
  \end{itemize}
  In the case of rational natural numbers, we proceed as follows.
 \begin{itemize} 
 \item[(a)] { 
-Represent single rational numbers with $q$-atoms such as ($q$ a a: a a a) representing `2/3.'  
-It is convenient and illustrative to define a ``fancy'' $q$-atom that is not a direct fixed point, but is only equal to a fixed point. Define $q$ by 
+We will represent single rational numbers with $q$-atoms such as ($q$ a a: a a a) representing 2/3.  
+We could define $q$ directly as a fixed point via ($q$ $B$:$B$) $\mapsto$ ($q$ $A$:$B$).  
+It is more convenient and more illustrative to instead define a ``fancy'' $q$-atom that is not a direct fixed point, but is nevertheless equal to a fixed point. 
 \begin{itemize}
 \item{($q$ $A$ $B$ : $B$) $\mapsto$ ($q$ $A$:$B$)}
-\item{($q$ $A$ : $A$ $B$) $\mapsto$ ($q$ $A$:$B$)}
+\item{($q$ $A$ : $A$ $B$) $\mapsto$ ($q$ $A$:$B$)} 
 \end{itemize}
-so that $A$ and $B$ components of each $q$-atom are coprime natural numbers. 
-}
- \item[(b)] {For the base space, we can simply choose the distributive space of $q$-atoms, modified only by 
+The point of this definition is that the guaranteed fixed point means that the $A$ and $B$ components of each $q$-atom 
+are coprime natural numbers.
+ }
+ \item[(b)] {For the base ``free construction'' space, we can simply choose the distributive space of $q$-atoms, modified only by 
  filtering to guarantee that ``numerator'' and ``denominator'' are sequences of a-atoms, and excluding $q$-atoms with empty denominators. 
 }
  \item[(c)] {Define mutually commuting subspaces of $Q$ approaching the desired properties of rationals. 
 \begin{itemize}
 \item{ADD is the subspace defined by $(q\ X_1:Y_1)\ (q\ X_2:Y_2)$ maps to 
 $(q\ ({\rm pr}\ X_1:Y_2)\ ({\rm pr}\ X_2:Y_1) : ({\rm pr}\ Y_1:Y_2))$, where 
-`pr' is (ap const a)$\cdot$ar, so that (pr $A$:$B$) is the natural number product of $A$ and $B$.}
+pr=(ap const a)$\cdot$ar is the natural number product.}
 \item{NORM is the subspace of $Q$ defined by ($q$\ $A$:$A$) $\mapsto$ (q\ a:a).}
-\item{NORM0 is the subspace of $Q$ defined by ($q$\ ():$b\ B$) $\mapsto$ ().}  
+\item{NORM0 is the subspace of $Q$ defined by ($q$:$B$) $\mapsto$ ().}  
 \end{itemize}
 The subspace S=(ADD$\cdot$NORM$\cdot$NORM0) thus contains the empty sequence (representing the zero rational) and a single q-atom (representing non-zero rationals).  The sum in $S$ is standard rational number addition in $\mathbb Q^+$.
 
@@ -813,7 +820,7 @@ of \{1,2,3\} ordered by inclusion.}}
 
      The partial success of first$\cdot$(is a b c) suggests considering an {\it algebraic} space where $f\oplus f=f$.  
 These are the {\it semilattice} spaces.  The space $S$=sort$\cdot$once$\cdot$(is a b c) is an example.  
-Instead of containing the elements of \{a,b,c\}, $S$ now contains the $2^3$ subsets \{\{\}, \{a\}, \{b\}, \{c\}, \{a b\}, \{a c\}, \{b c\}, \{a b c\}\} 
+Instead of containing the elements of \{a,b,c\}, $S$ now contains the $2^3$ subsets \{$\emptyset$, \{a\}, \{b\}, \{c\}, \{a b\}, \{a c\}, \{b c\}, \{a b c\}\} 
 represented as sorted non-repeating sequences.  The endomorphisms of $S$ are general endofunctions of ${\mathcal P}(\{a,b,c\})$.  The semilattice of 
 constants of $S$ is the standard semilattice of subsets of \{a,b,c\} ordered by the set union operation.  
 The unit endomorphisms are the permutation group $S_3$ permuting a, b and c.  The central endomorphisms are $S_3$-equivariant functions, and the homomorphisms 
@@ -886,11 +893,11 @@ Consider the shortest subspaces of $\mathbb L$ first.
 The subspace (${\mathbb L}\cdot {\rm first}\cdot{\mathbb L}$) contains the $\mathbb L$ sequences of length less than or equal to 1 and similarly,  
 (${\mathbb L}\cdot {\rm first\ 2}\cdot{\mathbb L}$) is the subspace of sequences with length less than or equal to 2.  Lets refer to these spaces as 
 ${\mathbb L}_1$ and ${\mathbb L}_2$ respectively.  
-${\mathbb L}_1$ contains data \{0,T,F\} and ${\mathbb L}_2$ contains data \{0,T,F,TT,TF,FT,FF\}. 
+Thus, ${\mathbb L}_1$ contains data \{0,T,F\} and ${\mathbb L}_2$ contains data \{0,T,F,TT,TF,FT,FF\}. 
 For ${\mathbb L}_1$, we can specify an endomorphism $f$ of ${\mathbb L}_1$ by listing the values of $f$ on 0,T,F in standard order.  So, for example, 
 0TF denotes the identity endomorphism of ${\mathbb L}_1$.  
 Since ${\mathbb L}_1$ has 27 morphisms, we can be completely explicit about this space.  
-Figure 7 lists the 27 endomorphisms and indicates endomorphisms with special properties. 
+Figure 4 lists the 27 endomorphisms and indicates endomorphisms with special properties and where an endomorphism is {\it positive} if its value is never 0.  
 Even with relatively small space like ${\mathbb L}_1$, all of 
 the classes of endomorphisms appear in a nontrivial way.
 
@@ -898,7 +905,7 @@ the classes of endomorphisms appear in a nontrivial way.
 \centering
 \includegraphics[width=0.8\textwidth]{L1.pdf}
 \caption{{\it The endomorphisms of ${\mathbb L}_1$ are maps from \{0,T,F\} to itself. These are specified as the three function 
-values in the column on the left.  The `positive' endomorphisms are the subsemiring of endomorphisms which are never neutral.  Even with a small space of this size, the $3^3=27$ all of the classes of endomorphism identified in the text 
+values in the column on the left.  Even with a small space of this size, the $3^3=27$ all of the classes of endomorphism identified in the text 
 appear in a non-trivial way.}}
 \end{figure}
 
@@ -908,8 +915,8 @@ appear in a non-trivial way.}}
  {\mathbb L}_2\cdot ({\rm put}\ b)\cdot X \cdot ({\rm get}\ b) \cdot {\mathbb L}_2
  \end{equation}
 These depend only on the total number of (:) values in the $b$-atoms of input, and each 
-inner endomorphism returns exactly one $b$-atom.  
-The inner endomorphisms of ${\mathbb L}_2$ are central homomorphisms, so we have reason to expect them to be
+endomorphism returns exactly one $b$-atom.  
+The inner endomorphisms of ${\mathbb L}_2$ are all central homomorphisms, so we have reason to expect them to be
 mathematically interesting.   
 Indeed, Table 2 shows the eight endomorphisms and their values on \{0,T,F,TT,TF,FT,FF\}.  Looking at the values for the last four entries \{TT,TF,FT,FF\} 
 we recognize that these are slight generalizations of the eight standard symmetric binary boolean operators.  The values of the eight morphisms 
@@ -930,10 +937,9 @@ ${\mathbb Q}^+$ construction to the right of the figure.  Dashed lines indicate 
 
       Within the axiomatic framework of pure data, one needs a concept of collections of mathematical objects analogous to sets in Set Theory or categories 
 in Category Theory.   We find that data representing a collection of other data needs to satisfy an intuitive and simple condition.  Such data must 
-be a {\it space}.  The morphisms corresponding to spaces are then just products of data which start and end with a space.  
+be an associative {\it space}.  The morphisms corresponding to spaces are then just products of data which start and end with a space.  
 A space, together with the endomorphisms of the space are a {\it semiring} which may be {\it semialgebras}, {\it central semialgebras} or 
-{\it fields}.  This surprisingly rich structure is shared by all collections ranging from a single atom (:) to the entire space of all pure data as shown 
-in Figure 3.  
+{\it fields}.  This surprisingly rich structure is shared by all collections ranging from a single atom (:) to the entire space of all pure data (Figure 3).  
 
      After working out the basic theory, we develop a set of examples, partly to illustrate the theory, and partly as an exploration of the general 
 space of mathematical results from the pure data perspective.  We adopt the theme of letting spaces emerge ``organically'' from the simplest 
@@ -1003,8 +1009,8 @@ which are far from the theory of semirings.
 Only the most basic theory of spaces and their semirings is worked out here.  We know that isomorphic spaces have isomorphic semirings 
 and the theory of fields tells us about the bottom structure of spaces, but basic questions remain.  We haven't explained how to characterize
 semirings which are semirings of spaces as opposed to semirings in general.  The different kinds of spaces defined here and different 
-internal structures seems like a fertile area for new results.   Insights imported from related areas of mathematics 
-may be possible \cite{golan1999,kuich1986,howie1995,semigroup,eilenberg1976,baader1998,dershowitz1990}.
+internal structures seems like a fertile area for new results.   Insights imported from known related areas of mathematics 
+may well be possible \cite{golan1999,kuich1986,howie1995,semigroup,eilenberg1976,baader1998,dershowitz1990}.
 
 \section{Glossary}
 Some basic definitions used in the text and associated software\cite{coda}.  Lower case letters indicate atoms. 

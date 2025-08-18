@@ -97,7 +97,7 @@ of moving from $\delta$ to $\delta'$ as the passage of ``time."  The fixed point
 and if $\delta\leq\delta'$, then $c$ is still an atom a context in $\delta'$.  Thus, atoms are ``permanent" and if $c$ is an atom, $c$ is ``always" an atom.  
 
 \begin{definition}
-{Within a given context $\delta$, coda $c$ is an {\bf fixed point} if $\delta:c\mapsto c$.  A coda equal to a fixed point is an {\bf atom}.  If data $A$ contains an atom in its sequence, $A$ is {\bf atomic} data. 
+{Within a given context $\delta$, coda $c$ is a {\bf fixed point} if $\delta:c\mapsto c$.  A coda equal to a fixed point is an {\bf atom}.  If data $A$ contains an atom in its sequence, $A$ is {\bf atomic} data. 
 Data $A$ is {\bf invariant} if every coda $a$ in the sequence of $A$ is a fixed point and if $a^L$ and $a^R$ are both {\bf invariant}. }
 \end{definition}
 \noindent It follows from the definition that empty data is invariant and atoms $a$ and $b$ are equal if and only if $a^L=b^L$ and $a^R=b^R$.  If $a$ and $b$ are atoms, 
@@ -116,8 +116,8 @@ Since the domain of $\delta_0$ is empty, it has no fixed points and, therefore, 
 $X{\overset \delta =}X$ is the only valid proof, and the only valid 
  computations do nothing $X\mapsto X$ for any data $X$.
 To define a non-empty context $\delta_0\le\delta$, we need, at least, an invariant specification of the domain of $\delta$ as a partial function.    
-Since the empty sequence is the only invariant, the only way to specify if a coda (A:B) is to be in the domain of $\delta$ is 
-to require either A or B or both to be the empty sequence. In each of these cases, the coda (:) is within the domain of $\delta$, and so we must, in any case, 
+Since the empty sequence is the only invariant, the only way to specify if a coda (A:B) in the domain of $\delta$ is 
+to require either A or B or both to be the empty. In each of these cases, the coda (:) is within the domain of $\delta$, and so we must, in any case, 
 decide on what (:) maps to.  There are three possibilities; 
 \begin{itemize}
 \item[] choice 1: {$\delta: (:) \mapsto ()$},
@@ -152,8 +152,9 @@ data as described in Section 4.3 below.}
 \item {Include definitions giving direct access to context-level values.  This includes a Boolean definition $\delta_{\rm bool}$ to determine if data is empty, 
 $\delta_{=}$ to test if two data are equal in $\delta$, and $\delta_{\rm def}$ to add definitions via Equation 1.} 
 \end{enumerate}
-These are meant to be a minimal collection of definitions, including only the minimal inevitable finite sequence concepts and, more generally, 
-the combinatorics of Equation 1.  There are intentionally no definitions which presume underlying arithmetical operations.  A natural number, 
+These are meant to be a minimal collection of definitions only including what inevitably comes from the combinatorics of the elements of 
+Equation 1 as finite sequences. 
+There are intentionally no definitions which presume underlying arithmetical operations.  A natural number, 
 `123', for instance is a single atom byte sequence and there is no definition which implies interpreting this as a number in the usual way.  The idea is
 to allow natural numbers and whatever else to emerge ``organically.'' 
 There are approximately fifty definitions needed to create a basic system.  We define some here for orientation.  The remaining definitions used 
@@ -269,15 +270,15 @@ Since $({\rm pass}\cdot A)$=$(A\cdot {\rm pass})$=$A$ and $(A+{\rm null})$=$({\r
 data addition respectively.  
 Data $A$ is {\it idempotent} if $A\cdot A$=$A$, is an {\it involution} if $A\cdot A$=$1$, and $A$ has an {\it inverse} if $A\cdot A'$=$A'\cdot A$=$1$ for some data $A'$.   
 A product ($A_n\cdot A_{n-1}\dots A_2\cdot A_1$) {\it starts with} $A_1$ and {\it ends with} $A_n$.   
-Data $A$ {\it algebraic} or {\it commutative} if $A:X\ Y$=$A:Y\ X$ for all $X$, $Y$.  Data $A$ is 
+Data $A$ is {\it algebraic} or {\it commutative} if $A:X\ Y$=$A:Y\ X$ for all $X$, $Y$, and is 
 {\it distributive} if $A:X\ Y$=$(A:X)\ (A:Y)$ for all $X$ and for all $Y$.  
-Each data $A$ defines a binary operator on data via ($X{\overset A\ast}Y)=(A:X\ Y)$.  Since ${\overset A\ast}$ is associative if and only if 
+Each data $A$ defines a binary operator on data via ($X{\overset A\ast}Y)\mapsto (A:X\ Y)$.  Since ${\overset A\ast}$ is associative if and only if 
  ($A$:$X$\ $Y$)=($A$:($A$:$X$)\ $Y$)=($A$:$X$ ($A$:$Y$)) for all $X$,$Y$ we say that data $A$ is {\it associative} if it has this property.  
  
 Algebraic and distributive data foreshadow a theme where these two properties make data mathematically interesting for complementary reasons.  
 Algebraic data has, in a sense, ``transcended finite sequence," the foundational concept of the system, and deserves a platonic existence in 
-that sense.  Distributive data, on the other hand, is maximally sequence dependent, but it may also be mathematically interesting since 
-such data is a ``morphism of finite sequence.''   
+that sense.  Distributive data, on the other hand, is maximally sequence dependent, but it may also be mathematically interesting because  
+such data are ``morphisms of finite sequence.''   
  
 \section{Spaces}
 
@@ -407,15 +408,15 @@ these are all defined with semiring operations.  A homomorphism $h$ where $h\cdo
 
 The semiring of a space $S$ is close to the structure of an ``algebra'' in standard mathematics.  There is a binary operation $f\oplus g$, so 
 constants of the space can be added.  Homomorphisms have the property that they map constants to constants and are distributive with 
-$h\cdot (k\oplus l)$ equal to $(h\cdot k)\oplus (h\cdot l)$ so homomorphisms of $S$ are like a module over the constants of $S$.  This would 
-be an algebra in the ordinary sense except that homomorphisms might not be constants.  This suggests a definition. 
+$h\cdot (k\oplus l)$ equal to $(h\cdot k)\oplus (h\cdot l)$, so $S$ is almost an algebra with a distributive product.  
+This suggests a definition. 
 
 \begin{definition}
 A space with a chosen mapping from constants to homomorphisms is a {\bf semialgebra}.  If the homomorphisms 
 in the image of the mapping are central, the semialgebra is a {\bf central semialgebra}.  
 \end{definition}
 \noindent Since pure data is meant to include all mathematical objects, we might expect that important algebras of standard 
-mathematics could appear as semialgebras. 
+mathematics may appear as semialgebras or central semialgebras. 
 
 \subsection{Subspaces are Substructures} 
 
@@ -443,7 +444,7 @@ and conclude that $e$ is a subspace of $S$, which we call a {\it quotient} of $S
 
 A descending sequence of subspaces can only end with a constant space, since constant spaces are the only spaces with 
 no proper subspaces.  Constant spaces have no variety - they are all isomorphic. However, there is an interesting 
-variety one step above constants. These are the `fields.'. 
+variety one step above constants. These are the `fields.' 
 \begin{definition}
 A space where all proper subspaces are constants is a {\bf field}.
 \end{definition}
@@ -492,10 +493,9 @@ Gaussian Integers as different subspaces.  The extreme version of this is the sp
 an algebraic space $S$ as having ``horizontal'' features coming from the subsemiring of homomorphisms and ``vertical'' features 
 coming from general endomorphisms and subspaces.} 
 \end{itemize}
-Since this is a rich but unfamiliar 
-viewpoint, the plan of the paper is to clarify the situation with example spaces, proceeding 
-from the simplest, most ``organic'' spaces first, starting with foundational definitions which happen to also 
-be spaces, as shown in Figure 2.  The pure data view of spaces gives us a criteria for what is ``most organic'' and gives a way to systematically 
+Since this is a rich but unfamiliar viewpoint, the plan of the paper is to clarify the situation with examples, starting 
+with foundational definitions which happen to be spaces (Figure 2) and proceeding ``organically''. 
+The pure data view of spaces gives us a criteria for what is ``most organic'' and gives a way to systematically 
 search for all spaces up to a specified data width and depth.  Although we mainly use the pure data perspective to 
 choose spaces of interest, what we say about spaces will be put in semiring language whenever possible.  Aside from 
 the organic and semiring themes, we will take special notice of algebraic data following the intuition that algebraic 
@@ -583,7 +583,7 @@ since $N$ is distributive, is the empty sequence.  It is easy to guess some subs
 \begin{itemize} 
 \item [1.] {\bf Saturation subspaces} An endomorphism (min a a) is a subspace which effectively computes the minimum of 2 and its argument.  Thus (min a a) contains the data (), (a), and (a a). 
 \item [2.] {\bf Modular arithmetic subspaces} An endomorphism which removes three (a) atoms while possible, such as (while remove a a a) is a subspace which computes the sum modulo 3.  Note 
-that (while remove a a a) contains the same data as (min a a), two spaces have a different additive structure.  
+that (while remove a a a) contains the same data as (min a a), but have a different additive structures.  
 \end{itemize}
 These unsurprising subspaces have a slightly more surprising generalization.  For $p,q\ge 1$, let rem($p$,$q$) be the endomorphism defined by 
 \begin{equation}
@@ -662,7 +662,8 @@ This is the space of positive rational numbers, but with non-standard `mediant' 
 
 \subsection{is a b c d...} 
 
-     It is clear that in going to higher organic numbers, some of the features of $N$ and $N_2$ will repeat.  $N_n$ sorted 
+     It is clear that in going to higher organic numbers, some of the features of $N$ and $N_2$ will repeat for 
+ $N_n$=(is a b c...-{\it n atoms}-...).  $N_n$ sorted 
  will always result in a space with homomorphisms ${\rm Mat}_{n\times n}(\mathbf N)$.  Sorting followed by cancelling 
  atoms in pairs will result in ${\rm Mat}_{(n/2)\times (n/2)}(\mathbf Z)$.  For example, in (is a b c d) with subspace 
  (a b)=(b a)=(c d)=(d c)=(), homomorphisms are ${\rm Mat}_{2\times 2}(\mathbf Z)$.  Central homomorphisms of $N_4$ sorted and reduced 
@@ -743,10 +744,9 @@ $(q\ ({\rm pr}\ X_1:Y_2)\ ({\rm pr}\ X_2:Y_1) : ({\rm pr}\ Y_1:Y_2))$, where
 The subspace S=(ADD$\cdot$NORM$\cdot$NORM0) thus contains the empty sequence (representing the zero rational) and a single q-atom (representing non-zero rationals).  The sum in $S$ is standard rational number addition in $\mathbb Q^+$.
 
  }
- \item[(d)] { 
- As for the nicest of the organic numbers, for each rational in $S$, there is a corresponding homomorphism $h_s$ where $h_s:q$ is multiplication 
-of $s$ and $q$ as rational numbers.  $S$ is a central semialgebra and a field.  
- }
+ \item[(d)] {If we define (product ($q\ X_1:Y_1$) : ($q\ X_2:Y_2$)) to be the standard rational product $(q\ ({\rm pr}\ X_1:X_2): ({\rm pr}\ Y_1:Y_2))$, then 
+(ap product $R$) is a homomorphism of $S$ and is the standard distributive rational multiplication by rational number $R$, making  
+$S$ is a central semialgebra and a field.}
  \end{itemize} 
  We find that the standard rational natural numbers do appear to have a representation in this framework which is natural in the sense that 
  it is a simple construction from basic combinatoric definitions.  It is, however, created via a bespoke intentional process steering towards 
@@ -1000,11 +1000,9 @@ which are far from the theory of semirings.
 
 \subsubsection{Is there a deeper theory of spaces?}
 
-Only the most basic theory of spaces and their semirings is worked out here.  We know that isomorphic spaces have isomorphic semirings 
-and the theory of fields tells us about the bottom structure of spaces, but basic questions remain.  We haven't explained how to characterize
-semirings which are semirings of spaces as opposed to semirings in general.  The different kinds of spaces defined here and different 
-internal structures seems like a fertile area for new results.   Insights imported from related areas of mathematics 
-may be possible \cite{golan1999,kuich1986,howie1995,semigroup,eilenberg1976,baader1998,dershowitz1990}.
+The theory of spaces developed in Section 6 is mainly a collection of definitions and the most simple results.  This is only scratching 
+the surface of what seems like a rich subject which is likely related to several areas of known mathematics 
+\cite{golan1999,kuich1986,howie1995,semigroup,eilenberg1976,baader1998,dershowitz1990}.
 
 \section{Glossary}
 Some basic definitions used in the text and associated software\cite{coda}.  Lower case letters indicate atoms. 

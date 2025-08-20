@@ -18,18 +18,19 @@
   \hfil \\
   Department of Physics \\
   Boston University \\
+  Saul.Youssef@gmail.com
 }
 \maketitle
 \begin{abstract}
-In an earlier work, {\it pure data} is proposed as an axiomatic foundation for mathematics and computing, based on the {\it finite sequence} as 
+In a previous work, {\it pure data} is proposed as an axiomatic foundation for mathematics and computing, based on {\it finite sequence} as 
 the foundational concept rather than based on {\it logic} or {\it type}.   Within this framework, objects with mathematical meaning are 
-all {\it data}, and collections of mathematical objects must then be a {\it space}, so that a space is a basic collection in this 
-framework analogous to sets in Set Theory or categories in Category Theory.  A theory of spaces is developed, where 
-spaces are best identified with their semiring of endomorphisms.  To illustrate these concepts, and as a way of 
+{\it data}, and, we argue, collections of mathematical objects must then be associative data, called a {\it space}.  A space is then the basic collection in this 
+framework analogous to sets in Set Theory or objects in Category Theory.  A theory of spaces is developed, where 
+spaces are studied via their semiring of endomorphisms.  To illustrate these concepts, and as a way of 
 exploring the implications of the framework, pure data spaces are ``grown organically'' from the substrate of 
 pure data with minimal combinatoric definitions.  Familiar objects from classical mathematics emerge this way,   
-including natural numbers, integers, rational numbers, boolean spaces, matrix algebras, Gaussian Integers, 
-integer Quaternions, and even non-associative algebras like the Integer Octonions and Sedenions. 
+including natural numbers, integers, rational numbers, boolean spaces, matrix algebras, Gaussian Integers, Quaternions, 
+and non-associative algebras like the Integer Octonions and Sedenions. 
 Insights from these examples are discussed with a view towards new directions in theory and new exploration.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,17 +50,17 @@ Insights from these examples are discussed with a view towards new directions in
 
 \section{Introduction}
 
-    In {\it Pure Data Foundation of Mathematics and Computing}\cite{PDF}, we propose a framework based on {\it finite sequence} as the foundational concept, rather than based on {\it logic}, as in Set Theory or 
-based on {\it type}, as in dependent type theories.  In this framework, pure data acquires meaning via definitions as 
-explained below.  A collection of definitions defines equality of data which, therefore, relates mathematical quantities to 
-each other.  This makes for a drastically simple relationship between proof and computation.   
+    In {\it Pure Data Foundation of Mathematics and Computing} \cite{PDF}, we proposed a formal system based on {\it finite sequence} as the foundational concept, rather than based on {\it logic}, as in Set Theory or 
+based on {\it type}, as in dependent type theories.  In this framework, pure data acquires meaning via definitions.  
+A collection of definitions defines equality of data which, therefore, relates mathematical quantities to 
+each other.  This makes for a drastically simplified relationship between proof and computation.   
 Any sequence $A_1$=$A_2$=$\dots$=$A_n$ is both a valid proof of $A_n$ given $A_1$ and a valid computation 
 of $A_n$ starting with $A_1$.  
 
-       Reference \cite{PDF} mainly developed  
-consistency, logic, and the resolution of paradoxes.  A goal of this work is to begin the exploration of classical 
-mathematics through the lens of pure data.  In particular, doing mathematics in general seems to require considering
-collections of objects as a set or as a category.  In the pure data context, we find that minimal requirements for 
+       The previous work mainly developed  
+consistency, logic, and the resolution of paradoxes\cite{PDF}.  A goal of this work is to begin the exploration of classical 
+mathematics through the lens of pure data.  In particular, doing mathematics requires 
+collections of objects as in Set Theory or Category Theory.  In the pure data context, minimal requirements for 
 data to contain a collection of other data leads to a simple conceptual definition of a ``space.''  A space is any data 
 which is ``associative.''  Although a space is like a set in the sense that it is a minimal collection, we surprisingly 
 find that spaces have a rich internal structure which is shared by everything from a single atom to the entire 
@@ -928,7 +929,7 @@ ${\mathbb Q}^+$ construction to the right of the figure.  Dashed lines indicate 
 
 \section{Discussion} 
 
-      Within the axiomatic framework of pure data, one needs a concept of collections of mathematical objects analogous to sets in Set Theory or categories 
+      Within the axiomatic framework of pure data, one needs a concept of collections of mathematical objects analogous to sets in Set Theory or objects  
 in Category Theory.   We find that data representing a collection of other data needs to satisfy an intuitive and simple condition.  Such data must 
 be a {\it space}.  The morphisms corresponding to spaces are then just products of data which start and end with a space.  
 A space, together with the endomorphisms of the space are a {\it semiring} which may be {\it semialgebras}, {\it central semialgebras} or 
@@ -948,7 +949,7 @@ spaces already, and, for instance, the {\it organic numbers} show that a substan
 The rational numbers, as described in Section 11, is an example of a more intentional approach where one has something mathematical
 in mind from the beginning.  This process is interestingly different from what one does in classical mathematics.  The rational numbers 
 must be a space, since, basically, everything must be a space.  This means that rather than inventing axioms, one starts with a space 
-large enough to encompass what one wants and then try to coax it towards the desired space by passing into subspaces.  In this 
+large enough to encompass what one wants and then trys to coax it towards the desired space by passing into subspaces.  In this 
 process one is only defining the main addition operation of a space, hoping or trusting that the resulting homomorphisms will end up 
 doing what you intended from the beginning.  This seems much more constrained than standard mathematics.  On the other hand, 
 one does seem to end up with the intended structure.  

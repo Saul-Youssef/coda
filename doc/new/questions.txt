@@ -1,0 +1,118 @@
+
+Questions and thoughts
+
+1. Congruence means that if A = B, then A X = B X, X A = X B,
+   A:X = B:X and X:A = X:B for all X.  This could be guaranteed
+   either:
+
+       a) By requiring generated equivalence relation
+          to have this property, so it must be a "congruence relation"
+
+   or
+
+       b) Guaranteeing congruence by including S0,S1.
+
+   I am thinking that a) and b) are equivalent.  You seem to
+   prefer a).  Do you?  If so, is that for performance reasons?
+   Option b) seems a bit simpler conceptually and mathematically,
+   although perhaps not by much.  I'm unsure myself.
+
+2. I'm OK with calling A? etc "pattern atoms".  You write a
+   "substitution" as a map sigma:V->DATA "extends homomorphically
+   to all data/patterns".  I suspect that I understand exactly what you
+   mean by the quoted text, but it's not clear.
+
+3. In the same "Schemas,variable,..." paragraph, you
+   refer to a "schema E(V)" without defining it.  You define
+   a "ground instance" without defining that.
+
+Let me give a couple more examples to make sure we're on the same page.
+
+EX: nat, the natural numbers
+
+N0 == (naturalnumber:n?) (nat:n?)=n? (nat:(n+1)?)
+
+where (naturalnumber:X) is () if X is the text of a natural number.
+
+EX: rev, reversing sequences
+
+R0 == (rev:)
+R1 == (atom:a?) (rev:a?)=a?
+R2 == (rev:A? B?) = (rev:B?) (rev:A?)
+
+Questions:
+   Does R0 have to be (rev:)=() as opposed to (rev:)?
+   Does adding R3==(atom:a?) ((rev:a? A?)=(rev:A?) a?) make an
+     important difference in performance?
+
+rev reverses finite sequences as in
+
+(rev:1 2 3) = 3 2 1
+
+(rev:nat:0) = (rev:nat:4) 3 2 1 0
+
+(rev:rev:nat:0) = 0 1 2 3 (rev:rev:nat:4)
+
+It is clear that for finite sequences X?, (rev:rev:X?)=X?.
+However, if X? = (nat:0), we don't quite have (rev:rev:X?)=X?.
+However, this "morally true" in the sense that the difference is never atomic.
+This is part of the motivation for the "never false" formulation
+in proposal.txt.  Of course, we could add
+
+(rev:rev:X?)=X?
+
+but this is a subtlety that I don't completely understand. Should such
+a thing be added or not? In my original system, I never "assert that something
+is true", I merely define partial functions.  This raises some issues.
+Any thoughts?...
+
+Another example is
+
+P == skip n?:prime:nat:0
+
+where skip skips n? items in a sequence and prime filters for prime numbers.
+Since there are an infinite number of primes, P is never empty for any n?.
+It is a "theorem".
+
+For example, consider this computation
+
+(ap A?:B? C?) = (ap A?:B?) (ap A?:C?)
+
+(atom:a?) (ap const X?:a?)
+(atom:a?) (const X?:a?)   [by T2]
+X?                        [by C0]
+
+Therefore we have
+
+(atom:a?) (ap const X?:a?) = X?
+
+a new "theorem" which could then be added to the environment, for instance.
+
+I'm still mulling these things over. In classical logic, if one axiomatically
+assumes any contradiction, the whole system collapses.  This system feels quite different.
+
+2 & 3) Your "algorithmic plan" and what you can do next.
+
+The comments here seem good to me.  At some point I'll want to know the
+exact "pattern-match" algorithm you're using and then start experimenting
+with a prototype.
+
+There is one more implementation issue about boot-strapping.  I was imagining
+
+(with (:)=(:) <characters and word atoms> : ...)
+
+as a starting environment.  Then in the ... would be
+
+(with <standard equivs> : X)
+
+where <standard equivs> would be a few definitions like ap, const, etc. as in the
+original system.  For this to work, "with" has to exist before characters and words
+do, so there would have to be some pre-decided piece of pure data identified with
+"with".  AFAIK, the system could then exist starting with only "with" and "=" pre-defined.
+This also requires a map to and from pure data that defines how pieces of pure data
+are displayed.  That's the way it works in the current system, anyway. An alternative
+would be to pre-define a standard alphabet. I'm tempted to go all the way down
+to pure data.
+
+As for next steps, once we talk this stuff over, I have in mind starting with
+an e-graph prototype in python, as you suggest.  

@@ -14,6 +14,17 @@ CONTEXT.define('pass',Pass)
 CONTEXT.define('null',Null)
 CONTEXT.define('bin') # generic built-in container
 #
+#   atom A : B -> B if A is a single atom, () otherwise
+#
+#   demo: atom x: a b c
+#   demo: atom : a b c
+#   demo: atom x x : a b c
+#
+def Atom(context,domain,A,B):
+    if A.atom(context): return B
+    if A.empty(): return data()
+CONTEXT.define('atom',Atom)
+#
 #   put A : B creates A:B, it "puts B into A".
 #
 #   put A : B -> (A:B)

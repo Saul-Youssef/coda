@@ -1,0 +1,118 @@
+
+
+The following is a sketch of a conceptual and software upgrade 
+of the results from my paper "Pure Data Spaces".  The idea is to generalize
+from definitions defined to be partial functions from coda to data to,
+instead, think of a context as a symmetric, transitive relation.  An equality
+which partially covers the space of all pure data.  Similarly, one imagines
+adding "contexts", making a larger equivalence relation over time.  This
+concept should be a pure generalization of the software that I wrote
+implementing the concepts in the paper.  What I hope to do with you is
+
+A) Get a clear and precise understanding of the generalized formulation
+   mathematically.
+
+B) Write software (python in jupyter would be best) which implements
+   the system for testing purposes.
+
+C) Plug in fancy algorithms for speed similar to the algorithms in
+   the well known "egg" software.
+
+Here's what I have in mind...
+
+=> "data" is a finite sequence of codas, which are pairs of data.  If A and
+   B are data, A B is A and B concatenated, and A:B is the coda made from
+   pairing A and B.
+
+=> A "context" is a symmetric, transitive relation on pure data. Denote
+   this relation by =.
+
+def: DATA is the collection of all data.
+def: CODA is the collection of all coda.
+def: Data X is 'invariant' if X=X.
+def: Data X is an 'atom' if X is invariant and |X|=1, i.e. if X is a single coda.
+def: Data X is atomic if one or more coda in X is an atom.
+
+Con DATA is the complete lattice of contexts on the set DATA.
+
+I am imagining a system that works like this:
+
+0. Data D is "never false" in context C if D is not atomic
+   in any context C' where C<=C'. In this case, we say that
+   contains C "contains" D.
+1. The intersection of all contexts containing D is
+   the closure context [D] of D.
+2. Given a sequence of data D1,D2,...,Dn, define a corresponding
+   context as [D1] \/ [D2] \/ [D3] \/...\/ [Dn], the transitive
+   closure of the union of the [Di] contexts.
+
+Example: Let A? be syntactic sugar for (A:?), let A=B be syntactic sugar for
+the coda (= A:B).
+
+As an example, let's name some data which will produce
+a context.
+
+* Genesis
+
+A0 = (:)=(:)  ....Genesis. Establishes (:) as an atom.
+
+* Characters and words for names
+
+A1 = (:(:))=(:(:))  written "ap"
+(:(:) (:))=(:(:) (:)) written "const"
+(:(:) (:) (:))=(:(:) (:) (:)) written "A"
+...etc for, B,C,b,?,atom,=, i.e. constant atoms for characters and words.
+
+* Equality respects concatenation and colon
+
+S0 = (A?=B?) (C?=D?) (A? C?)=(B? D?)
+S1 = (A?=B?) (C?=D?) (A?:C?)=(B?:D?)
+
+* Definition of "const" as in the paper
+
+T0 = (const A?:B?) = A?
+
+* Definition of "ap" as in paper
+
+T1 = (ap A?:B? C?) = ( (ap A?:B?) (ap A?:C?) )
+T2 = ((ap A?:b?) = (A?:b?) ) (atom:b?)
+T3 = (ap A?:)
+
+One minor complication is that each of the above lines
+actually implicitly has a separate set of "variables", so A? is A_C0?
+in line C0, A_C1? in line C1, etc.
+
+So, in the context [A0]\/[A1]\/[S0]\/[S1]\/[T0]\/[T1]\/[T2]\/[T3]...
+
+   (ap const a:b c) = (ap const a:b) (ap const a:c)  [by T1]
+   (ap const a:b) = (const a:b)                      [by T2]
+   (const a:b) = a                                   [by T0]
+   (ap const a:b b) = a a                            [by C0]
+
+So, as in the paper, proofs and computations are the same thing.
+
+Example: Consider T1
+   [(ap A?:B? C?) = ( (ap A?:B?) (ap A?:C?) )]
+
+   In this context, since T1 is never false, (ap const a:b c) must be
+   equal to (ap const a:b) (ap const a:c), because, otherwise, assigning
+   A?=a, B?=b, C?=c is a context greater than [T1] where T1 would be false.
+
+Ideally, my goals are:
+   1. Preserve a clear mathematical meaning of the system, starting
+      from pure data.
+   2. Be able to take advantage of some fancy algorithms for
+      computing the resulting equalities, as in the "egg" software.
+   3. Use (with (eq:A0) (eq:A1)...(eq:An):X) to recursively define
+      scopes by starting with a "boot" definition of "with"
+
+
+For instance, a computation of X in context C would be
+
+(with C:X)
+
+and in the "boot" context, this guarantees
+
+(with C:X) = (with C:X')
+
+for some other (typically simplified X').

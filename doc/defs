@@ -1,0 +1,32 @@
+#
+#   Exercise. Re-define the current system
+#
+#   Builtins
+#      atom
+#      language
+#      atomic
+#      empty
+#
+#
+#   Combinatorics
+#
+(pass A?:B?) = B?
+(null A?:B?) = ()
+(left A?:B?) = A?
+(right A?:B?) = B?
+
+(ap A?:b? B?) = (atom b?:(A?:b?)) (ap A?:B?)
+(ap A?:B? C?) = (ap A?:B?) (ap A?:C?)
+(ap A?:) = ()
+
+(bool:A? B?) = (bool:A?) (bool:B?)
+(bool:A?) = (atom A?:(:))
+(bool:A?) = (empty A?:())
+
+(not:A?) = (atom  (bool:A?):)
+(not:A?) = (empty (bool:A?):(:))
+
+(= A?:B?) = (empty A?:B?)
+(= A?:B?) = (empty B?:A?)
+(= a? A?:b? B?) = (empty (atom:a?) (atom:b?) : (= a?:b?) (= A?:B?))
+(= A? a?:B? b?) = (empty (atom:a?) (atom:b?) )

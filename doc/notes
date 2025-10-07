@@ -16,3 +16,48 @@ o Functors
 o Speed up with parallelism
 o Video?
 o Fix up help system
+
+
+
+; ===== Pure Data (single sort) =====
+(datatype Data
+  (nil)                          ; empty data  ()
+  (a) (b) (c)                    ; test atoms (optional)
+  (coda Data Data)               ; a data consisting of exactly one coda (L:R)
+  (cons Data Data)               ; prepend one coda-as-data H to data T
+  (data Data Data)               ; append (concatenate) two data
+)
+
+; ----- Append → canonical cons/nil form (no assoc blowups) -----
+(rewrite (data (nil) YS) YS)
+(rewrite (data XS (nil)) XS)
+
+; peel/normalize the left argument
+(rewrite (data (coda L R) YS)   (cons (coda L R) YS))
+(rewrite (data (cons H T) YS)   (cons H (data T YS)))
+
+; optional: normalize nested appends to the right
+(rewrite (data (data X Y) Z)    (data X (data Y Z)))
+
+
+; ===== sanity: build a few terms & normalize =====
+(let H      (coda (nil) (nil)))                       ; (:)  = coda nil nil
+(let ab     (coda (a) (b)))                           ; (a:b)
+(let bc     (coda (b) (c)))                           ; (b:c)
+
+; (:)(:)(:)
+(let t0 (coda )
+(let t1 (data H (data H H)))
+(let t2 (data H t1))
+(let t3 (data H t2))
+
+; (a:b)(b:c)(:)(a:b)
+;(let t2  (data (data ab bc) (data H ab)))
+
+(extract t3)
+;(extract t2)
+
+(run 50)
+
+;(check (= triple (cons f (cons f (cons f (nil))))))
+;(check (= seq (cons one (cons two (cons f (cons one (nil)))))))

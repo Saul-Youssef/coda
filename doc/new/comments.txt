@@ -1,0 +1,80 @@
+
+Comments on your latest clarifications:
+
+1) Congruence option: (a) vs (b)
+
+Let's go with (a) as you recommend.
+
+2) Substitution extends homomorphically.
+
+As you noted, what you call a "schema" is just data
+in this system.  Any data such as E is a valid "schema",
+where E may or may not contain any number of "pattern atoms".
+
+You define E*sigma to be data (or schema) E with
+variable replacements defined by sigma.  A given sigma
+defines a relation
+
+L*sigma ~ R*sigma
+
+"for all it's ground instances", as you say.  The
+intersection of all such relations in a schema then
+generates a corresponding congruent equivalence relation.
+
+This all seems correct to me, except that you could
+remove the requirement that L*sigma etc. be substituted
+all the way to ground.  Schemas with partial substitution
+are valid "theorems" which may be desired targets of computation,
+for example, if one wants to prove such a theorem.  This means
+that "pattern atoms" will be present outside of the left
+sides of (with ...:X) atoms. Any thoughts about this?  It suggests
+a couple of extra things to me also:
+
+   a) Substitution matching should work, even with "variables", right?
+
+      For example...
+
+      with (ap A?:B? C?)=(ap A?:B?) (ap A?:C?) : X
+
+      Suppose X=(ap A2?:B2? C2?)
+
+      then it should be valid that X=(ap A2?:B2?) (ap A2?:C2?) ...right?
+
+   b) This is suggesting to me that removing the "pattern atom" convention
+      might be a valid simplification.  If (A:?) -> (foo:) where (foo:) is not in the
+      context.  I'm unsure, but I am tempted by this idea.
+
+3) rev rules
+
+Mostly I understand and it's OK.  However, I think that a subtlety remains re:
+
+(rev:rev:X?) = X?
+
+because the "finite X?" that you suggest is not computable.  I was thinking of
+this as like an Axiom of Choice situation.  It seems like it should be true, but
+it isn't unless you assume it, and if you assume it, results are slightly different.
+
+Otherwise, everything looks fine in this section.
+
+4) The "P is never empty" example
+
+I'm not thinking of this as something to add to the system as a schema.
+
+The point is, that it's a true fact that P can never be empty, and this,
+as a theorem should be deducible from how prime is defined. In other words...
+
+(with <standard stuff>:not:skip X?:prime:nat:0) =
+(with <standard stuff>:())
+
+is the theorem that there are an infinite number of primes.
+
+5) Looks good.
+
+6) Looks great!
+
+7) I really like your plan to keep UI/printing concerns separate from
+   the core and pre-defining, say, with and =, for bootstrapping purposes.
+
+Let's keep discussing. I think we are getting close to the point where
+a working prototype would be the next step.  I'm going on a multi-hour
+walk today and I will be thinking these things over.

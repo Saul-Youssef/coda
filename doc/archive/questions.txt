@@ -1,0 +1,69 @@
+
+After looking at your code, I think that the API needs some work.
+
+First, I want to make sure I understand the primitives you need.
+
+Suppose that D is data.
+
+is_atom(t) -> bool
+
+is_invariant_atom(t) -> bool (the “atom sort” for $:x)
+
+head(t) -> symbol (constructor/atom tag)
+
+children(t) -> list[data] (empty for atoms)
+
+make(symbol, *kids) -> data
+
+equal_data(a,b) -> bool (structural equality)
+
+hash_data(t) -> int (stable structural hash)
+
+size(t) -> int (node count)
+
+evaluate(eqs,D,budget,cost)
+    eqs: data - the existing data type
+    D:   data - the existing data type
+    budget: Budget object
+    cost: Cost object
+
+Budget object: represents some resources, passed
+recursively and subtracted as resources are used.  Used
+for quitting when resources are exhausted.
+
+Cost object: represents the criteria for choosing
+which data in the equivalence class of D to return.
+
+Let's go over the "required primitives" that you describe.
+I'll use uppercase variables to indicate the type data and
+lower case variables to indicate the type coda.
+
+is_atom(D) -> bool
+    D.atom() does this.
+is_invariant_atom(D) -> bool (the “atom sort” for $:x)
+    I'm not sure what you mean by this...?
+head(D) -> symbol (constructor/atom tag)
+    I'm not 100% sure what you mean.  If you mean
+    that if D=($:foo), you want to return the string 'foo',
+    that's easy to do.
+children(D) -> list[data] (empty for atoms)
+    [d for d in D] are the coda contained in D as a sequence.
+    I'm not 100% sure that's what you mean.
+make(symbol, *kids) -> data
+    I don't know what this means.  If *kids are a tuple
+    of codas, data(*kids) makes the corresponding data.
+equal_data(a,b) -> bool (structural equality)
+    I don't know exactly what you mean by "structural equality".
+    I'm not sure if "a" and "b" are meant to be data or
+    coda or something else.  If a and b are data and
+    "structural equality" means low level literal equality,
+    then a=b does that.
+hash_data(D) -> int (stable structural hash)
+    hash(D) does that if I understand your meaning.
+size(D) -> int (node count)
+    len(D) gives the number of coda in D as a sequence.
+    I'm not sure if that's what you mean by "size"
+
+Once we clarify these things, I suspect that the easy way to go is for
+you to use existing methods of the data class, or for me to add new methods
+if necessary, removing the need for the Ops class, I am suspecting.

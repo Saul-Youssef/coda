@@ -1,0 +1,46 @@
+
+Perhaps we can simplify by relaxing from = being a full
+equivalence relation. Suppose....
+
+Let a "context" on pure data be a symmetric, transitive relation which
+is not necessarily reflexive.
+
+Data X is "in context" if X is in the relation =.
+Data X is "a variable" if X is not in the relation =.
+
+Data X is "atomic" if X=X.
+Atomic data X is an "atom" if |X|=1.
+
+Matching:  Data X and Y match if (X=Y) for any replacements of variables with data.
+
+Syntactic sugar: x? == (x:)
+
+Built-in function (atom A:B) == B if A is a single atom, () otherwise.
+
+Context is defined by (with eqs : X) where
+
+eqs = (eq A1:B1) (eq A2:B2)...(eq An:Bn)
+Each eq defines a "context" (pre-equivalence).
+eqs = transitive closure of the set union of the eqs
+
+Note: There is no separate "rule context" and "data context".
+
+Genesis
+=======
+
+(:X?) = (:X?)
+
+Pass/null
+=========
+
+(pass:X?) = X?
+(null:X?) = ()
+
+ap
+==
+
+(ap A?:B? C?) = (ap A?:B?) (ap A?:C?)
+(ap A?:B?) = (atom B?:A?:B?)
+(ap A?:) = ()
+
+What do you think about this?

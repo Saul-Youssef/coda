@@ -1,0 +1,52 @@
+
+Genesis
+=======
+
+(:A) = (:A)
+
+((:):...) bytes
+((:) (:):...) words
+
+(atomic A:B) => B if A is atomic, () otherwise
+(empty A:B) => B if A is empty, () otherwise
+(atom A:B) => B if A is a single atom, () otherwise
+(eq A:B) => A==B with all data substitutions for undefined codas
+(= A:B) => () if A==B, (:) if A!==B
+
+Pass/Null
+=========
+
+(pass A:B) = B
+(null A:B) = ()
+(left A:B) = A
+(right A:B) = B
+(const A:B) = A
+
+(ap A:B C) = (ap A:B) (ap A:C)
+(ap A:b) = (A:b)
+(ap A:) = ()
+
+(while A:B) = (while A:(A:B))
+(while A:B) = (if (A:B)=B:B) (nif (A:B)=B:while A:(A:B))
+
+(while : B) = B
+(while (:):B) = ()
+(while A:B) = (while A:(A:B))
+
+(if  A:B) = (empty A:B)
+(nif A:B) = (atomic A:B)
+
+(put A:B) = (A:B)
+(get A:(A:B)) = B
+
+(while (empty (A:B)=B):B) = B
+(while (atomic (A:B)=B):B) = while A:(A:B)
+
+Semiring
+========
+
+(prod A B:C) = (atom A:(right:A):(prod B:C))
+(prod : A) = A
+
+(sum A B:C) = (atom A:((right:A):C)) (sum B:C)
+(sum : A) = ()
